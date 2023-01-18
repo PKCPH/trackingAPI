@@ -7,6 +7,6 @@
     <!-- Command to create an optimized build of the project that's ready for publishing -->
     <ProductionBuildCommand>npm run build</ProductionBuildCommand>
     <!-- Folder where production build objects will be placed -->
-    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\tracking.angular</BuildOutputFolder>
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\trackingAngular</BuildOutputFolder>
   </PropertyGroup>
 </Project>

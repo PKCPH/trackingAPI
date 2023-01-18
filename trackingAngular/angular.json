@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "tracking.angular": {
+    "trackingAngular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/tracking.angular",
+            "outputPath": "dist/tracking-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -60,21 +60,18 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "tracking.angular:build:production"
+              "browserTarget": "trackingAngular:build:production"
             },
             "development": {
-              "browserTarget": "tracking.angular:build:development"
+              "browserTarget": "trackingAngular:build:development"
             }
           },
-          "defaultConfiguration": "development",
-          "options": {
-            "proxyConfig": "src/proxy.conf.js"
-          }
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tracking.angular:build"
+            "browserTarget": "trackingAngular:build"
           }
         },
         "test": {
@@ -97,8 +94,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": false
   }
 }

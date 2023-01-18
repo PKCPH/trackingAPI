@@ -18,9 +18,15 @@ public class Program
 
         //setting sqlserver connection in appssetting.json
         builder.Services.AddDbContext<IssueDBContext>(
-            o=> o.UseSqlServer(
+            o => o.UseSqlServer(
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
+
+        builder.Services.AddDbContext<MatchDBContext>(
+            o => o.UseSqlServer(
+                builder.Configuration.
+                GetConnectionString("SqlServer")));
+
 
 
         var app = builder.Build();

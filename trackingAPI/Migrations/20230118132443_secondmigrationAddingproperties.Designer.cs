@@ -11,9 +11,9 @@ using trackingAPI.Data;
 
 namespace trackingAPI.Migrations
 {
-    [DbContext(typeof(IssueDBContext))]
-    [Migration("20230117105211_firstMigration")]
-    partial class firstMigration
+    [DbContext(typeof(MatchDBContext))]
+    [Migration("20230118132443_secondmigrationAddingproperties")]
+    partial class secondmigrationAddingproperties
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace trackingAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("trackingAPI.Models.Issue", b =>
+            modelBuilder.Entity("trackingAPI.Models.Match", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,29 +32,32 @@ namespace trackingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("Completed")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("DateOfMatch")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("MatchLength")
+                        .HasColumnType("time");
 
-                    b.Property<string>("Description")
+                    b.Property<int>("MatchState")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TeamA")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IssueType")
+                    b.Property<int>("TeamAScore")
                         .HasColumnType("int");
 
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("TeamB")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeamBScore")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Issues");
+                    b.ToTable("Matches");
                 });
 #pragma warning restore 612, 618
         }
