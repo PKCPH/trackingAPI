@@ -5,7 +5,9 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "trackingAPI", "trackingAPI\trackingAPI.csproj", "{9D056894-DFC4-4896-A01F-B4039206EDE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tracking.client", "tracking.client\tracking.client.csproj", "{D8F549B8-5B76-49FC-8266-01EC89277B5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tracking.client", "tracking.client\tracking.client.csproj", "{D8F549B8-5B76-49FC-8266-01EC89277B5B}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "tracking.angular", "tracking.angular\tracking.angular.esproj", "{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,12 @@ Global
 		{D8F549B8-5B76-49FC-8266-01EC89277B5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8F549B8-5B76-49FC-8266-01EC89277B5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8F549B8-5B76-49FC-8266-01EC89277B5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7B7B7D1-A30D-4EBA-9CD1-4F512B16C17C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

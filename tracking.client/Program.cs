@@ -24,6 +24,8 @@ internal class Program
         {
             //deserializing
             var issues = await response.Content.ReadFromJsonAsync<IEnumerable<IssueDto>>();
+            //null check, lazy...
+            if (issues == null) return;
             foreach (var issue in issues)
             {
                 Console.WriteLine(issue.Title);
