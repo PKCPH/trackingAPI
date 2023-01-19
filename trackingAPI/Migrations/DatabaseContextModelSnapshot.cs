@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,11 +10,10 @@ using trackingAPI.Data;
 
 namespace trackingAPI.Migrations
 {
-    [DbContext(typeof(MatchDBContext))]
-    [Migration("20230118132443_secondmigrationAddingproperties")]
-    partial class secondmigrationAddingproperties
+    [DbContext(typeof(DatabaseContext))]
+    partial class DatabaseContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,10 +31,7 @@ namespace trackingAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("DateOfMatch")
-                        .HasColumnType("date");
-
-                    b.Property<TimeSpan>("MatchLength")
-                        .HasColumnType("time");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MatchState")
                         .HasColumnType("int");

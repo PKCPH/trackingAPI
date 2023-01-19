@@ -13,8 +13,8 @@ namespace trackingAPI.Controllers
         /// <summary>
         /// accessing the database at runtime
         /// </summary>
-        private readonly MatchDBContext _context;
-        public MatchController(MatchDBContext context) => _context = context;
+        private readonly DatabaseContext _context;
+        public MatchController(DatabaseContext context) => _context = context;
 
         //action method, does as a response of the http request, to get a list of Issue
         //attribute to make it handle httpGet

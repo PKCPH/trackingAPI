@@ -11,9 +11,9 @@ using trackingAPI.Data;
 
 namespace trackingAPI.Migrations
 {
-    [DbContext(typeof(MatchDBContext))]
-    [Migration("20230118134638_fourthMigrationDeleteTimespan")]
-    partial class fourthMigrationDeleteTimespan
+    [DbContext(typeof(DatabaseContext))]
+    [Migration("20230119065333_singleContext")]
+    partial class singleContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

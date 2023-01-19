@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trackingAPI.Migrations
 {
-    public partial class firstMigration : Migration
+    public partial class singleContext : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,7 @@ namespace trackingAPI.Migrations
                     TeamAScore = table.Column<int>(type: "int", nullable: false),
                     TeamBScore = table.Column<int>(type: "int", nullable: false),
                     MatchState = table.Column<int>(type: "int", nullable: false),
-                    DateAndTimeOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

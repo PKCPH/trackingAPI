@@ -17,12 +17,12 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         //setting sqlserver connection in appssetting.json
-        builder.Services.AddDbContext<IssueDBContext>(
+        builder.Services.AddDbContext<DatabaseContext>(
             o => o.UseSqlServer(
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
-        builder.Services.AddDbContext<MatchDBContext>(
+        builder.Services.AddDbContext<DatabaseContext>(
             o => o.UseSqlServer(
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
