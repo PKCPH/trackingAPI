@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230119065333_singleContext")]
-    partial class singleContext
+    [Migration("20230119132548_nomatchlistinteam")]
+    partial class nomatchlistinteam
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,16 +38,8 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
 
-                    b.Property<string>("TeamA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("TeamAScore")
                         .HasColumnType("int");
-
-                    b.Property<string>("TeamB")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TeamBScore")
                         .HasColumnType("int");
@@ -55,6 +47,40 @@ namespace trackingAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("MatchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.Team", b =>
+                {
+                    b.HasOne("trackingAPI.Models.Match", null)
+                        .WithMany("Teams")
+                        .HasForeignKey("MatchId");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.Match", b =>
+                {
+                    b.Navigation("Teams");
                 });
 #pragma warning restore 612, 618
         }

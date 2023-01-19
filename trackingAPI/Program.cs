@@ -22,13 +22,6 @@ public class Program
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
-        builder.Services.AddDbContext<DatabaseContext>(
-            o => o.UseSqlServer(
-                builder.Configuration.
-                GetConnectionString("SqlServer")));
-
-
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
