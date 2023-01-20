@@ -16,6 +16,9 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        //For anuglar app to consume the api (also with app.UseCors())
+        builder.Services.AddCors();
+
         //setting sqlserver connection in appssetting.json
         builder.Services.AddDbContext<DatabaseContext>(
             o => o.UseSqlServer(
@@ -23,6 +26,7 @@ public class Program
                 GetConnectionString("SqlServer")));
 
         var app = builder.Build();
+        app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

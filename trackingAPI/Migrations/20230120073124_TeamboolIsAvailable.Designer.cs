@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230120073124_TeamboolIsAvailable")]
+    partial class TeamboolIsAvailable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,12 +29,12 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ParticipatingTeamsId")
+                    b.Property<int>("TeamsId")
                         .HasColumnType("int");
 
-                    b.HasKey("MatchesId", "ParticipatingTeamsId");
+                    b.HasKey("MatchesId", "TeamsId");
 
-                    b.HasIndex("ParticipatingTeamsId");
+                    b.HasIndex("TeamsId");
 
                     b.ToTable("MatchTeam");
                 });
@@ -70,10 +72,12 @@ namespace trackingAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool?>("IsAvailable")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -90,7 +94,7 @@ namespace trackingAPI.Migrations
 
                     b.HasOne("trackingAPI.Models.Team", null)
                         .WithMany()
-                        .HasForeignKey("ParticipatingTeamsId")
+                        .HasForeignKey("TeamsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

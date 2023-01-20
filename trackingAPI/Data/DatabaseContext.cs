@@ -12,10 +12,13 @@ public class DatabaseContext : DbContext
     public DbSet<Match> Matches { get; set; }
     public DbSet<Team> Teams { get; set; }
 
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    modelBuilder.Entity<Match>().HasMany(m => m.Teams).WithOne(t => t.Match);
-    //}
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        //Default value for IsAvailable = true
+        modelBuilder.Entity<Team>()
+            .Property(t => t.IsAvailable)
+            .HasDefaultValue(true);
+    }
 
-    
+
 }
