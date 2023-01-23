@@ -1,6 +1,6 @@
 ﻿namespace trackingAPI.Models;
 
-public class Match
+public class GameMatch
 {
     //public Match()
     //{

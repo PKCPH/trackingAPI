@@ -19,7 +19,7 @@ namespace trackingAPI.Controllers
         //action method, does as a response of the http request, to get a list of Issue
         //attribute to make it handle httpGet
         [HttpGet]
-        public async Task<IEnumerable<Match>> Get()
+        public async Task<IEnumerable<GameMatch>> Get()
             //get a list of Issue
             => await _context.Matches.ToListAsync();
 
@@ -27,7 +27,7 @@ namespace trackingAPI.Controllers
         //so the action responds only to this id in the url
         //ProducesResponseType specifies which kind of status code the return can return
         [HttpGet("id")]
-        [ProducesResponseType(typeof(Match), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GameMatch), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
@@ -39,7 +39,7 @@ namespace trackingAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         //for creating a new issue
-        public async Task<IActionResult> Create(Match match)
+        public async Task<IActionResult> Create(GameMatch match)
         {
             //adding the issue submitted by the request
             await _context.Matches.AddAsync(match);
@@ -54,7 +54,7 @@ namespace trackingAPI.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         //id is cound to the url, issue is bound to the body of the request
-        public async Task<IActionResult> Update(int id, Match match)
+        public async Task<IActionResult> Update(int id, GameMatch match)
         {
             //if the id of the url and the id in the body does not match, then return
             if (id != match.Id) return BadRequest();
