@@ -14,24 +14,19 @@ namespace trackingAPI.Helpers
             GameMatch gameMatch = new();
             Random rnd = new Random();
 
-            //var teamCount = _context.Teams.Count();
+            var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
+            var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
-            var rndTeamsAvailable = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
-
-            var rndTeams = rndTeamsAvailable.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-            //int idNumberA = 20;
-            //int idNumberB = 20;
-
-
-            var teamA = rndTeams.First();
-            var teamB = rndTeams.Last();
+            var teamA = TwoRandomAvailableTeams.First();
+            var teamB = TwoRandomAvailableTeams.Last();
+            teamA.IsAvailable = false; 
+            teamB.IsAvailable = false;
             gameMatch.ParticipatingTeams.Add(teamA);
             gameMatch.ParticipatingTeams.Add(teamB);
 
+            gameMatch.DateOfMatch = DateTime.Now.AddHours(1);
 
             return gameMatch;
         }
-
     }
 }

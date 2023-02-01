@@ -37,6 +37,7 @@ namespace trackingAPI.Controllers
             //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
             return match == null ? NotFound() : Ok(match);
         }
+        
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         //for creating a new issue
@@ -51,11 +52,9 @@ namespace trackingAPI.Controllers
 
             ////returns the response with statuscode and a location in the editor
             //return CreatedAtAction(nameof(GetById), new { id = match.Id }, match);
-            return Ok(_context.Matches);
-        
-        }
 
-     
+            return Ok(_context.Matches);
+        }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
