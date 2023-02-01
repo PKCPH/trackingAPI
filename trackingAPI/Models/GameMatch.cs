@@ -2,10 +2,10 @@
 
 public class GameMatch
 {
-    //public Match()
-    //{
-    //    this.Teams = new HashSet<Team>();
-    //}
+    public GameMatch()
+    {
+        this.ParticipatingTeams = new HashSet<Team>();
+    }
 
     public int Id { get; set; }
     public ICollection<Team> ParticipatingTeams { get; set; }

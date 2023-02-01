@@ -14,7 +14,7 @@ namespace trackingAPI.Models
         public string Name { get; set; }
 
         [DefaultValue("true")]
-        public bool IsAvailable { get; set; }
+        public bool? IsAvailable { get; set; }
 
         public ICollection<GameMatch> Matches { get; set;}
     }

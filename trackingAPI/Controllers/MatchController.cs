@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
+using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 namespace trackingAPI.Controllers
@@ -39,16 +40,22 @@ namespace trackingAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         //for creating a new issue
-        public async Task<IActionResult> Create(GameMatch match)
+        public async Task<IActionResult> Create(TeamPicker teamPicker)
         {
+            var match = teamPicker.CreateMatch(_context);
+
             //adding the issue submitted by the request
             await _context.Matches.AddAsync(match);
             //saving the changes in the DB
             await _context.SaveChangesAsync();
 
-            //returns the response with statuscode and a location in the editor
-            return CreatedAtAction(nameof(GetById), new { id = match.Id }, match);
+            ////returns the response with statuscode and a location in the editor
+            //return CreatedAtAction(nameof(GetById), new { id = match.Id }, match);
+            return Ok(_context.Matches);
+        
         }
+
+     
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
