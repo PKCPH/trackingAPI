@@ -1,1 +1,51 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+ margin: 0;
+ padding: 0;
+ border: 0;
+ outline: 0;
+ box-sizing: border-box;
+ list-style: none;
+ text-decoration: none;
+}
+
+body {
+    color: white;
+}
+
+html {
+    scroll-behavior: smooth
+}
+   
+::-webkit-scrollbar {
+    width: 5px; 
+}
+   
+::-webkit-scrollbar-track {
+     background: rgba(0,0,0,0.9);
+}
+::-webkit-scrollbar-thumb {
+     background: rgba(0,0,0,0.9);
+}
+
+.divs {
+ background-color: rgba(0, 0, 0, 0.6);
+ text-align: center;
+ transition: all 400ms ease;
+}
+
+.section1 {
+ padding-top: 120px;
+ background-image: url("https://img.freepik.com/free-vector/gradient-football-field-background_23-2149013230.jpg?w=1380&t=st=1674046652~exp=1674047252~hmac=f7cd29a06058eda83d904826b68cf66223ad166281ba6e2d64c0807e34c2fa6c");
+ height: 100vh;
+ background-repeat: no-repeat;
+ background-size: cover;
+}
+
+.section2 {
+ height: 100vh;
+ background-image: url('images/wallpaper2.jpg');
+ background-repeat: no-repeat;
+ background-size: cover;
+}
+
