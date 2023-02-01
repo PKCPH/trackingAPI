@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
+using trackingAPI.Helpers;
 
 namespace trackingAPI;
 
@@ -25,11 +26,15 @@ public class Program
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
+        //ensures that the class is a hostedService
+        builder.Services.AddHostedService<MatchBackgroundTasks>();
+
+
         //Ensures that many to many models does not loop into each other lists
         builder.Services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+            );
 
         var app = builder.Build();
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
