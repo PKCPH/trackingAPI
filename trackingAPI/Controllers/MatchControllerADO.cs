@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
+using System.Data.SqlClient;
 
 
 namespace trackingAPI.Controllers
@@ -16,11 +18,11 @@ namespace trackingAPI.Controllers
             ILogger _logger;
 
             TeamPicker teamPicker = new();
-            var teams = CreateMatch();
+            var teams = teamPicker.CreateMatch();
 
             //_logger.Log(LogLevel.Information, $"{choosenTeam}");
 
-            //var conStr = DatabaseInit.ConnectionString;
+            var conStr = DatabaseInit.ConnectionString;
 
             //// Creating Connection  
             //using (SqlConnection con = new SqlConnection(conStr))
