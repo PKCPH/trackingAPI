@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
+using WebApplication3.Services;
 
 namespace trackingAPI;
 
@@ -12,6 +13,8 @@ public class Program
 
         //ensures that the class is a hostedService
         //builder.Services.AddHostedService<MatchBackgroundTasks>();
+
+        builder.Services.AddHostedService<ImplementIHostedService>();
 
         // Add services to the container.
 
