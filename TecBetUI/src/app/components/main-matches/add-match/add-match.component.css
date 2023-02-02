@@ -1,0 +1,53 @@
+.tabletext {
+    color: white;
+   }
+   
+   #loading {
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     z-index: 1;
+     width: 150px;
+     height: 150px;
+     margin: -75px 0 0 -75px;
+     border: 16px solid red;
+     border-radius: 50%;
+     border-top: 16px solid maroon;
+     width: 120px;
+     height: 120px;
+     animation: spin 0.5s linear infinite;
+   }
+   
+   @keyframes spin {
+       0% {
+           transform: rotate(0deg);
+       }
+       100% {
+           transform: rotate(360deg);
+       }
+       }
+   
+   #availableteamcontainer {
+    display: none;
+   }
+   
+   #addbutton {
+    display: none;
+   }
+   
+   .errorMsg {
+    font-weight: bold;
+    font-size: 20px;
+    color: red;
+    text-shadow: 2px 0 0 #000, 2px 1px 0 #000, 1px 1.7px 0 #000, -1px 2px 0 #000;
+    width: 20%;
+    padding: 4px;
+    margin: auto;
+   }
+
+.tableDivColumns {padding: 15px; width:510px; height: 160px; margin: auto;}
+.tableDivColumns div {border: 1px black solid;width:120px; height:120px;float:left;line-height: 110px;transition: all 400ms ease;background-color: rgba(250,0,250,0.2);}
+.tableDivColumns div:hover {background-color: rgba(0,0,0,0.5);transition: all 400ms ease;}
+
+
+

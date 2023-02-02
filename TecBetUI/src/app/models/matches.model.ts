@@ -1,10 +1,11 @@
 import { Team } from "./teams.model";
 
 export interface Match {
-    id: number;
-    TeamAScore: number;
-    TeamBScore: number;
-    MatchState: number;
-    DateOfMatch: Date;
+    id: string;
+    teamAScore: number;
+    teamBScore: number;
+    matchState: number;
+    dateOfMatch: Date;
     participatingTeams: Team[];
+    state: string;
 }

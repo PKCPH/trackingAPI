@@ -10,7 +10,6 @@ import { CustomErrorHandlerService } from './custom-error-handler.service';
 })
 export class TeamsService {
 
-
   baseApiUrl: string = 'https://localhost:7142';
   isLoading: boolean = false;
 
@@ -53,11 +52,12 @@ export class TeamsService {
   }
 
   updateTeam(id: string, updateTeamRequest: Team): Observable<Team> {
+    updateTeamRequest.matches = [];
     return this.http.put<Team>(this.baseApiUrl + '/api/Team/' + id, updateTeamRequest);
   }
 
   deleteTeam(id: string): Observable<Team> {
     return this.http.delete<Team>(this.baseApiUrl + '/api/Team/' + id)
   }
-  
+
 }

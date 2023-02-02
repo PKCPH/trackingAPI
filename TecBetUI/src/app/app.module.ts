@@ -10,6 +10,9 @@ import { AddTeamComponent } from './components/main-teams/add-team/add-team.comp
 import { EditTeamComponent } from './components/main-teams/edit-team/edit-team.component';
 import { BettingComponent } from './components/betting/betting.component';
 import { CustomErrorHandlerService } from './services/custom-error-handler.service';
+import { MainMatchesComponent } from './components/main-matches/main-matches.component';
+import { AddMatchComponent } from './components/main-matches/add-match/add-match.component';
+import { EditMatchComponent } from './components/main-matches/edit-match/edit-match.component';
 
 
 @NgModule({
@@ -20,6 +23,9 @@ import { CustomErrorHandlerService } from './services/custom-error-handler.servi
     AddTeamComponent,
     EditTeamComponent,
     BettingComponent,
+    MainMatchesComponent,
+    AddMatchComponent,
+    EditMatchComponent,
   ],
   imports: [
     BrowserModule,
