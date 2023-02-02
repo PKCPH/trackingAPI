@@ -11,10 +11,10 @@ import { TeamsService } from 'src/app/services/teams.service';
 })
 export class AddTeamComponent {
 
-  addPlayerRequest: Team = {
+  addTeamRequest: Team = {
     id: '',
     name: '',
-    IsAvailable: true,
+    isAvailable: true,
     matches: [],
     availability: ''
   };
@@ -33,15 +33,15 @@ export class AddTeamComponent {
     this.submitted = true;
     if (this.teamForm.valid)
     {
-      if (this.addPlayerRequest)
+      if (this.addTeamRequest)
       {
-  this.addPlayerRequest = {
-  ...this.addPlayerRequest,
+  this.addTeamRequest = {
+  ...this.addTeamRequest,
   name: this.teamForm.get('name')?.value
   };
   }
   
-    this.teamsService.addTeam(this.addPlayerRequest)
+    this.teamsService.addTeam(this.addTeamRequest)
     .subscribe({
       next: (members) => {
         this.router.navigate(['teams']);

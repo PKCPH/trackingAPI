@@ -17,7 +17,7 @@ export class EditTeamComponent {
   teamDetails: Team = {
     id: '',
     name: '',
-    IsAvailable: true,
+    isAvailable: true,
     matches: [],
     availability: ''
   };
@@ -28,7 +28,7 @@ export class EditTeamComponent {
       name: ['', [Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]
     });
-    
+
     this.route.paramMap.subscribe({
       next: (params) => {
         const id = params.get('id');
@@ -46,12 +46,30 @@ this.teamDetails = response;
   }
 
   updateTeam() {
+    this.submitted = true;
+    if(this.teamForm.valid)
+    {
+      if (this.teamDetails)
+      {
+        this.teamDetails = {
+          ...this.teamDetails,
+          name: this.teamForm.get('name')?.value
+        }
+      }
+    
     this.teamsService.updateTeam(this.teamDetails.id, this.teamDetails)
     .subscribe({
       next: (response) => {
-        this.router.navigate(['players']);
+        this.router.navigate(['teams']);
       }
     });
-  } 
-
+  } else
+  {
+    for (const key in this.teamForm.controls) {
+      if (this.teamForm.controls.hasOwnProperty(key)) {
+        const control = this.teamForm.get(key);
+        if (control && control.invalid) {
+          console.log(key, control.errors);
+  }
 }
+}}}}

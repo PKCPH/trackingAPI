@@ -3,7 +3,7 @@ import { Match } from "./matches.model";
 export interface Team {
     id: string;
     name: string;
-    IsAvailable: boolean;
+    isAvailable: boolean;
     matches: Match[];
     availability: string;
 }
