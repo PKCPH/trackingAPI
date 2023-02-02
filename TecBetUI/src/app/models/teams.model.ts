@@ -1,8 +1,10 @@
-export interface Player {
+import { Match } from "./matches.model";
+
+export interface Team {
     id: string;
     name: string;
-    age: number;
-    position: string;
-    team: string;
-    salary: number;
+    IsAvailable: boolean;
+    matches: Match[];
+    availability: string;
 }
+

@@ -1,1 +1,29 @@
-<p>add-team works!</p>
+<div class="section1">
+    <!-- Need better solution here not sure whats going on -->
+  <div class="d-flex"></div>
+  <div class="container divs my-5 py-5">
+      <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
+      <div class="mb-3">
+          <h1 class="mb-5">Add a team</h1>
+        <label for="name" class="form-label">Name</label>
+        <!-- One way to bind data to model in Angular  -->
+        <input type="text" class="form-control" id="name" formControlName="name" />
+        <div class="validBox" *ngIf="submitted && teamForm.get('name')?.invalid">
+          <div *ngIf="teamForm.get('name')?.errors?.['required']">
+            Name is required.
+          </div>
+          <div *ngIf="teamForm.get('name')?.errors?.['pattern']">
+            Name cannot contain numbers.
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-success mt-4">Create Team</button>
+      <a routerLink="/teams"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+  
+    </form>
+  </div>
+  </div>
+  
+  
+  
