@@ -1,30 +1,39 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-namespace WebApplication3.Services;
+using trackingAPI.Controllers;
+using trackingAPI.Data;
+using trackingAPI.Helpers;
 
+namespace WebApplication3.Services;
+//https://social.msdn.microsoft.com/Forums/en-US/bc640f9d-2293-4570-86f2-71b25e6ac95b/inject-dbcontext-in-ihostedservice
 public class ImplementIHostedService : IHostedService
 {
+    private DatabaseContext _context;
+    public ImplementIHostedService(IServiceProvider serviceProvider)
+    {
+        using (IServiceScope scope = serviceProvider.CreateScope())
+        {
+            _context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        }
+    }
+
     public Task StartAsync(CancellationToken cancellationToken)
     {
         Task.Run(async () =>
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                Console.WriteLine($"Respponse from IHostedService - {DateTime.Now}");
-                await Task.Delay(1000);
+                Console.WriteLine($"Response from IHostedService - {DateTime.Now}");
+                CreateRandomMatch();
+                await Task.Delay(10000);
             }
         });
 
         return Task.CompletedTask;
-        //< span public Task StopAsync(CancellationToken cancellationToken)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //class="hljs-built_in">return</span> <span class="hljs-built_in">Task</span>.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -32,13 +41,13 @@ public class ImplementIHostedService : IHostedService
         throw new NotImplementedException();
     }
 
-
-    //<span class="hljs-keyword">public</span> <span class="hljs-built_in">Task</span> StopAsync(CancellationToken cancellationToken)
-    //{
-    //    < span class="hljs-built_in">Console</span>.WriteLine(<span class="hljs-string">"Shutting down IHostedService"</span>);
-    //    <span class="hljs-built_in">return</span> <span class="hljs-built_in">Task</span>.CompletedTask;
-
-    //}
+    public async Task CreateRandomMatch()
+    {
+        MatchController matchController = new(_context);
+        TeamPicker teamPicker = new TeamPicker();
+        await matchController.Create(teamPicker);
+        Console.WriteLine("create random match done");
+    }
 
 }
 

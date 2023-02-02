@@ -14,7 +14,10 @@ public class Program
         //ensures that the class is a hostedService
         //builder.Services.AddHostedService<MatchBackgroundTasks>();
 
+        //builder.Services.AddSingleton<ImplementBackgroundService>();
+        //builder.Services.AddSingleton<ImplementIHostedService>();
         builder.Services.AddHostedService<ImplementIHostedService>();
+        builder.Services.AddHostedService<ImplementBackgroundService>();
 
         // Add services to the container.
 
@@ -32,13 +35,15 @@ public class Program
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
-        
+
 
         //Ensures that many to many models does not loop into each other lists
         builder.Services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+
 
         var app = builder.Build();
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
