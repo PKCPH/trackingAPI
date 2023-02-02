@@ -10,6 +10,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        //ensures that the class is a hostedService
+        //builder.Services.AddHostedService<MatchBackgroundTasks>();
+
         // Add services to the container.
 
         builder.Services.AddControllers();
@@ -26,9 +29,7 @@ public class Program
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
-        //ensures that the class is a hostedService
-        builder.Services.AddHostedService<MatchBackgroundTasks>();
-
+        
 
         //Ensures that many to many models does not loop into each other lists
         builder.Services.AddControllersWithViews()

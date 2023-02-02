@@ -27,7 +27,7 @@ public class TeamController : ControllerBase
     //handles the http request with the id at the end of the url: f.x. api/issue/*Id-Number*
     //so the action responds only to this id in the url
     //ProducesResponseType specifies which kind of status code the return can return
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(Team), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(int id)
