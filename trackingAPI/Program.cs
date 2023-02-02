@@ -15,8 +15,8 @@ public class Program
         //builder.Services.AddHostedService<MatchBackgroundTasks>();
 
         //builder.Services.AddSingleton<ImplementBackgroundService>();
-        //builder.Services.AddSingleton<ImplementIHostedService>();
-        builder.Services.AddHostedService<ImplementIHostedService>();
+        builder.Services.AddSingleton<ImplementIHostedService>();
+        //builder.Services.AddHostedService<ImplementIHostedService>();
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
         // Add services to the container.
