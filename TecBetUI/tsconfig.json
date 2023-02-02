@@ -2,6 +2,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    //Missing these types otherwise compilation errors
+    "types": ["node", "jest"],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -22,7 +24,13 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+       // Visual Studio Code are unable to fetch the library so we add these here
+       "typeRoots": [
+        "node_modules/@types",
+        "node_modules/@angular",
+        "node_modules/@angular/common/http"
+      ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
