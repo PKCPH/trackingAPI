@@ -43,10 +43,10 @@ namespace trackingAPI.Controllers
         //for creating a new issue
         public async Task<IActionResult> Create(TeamPicker teamPicker)
         {
-            var match = teamPicker.CreateMatch(_context);
+            //var match = teamPicker.CreateMatch(_context);
 
             //adding the issue submitted by the request
-            await _context.Matches.AddAsync(match);
+            await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
             //saving the changes in the DB
             await _context.SaveChangesAsync();
 
