@@ -30,7 +30,7 @@ public class TeamController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Team), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         //finding Issue with the id
         var team = await _context.Teams.FindAsync(id);
@@ -107,7 +107,7 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         //finding the issue
         var teamToDelete = await _context.Teams.FindAsync(id);

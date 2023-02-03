@@ -30,15 +30,15 @@ public class MatchController : ControllerBase
     [HttpGet("id")]
     [ProducesResponseType(typeof(GameMatch), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         //finding Issue with the id
         var match = await _context.Matches.FindAsync(id);
         //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
         return match == null ? NotFound() : Ok(match);
     }
-    
-    [HttpPost]
+
+    [HttpPost("CreateOneMatch")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     //for creating a new issue
     public async Task<IActionResult> Create(TeamPicker teamPicker)
@@ -55,6 +55,20 @@ public class MatchController : ControllerBase
 
         return Ok(_context.Matches);
     }
+    //[ActionName("CreateAllMatches")]
+    //[HttpPost]
+    //[ProducesResponseType(StatusCodes.Status201Created)]
+    ////for creating a new issue
+    //public async Task<IActionResult> CreateAll(TeamPicker teamPicker)
+    //{
+       
+    //    //adding the issue submitted by the request
+    //    await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
+    //    //saving the changes in the DB
+    //    await _context.SaveChangesAsync();
+    //    return Ok(_context.Matches);
+
+    //}
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -74,7 +88,7 @@ public class MatchController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         //finding the issue
         var issueToDelete = await _context.Matches.FindAsync(id);
