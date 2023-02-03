@@ -15,13 +15,13 @@ public class Program
         //builder.Services.AddHostedService<MatchBackgroundTasks>();
 
         //builder.Services.AddSingleton<ImplementBackgroundService>();
-        builder.Services.AddSingleton<ImplementIHostedService>();
-        //builder.Services.AddHostedService<ImplementIHostedService>();
+        //builder.Services.AddSingleton<ImplementIHostedService>();
+        builder.Services.AddHostedService<ImplementIHostedService>();
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        //builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

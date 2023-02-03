@@ -1,55 +1,54 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace trackingAPI.Controllers
+namespace trackingAPI.Controllers;
+
+public class BackgroundTaskController : Controller
 {
-    public class BackgroundTaskController : Controller
+    
+    // POST: BackgroundTaskController/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Create(IFormCollection collection)
     {
-        
-        // POST: BackgroundTaskController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        try
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
-
-
-        // POST: BackgroundTaskController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        catch
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
+    }
 
-        // POST: BackgroundTaskController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+
+    // POST: BackgroundTaskController/Edit/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Edit(int id, IFormCollection collection)
+    {
+        try
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
+        }
+    }
+
+    // POST: BackgroundTaskController/Delete/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult Delete(int id, IFormCollection collection)
+    {
+        try
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View();
         }
     }
 }

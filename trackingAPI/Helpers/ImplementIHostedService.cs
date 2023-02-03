@@ -10,7 +10,7 @@ using trackingAPI.Helpers;
 
 namespace WebApplication3.Services;
 //https://social.msdn.microsoft.com/Forums/en-US/bc640f9d-2293-4570-86f2-71b25e6ac95b/inject-dbcontext-in-ihostedservice
-public class ImplementIHostedService
+public class ImplementIHostedService : IHostedService
 {
     private DatabaseContext _context;
     public ImplementIHostedService(IServiceProvider serviceProvider)
