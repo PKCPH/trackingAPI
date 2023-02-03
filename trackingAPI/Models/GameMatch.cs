@@ -1,4 +1,7 @@
-﻿namespace trackingAPI.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace trackingAPI.Models;
 
 public class GameMatch
 {
@@ -7,7 +10,9 @@ public class GameMatch
         this.ParticipatingTeams = new HashSet<Team>();
     }
 
-    public int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; set; }
     public ICollection<Team> ParticipatingTeams { get; set; }
     public int TeamAScore { get; set; }
     public int TeamBScore { get; set; } //string Score for both teams instead ?

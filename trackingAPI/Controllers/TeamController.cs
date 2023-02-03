@@ -93,7 +93,7 @@ public class TeamController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //id is cound to the url, issue is bound to the body of the request
-    public async Task<IActionResult> Update(int id, Team team)
+    public async Task<IActionResult> Update(Guid id, Team team)
     {
         //if the id of the url and the id in the body does not match, then return
         if (id != team.Id) return BadRequest();
