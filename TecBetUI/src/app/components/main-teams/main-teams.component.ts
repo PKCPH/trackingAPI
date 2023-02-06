@@ -36,7 +36,7 @@ export class MainTeamsComponent {
             this.Hideloader();
           }  
           // Debugging
-          // console.log(this.teams);
+          console.log(this.teams);
         },
         error: (response) => {
           console.log(response);

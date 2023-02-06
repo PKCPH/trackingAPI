@@ -41,9 +41,9 @@ export class MatchesService {
   addMatch(addMatchRequest: Match): Observable<Match> {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
-    // addPlayerRequest.id = '00000000-0000-0000-0000-000000000000';
+    addMatchRequest.id = '00000000-0000-0000-0000-000000000000';
     
-    return this.http.post<Match>(this.baseApiUrl + '/api/Match', addMatchRequest);
+    return this.http.post<Match>(this.baseApiUrl + '/api/Match/CreateOneMatch', addMatchRequest);
   }
 
   getMatch(id: string): Observable<Match> {

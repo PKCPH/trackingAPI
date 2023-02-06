@@ -42,7 +42,7 @@ export class TeamsService {
   addTeam(addTeamRequest: Team): Observable<Team> {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
-    // addPlayerRequest.id = '00000000-0000-0000-0000-000000000000';
+    addTeamRequest.id = '00000000-0000-0000-0000-000000000000';
     
     return this.http.post<Team>(this.baseApiUrl + '/api/Team', addTeamRequest);
   }

@@ -45,8 +45,8 @@
     margin: auto;
    }
 
-.tableDivColumns {padding: 15px; width:510px; height: 160px; margin: auto;}
-.tableDivColumns div {border: 1px black solid;width:120px; height:120px;float:left;line-height: 110px;transition: all 400ms ease;background-color: rgba(250,0,250,0.2);}
+.tableDivColumns {padding: 15px;width:670px; height: 460px; margin: auto;}
+.tableDivColumns div {border: 1px black solid;width:160px; height:110px;float:left;line-height: 110px;transition: all 400ms ease;background-color: rgba(250,0,250,0.2);}
 .tableDivColumns div:hover {background-color: rgba(0,0,0,0.5);transition: all 400ms ease;}
 
 
