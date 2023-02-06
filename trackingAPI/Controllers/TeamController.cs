@@ -30,7 +30,7 @@ public class TeamController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(Team), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetById(Guid id)
     {
         //finding Issue with the id
         var team = await _context.Teams.FindAsync(id);
@@ -93,7 +93,7 @@ public class TeamController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     //id is cound to the url, issue is bound to the body of the request
-    public async Task<IActionResult> Update(int id, Team team)
+    public async Task<IActionResult> Update(Guid id, Team team)
     {
         //if the id of the url and the id in the body does not match, then return
         if (id != team.Id) return BadRequest();
@@ -107,7 +107,7 @@ public class TeamController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
         //finding the issue
         var teamToDelete = await _context.Teams.FindAsync(id);

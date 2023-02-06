@@ -24,11 +24,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("GameMatchTeam", b =>
                 {
-                    b.Property<int>("MatchesId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("MatchesId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ParticipatingTeamsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ParticipatingTeamsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("MatchesId", "ParticipatingTeamsId");
 
@@ -39,11 +39,9 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateOfMatch")
                         .HasColumnType("datetime2");
@@ -64,13 +62,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool?>("IsAvailable")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);

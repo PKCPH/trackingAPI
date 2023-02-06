@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
+using WebApplication3.Services;
 
 namespace trackingAPI;
 
@@ -13,9 +14,14 @@ public class Program
         //ensures that the class is a hostedService
         //builder.Services.AddHostedService<MatchBackgroundTasks>();
 
+        //builder.Services.AddSingleton<ImplementBackgroundService>();
+        //builder.Services.AddSingleton<ImplementIHostedService>();
+        builder.Services.AddHostedService<ImplementIHostedService>();
+        builder.Services.AddHostedService<ImplementBackgroundService>();
+
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        //builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -29,13 +35,15 @@ public class Program
                 builder.Configuration.
                 GetConnectionString("SqlServer")));
 
-        
+
 
         //Ensures that many to many models does not loop into each other lists
         builder.Services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+
 
         var app = builder.Build();
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());

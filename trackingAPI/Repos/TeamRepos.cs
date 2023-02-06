@@ -5,15 +5,14 @@ using Microsoft.Extensions.Hosting;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
-namespace trackingAPI.Repos
-{
-    public class TeamRepos
-    {
-        public async Task CreateTeam(string teamName, bool IsAvailable, string connectionString, string tableName)
-        {
-            
-          //TEST BRANCH COMMIT
+namespace trackingAPI.Repos;
 
-        }
+public class TeamRepos
+{
+    public async Task CreateTeam(string teamName, bool IsAvailable, string connectionString, string tableName)
+    {
+        
+      //TEST BRANCH COMMIT
+
     }
 }

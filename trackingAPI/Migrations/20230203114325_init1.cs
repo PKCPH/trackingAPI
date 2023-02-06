@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trackingAPI.Migrations
 {
-    public partial class feb : Migration
+    public partial class init1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,7 @@ namespace trackingAPI.Migrations
                 name: "Matches",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TeamAScore = table.Column<int>(type: "int", nullable: false),
                     TeamBScore = table.Column<int>(type: "int", nullable: false),
                     MatchState = table.Column<int>(type: "int", nullable: false),
@@ -29,10 +28,9 @@ namespace trackingAPI.Migrations
                 name: "Teams",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsAvailable = table.Column<bool>(type: "bit", nullable: false, defaultValue: true)
+                    IsAvailable = table.Column<bool>(type: "bit", nullable: true, defaultValue: true)
                 },
                 constraints: table =>
                 {
@@ -43,8 +41,8 @@ namespace trackingAPI.Migrations
                 name: "GameMatchTeam",
                 columns: table => new
                 {
-                    MatchesId = table.Column<int>(type: "int", nullable: false),
-                    ParticipatingTeamsId = table.Column<int>(type: "int", nullable: false)
+                    MatchesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ParticipatingTeamsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

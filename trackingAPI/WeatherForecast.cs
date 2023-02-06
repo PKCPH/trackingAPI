@@ -2,6 +2,8 @@ namespace trackingAPI;
 
 public class WeatherForecast
 {
+    //Temp commit for merge hehe hej brother v2
+
     public DateTime Date { get; set; }
 
     public int TemperatureC { get; set; }
