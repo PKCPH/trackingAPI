@@ -44,17 +44,28 @@ public class MatchController : ControllerBase
     public async Task<IActionResult> Create(TeamPicker teamPicker)
     {
         //var match = teamPicker.CreateMatch(_context);
-
         //adding the issue submitted by the request
         await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
         //saving the changes in the DB
         await _context.SaveChangesAsync();
+        //handles the http request with the id at the end of the url: f.x. api/issue/*Id-Number*
+        //so the action responds only to this id in the url
+        //ProducesResponseType specifies which kind of status code the return can return
+
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        //for creating a new issue
+        public async Task<IActionResult> Create(TeamPicker teamPicker)
+        {
+        //var match = teamPicker.CreateMatch(_context);
 
         ////returns the response with statuscode and a location in the editor
         //return CreatedAtAction(nameof(GetById), new { id = match.Id }, match);
 
         return Ok(_context.Matches);
     }
+
     //[ActionName("CreateAllMatches")]
     //[HttpPost]
     //[ProducesResponseType(StatusCodes.Status201Created)]

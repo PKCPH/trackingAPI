@@ -1,0 +1,21 @@
+<div class="section1">
+    <!-- Need better solution here not sure whats going on -->
+  <div class="d-flex"></div>
+  <div class="container divs my-5 py-5">
+      <form [formGroup]="matchForm" (ngSubmit)="updateMatch()">
+      <div class="mb-3">
+          <h1 class="mb-5">Edit a match</h1>
+        <label for="matchState" class="form-label">Game State</label>
+        <!-- One way to bind data to model in Angular  -->
+        <input type="number" class="form-control" id="matchState" formControlName="matchState" [(ngModel)] = "matchDetails.matchState" />
+      </div>
+      
+      <button type="submit" class="btn btn-success mt-4">Confirm Changes</button>
+      <a routerLink="/matches"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+  
+    </form>
+  </div>
+  </div>
+  
+  
+  
