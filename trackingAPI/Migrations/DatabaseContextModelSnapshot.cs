@@ -22,21 +22,6 @@ namespace trackingAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("GameMatchTeam", b =>
-                {
-                    b.Property<Guid>("MatchesId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ParticipatingTeamsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("MatchesId", "ParticipatingTeamsId");
-
-                    b.HasIndex("ParticipatingTeamsId");
-
-                    b.ToTable("GameMatchTeam");
-                });
-
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
                 {
                     b.Property<Guid>("Id")
@@ -60,6 +45,27 @@ namespace trackingAPI.Migrations
                     b.ToTable("Matches");
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MatchId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("MatchTeams");
+                });
+
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
                 {
                     b.Property<Guid>("Id")
@@ -72,7 +78,6 @@ namespace trackingAPI.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -80,19 +85,33 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("GameMatchTeam", b =>
+            modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
                 {
-                    b.HasOne("trackingAPI.Models.GameMatch", null)
-                        .WithMany()
-                        .HasForeignKey("MatchesId")
+                    b.HasOne("trackingAPI.Models.GameMatch", "Match")
+                        .WithMany("ParticipatingTeams")
+                        .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("trackingAPI.Models.Team", null)
-                        .WithMany()
-                        .HasForeignKey("ParticipatingTeamsId")
+                    b.HasOne("trackingAPI.Models.Team", "Team")
+                        .WithMany("Matches")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Match");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
+                {
+                    b.Navigation("ParticipatingTeams");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.Team", b =>
+                {
+                    b.Navigation("Matches");
                 });
 #pragma warning restore 612, 618
         }

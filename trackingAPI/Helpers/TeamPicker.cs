@@ -21,8 +21,12 @@ public class TeamPicker
             var teamB = TwoRandomAvailableTeams.Last();
             teamA.IsAvailable = false;
             teamB.IsAvailable = false;
-            gameMatch.ParticipatingTeams.Add(teamA);
-            gameMatch.ParticipatingTeams.Add(teamB);
+
+            MatchTeam matchTeamA = new MatchTeam { Team = teamA };
+            MatchTeam matchTeamB = new MatchTeam { Team = teamB };
+
+            gameMatch.ParticipatingTeams.Add(matchTeamA);
+            gameMatch.ParticipatingTeams.Add(matchTeamB);
 
             gameMatch.DateOfMatch = DateTime.Now.AddHours(1);
         }

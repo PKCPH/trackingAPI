@@ -5,11 +5,11 @@ import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
 
 @Component({
-  selector: 'app-main-matches',
-  templateUrl: './main-matches.component.html',
-  styleUrls: ['./main-matches.component.css']
+  selector: 'app-main-schedule',
+  templateUrl: './main-schedule.component.html',
+  styleUrls: ['./main-schedule.component.css']
 })
-export class MainMatchesComponent {
+export class MainScheduleComponent {
   matches: Match[] = [];
   errorMessage: string = "";
   
@@ -21,7 +21,7 @@ export class MainMatchesComponent {
           this.errorMessage = error;
         })
   
-      this.matchesService.getAllMatches()
+      this.matchesService.getSchedule()
       .subscribe({
         next: (matches) => {
           this.matches = matches.map(match => {
@@ -46,7 +46,7 @@ export class MainMatchesComponent {
       this.matchesService.deleteMatch(id)
       .subscribe({
         next: (response) => {
-          this.matchesService.getAllMatches()
+          this.matchesService.getSchedule()
             .subscribe({
               next: (matches) => {
                 this.matches = matches.map(match => {

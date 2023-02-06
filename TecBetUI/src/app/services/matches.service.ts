@@ -38,6 +38,25 @@ export class MatchesService {
     );
   }
 
+  getSchedule(): Observable<Match[]> {
+    this.isLoading = true;
+    return timer(500).pipe(
+      switchMap(() => 
+        this.http.get<Match[]>(this.baseApiUrl + '/api/Matches')
+          .pipe(
+            catchError(error => {
+              console.error(error);
+              // this.errorSubject.next(error.message);
+              this.errorSubject.next(this.customErrorHandlerService.handleError(error));
+              this.isLoading = false;
+              this.customErrorHandlerService.handleError(error);
+              return of([]);
+            })
+          )
+      )
+    );
+  }
+
   addMatch(addMatchRequest: Match): Observable<Match> {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
