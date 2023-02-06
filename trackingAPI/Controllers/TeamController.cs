@@ -43,31 +43,6 @@ public class TeamController : ControllerBase
     //for creating a new issue
     public async Task<IActionResult> Create(Team team)
     {
-        //TeamRepos teamRepos = new();
-
-        //string query = "INSERT INTO @TableName (Name, IsAvailable) " +
-        //                    "VALUES (@Name, @IsAvailable)";
-
-        //SqlConnection con = new SqlConnection(DatabaseInit.ConnectionString);
-        //SqlCommand cmd = new SqlCommand(query, con);
-
-        //cmd.Parameters.AddWithValue("@Name", team.Name);
-        //cmd.Parameters.AddWithValue("@Is", team.IsAvailable);
-        //try
-        //{
-        //    con.Open();
-        //    cmd.ExecuteNonQuery();
-        //    Console.WriteLine("Table Created Successfully");
-        //}
-        //catch (SqlException e)
-        //{
-        //    Console.WriteLine("Error Generated. Details: " + e.ToString());
-        //}
-        //finally
-        //{
-        //    con.Close();
-        //    Console.ReadKey();
-        //}
 
         //adding the issue submitted by the request
         await _context.Teams.AddAsync(team);
@@ -79,15 +54,15 @@ public class TeamController : ControllerBase
         //returns the response with statuscode and a location in the editor
         return CreatedAtAction(nameof(GetById), new { id = team.Id }, team);
     }
-    //[HttpPost]
+    [HttpPost]
 
-    //public async Task<IActionResult> InsertTeam([FromBody] Team teamUserValues)
-    //{
-    //    await _context.Teams.AddAsync(teamUserValues);
-    //    await _context.SaveChangesAsync();
+    public async Task<IActionResult> InsertTeam([FromBody] Team teamUserValues)
+    {
+        await _context.Teams.AddAsync(teamUserValues);
+        await _context.SaveChangesAsync();
 
-    //    return Ok(teamUserValues);
-    //}
+        return Ok(teamUserValues);
+    }
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
