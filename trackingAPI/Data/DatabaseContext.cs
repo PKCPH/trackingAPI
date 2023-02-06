@@ -11,7 +11,7 @@ public class DatabaseContext : DbContext
     {
     }
 
-
+    public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<GameMatch> Matches { get; set; }
     public DbSet<Team> Teams { get; set; }
 

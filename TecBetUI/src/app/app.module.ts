@@ -13,6 +13,7 @@ import { CustomErrorHandlerService } from './services/custom-error-handler.servi
 import { MainMatchesComponent } from './components/main-matches/main-matches.component';
 import { AddMatchComponent } from './components/main-matches/add-match/add-match.component';
 import { EditMatchComponent } from './components/main-matches/edit-match/edit-match.component';
+import { MainScheduleComponent } from './components/main-schedule/main-schedule.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { EditMatchComponent } from './components/main-matches/edit-match/edit-ma
     MainMatchesComponent,
     AddMatchComponent,
     EditMatchComponent,
+    MainScheduleComponent,
   ],
   imports: [
     BrowserModule,

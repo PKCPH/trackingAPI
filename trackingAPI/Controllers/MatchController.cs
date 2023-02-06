@@ -101,4 +101,14 @@ public class MatchController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("/api/matches")]
+    public ActionResult<IList<GameMatch>> GetAllMatches()
+    {
+        var matches = from match in _context.Matches
+                      .Include(mt => mt.ParticipatingTeams)
+                      .ThenInclude(t => t.Team)
+                      select match;
+        return Ok(matches.ToList());
+    }
 }
