@@ -25,7 +25,7 @@ export class EditMatchComponent {
   };
 
   constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router, private formBuilder: FormBuilder) {
-   
+
     this.matchForm = this.formBuilder.group({
       matchState: [0, [Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]

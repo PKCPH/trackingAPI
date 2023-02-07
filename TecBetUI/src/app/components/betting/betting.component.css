@@ -1,0 +1,19 @@
+.inverted-7 {
+
+    font-weight: bold;
+    /* display:inline-block; */
+    font-family:sans-serif;
+    margin:25px;
+    padding:8px;
+    cursor:pointer;
+
+    background:
+      linear-gradient(-45deg, #000  40%, #fff 0 60%, #000  0) right/300% 100% no-repeat,
+      linear-gradient(-45deg, #0000 40%, rgba(0, 0, 0, 0.418) 0 60%, #0000 0) right/300% 100% no-repeat;
+    -webkit-background-clip: text, padding-box;
+    background-clip: text, padding-box;
+    transition: 1s
+  }
+  .inverted-7:hover {
+    background-position: left;
+  }

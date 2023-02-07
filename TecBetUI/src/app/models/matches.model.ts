@@ -1,4 +1,5 @@
 import { Team } from "./teams.model";
+import { ParticipatingTeam } from "./schedule.model"
 
 export interface Match {
     id: string;
@@ -6,6 +7,6 @@ export interface Match {
     teamBScore: number;
     matchState: number;
     dateOfMatch: Date;
-    participatingTeams: Team[];
+    participatingTeams: ParticipatingTeam[];
     state: string;
 }
