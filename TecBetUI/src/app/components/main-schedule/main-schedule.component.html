@@ -38,8 +38,7 @@
                 <td *ngIf="match.matchState == 0">Not Started Yet</td>
                 <td *ngIf="match.matchState == 1">Playing</td>
                 <td *ngIf="match.matchState == 2">Finished</td>
-                <!-- <td><a [routerLink]="['/matches', 'edit', match.id]"><button class="btn btn-success mt-3">Edit</button></a>
-                    <a><button class="btn btn-danger mt-3" (click)="deleteMatch(match.id)">Delete</button></a></td> -->
+                <td><a [routerLink]="['/matches', 'edit', match.id]"><button class="btn btn-danger">Bet on Match</button></a>  
             </tr> 
         </table>  
     

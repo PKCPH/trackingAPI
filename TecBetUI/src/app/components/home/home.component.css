@@ -1,26 +1,3 @@
-a {
-    text-decoration: none;
-    color: lightpink;
-    font-size: 25px;
-    transition: 400ms all;
-}
-
-span {
-    display: inline-block;
-    color: red;
-}
-
-a:hover {
-    color: blue;
-    font-weight: bold;
-    transition: 400ms all;
-    font-size: 2rem;
-}
-
-span:hover {
-    color: darkred;
-}
-
 .d-1 {
   --c: #1095c1; /* the color */
   --b: .1em;    /* border length*/
@@ -59,3 +36,60 @@ span:hover {
      0% 100%
    );
 }
+
+img {
+    border: rgba(255, 0, 255, 0.3) solid 6px;
+    border-radius: 150px;
+    width: 430px;
+    height: 350px;
+    /* adjust the below to control the 3D effect */
+    --x: 10px;
+    --y: 20px;
+    transform: perspective(1000px) rotateX(var(--_a,40deg));
+    /* */
+    clip-path: polygon(       
+       var(--y)              var(--y),       
+       calc(100% - var(--y)) var(--y),       
+       calc(100% - var(--y)) calc(100% - var(--y)),       
+       calc(100% - var(--y) - var(--x)) var(--_c,100%),       
+       calc(var(--x) + var(--y))        var(--_c,100%),      
+       var(--y)        calc(100% - var(--y))       
+       );
+    outline: var(--y) solid rgba(0,0,0,0.4);
+    outline-offset: calc(-1*var(--y));
+    padding: var(--y) var(--y) 0 var(--y);
+    transition: 1s;
+  }
+
+  .box:hover img {
+    --_a: 0deg;
+    --_c: calc(100% - var(--y));
+  }
+
+  .box {
+    margin-right: 25px;
+    cursor: pointer;
+  }
+
+  h2 {
+    text-align: center;
+    line-height: 42px;
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    font-family: sans-serif;
+    transform: translateY(250%);
+    transition: .8s;
+  }
+  .box:hover h2{
+    transform: translateY(0%);
+    transition: .8s .2s;
+  }
+
+  .sportsGallery {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+  }
+

@@ -12,8 +12,31 @@
       linear-gradient(-45deg, #0000 40%, rgba(0, 0, 0, 0.418) 0 60%, #0000 0) right/300% 100% no-repeat;
     -webkit-background-clip: text, padding-box;
     background-clip: text, padding-box;
-    transition: 1s
+    transition: 1s;
   }
   .inverted-7:hover {
     background-position: left;
   }
+
+  a {
+    text-decoration: none;
+    color: lightpink;
+    font-size: 25px;
+    transition: 400ms all;
+}
+
+span {
+    display: inline-block;
+    color: red;
+}
+
+a:hover {
+    color: blue;
+    font-weight: bold;
+    transition: 400ms all;
+    font-size: 2rem;
+}
+
+span:hover {
+    color: darkred;
+}
