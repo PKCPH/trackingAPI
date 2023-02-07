@@ -25,3 +25,17 @@ public class MatchBackgroundTask
         }
     }
 }
+
+//public async Task ScheduledTaskOfTodaysMatches(IServiceProvider _services)
+//{
+//    using (var scope = _services.CreateScope())
+//    {
+//        var _context =
+//            scope.ServiceProvider
+//                .GetRequiredService<DatabaseContext>();
+//        foreach ()
+//        {
+
+//        }
+//    }
+//}

@@ -9,10 +9,12 @@ public class ImplementBackgroundService : BackgroundService
         _services = services;
     }
 
+    //Task running when IHostedSErvice starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         MatchBackgroundTask matchBackgroundTask = new();
         await matchBackgroundTask.CreateNewMatchesFromAvailableTeams(_services);
 
+        //maybe use PeriodicTimer or Timer for schedules match to be played
     }
 }
