@@ -6,8 +6,13 @@
       <div class="mb-3">
           <h1 class="mb-5">Edit a match</h1>
         <label for="matchState" class="form-label">Game State</label>
-        <!-- One way to bind data to model in Angular  -->
-        <input type="number" class="form-control" id="matchState" formControlName="matchState" [(ngModel)] = "matchDetails.matchState" />
+
+        <select class="form-control" id="matchState" formControlName="matchState" [(ngModel)]= "matchDetails.matchState">
+          <option value="0">Not started yet</option>
+          <option value="1">Playing</option>
+          <option value="2">Finished</option>
+        </select>
+      
       </div>
       
       <button type="submit" class="btn btn-success mt-4">Confirm Changes</button>
