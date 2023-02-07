@@ -15,6 +15,7 @@ public class MatchController : ControllerBase
     /// accessing the database at runtime
     /// </summary>
     private readonly DatabaseContext _context;
+
     public MatchController(DatabaseContext context) => _context = context;
 
     //action method, does as a response of the http request, to get a list of Issue
@@ -43,7 +44,6 @@ public class MatchController : ControllerBase
     //for creating a new issue
     public async Task<IActionResult> Create(TeamPicker teamPicker)
     {
-        //var match = teamPicker.CreateMatch(_context);
         //adding the issue submitted by the request
         await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
         //saving the changes in the DB
@@ -51,40 +51,12 @@ public class MatchController : ControllerBase
         //handles the http request with the id at the end of the url: f.x. api/issue/*Id-Number*
         //so the action responds only to this id in the url
         //ProducesResponseType specifies which kind of status code the return can return
-
-        
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status201Created)]
-        ////for creating a new issue
-        //public async Task<IActionResult> Create(TeamPicker teamPicker)
-        //{
-        //var match = teamPicker.CreateMatch(_context);
-
-        ////returns the response with statuscode and a location in the editor
-        //return CreatedAtAction(nameof(GetById), new { id = match.Id }, match);
-
         return Ok(_context.Matches);
     }
-
-    //[ActionName("CreateAllMatches")]
-    //[HttpPost]
-    //[ProducesResponseType(StatusCodes.Status201Created)]
-    ////for creating a new issue
-    //public async Task<IActionResult> CreateAll(TeamPicker teamPicker)
-    //{
-       
-    //    //adding the issue submitted by the request
-    //    await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
-    //    //saving the changes in the DB
-    //    await _context.SaveChangesAsync();
-    //    return Ok(_context.Matches);
-
-    //}
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //id is cound to the url, issue is bound to the body of the request
     public async Task<IActionResult> Update(Guid id, GameMatch match)
     {
         //if the id of the url and the id in the body does not match, then return

@@ -34,7 +34,7 @@ namespace trackingAPI.Migrations
 
                     b.HasIndex("ParticipatingTeamsId");
 
-                    b.ToTable("GameMatchTeam");
+                    b.ToTable("GameMatchTeam", (string)null);
                 });
 
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
@@ -57,7 +57,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Matches");
+                    b.ToTable("Matches", (string)null);
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
@@ -77,7 +77,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("GameMatchTeam", b =>

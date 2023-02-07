@@ -1,4 +1,7 @@
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using WebApplication3.Services;
@@ -10,13 +13,14 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        //var serviceProvider = builder.Services.BuildServiceProvider();
 
-        //ensures that the class is a hostedService
-        //builder.Services.AddHostedService<MatchBackgroundTasks>();
+        //using (var scope = serviceProvider.CreateScope()) // this will use `IServiceScopeFactory` internally
+        //{
+        //    var context = scope.ServiceProvider.GetService<DatabaseContext>();
+        //}
 
-        //builder.Services.AddSingleton<ImplementBackgroundService>();
-        //builder.Services.AddSingleton<ImplementIHostedService>();
-        builder.Services.AddHostedService<ImplementIHostedService>();
+        //builder.Services.AddHostedService<ImplementIHostedService>();
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
         // Add services to the container.
@@ -33,16 +37,13 @@ public class Program
         builder.Services.AddDbContext<DatabaseContext>(
             o => o.UseSqlServer(
                 builder.Configuration.
-                GetConnectionString("SqlServer")));
-
-
+            GetConnectionString("SqlServer")));
 
         //Ensures that many to many models does not loop into each other lists
         builder.Services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
-
 
 
         var app = builder.Build();
