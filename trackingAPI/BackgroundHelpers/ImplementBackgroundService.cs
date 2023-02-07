@@ -1,6 +1,4 @@
-﻿using trackingAPI.BackgroundHelpers;
-
-namespace WebApplication3.Services;
+﻿namespace trackingAPI.BackgroundHelpers;
 
 public class ImplementBackgroundService : BackgroundService
 {
@@ -15,6 +13,6 @@ public class ImplementBackgroundService : BackgroundService
     {
         MatchBackgroundTask matchBackgroundTask = new();
         matchBackgroundTask.CreateNewMatchesFromAvailableTeams(_services);
-        
+
     }
 }
