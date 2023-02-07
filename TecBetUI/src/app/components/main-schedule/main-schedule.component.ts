@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
 import { Team } from 'src/app/models/teams.model';
+import { interval, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-main-schedule',
@@ -13,6 +14,7 @@ import { Team } from 'src/app/models/teams.model';
 export class MainScheduleComponent {
   matches: Match[] = [];
   errorMessage: string = "";
+  updateSubscription: Subscription;
   
     constructor(private matchesService: MatchesService, private router: Router, 
       private location: Location, 
@@ -28,7 +30,6 @@ export class MainScheduleComponent {
           this.matches = matches.map(match => {
             return {
               ...match,
-              availability: match.matchState ? 'Yes' : 'No'
             }
           });
           console.log(this.matches);
@@ -41,30 +42,20 @@ export class MainScheduleComponent {
           console.log(response);
         }
       });     
-    }
-  
-    deleteMatch(id: string) {
-      this.matchesService.deleteMatch(id)
-      .subscribe({
-        next: (response) => {
-          this.matchesService.getSchedule()
-            .subscribe({
-              next: (matches) => {
-                this.matches = matches.map(match => {
-                  return {
-                    ...match,
-                    availability: match.matchState ? 'Yes' : 'No'
-                  }
-                });
-              },
-              error: (response) => {
-                console.log(response);
-              }
-            });
+
+      this.updateSubscription = interval(500).pipe(
+        switchMap(() => this.matchesService.getSchedule())
+      ).subscribe({
+        next: (matches) => {
+          this.matches = matches;
+        },
+        error: (error) => {
+          // Handle error
         }
       });
-    } 
-  
+    
+    }
+
     Hideloader() {
               // Setting display of spinner
               // element to none
