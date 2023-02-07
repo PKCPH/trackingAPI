@@ -9,7 +9,7 @@ public class TeamPicker
     //Read list of teams and choose random
     public GameMatch CreateMatch(DatabaseContext _context)
     {
-        GameMatch gameMatch = new();
+        GameMatch gameMatch = new(_context);
         Random rnd = new Random();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
@@ -29,6 +29,7 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
             gameMatch.DateOfMatch = DateTime.Now.AddHours(1);
+            Console.WriteLine("teampicker ended");
         }
         else
         {

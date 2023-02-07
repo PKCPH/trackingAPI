@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Models;
-using trackingAPI.Repos;
 
 namespace trackingAPI.Controllers;
 
@@ -43,31 +41,6 @@ public class TeamController : ControllerBase
     //for creating a new issue
     public async Task<IActionResult> Create(Team team)
     {
-        //TeamRepos teamRepos = new();
-
-        //string query = "INSERT INTO @TableName (Name, IsAvailable) " +
-        //                    "VALUES (@Name, @IsAvailable)";
-
-        //SqlConnection con = new SqlConnection(DatabaseInit.ConnectionString);
-        //SqlCommand cmd = new SqlCommand(query, con);
-
-        //cmd.Parameters.AddWithValue("@Name", team.Name);
-        //cmd.Parameters.AddWithValue("@Is", team.IsAvailable);
-        //try
-        //{
-        //    con.Open();
-        //    cmd.ExecuteNonQuery();
-        //    Console.WriteLine("Table Created Successfully");
-        //}
-        //catch (SqlException e)
-        //{
-        //    Console.WriteLine("Error Generated. Details: " + e.ToString());
-        //}
-        //finally
-        //{
-        //    con.Close();
-        //    Console.ReadKey();
-        //}
 
         //adding the issue submitted by the request
         await _context.Teams.AddAsync(team);

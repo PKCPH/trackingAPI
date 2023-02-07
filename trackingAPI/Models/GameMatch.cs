@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using trackingAPI.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace trackingAPI.Models;
 
 public class GameMatch
 {
-    public GameMatch()
+    public GameMatch(DatabaseContext databaseContext)
     {
         this.ParticipatingTeams = new HashSet<MatchTeam>();
     }
