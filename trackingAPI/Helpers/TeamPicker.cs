@@ -28,7 +28,7 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamA);
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
-            gameMatch.DateOfMatch = DateTime.Now.AddHours(1);
+            gameMatch.DateOfMatch = DateTime.Now.AddMinutes(5);
             Console.WriteLine("teampicker ended");
         }
         else

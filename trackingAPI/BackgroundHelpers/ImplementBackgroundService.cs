@@ -12,7 +12,7 @@ public class ImplementBackgroundService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         MatchBackgroundTask matchBackgroundTask = new();
-        matchBackgroundTask.CreateNewMatchesFromAvailableTeams(_services);
+        await matchBackgroundTask.CreateNewMatchesFromAvailableTeams(_services);
 
     }
 }
