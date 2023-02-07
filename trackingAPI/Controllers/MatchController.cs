@@ -53,11 +53,11 @@ public class MatchController : ControllerBase
         //ProducesResponseType specifies which kind of status code the return can return
 
         
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        //for creating a new issue
-        public async Task<IActionResult> Create(TeamPicker teamPicker)
-        {
+        //[HttpPost]
+        //[ProducesResponseType(StatusCodes.Status201Created)]
+        ////for creating a new issue
+        //public async Task<IActionResult> Create(TeamPicker teamPicker)
+        //{
         //var match = teamPicker.CreateMatch(_context);
 
         ////returns the response with statuscode and a location in the editor
