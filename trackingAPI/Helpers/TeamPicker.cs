@@ -28,15 +28,13 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamA);
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
-            gameMatch.DateOfMatch = DateTime.Now.AddMinutes(5);
+            gameMatch.DateOfMatch = DateTime.Now.AddMinutes(1);
             Console.WriteLine("teampicker ended");
         }
         else
         {
             throw new Exception("Could not find enough available teams");
         }
-
-        
         return gameMatch;
     }
 }

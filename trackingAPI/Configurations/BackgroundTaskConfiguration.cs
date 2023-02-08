@@ -2,6 +2,6 @@
 {
     public static class BackgroundTaskConfiguration
     {
-        public static bool IsEnabled { get; set; } = false;
+        public static bool IsEnabled { get; set; } = true;
     }
 }

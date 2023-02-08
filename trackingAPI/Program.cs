@@ -13,19 +13,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        //var serviceProvider = builder.Services.BuildServiceProvider();
-
-        //using (var scope = serviceProvider.CreateScope()) // this will use `IServiceScopeFactory` internally
-        //{
-        //    var context = scope.ServiceProvider.GetService<DatabaseContext>();
-        //}
-
-        //builder.Services.AddHostedService<ImplementIHostedService>();
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
-        // Add services to the container.
-
-        //builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
