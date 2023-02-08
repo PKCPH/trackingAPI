@@ -1,6 +1,8 @@
-﻿using trackingAPI.Controllers;
+﻿using trackingAPI.Configurations;
+using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
+using trackingAPI.Models;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -13,18 +15,23 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
+            while (
+                _context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
-                MatchController testControllerAPI = new(_context);
+                MatchController matchController = new(_context);
                 TeamPicker teamPicker = new();
-                await testControllerAPI.Create(teamPicker);
+                await matchController.Create(teamPicker);
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"Number of teams that a available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
                 await Task.Delay(5000);
             }
         }
     }
-}
+
+    //public async Task<GameMatch> ScheduleListOfMatches()
+    //{
+           
+    //}
 
 //public async Task ScheduledTaskOfTodaysMatches(IServiceProvider _services)
 //{
@@ -38,4 +45,4 @@ public class MatchBackgroundTask
 
 //        }
 //    }
-//}
+}
