@@ -10,7 +10,7 @@ import { CustomErrorHandlerService } from './custom-error-handler.service';
 })
 export class MatchesService {
 
-  baseApiUrl: string = 'https://localhost:7142';
+  baseApiUrl: string = 'https://localhost:5001';
   isLoading: boolean = false;
 
   constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {
