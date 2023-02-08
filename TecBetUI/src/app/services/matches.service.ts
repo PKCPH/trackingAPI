@@ -22,9 +22,7 @@ export class MatchesService {
 
    getAllMatches(): Observable<Match[]> {
     this.isLoading = true;
-    return timer(500).pipe(
-      switchMap(() => 
-        this.http.get<Match[]>(this.baseApiUrl + '/api/Match')
+        return this.http.get<Match[]>(this.baseApiUrl + '/api/Match')
           .pipe(
             catchError(error => {
               console.error(error);
@@ -34,28 +32,21 @@ export class MatchesService {
               this.customErrorHandlerService.handleError(error);
               return of([]);
             })
-          )
-      )
-    );
+          );
   }
 
   getSchedule(): Observable<Match[]> {
     this.isLoading = true;
-    return timer(500).pipe(
-      switchMap(() => 
-        this.http.get<Match[]>(this.baseApiUrl + '/api/Matches')
-          .pipe(
-            catchError(error => {
-              console.error(error);
-              // this.errorSubject.next(error.message);
-              this.errorSubject.next(this.customErrorHandlerService.handleError(error));
-              this.isLoading = false;
-              this.customErrorHandlerService.handleError(error);
-              return of([]);
-            })
-          )
-      )
-    );
+    return this.http.get<Match[]>(this.baseApiUrl + '/api/Matches')
+      .pipe(
+        catchError(error => {
+          console.error(error);
+          this.errorSubject.next(this.customErrorHandlerService.handleError(error));
+          this.isLoading = false;
+          this.customErrorHandlerService.handleError(error);
+          return of([]);
+        })
+      );
   }
 
   addMatch(addMatchRequest: Match): Observable<Match> {
