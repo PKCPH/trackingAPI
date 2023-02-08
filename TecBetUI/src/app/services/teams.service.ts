@@ -22,9 +22,7 @@ export class TeamsService {
 
    getAllTeams(): Observable<Team[]> {
     this.isLoading = true;
-    return timer(500).pipe(
-      switchMap(() => 
-        this.http.get<Team[]>(this.baseApiUrl + '/api/Team')
+    return this.http.get<Team[]>(this.baseApiUrl + '/api/Team')
           .pipe(
             catchError(error => {
               console.error(error);
@@ -35,8 +33,6 @@ export class TeamsService {
               return of([]);
             })
           )
-      )
-    );
   }
 
   addTeam(addTeamRequest: Team): Observable<Team> {

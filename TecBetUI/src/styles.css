@@ -23,11 +23,11 @@ html {
 }
    
 ::-webkit-scrollbar {
-    width: 5px; 
+    width: 3px; 
 }
    
 ::-webkit-scrollbar-track {
-     background: rgba(0,0,0,0.1);
+     background: rgba(0,0,0,0.8);
 }
 ::-webkit-scrollbar-thumb {
      background: rgba(0,0,0,0.9);
@@ -47,6 +47,16 @@ form {
  text-align: center;
  transition: all 400ms ease;
 }
+
+.errorMsg {
+    animation: blinker 0.9s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }
 
 .section1 {
  padding-top: 120px;

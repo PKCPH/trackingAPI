@@ -5,11 +5,7 @@
   
     <!-- spinnner element is 
         defined with id loading -->
-        <div class="d-flex justify-content-center">
-            <div class="" role="status">
-                <span class="sr-only" id="loading"></span>
-            </div>
-        </div>
+        <div id="loading"></div>
       
     <!-- data from API is displayed  -->
     
@@ -17,7 +13,7 @@
         <h1 class="mb-3">Schedule of Matches</h1>
 
         <!-- <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddMatch()" id="addbutton">Create a Match</button> -->
-        <table class="table tabletext" *ngIf="matches && matches.length > 0">
+        <table class="table tabletext" *ngIf="games && games.length > 0">
             <thead>
                 <tr>
                     <th>Match Date</th>
@@ -28,18 +24,20 @@
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let match of matches">  
-                <td>{{ match.dateOfMatch | date: 'dd/MM/yyyy hh:mm' }}</td>
+            <tr class="tablerow" *ngFor="let game of games">  
+                <td>{{ game.dateOfMatch | date: 'dd/MM/yyyy hh:mm' }}</td>
                 <!-- <td *ngFor="let teams of match.participatingTeams">{{teams.team.name}} </td> -->
-                <td>{{match.participatingTeams[0].team.name}} vs {{match.participatingTeams[1].team.name}}</td>
+                <td>{{game.participatingTeams[0].team.name}} vs {{game.participatingTeams[1].team.name}}</td>
 
-                <td>{{match.teamAScore}} - {{match.teamBScore}}</td>
+                <td>{{game.teamAScore}} - {{game.teamBScore}}</td>
     
-                <td *ngIf="match.matchState == 0">Not Started Yet</td>
-                <td *ngIf="match.matchState == 1">Playing</td>
-                <td *ngIf="match.matchState == 2">Finished</td>
-                <td><a [routerLink]="['/matches', 'edit', match.id]"><button class="btn btn-danger">Bet on Match</button></a>  
-            </tr> 
+                <td *ngIf="game.matchState == 0">Not Started Yet</td>
+                <td *ngIf="game.matchState == 1">Playing</td>
+                <td *ngIf="game.matchState == 2">Finished</td>
+                
+                <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>  
+                <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
+                </tr> 
         </table>  
     
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">

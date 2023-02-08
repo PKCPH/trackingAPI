@@ -7,30 +7,17 @@
     border-spacing: 0 2em;
   }
    
-   #loading {
-     position: absolute;
-     left: 50%;
-     top: 50%;
-     z-index: 1;
-     width: 150px;
-     height: 150px;
-     margin: -75px 0 0 -75px;
-     border: 16px solid red;
-     border-radius: 50%;
-     border-top: 16px solid maroon;
-     width: 120px;
-     height: 120px;
-     animation: spin 0.5s linear infinite;
+  #loading {
+    background-image: url('src/images/spinner.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+    position: absolute;
+    left: 37%;
+    top: 10%;
+    z-index: 1;
+    width: 500px;
+    height: 500px;
    }
-   
-   @keyframes spin {
-       0% {
-           transform: rotate(0deg);
-       }
-       100% {
-           transform: rotate(360deg);
-       }
-       }
    
    #schedulecontainer {
     display: none;

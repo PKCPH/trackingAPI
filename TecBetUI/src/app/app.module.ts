@@ -15,7 +15,6 @@ import { AddMatchComponent } from './components/main-matches/add-match/add-match
 import { EditMatchComponent } from './components/main-matches/edit-match/edit-match.component';
 import { MainScheduleComponent } from './components/main-schedule/main-schedule.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
