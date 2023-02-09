@@ -1,12 +1,18 @@
 ﻿namespace trackingAPI.Helpers
 {
-    public static class DateTimePicker
+    public class DateTimePicker
     {
+        //private Random gen = new Random();
+        //public DateTime RandomTime()
+        //{
+        //    DateTime start = new DateTime(,);
+        //    int range = (DateTime.Today - start).Days;
+        //    return start.AddDays(gen.Next(range));
+        //}
+
         //public DateTime CreateDateTimeForMatch()
         //{
         //    var dateOfMatch = DateOnly.FromDateTime(DateTime.Now);
-
-
         //    Random random = new Random();
         //    TimeSpan start = TimeSpan.FromHours(7);
         //    TimeSpan end = TimeSpan.FromHours(11);
@@ -19,8 +25,6 @@
         //        // Do something with t...
         //        t.
         //    }
-
-
         //}
     }
 }

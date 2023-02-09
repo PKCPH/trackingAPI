@@ -24,8 +24,6 @@ public class ImplementBackgroundService : BackgroundService
             MatchBackgroundTask matchBackgroundTask = new(_services);
             await matchBackgroundTask.CreateNewMatchesFromAvailableTeams();
             await matchBackgroundTask.FindAndPlayMatches(stoppingToken, _timer);
-            
-            //await Task.Delay(5000);
         }
         //maybe use PeriodicTimer or Timer for schedules match to be played
     }

@@ -44,20 +44,11 @@ public class MatchBackgroundTask
         var matchTeams = ListOfMatchTeams();
 
         DateTime now = DateTime.Now;
-        Console.WriteLine("FindAndPlayMatches");
         //// If now has past the schedule time of the match  
         if (now > firstMatch.DateOfMatch)
         {
             TriggerScheduledMatches(firstMatch, matchTeams);
         }
-
-        //int msUntilMatchStarts = (int)((TimeOfMatch - now).TotalMilliseconds);
-
-        //// Set the timer to elapse only once, at 4:00.
-        ////t.change(msUntilMatchStarts, Timeout.Infinite);
-
-
-
     }
 
     public List<MatchTeam> ListOfMatchTeams()
@@ -74,9 +65,6 @@ public class MatchBackgroundTask
                 matchTeams.Add(item);
             }
         }
-        //var gameMatchesSortByOrder = matchTeams.OrderBy(x => x.DateOfMatch);
-
-        Console.WriteLine("ScheduledTaskOfTodaysMatches");
         return matchTeams.ToList();
     }
 
@@ -96,7 +84,6 @@ public class MatchBackgroundTask
         }
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
 
-        Console.WriteLine("ScheduledTaskOfTodaysMatches");
         return gameMatchesSortByOrder;
     }
 
@@ -109,20 +96,23 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+
+            var matchTeams = ListOfMatchTeams();
+
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
                 item.TeamAScore = random.Next(0, 3);
                 item.TeamBScore = random.Next(0, 3);
-                
-            }
-            //sets IsAvaible back to true, but should be specific...
-            foreach(var item in _context.Teams.Where(x => x.IsAvailable == false))
-            {
-                item.IsAvailable = true;
+                item.MatchState = MatchState.Finished;
             }
 
+            //foreach matchTeams where MatchId is matching the selected gameMatch.Id
+            foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
+            {
+                //foreach team.id that is matching with matchTeams.teamId
+                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
+            }
             _context.SaveChanges();
         }
-        Console.WriteLine("TriggerScheduledMatches");
     }
 }
