@@ -42,7 +42,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Matches", (string)null);
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -82,7 +82,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
