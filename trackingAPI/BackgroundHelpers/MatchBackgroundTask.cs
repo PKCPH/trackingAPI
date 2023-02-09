@@ -30,23 +30,25 @@ public class MatchBackgroundTask
                 TeamPicker teamPicker = new();
                 await matchController.Create(teamPicker);
                 await _context.SaveChangesAsync();
-                //Console.WriteLine($"Number of teams that are available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
             }
         }
     }
 
-    public async Task FindAndPlayMatches(CancellationToken stoppingToken, PeriodicTimer timer)
+    public async Task FindAndPlayMatches()
     {
-        var gameMatches = ScheduledTaskOfTodaysMatches().OrderBy(x => x.DateOfMatch);
-        var firstMatch = gameMatches.First();
-
         DateTime now = DateTime.Now;
-        //// If now has past the schedule time of the match  
-        if (now > firstMatch.DateOfMatch)
+        //while any matches has passed the datetime.now
+        while (ScheduledTaskOfTodaysMatches().Any(x => x.DateOfMatch < now))
         {
-            TriggerScheduledMatches(firstMatch);
+            var firstGameMatch = ScheduledTaskOfTodaysMatches().OrderBy(x => x.DateOfMatch).First();
+            // while now has past the schedule time of the match  
+            if (now > firstGameMatch.DateOfMatch)
+            {
+                TriggerScheduledMatches(firstGameMatch);
+            }
         }
     }
+
     public IOrderedEnumerable<GameMatch> ScheduledTaskOfTodaysMatches()
     {
         List<GameMatch> gameMatches = new List<GameMatch>();

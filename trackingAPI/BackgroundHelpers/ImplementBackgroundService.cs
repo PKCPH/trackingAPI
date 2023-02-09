@@ -32,7 +32,7 @@ public class ImplementBackgroundService : BackgroundService
                 //so teams wont be matched with the same opponent
                 if (await _context.Matches.AnyAsync(x => x.MatchState == MatchState.NotStarted))
                 {
-                    await matchBackgroundTask.FindAndPlayMatches(stoppingToken, _timer);
+                    await matchBackgroundTask.FindAndPlayMatches();
                 }
                 else
                 {
