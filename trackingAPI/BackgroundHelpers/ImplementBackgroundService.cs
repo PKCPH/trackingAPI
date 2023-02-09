@@ -9,7 +9,7 @@ public class ImplementBackgroundService : BackgroundService
 {
     private readonly IServiceProvider _services;
     //parameter is how often the Timer ticks (set to once every second)
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(1000));
+    private readonly PeriodicTimer _timer = new(BackgroundTaskConfiguration.BackgroundTaskTimerTickTimespan);
 
     public ImplementBackgroundService(IServiceProvider services)
     {
@@ -19,15 +19,14 @@ public class ImplementBackgroundService : BackgroundService
     //Task running when IHostedSErvice starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            while (await _timer.WaitForNextTickAsync(stoppingToken)
-                    && !stoppingToken.IsCancellationRequested)
+            do
             {
+                Console.WriteLine("dodododo");
                 MatchBackgroundTask matchBackgroundTask = new(_services);
                 //if loop to check if all matches has been played before creating new matches,
                 //so teams wont be matched with the same opponent
@@ -39,8 +38,8 @@ public class ImplementBackgroundService : BackgroundService
                 {
                     await matchBackgroundTask.CreateNewMatchesFromAvailableTeams();
                 }
-            }
+            } while (await _timer.WaitForNextTickAsync(stoppingToken)
+                    && !stoppingToken.IsCancellationRequested);
         }
-        //maybe use PeriodicTimer or Timer for schedules match to be played
     }
 }

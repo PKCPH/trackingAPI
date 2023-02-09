@@ -10,7 +10,6 @@ using trackingAPI.Models;
 namespace trackingAPI.BackgroundHelpers;
 
 public class MatchBackgroundTask
-
 {
     private readonly IServiceProvider _services;
     public MatchBackgroundTask(IServiceProvider services)
@@ -31,8 +30,7 @@ public class MatchBackgroundTask
                 TeamPicker teamPicker = new();
                 await matchController.Create(teamPicker);
                 await _context.SaveChangesAsync();
-                Console.WriteLine($"Number of teams that are available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
-                //await Task.Delay(5000);
+                //Console.WriteLine($"Number of teams that are available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
             }
         }
     }
@@ -41,33 +39,14 @@ public class MatchBackgroundTask
     {
         var gameMatches = ScheduledTaskOfTodaysMatches().OrderBy(x => x.DateOfMatch);
         var firstMatch = gameMatches.First();
-        var matchTeams = ListOfMatchTeams();
 
         DateTime now = DateTime.Now;
         //// If now has past the schedule time of the match  
         if (now > firstMatch.DateOfMatch)
         {
-            TriggerScheduledMatches(firstMatch, matchTeams);
+            TriggerScheduledMatches(firstMatch);
         }
     }
-
-    public List<MatchTeam> ListOfMatchTeams()
-    {
-        List<MatchTeam> matchTeams = new List<MatchTeam>();
-
-        using (var scope = _services.CreateScope())
-        {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-            foreach (var item in _context.MatchTeams)
-            {
-                matchTeams.Add(item);
-            }
-        }
-        return matchTeams.ToList();
-    }
-
     public IOrderedEnumerable<GameMatch> ScheduledTaskOfTodaysMatches()
     {
         List<GameMatch> gameMatches = new List<GameMatch>();
@@ -87,17 +66,16 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public void TriggerScheduledMatches(GameMatch gameMatch, List<MatchTeam> matchTeam)
+    public void TriggerScheduledMatches(GameMatch gameMatch)
     {
         Random random = new Random();
+        List<MatchTeam> matchTeams = new List<MatchTeam>();
 
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-
-            var matchTeams = ListOfMatchTeams();
 
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
@@ -106,6 +84,10 @@ public class MatchBackgroundTask
                 item.MatchState = MatchState.Finished;
             }
 
+            foreach (var item in _context.MatchTeams)
+            {
+                matchTeams.Add(item);
+            }
             //foreach matchTeams where MatchId is matching the selected gameMatch.Id
             foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
             {

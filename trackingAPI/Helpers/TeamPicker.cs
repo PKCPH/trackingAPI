@@ -29,7 +29,7 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
             gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-            Console.WriteLine($"MATCH CREATED: {matchTeamA} VS. {matchTeamB}");
+            Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
         }
         else
         {

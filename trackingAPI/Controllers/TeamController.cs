@@ -52,15 +52,6 @@ public class TeamController : ControllerBase
         //returns the response with statuscode and a location in the editor
         return CreatedAtAction(nameof(GetById), new { id = team.Id }, team);
     }
-    //[HttpPost]
-
-    //public async Task<IActionResult> InsertTeam([FromBody] Team teamUserValues)
-    //{
-    //    await _context.Teams.AddAsync(teamUserValues);
-    //    await _context.SaveChangesAsync();
-
-    //    return Ok(teamUserValues);
-    //}
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
