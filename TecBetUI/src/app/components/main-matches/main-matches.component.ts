@@ -43,9 +43,8 @@ export class MainMatchesComponent implements OnDestroy {
               this.errorMessage = error;
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
 
-              if (matches.length > 0)
+              if (this.errorMessage === '')
               {
-                this.errorMessage = "";
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });

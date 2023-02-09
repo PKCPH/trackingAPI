@@ -12,7 +12,7 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   invalidLogin: boolean = false;
-  credentials: LoginModel = {username:'', password:''};
+  credentials: LoginModel = {username:'', password:'', role: ''};
 
   constructor(private router: Router, private http: HttpClient) { }
   
@@ -28,7 +28,9 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (response: AuthenticatedResponse) => {
           const token = response.token;
+          const refreshToken = response.refreshToken;
           localStorage.setItem("jwt", token); 
+          localStorage.setItem("refreshToken", refreshToken);
           this.invalidLogin = false; 
           this.router.navigate(["/"]);
         },

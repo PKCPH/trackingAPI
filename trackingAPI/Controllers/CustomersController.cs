@@ -7,7 +7,7 @@ namespace trackingAPI.Controllers
     [ApiController]
     public class CustomersController : Controller
     {
-        [HttpGet, Authorize]
+        [HttpGet, Authorize(Roles = "Admin")]
         public IEnumerable<string> Get()
         {
             return new string[] { "John Doe", "Jane Doe" };

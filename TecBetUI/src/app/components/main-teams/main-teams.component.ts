@@ -43,17 +43,14 @@ export class MainTeamsComponent implements OnDestroy {
             this.teamsService.errorMessage.subscribe(error => {
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
               this.errorMessage = error;
-              
-              if (teams.length > 0)
+                           
+              if (this.errorMessage === '')
               {
-                this.errorMessage = "";
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });
           },
-          error: (response) => {
-            console.log(response);
-          }
+
         });   
   
     }

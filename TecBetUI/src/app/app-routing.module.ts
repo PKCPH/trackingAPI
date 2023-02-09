@@ -8,6 +8,9 @@ import { MainScheduleComponent } from './components/main-schedule/main-schedule.
 import { AddTeamComponent } from './components/main-teams/add-team/add-team.component';
 import { EditTeamComponent } from './components/main-teams/edit-team/edit-team.component';
 import { MainTeamsComponent } from './components/main-teams/main-teams.component';
+import { LoginComponent } from './components/main-login/login/login.component';
+import { AuthguardService } from './services/authguard.service';
+import { CustomersComponent } from './components/customers/customers.component';
 
 const routes: Routes = [
   {
@@ -41,6 +44,15 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: MainScheduleComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'customers',
+    component: CustomersComponent,
+    canActivate: [AuthguardService]
   }
 ];
 

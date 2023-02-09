@@ -14,9 +14,13 @@ public class DatabaseContext : DbContext
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<GameMatch> Matches { get; set; }
     public DbSet<Team> Teams { get; set; }
+    public DbSet<Login> Logins { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Login>()
+             .Property(t => t.Role)
+            .HasDefaultValue("User");
         //Default value for IsAvailable = true
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)

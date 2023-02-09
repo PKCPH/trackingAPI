@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, of, switchMap, timer } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { Match } from '../models/matches.model';
 import { ParticipatingTeam } from '../models/schedule.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
@@ -24,12 +24,14 @@ export class MatchesService {
     this.isLoading = true;
         return this.http.get<Match[]>(this.baseApiUrl + '/api/Match')
           .pipe(
+            tap(matches => {
+              this.errorSubject.next('');
+            }),
             catchError(error => {
               console.error(error);
               // this.errorSubject.next(error.message);
               this.errorSubject.next(this.customErrorHandlerService.handleError(error));
               this.isLoading = false;
-              this.customErrorHandlerService.handleError(error);
               return of([]);
             })
           );
@@ -39,6 +41,9 @@ export class MatchesService {
     this.isLoading = true;
     return this.http.get<Match[]>(this.baseApiUrl + '/api/Matches')
       .pipe(
+        tap(schedule => {
+          this.errorSubject.next('');
+        }),
         catchError(error => {
           console.error(error);
           this.errorSubject.next(this.customErrorHandlerService.handleError(error));

@@ -16,7 +16,8 @@ import { EditMatchComponent } from './components/main-matches/edit-match/edit-ma
 import { MainScheduleComponent } from './components/main-schedule/main-schedule.component';
 import { LoginComponent } from './components/main-login/login/login.component';
 import { JwtModule } from "@auth0/angular-jwt";
-import { AuthguardComponent } from './components/main-login/authguard/authguard.component';
+import { CustomersComponent } from './components/customers/customers.component';
+import { AuthguardService } from './services/authguard.service';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -35,7 +36,7 @@ export function tokenGetter() {
     EditMatchComponent,
     MainScheduleComponent,
     LoginComponent,
-    AuthguardComponent
+    CustomersComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +53,7 @@ export function tokenGetter() {
     })
   ],
   providers: [
-    { provide: ErrorHandler, useClass: CustomErrorHandlerService }
+    { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
   ],
   bootstrap: [AppComponent]
 })

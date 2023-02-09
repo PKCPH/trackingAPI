@@ -1,35 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using System.Collections.Generic;
+using trackingAPI.Data;
+using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
 {
-    [HttpPost("login")]
-    public IActionResult Login([FromBody] Login user)
+    private readonly DatabaseContext _context;
+    private readonly ITokenService _tokenService;
+    public AuthController(DatabaseContext context, ITokenService tokenService)
     {
-        if (user is null)
+        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
+    }
+    [HttpPost, Route("login")]
+    public IActionResult Login([FromBody] Login login)
+    {
+        if (login is null)
         {
             return BadRequest("Invalid client request");
         }
-        if (user.UserName == "johndoe" && user.Password == "def@123")
+        var user = _context.Logins.FirstOrDefault(u =>
+            (u.UserName == login.UserName) && (u.Password == login.Password));
+        if (user is null)
+            return Unauthorized();
+        var claims = new List<Claim>
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokeOptions = new JwtSecurityToken(
-                issuer: "https://localhost:5001",
-                audience: "https://localhost:5001",
-                claims: new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials: signinCredentials
-            );
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return Ok(new AuthenticatedResponse { Token = tokenString });
+            new Claim(ClaimTypes.Name, login.UserName),
+        };
+        if (user.Role == "Admin")
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
         }
-        return Unauthorized();
+        else
+        {
+            claims.Add(new Claim(ClaimTypes.Role, "User"));
+        }
+        var accessToken = _tokenService.GenerateAccessToken(claims);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+        user.RefreshToken = refreshToken;
+        user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+        _context.SaveChanges();
+        return Ok(new AuthenticatedResponse
+        {
+            Token = accessToken,
+            RefreshToken = refreshToken
+        });
+    }
+
+    [HttpPost, Route("register")]
+    public async Task<IActionResult> Create(Login login)
+    {
+        login.Role = "User";
+
+        //adding the issue submitted by the request
+        await _context.Logins.AddAsync(login);
+
+        //saving the changes in the DB
+        await _context.SaveChangesAsync();
+
+        //returns the response with statuscode and a location in the editor
+        return Ok(login);
     }
 }

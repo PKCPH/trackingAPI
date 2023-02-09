@@ -16,7 +16,12 @@
           <li class="nav-item">
             <a class="nav-text " href="#section2">Betting</a>
           </li>
-        </ul>  
+          <li><a class="nav-text" routerLink="/customers">SikritStuf</a></li> 
+        </ul> 
+        <ul class="navbar-nav">
+        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
+        <li *ngIf="isUserAuthenticated()"><a class="nav-text" (click)="logOut()">Logout</a></li>
+      </ul>
     </div>
   </nav>
   

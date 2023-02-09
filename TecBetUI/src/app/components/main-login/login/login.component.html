@@ -1,8 +1,8 @@
-<p>login works!</p>
+<div class="section1">
 <div class="container">
     <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
       <h2 class="form-signin-heading">Login</h2>
-        <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
+        <div *ngIf="invalidLogin" class="alert">Invalid username or password.</div>
         <br/>
         <label for="username" class="sr-only">Email address</label>
         <input type="email" id="username" name="username" [(ngModel)]="credentials.username" 
@@ -15,3 +15,4 @@
         <button class="btn btn-lg btn-primary" type="submit" [disabled]="!loginForm.valid">Log in</button>
     </form>
   </div>
+</div>

@@ -52,6 +52,9 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        //JWT Token service
+        builder.Services.AddTransient<ITokenService, TokenService>();
+
         //For anuglar app to consume the api (also with app.UseCors())
         builder.Services.AddCors();
 

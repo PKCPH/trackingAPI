@@ -1,8 +1,8 @@
 ﻿namespace trackingAPI.Models
 {
-    public class AuthenticatedResponse
+    public class TokenApiModel
     {
-        public string? Token { get; set; }
+        public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }
     }
 }
