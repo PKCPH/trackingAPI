@@ -4,6 +4,6 @@
     {
         public static bool IsEnabled { get; set; } = true;
 
-        //public static TimeSpan RandomMatchTimeTimeSpan { get; set; } = 5
+        public static int RandomMatchTimeTimeSpanInHours { get; set; } = 4;
     }
 }

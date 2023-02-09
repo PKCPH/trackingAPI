@@ -28,8 +28,8 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamA);
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
-            gameMatch.DateOfMatch = DateTime.Now.AddMinutes(1);
-            Console.WriteLine("teampicker ended");
+            gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
+            Console.WriteLine($"MATCH CREATED: {matchTeamA} VS. {matchTeamB}");
         }
         else
         {

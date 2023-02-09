@@ -32,7 +32,7 @@ public class MatchBackgroundTask
                 await matchController.Create(teamPicker);
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"Number of teams that are available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
-                await Task.Delay(5000);
+                //await Task.Delay(5000);
             }
         }
     }

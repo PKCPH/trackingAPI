@@ -1,30 +1,19 @@
-﻿namespace trackingAPI.Helpers
+﻿using Newtonsoft.Json;
+
+namespace trackingAPI.Helpers
 {
-    public class DateTimePicker
+    public static class DateTimePicker
     {
-        //private Random gen = new Random();
-        //public DateTime RandomTime()
-        //{
-        //    DateTime start = new DateTime(,);
-        //    int range = (DateTime.Today - start).Days;
-        //    return start.AddDays(gen.Next(range));
-        //}
+        public static DateTime CreateRandomMatchTime()
+        {
+            var rnd = new Random();//Fixed seed, just termporarily
+            var minutes = rnd.Next(0, 6 * 60);
+            var timeOfDayHours = TimeSpan.FromHours(14);
+            timeOfDayHours += TimeSpan.FromMinutes(minutes);
 
-        //public DateTime CreateDateTimeForMatch()
-        //{
-        //    var dateOfMatch = DateOnly.FromDateTime(DateTime.Now);
-        //    Random random = new Random();
-        //    TimeSpan start = TimeSpan.FromHours(7);
-        //    TimeSpan end = TimeSpan.FromHours(11);
-        //    int maxMinutes = (int)((end - start).TotalMinutes);
+            var dt = DateTime.Today + timeOfDayHours;
 
-        //    for (int i = 0; i < 100; ++i)
-        //    {
-        //        int minutes = random.Next(maxMinutes);
-        //        TimeSpan t = start.Add(TimeSpan.FromMinutes(minutes));
-        //        // Do something with t...
-        //        t.
-        //    }
-        //}
+            return dt;
+        }
     }
 }
