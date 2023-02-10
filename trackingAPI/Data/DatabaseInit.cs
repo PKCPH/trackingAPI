@@ -6,7 +6,7 @@ public static class DatabaseInit
 {
     public const string ConnectionString =
         @"Data Source=192.168.21.7, 1433;
-            Initial Catalog=LivescoreDB;
+            Initial Catalog=PatrickDB;
             User ID=Admin;
             Password=Tec420";
 }
