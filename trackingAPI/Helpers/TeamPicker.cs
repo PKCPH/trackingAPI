@@ -6,7 +6,7 @@ namespace trackingAPI.Helpers;
 
 public class TeamPicker
 {
-    //Read list of teams and choose random
+    //Read list of teams and choose two random team to be put in ParticipatingTeams
     public GameMatch CreateMatch(DatabaseContext _context)
     {
         GameMatch gameMatch = new(_context);

@@ -16,7 +16,7 @@ public class MatchBackgroundTask
     {
         _services = services;
     }
-    public async Task CreateNewMatchesFromAvailableTeams()
+    public async Task CreateNewMatchesOfAvailableTeams()
     {
         using (var scope = _services.CreateScope())
         {
@@ -30,24 +30,26 @@ public class MatchBackgroundTask
                 TeamPicker teamPicker = new();
                 await matchController.Create(teamPicker);
                 await _context.SaveChangesAsync();
-                //Console.WriteLine($"Number of teams that are available: {_context.Teams.Count(x => (bool)x.IsAvailable)}");
             }
         }
     }
 
-    public async Task FindAndPlayMatches(CancellationToken stoppingToken, PeriodicTimer timer)
+    public async Task FindAndPlayMatches()
     {
-        var gameMatches = ScheduledTaskOfTodaysMatches().OrderBy(x => x.DateOfMatch);
-        var firstMatch = gameMatches.First();
-
         DateTime now = DateTime.Now;
-        //// If now has past the schedule time of the match  
-        if (now > firstMatch.DateOfMatch)
+        //while any matches has passed the datetime.now
+        while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
         {
-            TriggerScheduledMatches(firstMatch);
+            var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
+            // while now has past the schedule time of the match  
+            if (now > firstGameMatch.DateOfMatch)
+            {
+                PlayGameMatch(firstGameMatch);
+            }
         }
     }
-    public IOrderedEnumerable<GameMatch> ScheduledTaskOfTodaysMatches()
+
+    public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
     {
         List<GameMatch> gameMatches = new List<GameMatch>();
 
@@ -66,7 +68,7 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public void TriggerScheduledMatches(GameMatch gameMatch)
+    public void PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
