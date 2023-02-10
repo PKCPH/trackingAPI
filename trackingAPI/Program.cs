@@ -44,12 +44,10 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        ///Data Source="192.168.21.7, 1433";Initial Catalog=PatrickDB;User ID=Admin;Password=*********** 
 
         app.UseHttpsRedirection();
 
         app.UseAuthorization();
-
 
         app.MapControllers();
 

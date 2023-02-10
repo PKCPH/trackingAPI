@@ -9,12 +9,14 @@ namespace trackingAPI.Helpers
         {
             var rnd = new Random();
             //Timespan of the random scheduled time 
-            var minutes = rnd.Next(0, BackgroundTaskConfiguration.RandomMatchScheduleTimeSpanInHours * 60);
+            var minutes = rnd.Next(0, BackgroundTaskConfiguration.ScheduledTimeSpanInMinutes);
             //when the match starts the earliest on a given day
-            var timeOfDayHours = TimeSpan.FromHours(BackgroundTaskConfiguration.StartOfMatchTimeOfDay);
+            var timeOfDayHours = TimeSpan.FromHours(BackgroundTaskConfiguration.StartHourOfScheduledTimeSpan);
             timeOfDayHours += TimeSpan.FromMinutes(minutes);
 
-            var dt = DateTime.Today + timeOfDayHours;
+            var dt2 = BackgroundTaskConfiguration.DateTimeStartingPoint + timeOfDayHours;
+
+            var dt = DateTime.Now + timeOfDayHours;
 
             return dt;
         }

@@ -4,9 +4,16 @@ public static class BackgroundTaskConfiguration
 {
     public static bool IsEnabled { get; set; } = true;
 
-    public static int StartOfMatchTimeOfDay { get; set; } = 13;
+    //The timespan in hours of the random scheduled time of a match //use x*60 for hours
+    public static int ScheduledTimeSpanInMinutes { get; set; } = 5;
+    
+    //Determine the earliest time of the day for the ScheduledTimeSpanInHours
+    public static int StartHourOfScheduledTimeSpan { get; set; } = 0;
 
-    public static int RandomMatchScheduleTimeSpanInHours { get; set; } = 1;
+    //Datetime of which day the match is playing at (for now the same day as created)
+    //using DateTime.Now for testing, but use DateTime.Today when not testing
+    public static DateTime DateTimeStartingPoint { get; set; } = DateTime.Now;
 
-    public static TimeSpan BackgroundTaskTimerTickTimespan { get; set; } = TimeSpan.FromSeconds(60);
+    //How often the backgroundtask is checking for changes
+    public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(60);
 }

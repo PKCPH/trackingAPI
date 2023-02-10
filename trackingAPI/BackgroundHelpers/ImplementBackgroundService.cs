@@ -9,7 +9,7 @@ public class ImplementBackgroundService : BackgroundService
 {
     private readonly IServiceProvider _services;
     //parameter is how often the Timer ticks (set to once every second)
-    private readonly PeriodicTimer _timer = new(BackgroundTaskConfiguration.BackgroundTaskTimerTickTimespan);
+    private readonly PeriodicTimer _timer = new(BackgroundTaskConfiguration.TimerTickTimeSpan);
 
     public ImplementBackgroundService(IServiceProvider services)
     {
@@ -26,7 +26,6 @@ public class ImplementBackgroundService : BackgroundService
                     .GetRequiredService<DatabaseContext>();
             do
             {
-                Console.WriteLine("dodododo");
                 MatchBackgroundTask matchBackgroundTask = new(_services);
                 //if loop to check if all matches has been played before creating new matches,
                 //so teams wont be matched with the same opponent
