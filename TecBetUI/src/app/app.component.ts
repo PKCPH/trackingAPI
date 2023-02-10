@@ -1,6 +1,9 @@
 import { Router } from '@angular/router';
 import { Component, OnInit, HostListener } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { LoginModel } from './models/login.model';
+import { LoginService } from './services/login.service';
+
 
 @Component({
   selector: 'app-root',
@@ -8,12 +11,22 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  credentials: LoginModel = {username:'', password:'', role: ''};
   title = 'Soccer-Database';
   scrolled = 0;
 
-  constructor(private router: Router, private jwtHelper: JwtHelperService)
+  constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService)
   {
-    
+
+    this.loginService.currentCredentials.subscribe(credentials => {
+      this.credentials = credentials;
+    }); 
+
+    let storedCredentials = localStorage.getItem("credentials");
+    if (storedCredentials) {
+    this.credentials.role = JSON.parse(storedCredentials);
+    }
+
   }
 
   isUserAuthenticated = (): boolean => {
@@ -26,6 +39,8 @@ export class AppComponent {
 
   logOut = () => {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("credentials");
+    this.credentials.role = "";
   }
 
   @HostListener('window:scroll', ['$event'])

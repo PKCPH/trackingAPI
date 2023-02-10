@@ -4,6 +4,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
 import { NgForm } from '@angular/forms';
+import { AuthguardService } from 'src/app/services/authguard.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,7 @@ export class LoginComponent implements OnInit {
   invalidLogin: boolean = false;
   credentials: LoginModel = {username:'', password:'', role: ''};
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService) { }
   
   ngOnInit(): void {
     
@@ -33,6 +35,15 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("refreshToken", refreshToken);
           this.invalidLogin = false; 
           this.router.navigate(["/"]);
+
+          this.authguard.getUser(this.credentials.username)
+          .subscribe({
+          next: (response) => {
+          this.credentials = response;
+          this.loginService.updateCredentials(this.credentials);  
+          localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
+          }
+        });  
         },
         error: (err: HttpErrorResponse) => this.invalidLogin = true
       })

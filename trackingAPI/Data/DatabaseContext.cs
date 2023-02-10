@@ -18,9 +18,17 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Login>().HasData(new Login
+        {
+            UserName = "admin",
+            Password = "123456",
+            Role = "Admin"
+        });
+
         modelBuilder.Entity<Login>()
              .Property(t => t.Role)
             .HasDefaultValue("User");
+
         //Default value for IsAvailable = true
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)

@@ -23,6 +23,13 @@ export class MainMatchesComponent implements OnDestroy {
     constructor(private matchesService: MatchesService, private router: Router, 
       private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
+
+        const storedCredentials = localStorage.getItem("credentials");
+        if (storedCredentials === '"Admin"') {
+          this.router.navigate(['/matches']);
+          } else {
+            this.router.navigate(['/']);
+          }  
   
         this.updateSubscription = interval(1500).pipe(
           switchMap(() => this.matchesService.getAllMatches())

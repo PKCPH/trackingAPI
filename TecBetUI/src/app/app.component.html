@@ -4,10 +4,10 @@
           <li class="nav-item">
             <a class="nav-text" aria-current="page" href="#section1">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="teams">Teams</a>
+          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
+            <a class="nav-text" routerLink="teams">Teams</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text " routerLink="matches">Matches</a>
           </li>
           <li class="nav-item">
@@ -16,7 +16,9 @@
           <li class="nav-item">
             <a class="nav-text " href="#section2">Betting</a>
           </li>
-          <li><a class="nav-text" routerLink="/customers">SikritStuf</a></li> 
+          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
+            <a class="nav-text" routerLink="/customers">SikritStuf</a>
+          </li> 
         </ul> 
         <ul class="navbar-nav">
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
@@ -31,10 +33,10 @@
           <li class="nav-item">
             <a class="nav-text" aria-current="page" href="#section1">Home</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text " routerLink="teams">Teams</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text " routerLink="matches">Matches</a>
           </li>
           <li class="nav-item">

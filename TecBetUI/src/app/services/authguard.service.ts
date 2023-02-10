@@ -3,11 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { LoginModel } from '../models/login.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthguardService implements CanActivate  {
+
+  baseApiUrl: string = 'https://localhost:5001';
 
   constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient){}
   
@@ -54,4 +58,10 @@ export class AuthguardService implements CanActivate  {
 
     return isRefreshSuccess;
   }
+
+  getUser(username: string): Observable<LoginModel> {
+    return this.http.get<LoginModel>(this.baseApiUrl + '/api/Auth/' + username);
+  }
+
+
 }
