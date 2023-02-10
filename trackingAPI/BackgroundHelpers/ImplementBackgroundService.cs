@@ -36,7 +36,7 @@ public class ImplementBackgroundService : BackgroundService
                 }
                 else
                 {
-                    await matchBackgroundTask.CreateNewMatchesFromAvailableTeams();
+                    await matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 }
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);
