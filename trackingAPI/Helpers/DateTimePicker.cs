@@ -18,9 +18,8 @@ namespace trackingAPI.Helpers
             timeOfDayHours += TimeSpan.FromMinutes(minutes);
             var pickedDateTime = date + timeOfDayHours;
        
-            //if pickedDateTime is before CustomLocalTime.TimeOfDay return with +1 day else return
+            //if pickedDateTime is before CustomLocalTime return with +1 day else return
             return (Convert.ToDateTime(CustomLocalTime) > pickedDateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
-
         }
     }
 }
