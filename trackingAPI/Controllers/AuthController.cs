@@ -79,4 +79,19 @@ public class AuthController : ControllerBase
         //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
         return login == null ? NotFound() : Ok(login);
     }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    //id is cound to the url, issue is bound to the body of the request
+    public async Task<IActionResult> Update(Guid id, Login login)
+    {
+        //if the id of the url and the id in the body does not match, then return
+        if (id != login.Id) return BadRequest();
+
+        //otherwise we update the issue, save changes and
+        _context.Entry(login).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 }
