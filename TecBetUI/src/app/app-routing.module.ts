@@ -11,6 +11,7 @@ import { MainTeamsComponent } from './components/main-teams/main-teams.component
 import { LoginComponent } from './components/main-login/login/login.component';
 import { AuthguardService } from './services/authguard.service';
 import { CustomersComponent } from './components/customers/customers.component';
+import { RegisterComponent } from './components/main-login/register/register.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,10 @@ const routes: Routes = [
     path: 'customers',
     component: CustomersComponent,
     canActivate: [AuthguardService]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   }
 ];
 

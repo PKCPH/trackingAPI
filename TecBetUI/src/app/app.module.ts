@@ -18,6 +18,7 @@ import { LoginComponent } from './components/main-login/login/login.component';
 import { JwtModule } from "@auth0/angular-jwt";
 import { CustomersComponent } from './components/customers/customers.component';
 import { AuthguardService } from './services/authguard.service';
+import { RegisterComponent } from './components/main-login/register/register.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -36,7 +37,8 @@ export function tokenGetter() {
     EditMatchComponent,
     MainScheduleComponent,
     LoginComponent,
-    CustomersComponent
+    CustomersComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

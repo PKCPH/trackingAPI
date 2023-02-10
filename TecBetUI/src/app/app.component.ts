@@ -11,7 +11,7 @@ import { LoginService } from './services/login.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  credentials: LoginModel = {username:'', password:'', role: ''};
+  credentials: LoginModel = {username:'', password:'', role: '', id: ''};
   title = 'Soccer-Database';
   scrolled = 0;
 

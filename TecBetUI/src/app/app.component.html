@@ -22,6 +22,7 @@
         </ul> 
         <ul class="navbar-nav">
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
+        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/register">Register</a></li>
         <li *ngIf="isUserAuthenticated()"><a class="nav-text" (click)="logOut()">Logout</a></li>
       </ul>
     </div>

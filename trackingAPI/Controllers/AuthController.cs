@@ -24,8 +24,10 @@ public class AuthController : ControllerBase
         {
             return BadRequest("Invalid client request");
         }
+
         var user = _context.Logins.FirstOrDefault(u =>
             (u.UserName == login.UserName) && (u.Password == login.Password));
+
         if (user is null)
             return Unauthorized();
         var claims = new List<Claim>
