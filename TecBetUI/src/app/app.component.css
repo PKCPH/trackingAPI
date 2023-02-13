@@ -75,3 +75,10 @@
  transition: all 400ms ease;
  font-size: 2rem;
 }
+
+p {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: lightblue;
+    align-items: center;
+}

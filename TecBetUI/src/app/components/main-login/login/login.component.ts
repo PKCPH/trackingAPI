@@ -14,7 +14,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class LoginComponent implements OnInit {
   invalidLogin: boolean = false;
-  credentials: LoginModel = {username:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
+  credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
 
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService) { }
   
@@ -36,12 +36,18 @@ export class LoginComponent implements OnInit {
           this.invalidLogin = false; 
           this.router.navigate(["/"]);
 
-          this.authguard.getUser(this.credentials.username)
+          this.authguard.getUser(this.credentials.userName)
           .subscribe({
           next: (response) => {
           this.credentials = response;
-          this.loginService.updateCredentials(this.credentials);  
-          localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
+          this.loginService.updateCredentials(this.credentials); 
+
+          let storedCredentials = {
+            username: this.credentials.userName,
+            role: this.credentials.role
+          };
+
+          localStorage.setItem("credentials", JSON.stringify(storedCredentials));
           }
         });  
         },

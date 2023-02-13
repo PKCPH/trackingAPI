@@ -8,7 +8,7 @@ import { LoginModel } from 'src/app/models/login.model';
 })
 export class LoginService {
 
-  private credentials = new BehaviorSubject<LoginModel>({username: '', password: '', role: '', id: ''});
+  private credentials = new BehaviorSubject<LoginModel>({userName: '', password: '', role: '', id: ''});
   currentCredentials = this.credentials.asObservable();
 
   constructor(private router: Router) { }

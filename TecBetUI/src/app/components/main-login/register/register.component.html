@@ -1,4 +1,7 @@
 <div class="section1">
+
+    <div id="loading"></div>
+    
     <!-- Need better solution here not sure whats going on -->
   <div class="d-flex"></div>
   <div class="container divs my-5 py-5">
@@ -27,10 +30,14 @@
             </div>
           </div>
       </div>
+
+      <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
       
       <button type="submit" class="btn btn-success mt-4">Create User</button>
-      <a routerLink="/teams"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
-  
+      <a routerLink="/"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+ 
     </form>
   </div>
   </div>

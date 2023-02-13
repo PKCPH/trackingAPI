@@ -11,7 +11,7 @@ import { LoginService } from './services/login.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  credentials: LoginModel = {username:'', password:'', role: '', id: ''};
+  credentials: LoginModel = {userName:'', password:'', role: '', id: ''};
   title = 'Soccer-Database';
   scrolled = 0;
 
@@ -22,9 +22,16 @@ export class AppComponent {
       this.credentials = credentials;
     }); 
 
-    let storedCredentials = localStorage.getItem("credentials");
-    if (storedCredentials) {
-    this.credentials.role = JSON.parse(storedCredentials);
+    let storedCredentials;
+
+    let storedCredentialsString = localStorage.getItem("credentials");
+    if (storedCredentialsString)
+    {
+    storedCredentials = JSON.parse(storedCredentialsString);
+    let role = storedCredentials.role;
+    let displayName = storedCredentials.username;
+    this.credentials.role = role;
+    this.credentials.userName = displayName; 
     }
 
   }

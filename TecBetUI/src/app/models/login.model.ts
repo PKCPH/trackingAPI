@@ -1,6 +1,6 @@
 export interface LoginModel {
     id: string;
-    username: string;
+    userName: string;
     password: string;
     role: string;
   }

@@ -24,12 +24,21 @@ export class MainTeamsComponent implements OnDestroy {
       private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
 
-        const storedCredentials = localStorage.getItem("credentials");
-        if (storedCredentials === '"Admin"') {
+        let storedCredentials;
+
+        let storedCredentialsString = localStorage.getItem("credentials");
+        if (storedCredentialsString)
+        {
+        storedCredentials = JSON.parse(storedCredentialsString);
+
+        let role = storedCredentials.role;
+
+        if (role === 'Admin') {
           this.router.navigate(['/teams']);
           } else {
             this.router.navigate(['/']);
           }  
+        }
 
         this.updateSubscription = interval(1500).pipe(
           switchMap(() => this.teamsService.getAllTeams())

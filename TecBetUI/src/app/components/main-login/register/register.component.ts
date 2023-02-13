@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, of, tap, throwError } from 'rxjs';
 import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
@@ -17,7 +18,7 @@ export class RegisterComponent {
   
   addLoginRequest: LoginModel = {
     id: '',
-    username: '',
+    userName: '',
     password: '',
     role: ''
   };
@@ -25,6 +26,8 @@ export class RegisterComponent {
   loginForm: FormGroup;
   submitted = false;
   invalidLogin: boolean = false;
+  errorMessage: string = "";
+  
   
   constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private loginService: LoginService) {
     this.loginForm = this.formBuilder.group({
@@ -36,20 +39,30 @@ export class RegisterComponent {
   
   registerUser() {
     this.submitted = true;
-    if (this.loginForm.valid)
-    {
-      if (this.addLoginRequest)
-      {
+    if (this.loginForm.valid) {
+      if (this.addLoginRequest) {
   this.addLoginRequest = {
   ...this.addLoginRequest,
-  username: this.loginForm.get('username')?.value,
+  userName: this.loginForm.get('username')?.value,
   password: this.loginForm.get('password')?.value
   };
   }
-    this.authguardService.register(this.addLoginRequest)
+    this.authguardService.register(this.addLoginRequest).pipe(
+      tap(logins => {
+        this.errorMessage = '';
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 500) {
+          this.errorMessage = 'Username already exists.';
+        } else {
+          this.errorMessage = 'Http failure response';
+        }
+        return of(error);
+      })
+    )
     .subscribe({
       next: (members) => {
-        if (this.loginForm.valid) {
+        if (this.loginForm.valid && this.errorMessage === '') {
           this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.addLoginRequest, {
             headers: new HttpHeaders({ "Content-Type": "application/json"})
           })
@@ -61,7 +74,7 @@ export class RegisterComponent {
               localStorage.setItem("refreshToken", refreshToken);
               this.invalidLogin = false; 
               this.router.navigate(["/"]);
-              this.authguardService.getUser(this.addLoginRequest.username)
+              this.authguardService.getUser(this.addLoginRequest.userName)
               .subscribe({
               next: (response) => {
               this.addLoginRequest = response;
@@ -70,7 +83,9 @@ export class RegisterComponent {
               }
             });  
             },
-            error: (err: HttpErrorResponse) => this.invalidLogin = true
+            error: (err: HttpErrorResponse) => {
+              this.invalidLogin = true
+            } 
           })
         }
       }

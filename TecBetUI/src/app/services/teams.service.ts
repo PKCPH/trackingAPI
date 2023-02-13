@@ -13,9 +13,7 @@ export class TeamsService {
   baseApiUrl: string = 'https://localhost:5001';
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {
-
-   }
+  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
    private errorSubject = new BehaviorSubject<string>("");
    errorMessage = this.errorSubject.asObservable();

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { LoginService } from './login.service';
 
@@ -14,7 +14,7 @@ import { LoginService } from './login.service';
 export class AuthguardService implements CanActivate  {
 
   invalidLogin: boolean = false;
-  credentials: LoginModel = {username:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
+  credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
 
   baseApiUrl: string = 'https://localhost:5001';
 
@@ -93,7 +93,7 @@ export class AuthguardService implements CanActivate  {
           this.invalidLogin = false; 
           this.router.navigate(["/"]);
 
-          this.getUser(this.credentials.username)
+          this.getUser(this.credentials.userName)
           .subscribe({
           next: (response) => {
           this.credentials = response;
