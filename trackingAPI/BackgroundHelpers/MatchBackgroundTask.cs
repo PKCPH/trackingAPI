@@ -68,6 +68,8 @@ public class MatchBackgroundTask
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
+        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+        CancellationToken stoppingToken;
 
         using (var scope = _services.CreateScope())
         {
@@ -77,9 +79,13 @@ public class MatchBackgroundTask
 
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
-                item.TeamAScore = random.Next(0, 3);
-                item.TeamBScore = random.Next(0, 3);
-                item.MatchState = MatchState.Finished;
+                item.MatchState = MatchState.Playing;
+                //liveMatchBackgroundTask.ExecuteLiveMatch(item);
+
+                //item.TeamAScore = random.Next(0, 3);
+                //item.TeamBScore = random.Next(0, 3);
+                //item.MatchState = MatchState.Finished;
+                
             }
 
             foreach (var item in _context.MatchTeams)

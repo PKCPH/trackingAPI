@@ -26,17 +26,22 @@ public class ImplementBackgroundService : BackgroundService
                     .GetRequiredService<DatabaseContext>();
             do
             {
-                MatchBackgroundTask matchBackgroundTask = new(_services);
-                //if loop to check if all matches has been played before creating new matches,
-                //so teams wont be matched with the same opponent
-                if (await _context.Matches.AnyAsync(x => x.MatchState == MatchState.NotStarted))
-                {
-                    await matchBackgroundTask.FindAndPlayMatches();
-                }
-                else
-                {
-                    await matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
-                }
+
+                LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+
+                liveMatchBackgroundTask.ExecuteLiveMatch(_timer);
+                //MatchBackgroundTask matchBackgroundTask = new(_services);
+                ////if loop to check if all matches has been played before creating new matches,
+                ////so teams wont be matched with the same opponent
+                //if (await _context.Matches.AnyAsync(x => x.MatchState == MatchState.NotStarted))
+                //{
+                //    await matchBackgroundTask.FindAndPlayMatches();
+                //}
+                //else
+                //{
+                //    await matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+                //}
+
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);
         }
