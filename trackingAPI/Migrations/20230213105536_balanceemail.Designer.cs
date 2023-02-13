@@ -12,12 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:trackingAPI/Migrations/20230207133543_init.Designer.cs
-    [Migration("20230207133543_init")]
-========
-    [Migration("20230213080509_init")]
->>>>>>>> THISTIMEFORSURE(login):trackingAPI/Migrations/20230213080509_init.Designer.cs
-    partial class init
+    [Migration("20230213105536_balanceemail")]
+    partial class balanceemail
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +53,14 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Balance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -85,7 +89,9 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("66820904-e074-460f-a2c5-3994a2d80f9b"),
+                            Id = new Guid("226a25ec-5fcb-4e4c-a57c-d460cb30f58a"),
+                            Balance = "0",
+                            Email = "",
                             Password = "123456",
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = "Admin",

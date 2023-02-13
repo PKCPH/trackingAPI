@@ -1,7 +1,7 @@
 //Could not import HttpClient from library wihtout adding some stuff in tsconfig.json
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, of, switchMap, timer } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { Team } from '../models/teams.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 
@@ -10,12 +10,10 @@ import { CustomErrorHandlerService } from './custom-error-handler.service';
 })
 export class TeamsService {
 
-  baseApiUrl: string = 'https://localhost:7142';
+  baseApiUrl: string = 'https://localhost:5001';
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {
-
-   }
+  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
    private errorSubject = new BehaviorSubject<string>("");
    errorMessage = this.errorSubject.asObservable();
@@ -24,15 +22,15 @@ export class TeamsService {
     this.isLoading = true;
     return this.http.get<Team[]>(this.baseApiUrl + '/api/Team')
           .pipe(
+            tap(teams => {
+              this.errorSubject.next('');
+            }),
             catchError(error => {
-              console.error(error);
-              // this.errorSubject.next(error.message);
               this.errorSubject.next(this.customErrorHandlerService.handleError(error));
               this.isLoading = false;
-              this.customErrorHandlerService.handleError(error);
               return of([]);
             })
-          )
+          );
   }
 
   addTeam(addTeamRequest: Team): Observable<Team> {

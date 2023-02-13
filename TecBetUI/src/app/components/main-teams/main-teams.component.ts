@@ -24,6 +24,22 @@ export class MainTeamsComponent implements OnDestroy {
       private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
 
+        let storedCredentials;
+
+        let storedCredentialsString = localStorage.getItem("credentials");
+        if (storedCredentialsString)
+        {
+        storedCredentials = JSON.parse(storedCredentialsString);
+
+        let role = storedCredentials.role;
+
+        if (role === 'Admin') {
+          this.router.navigate(['/teams']);
+          } else {
+            this.router.navigate(['/']);
+          }  
+        }
+
         this.updateSubscription = interval(1500).pipe(
           switchMap(() => this.teamsService.getAllTeams())
         )
@@ -43,17 +59,14 @@ export class MainTeamsComponent implements OnDestroy {
             this.teamsService.errorMessage.subscribe(error => {
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
               this.errorMessage = error;
-              
-              if (teams.length > 0)
+                           
+              if (this.errorMessage === '')
               {
-                this.errorMessage = "";
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });
           },
-          error: (response) => {
-            console.log(response);
-          }
+
         });   
   
     }

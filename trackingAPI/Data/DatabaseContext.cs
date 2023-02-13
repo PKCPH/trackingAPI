@@ -14,9 +14,23 @@ public class DatabaseContext : DbContext
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<GameMatch> Matches { get; set; }
     public DbSet<Team> Teams { get; set; }
+    public DbSet<Login> Logins { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Login>().HasData(new Login
+        {
+            UserName = "admin",
+            Password = "123456",
+            Role = "Admin"
+        });
+
+        modelBuilder.Entity<Login>()
+             .Property(t => t.Role)
+            .HasDefaultValue("User");
+
+        modelBuilder.Entity<Login>().HasIndex(u => u.UserName).IsUnique();
+
         //Default value for IsAvailable = true
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)

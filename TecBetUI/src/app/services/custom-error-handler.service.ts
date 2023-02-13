@@ -13,7 +13,7 @@ export class CustomErrorHandlerService implements ErrorHandler {
 
     if (error instanceof HttpErrorResponse) {
       // message = `Error Status: ${error.status}\nMessage: ${error.message.split('for https://localhost:7276')[0]}`;
-      message = `${error.message.split('for https://localhost:7142')[0]}`;
+      message = `${error.message.split('for https://localhost:5001')[0]}`;
     } else {
       message = error.message ? error.message : error.toString();
     }
