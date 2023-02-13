@@ -29,6 +29,8 @@ public class DatabaseContext : DbContext
              .Property(t => t.Role)
             .HasDefaultValue("User");
 
+        modelBuilder.Entity<Login>().HasIndex(u => u.UserName).IsUnique();
+
         //Default value for IsAvailable = true
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)

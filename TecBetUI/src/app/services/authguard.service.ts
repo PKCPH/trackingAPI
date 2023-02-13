@@ -1,19 +1,24 @@
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
 import { Observable } from 'rxjs';
+import { NgForm } from '@angular/forms';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthguardService implements CanActivate  {
 
+  invalidLogin: boolean = false;
+  credentials: LoginModel = {username:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
+
   baseApiUrl: string = 'https://localhost:5001';
 
-  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient){}
+  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService){}
   
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
@@ -63,5 +68,43 @@ export class AuthguardService implements CanActivate  {
     return this.http.get<LoginModel>(this.baseApiUrl + '/api/Auth/' + username);
   }
 
+  register(addUserRequest: LoginModel): Observable<LoginModel> {
+    //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
+    //just return an empty guid thats gonna be overwritten by the API either way
+    addUserRequest.id = '00000000-0000-0000-0000-000000000000';
+    return this.http.post<LoginModel>(this.baseApiUrl + '/api/Auth/register', addUserRequest);
+  }
+
+  updateUser(id: string, updateUserRequest: LoginModel): Observable<LoginModel> {
+    return this.http.put<LoginModel>(this.baseApiUrl + '/api/Auth/' + id, updateUserRequest);
+  }
+
+  login = ( form: NgForm) => {
+    if (form.valid) {
+      this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.credentials, {
+        headers: new HttpHeaders({ "Content-Type": "application/json"})
+      })
+      .subscribe({
+        next: (response: AuthenticatedResponse) => {
+          const token = response.token;
+          const refreshToken = response.refreshToken;
+          localStorage.setItem("jwt", token); 
+          localStorage.setItem("refreshToken", refreshToken);
+          this.invalidLogin = false; 
+          this.router.navigate(["/"]);
+
+          this.getUser(this.credentials.username)
+          .subscribe({
+          next: (response) => {
+          this.credentials = response;
+          this.loginService.updateCredentials(this.credentials);  
+          localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
+          }
+        });  
+        },
+        error: (err: HttpErrorResponse) => this.invalidLogin = true
+      })
+    }
+  }
 
 }

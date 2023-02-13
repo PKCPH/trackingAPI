@@ -1,1 +1,39 @@
-<p>register works!</p>
+<div class="section1">
+    <!-- Need better solution here not sure whats going on -->
+  <div class="d-flex"></div>
+  <div class="container divs my-5 py-5">
+      <form [formGroup]="loginForm" (ngSubmit)="registerUser()">
+      <div class="mb-3">
+          <h1 class="mb-5">New account</h1>
+        <label for="username" class="form-label">Username</label>
+        <!-- One way to bind data to model in Angular  -->
+        <input type="text" class="form-control" id="username" formControlName="username" />
+        <div class="validBox" *ngIf="submitted && loginForm.get('username')?.invalid">
+          <div *ngIf="loginForm.get('username')?.errors?.['required']">
+            Username is required.
+          </div>
+          <div *ngIf="loginForm.get('username')?.errors?.['minlength']">
+            Username needs to be at least 5 characters.
+          </div>
+        </div>
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" formControlName="password" />
+        <div class="validBox" *ngIf="submitted && loginForm.get('password')?.invalid">
+            <div *ngIf="loginForm.get('password')?.errors?.['required']">
+              Password is required.
+            </div>
+            <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+              Password needs to be at least 6 characters.
+            </div>
+          </div>
+      </div>
+      
+      <button type="submit" class="btn btn-success mt-4">Create User</button>
+      <a routerLink="/teams"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+  
+    </form>
+  </div>
+  </div>
+  
+  
+  

@@ -26,7 +26,7 @@ export class MainTeamsComponent implements OnDestroy {
 
         const storedCredentials = localStorage.getItem("credentials");
         if (storedCredentials === '"Admin"') {
-          this.router.navigate(['/matches']);
+          this.router.navigate(['/teams']);
           } else {
             this.router.navigate(['/']);
           }  

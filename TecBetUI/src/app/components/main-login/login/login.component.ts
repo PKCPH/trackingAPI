@@ -14,7 +14,7 @@ import { LoginService } from 'src/app/services/login.service';
 })
 export class LoginComponent implements OnInit {
   invalidLogin: boolean = false;
-  credentials: LoginModel = {username:'', password:'', role: ''};
+  credentials: LoginModel = {username:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
 
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService) { }
   

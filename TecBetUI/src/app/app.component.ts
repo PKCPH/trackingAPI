@@ -11,7 +11,7 @@ import { LoginService } from './services/login.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  credentials: LoginModel = {username:'', password:'', role: ''};
+  credentials: LoginModel = {username:'', password:'', role: '', id: ''};
   title = 'Soccer-Database';
   scrolled = 0;
 
@@ -41,6 +41,7 @@ export class AppComponent {
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
     this.credentials.role = "";
+    this.router.navigateByUrl("/");
   }
 
   @HostListener('window:scroll', ['$event'])
