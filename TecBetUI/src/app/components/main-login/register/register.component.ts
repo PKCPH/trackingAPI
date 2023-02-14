@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, of, tap, throwError } from 'rxjs';
@@ -20,17 +20,20 @@ export class RegisterComponent {
     id: '',
     userName: '',
     password: '',
-    role: ''
+    role: '',
+    balance: 0,
+    email: ''
   };
   
   loginForm: FormGroup;
   submitted = false;
-  invalidLogin: boolean = false;
   errorMessage: string = "";
   invalidRegister: boolean = true;
   
   
-  constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private loginService: LoginService) {
+  constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: 
+    FormBuilder, private http: HttpClient, private loginService: LoginService,
+    private el: ElementRef, private renderer: Renderer2) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', [Validators.minLength(6), Validators.required]]
@@ -39,6 +42,7 @@ export class RegisterComponent {
   }
   
   registerUser() {
+    this.showLoader();
     this.submitted = true;
     if (this.loginForm.valid) {
       if (this.addLoginRequest) {
@@ -53,11 +57,13 @@ export class RegisterComponent {
         this.errorMessage = '';
       }),
       catchError((error: HttpErrorResponse) => {
+        
         if (error.status === 500) {
-          this.errorMessage = 'Username already exists.';
+          this.errorMessage = 'Username already exists.'; 
         } else {
           this.errorMessage = 'Http failure response';
         }
+        this.hideLoader();
         this.invalidRegister = true;
         return of(error);
       })
@@ -65,6 +71,7 @@ export class RegisterComponent {
     .subscribe({
       next: (members) => {
         if (this.loginForm.valid && this.errorMessage === '') {
+          this.hideLoader();
           this.invalidRegister = false;
           this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.addLoginRequest, {
             headers: new HttpHeaders({ "Content-Type": "application/json"})
@@ -75,20 +82,21 @@ export class RegisterComponent {
               const refreshToken = response.refreshToken;
               localStorage.setItem("jwt", token); 
               localStorage.setItem("refreshToken", refreshToken);
-              this.invalidLogin = false; 
-              // this.router.navigate(["/"]);
               this.authguardService.getUser(this.addLoginRequest.userName)
               .subscribe({
               next: (response) => {
               this.addLoginRequest = response;
               this.loginService.updateCredentials(this.addLoginRequest);  
-              localStorage.setItem("credentials", JSON.stringify(this.addLoginRequest.role));
+
+              let storedCredentials = {
+                username: this.addLoginRequest.userName,
+                role: this.addLoginRequest.role
+              };
+    
+              localStorage.setItem("credentials", JSON.stringify(storedCredentials));
               }
             });  
-            },
-            error: (err: HttpErrorResponse) => {
-              this.invalidLogin = true
-            } 
+            }
           })
         }
       }
@@ -99,11 +107,27 @@ export class RegisterComponent {
       if (this.loginForm.controls.hasOwnProperty(key)) {
         const control = this.loginForm.get(key);
         if (control && control.invalid) {
+          this.hideLoader();
           console.log(key, control.errors);
         }
       }
     }
   }
+  }
+
+  logOut = () => {
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("credentials");
+    this.addLoginRequest.role = "";
+    this.router.navigateByUrl("/");
+  }
+
+  showLoader() {
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'block');
+  }
+
+  hideLoader() {
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
   }
 
 }
