@@ -27,6 +27,7 @@ export class RegisterComponent {
   submitted = false;
   invalidLogin: boolean = false;
   errorMessage: string = "";
+  invalidRegister: boolean = true;
   
   
   constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: FormBuilder, private http: HttpClient, private loginService: LoginService) {
@@ -57,12 +58,14 @@ export class RegisterComponent {
         } else {
           this.errorMessage = 'Http failure response';
         }
+        this.invalidRegister = true;
         return of(error);
       })
     )
     .subscribe({
       next: (members) => {
         if (this.loginForm.valid && this.errorMessage === '') {
+          this.invalidRegister = false;
           this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.addLoginRequest, {
             headers: new HttpHeaders({ "Content-Type": "application/json"})
           })
@@ -73,7 +76,7 @@ export class RegisterComponent {
               localStorage.setItem("jwt", token); 
               localStorage.setItem("refreshToken", refreshToken);
               this.invalidLogin = false; 
-              this.router.navigate(["/"]);
+              // this.router.navigate(["/"]);
               this.authguardService.getUser(this.addLoginRequest.userName)
               .subscribe({
               next: (response) => {
