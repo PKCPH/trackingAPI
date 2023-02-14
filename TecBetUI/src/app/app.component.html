@@ -21,12 +21,12 @@
           </li> 
         </ul> 
         <ul class="navbar-nav">
-          <li *ngIf="isUserAuthenticated()"><p>Logged in as {{ credentials.userName }}</p></li>
+          <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><p>Logged in as <span>{{ credentials.userName | titlecase }}</span></p></li>
         </ul>
         <ul class="navbar-nav">
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
-        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/register">Register</a></li>
-        <li *ngIf="isUserAuthenticated()"><a class="nav-text" (click)="logOut()">Logout</a></li>
+        <li *ngIf="!isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" routerLink="/register">Register</a></li>
+        <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" (click)="logOut()">Logout</a></li>
       </ul>
     </div>
   </nav>

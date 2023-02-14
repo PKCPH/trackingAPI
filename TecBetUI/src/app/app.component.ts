@@ -11,7 +11,7 @@ import { LoginService } from './services/login.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  credentials: LoginModel = {userName:'', password:'', role: '', id: ''};
+  credentials: LoginModel = {userName:'', password:'', role: '', id: '', balance: 0, email: ''};
   title = 'Soccer-Database';
   scrolled = 0;
 
@@ -34,6 +34,14 @@ export class AppComponent {
     this.credentials.userName = displayName; 
     }
 
+  }
+
+  isRegisterPage = (): boolean => {
+    if (this.router.url.includes('/register')) 
+  {  
+     return true; 
+  }
+return false;
   }
 
   isUserAuthenticated = (): boolean => {

@@ -9,8 +9,8 @@ namespace trackingAPI.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string Email { get; set; }
-        public string Balance { get; set; }
+        public string? Email { get; set; }
+        public int? Balance { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? RefreshToken { get; set; }
@@ -19,7 +19,7 @@ namespace trackingAPI.Models
         public Login()
         {
             Email = "";
-            Balance = "0";
+            Balance = 0;
             Id = Guid.NewGuid();
         }
     }

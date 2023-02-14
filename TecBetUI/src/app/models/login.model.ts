@@ -3,4 +3,6 @@ export interface LoginModel {
     userName: string;
     password: string;
     role: string;
+    email: string;
+    balance: number;
   }

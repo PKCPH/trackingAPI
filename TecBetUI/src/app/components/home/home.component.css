@@ -93,7 +93,7 @@ img {
       flex-wrap: wrap;
   }
 
-  @media screen and (max-width: 1500px) {
+  @media screen and (max-width: 1800px) {
     img {
       width: 300px;
       height: 250px;

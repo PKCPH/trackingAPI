@@ -14,7 +14,7 @@ import { LoginService } from './login.service';
 export class AuthguardService implements CanActivate  {
 
   invalidLogin: boolean = false;
-  credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000'};
+  credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
   baseApiUrl: string = 'https://localhost:5001';
 

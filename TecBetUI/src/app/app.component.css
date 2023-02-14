@@ -82,3 +82,45 @@ p {
     color: lightblue;
     align-items: center;
 }
+
+span {
+    color: lightseagreen;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .menu a {
+        font-size: 13px;
+    } 
+    
+    .menu2 a {
+        font-size: 15px;
+    }
+
+    .menu2 {
+        background: rgba(0,0,0,0.5);
+        width: max-content;
+        height: 150px;
+        display: block;
+        padding: 0.7rem 1.7rem;
+        position: fixed;
+        left: 8%;
+        transform: translateX(-50%);
+        bottom: 1%;
+        display: flex;
+        gap: 0.8rem;
+        backdrop-filter: blur(5px);
+        border: 5px solid rgba(0,0,0,0.2);
+        border-top: none;
+        border-bottom: none;
+        border-radius: 10px/90px;
+       }
+
+       .nav-text {
+        color: white;
+        text-decoration: none;
+        margin-left: 5px;
+        margin-right: 5px;
+        font-size: 1px;
+    }
+  }
