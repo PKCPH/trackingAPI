@@ -11,7 +11,7 @@
     font-size: 20px;
 }
 
-.nav-text:hover {
+a:hover {
     cursor: pointer;
 }
 
@@ -70,10 +70,15 @@
  background: rgba(0,0,0,0.8);
 }
 
-.menu a:hover, .menu2 a:hover {
+.leftsidenav a:hover, .menu2 a:hover {
  color: red;
  transition: all 400ms ease;
  font-size: 2rem;
+}
+
+.rightsidenav a:hover {
+    color: red;
+    transition: all 400ms ease;
 }
 
 p {
@@ -85,6 +90,27 @@ p {
 
 span {
     color: lightseagreen;
+    transition: all 1000ms ease;
+}
+
+span:hover {
+    cursor: pointer;
+    color: seagreen;
+    transition: all 1000ms ease;
+}
+
+.logo img {
+    position: absolute;
+    left: -2%;
+    top: -45%;
+    height: 150px;
+}
+
+.logo2 img {
+    position: absolute;
+    left: -20%;
+    top: -10%;
+    height: 65px;
 }
 
 @media screen and (max-width: 1000px) {
@@ -122,5 +148,26 @@ span {
         margin-left: 5px;
         margin-right: 5px;
         font-size: 1px;
+    }
+
+    .logo img {
+        top: 15%;
+        left: 0%;
+        height: 50px;
+    }
+
+    .logo2 img {
+        top: 0%;
+        left: 30%;
+        height: 50px;
+    }
+  }
+
+  @media screen and (max-width: 1400px)
+  {
+    .logo img {
+        top: 15%;
+        left: 0%;
+        height: 50px;
     }
   }

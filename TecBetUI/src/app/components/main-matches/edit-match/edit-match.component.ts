@@ -39,8 +39,7 @@ export class EditMatchComponent {
 this.matchesService.getMatch(id)
 .subscribe({
   next: (response) => {
-this.matchDetails = response;
-console.log(this.matchDetails)     
+this.matchDetails = response;  
   }
 });  
         }
