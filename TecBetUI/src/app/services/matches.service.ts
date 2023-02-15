@@ -4,13 +4,12 @@ import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } fr
 import { Match } from '../models/matches.model';
 import { ParticipatingTeam } from '../models/schedule.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
+import * as serviceVariables from './serviceVariables'
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchesService {
-
-  baseApiUrl: string = 'https://localhost:5001';
   isLoading: boolean = false;
 
   constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {
@@ -22,7 +21,7 @@ export class MatchesService {
 
    getAllMatches(): Observable<Match[]> {
     this.isLoading = true;
-        return this.http.get<Match[]>(this.baseApiUrl + '/api/Match')
+        return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/Match')
           .pipe(
             tap(matches => {
               this.errorSubject.next('');
@@ -39,7 +38,7 @@ export class MatchesService {
 
   getSchedule(): Observable<Match[]> {
     this.isLoading = true;
-    return this.http.get<Match[]>(this.baseApiUrl + '/api/Matches')
+    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/Matches')
       .pipe(
         tap(schedule => {
           this.errorSubject.next('');
@@ -59,19 +58,19 @@ export class MatchesService {
     //just return an empty guid thats gonna be overwritten by the API either way
     addMatchRequest.id = '00000000-0000-0000-0000-000000000000';
     
-    return this.http.post<Match>(this.baseApiUrl + '/api/Match/CreateOneMatch', addMatchRequest);
+    return this.http.post<Match>(serviceVariables.baseApiUrl + '/api/Match/CreateOneMatch', addMatchRequest);
   }
 
   getMatch(id: string): Observable<Match> {
-    return this.http.get<Match>(this.baseApiUrl + '/api/Match/' + id);
+    return this.http.get<Match>(serviceVariables.baseApiUrl + '/api/Match/' + id);
   }
 
   updateMatch(id: string, updateMatchRequest: Match): Observable<Match> {
     updateMatchRequest.participatingTeams = [];
-    return this.http.put<Match>(this.baseApiUrl + '/api/Match/' + id, updateMatchRequest);
+    return this.http.put<Match>(serviceVariables.baseApiUrl + '/api/Match/' + id, updateMatchRequest);
   }
 
   deleteMatch(id: string): Observable<Match> {
-    return this.http.delete<Match>(this.baseApiUrl + '/api/Match/' + id)
+    return this.http.delete<Match>(serviceVariables.baseApiUrl + '/api/Match/' + id)
   }
 }

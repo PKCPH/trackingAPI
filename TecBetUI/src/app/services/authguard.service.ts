@@ -7,6 +7,7 @@ import { LoginModel } from '../models/login.model';
 import { Observable, catchError, of } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { LoginService } from './login.service';
+import * as serviceVariables from './serviceVariables'
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,6 @@ export class AuthguardService implements CanActivate  {
 
   invalidLogin: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
-
-  baseApiUrl: string = 'https://localhost:5001';
 
   constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService){}
   
@@ -65,18 +64,18 @@ export class AuthguardService implements CanActivate  {
   }
 
   getUser(username: string): Observable<LoginModel> {
-    return this.http.get<LoginModel>(this.baseApiUrl + '/api/Auth/' + username);
+    return this.http.get<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/' + username);
   }
 
   register(addUserRequest: LoginModel): Observable<LoginModel> {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
     addUserRequest.id = '00000000-0000-0000-0000-000000000000';
-    return this.http.post<LoginModel>(this.baseApiUrl + '/api/Auth/register', addUserRequest);
+    return this.http.post<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/register', addUserRequest);
   }
 
   updateUser(id: string, updateUserRequest: LoginModel): Observable<LoginModel> {
-    return this.http.put<LoginModel>(this.baseApiUrl + '/api/Auth/' + id, updateUserRequest);
+    return this.http.put<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/' + id, updateUserRequest);
   }
 
   login = ( form: NgForm) => {

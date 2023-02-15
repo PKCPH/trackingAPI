@@ -1,0 +1,32 @@
+<div class="section1 tablediv">
+    <div class="container my-2 divs py-5">
+        <h1 class="mb-3">Players</h1>
+        <div>
+            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" routerLink="employees/Add">Add new employee</a>
+            </li>
+            <table class="table tabletext" *ngIf="players && players.length > 0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>TeamId</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let player of players">
+                        <td> {{player.id}}</td>
+                        <td> {{player.name}}</td>
+                        <td> {{player.age}}</td>
+                        <td> {{player.teamId}}</td>
+                        <td><a [routerLink]="['/players', 'edit', player.id]">View</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p *ngIf="!players || players.length <= 0">No employees found</p>
+        </div>
+    </div>
+</div>

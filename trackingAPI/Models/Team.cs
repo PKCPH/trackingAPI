@@ -22,7 +22,7 @@ public class Team
     public bool? IsAvailable { get; set; }
     public ICollection<MatchTeam> Matches { get; set;}
 
-    [ForeignKey("Player")]
-    public Guid PlayerId { get; set; }
-    public Team Player { get; set; }
+    //[ForeignKey("Player")]
+    //public Guid PlayerId { get; set; }
+    //public Team Player { get; set; }
 }
