@@ -2,10 +2,7 @@
     <div class="container my-2 divs py-5">
         <h1 class="mb-3">Players</h1>
         <div>
-            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" routerLink="employees/Add">Add new employee</a>
-            </li>
+            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>            
             <table class="table tabletext" *ngIf="players && players.length > 0">
                 <thead>
                     <tr>

@@ -22,6 +22,7 @@ namespace trackingAPI.Controllers
         {
             var players = await databaseContext.Players.ToListAsync();
             var teams = await databaseContext.Teams.ToListAsync();
+            //Goes through the list of teams and matches each player with the team they play on
             foreach (var player in players)
             {
                 foreach (var team in teams)
@@ -29,6 +30,7 @@ namespace trackingAPI.Controllers
                     if (team.Id == player.TeamId)
                     {
                         player.Team = team;
+                        //break not neccesary, but it should change O from n to n/2
                         break;
                     }
                 }
@@ -52,17 +54,13 @@ namespace trackingAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetPlayer([FromRoute] Guid id)
         {
+            //gets the player by looking up the player table for ID matches
             var player = await databaseContext.Players.FirstOrDefaultAsync(x => x.Id == id);
-            var teams = await databaseContext.Teams.ToListAsync();
-            if (player == null || teams == null) { return NotFound(); }
-            foreach (var team in teams)
-            {
-                if (team.Id == player.TeamId)
-                {
-                    player.Team = team;
-                    break;
-                }
-            }
+            if (player == null ) { return NotFound(); }
+            //gets the team by looking up the team table for ID matches to the players teamID property
+            var team = await databaseContext.Teams.FirstOrDefaultAsync(x => x.Id == player.TeamId);
+            if (team == null) { return NotFound(); }
+            player.Team = team;
             return Ok(player);
         }
 
