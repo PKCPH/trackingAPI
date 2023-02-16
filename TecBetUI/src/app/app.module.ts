@@ -21,6 +21,7 @@ import { AuthguardService } from './services/authguard.service';
 import { RegisterComponent } from './components/main-login/register/register.component';
 import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
+import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -42,7 +43,8 @@ export function tokenGetter() {
     CustomersComponent,
     RegisterComponent,
     PlayerListComponent,
-    AddPlayerComponent
+    AddPlayerComponent,
+    EditPlayerComponent
   ],
   imports: [
     BrowserModule,

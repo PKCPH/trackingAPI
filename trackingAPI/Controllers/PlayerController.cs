@@ -21,6 +21,18 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetAllPlayers()
         {
             var players = await databaseContext.Players.ToListAsync();
+            var teams = await databaseContext.Teams.ToListAsync();
+            foreach (var player in players)
+            {
+                foreach (var team in teams)
+                {
+                    if (team.Id == player.TeamId)
+                    {
+                        player.Team = team;
+                        break;
+                    }
+                }
+            }
             return Ok(players);
         }
 
@@ -41,7 +53,16 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetPlayer([FromRoute] Guid id)
         {
             var player = await databaseContext.Players.FirstOrDefaultAsync(x => x.Id == id);
-            if (player == null) { return NotFound(); }
+            var teams = await databaseContext.Teams.ToListAsync();
+            if (player == null || teams == null) { return NotFound(); }
+            foreach (var team in teams)
+            {
+                if (team.Id == player.TeamId)
+                {
+                    player.Team = team;
+                    break;
+                }
+            }
             return Ok(player);
         }
 
@@ -54,7 +75,6 @@ namespace trackingAPI.Controllers
             if (player == null) { return NotFound(); }
             player.Name = updatePlayerRequest.Name;
             player.age = updatePlayerRequest.age;
-            player.Team = updatePlayerRequest.Team;
             player.TeamId = updatePlayerRequest.TeamId;
 
             await this.databaseContext.SaveChangesAsync();

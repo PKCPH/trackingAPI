@@ -14,6 +14,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { RegisterComponent } from './components/main-login/register/register.component';
 import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
+import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,10 @@ const routes: Routes = [
   {
     path: 'players/add',
     component: AddPlayerComponent
+  },
+  {
+    path: 'players/edit/:id',
+    component: EditPlayerComponent
   }
 ];
 

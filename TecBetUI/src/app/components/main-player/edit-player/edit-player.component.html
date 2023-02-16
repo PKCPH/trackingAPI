@@ -1,0 +1,29 @@
+<div class="section1">
+    <div class="container my-5">
+        <h1 class="mb-3">Edit employee</h1>
+        <div class="row">
+            <div class="col-6">          
+                <form #form="ngForm" (ngSubmit)="updateEmployee()">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" 
+                        name="name" [(ngModel)]="playerDetails.name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">age</label>
+                        <input type="number" class="form-control" id="age" 
+                        name="age" [(ngModel)]="playerDetails.age">
+                    </div>
+                    <div class="mb-3">
+                        <select name="teams" id="teams" [(ngModel)]="playerDetails.team">
+                            <option *ngFor="let team of teams" [ngValue]="team">{{team.name}}</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-5">Save Changes</button>
+                    <button type="button" class="btn btn-danger" 
+                    (click)="deleteEmployee(playerDetails.id)">Delete Employee</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

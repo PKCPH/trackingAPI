@@ -9,20 +9,18 @@
             <table class="table tabletext" *ngIf="players && players.length > 0">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Age</th>
-                        <th>TeamId</th>
+                        <th>Team</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let player of players">
-                        <td> {{player.id}}</td>
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td> {{player.teamId}}</td>
-                        <td><a [routerLink]="['/players', 'edit', player.id]">View</a></td>
+                        <td> {{player.team.name}}</td>
+                        <td><a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a></td>
                     </tr>
                 </tbody>
             </table>

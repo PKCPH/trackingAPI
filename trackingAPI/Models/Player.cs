@@ -12,6 +12,7 @@ namespace trackingAPI.Models
         public int age { get; set; }
         [ForeignKey("Team")]
         public Guid TeamId { get; set; }
+        [NotMapped]
         public Team Team { get; set; }
     }
 }
