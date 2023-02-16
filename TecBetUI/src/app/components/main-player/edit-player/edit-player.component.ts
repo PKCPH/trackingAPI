@@ -57,7 +57,7 @@ export class EditPlayerComponent {
     })
   }
 
-  updateEmployee(){
+  updatePlayer(){
     this.playerDetails.teamId = this.playerDetails.team.id
     this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
     .subscribe({
@@ -67,7 +67,7 @@ export class EditPlayerComponent {
     })
   }
 
-  deleteEmployee(id: string){
+  deletePlayer(id: string){
     this.playerService.deletePlayer(id)
     .subscribe({
       next: (response) => {

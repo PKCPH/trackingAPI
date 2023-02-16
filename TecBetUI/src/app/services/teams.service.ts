@@ -2,6 +2,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
+import { Player } from '../models/player.model';
 import { Team } from '../models/teams.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import * as serviceVariables from './serviceVariables'
@@ -51,6 +52,10 @@ export class TeamsService {
 
   deleteTeam(id: string): Observable<Team> {
     return this.http.delete<Team>(serviceVariables.baseApiUrl + '/api/Team/' + id)
+  }
+
+  getPlayers(id: string): Observable<Player[]>{
+    return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/players/' + id)
   }
 
 }

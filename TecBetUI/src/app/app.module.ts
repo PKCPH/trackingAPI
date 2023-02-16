@@ -22,6 +22,7 @@ import { RegisterComponent } from './components/main-login/register/register.com
 import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
+import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -44,7 +45,8 @@ export function tokenGetter() {
     RegisterComponent,
     PlayerListComponent,
     AddPlayerComponent,
-    EditPlayerComponent
+    EditPlayerComponent,
+    PlayersOnTeamComponent
   ],
   imports: [
     BrowserModule,
