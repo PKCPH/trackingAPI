@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { AddMatchComponent } from './components/main-matches/add-match/add-match.component';
@@ -17,6 +17,8 @@ import { AddPlayerComponent } from './components/main-player/add-player/add-play
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdModalFocus } from './components/testcomponent/modal-focus';
 
 const routes: Routes = [
   {
@@ -83,6 +85,10 @@ const routes: Routes = [
   {
     path: 'dashboard/:username',
     component: UserprofileComponent
+  },
+  {
+    path: 'test',
+    component: NgbdModalFocus
   }
 ];
 

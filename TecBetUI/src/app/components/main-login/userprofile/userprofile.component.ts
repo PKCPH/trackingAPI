@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-userprofile',
