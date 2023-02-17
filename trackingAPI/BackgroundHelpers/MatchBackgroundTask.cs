@@ -1,4 +1,5 @@
-﻿using trackingAPI.Controllers;
+﻿using Microsoft.EntityFrameworkCore;
+using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
@@ -80,7 +81,7 @@ public class MatchBackgroundTask
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
                 item.MatchState = MatchState.Playing;
-                //liveMatchBackgroundTask.ExecuteLiveMatch(item);
+                liveMatchBackgroundTask.ExecuteLiveMatch(item);
 
                 //item.TeamAScore = random.Next(0, 3);
                 //item.TeamBScore = random.Next(0, 3);
