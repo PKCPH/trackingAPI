@@ -86,12 +86,36 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("/api/matches")]
-    public ActionResult<IList<GameMatch>> GetAllMatches()
+    public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
     {
-        var matches = from match in _context.Matches
-                      .Include(mt => mt.ParticipatingTeams)
-                      .ThenInclude(t => t.Team)
-                      select match;
-        return Ok(matches.ToList());
+        var matches = _context.Matches
+            .Include(mt => mt.ParticipatingTeams)
+            .ThenInclude(t => t.Team)
+            .Select(match => new {
+                Id = match.Id,
+                Date = match.DateOfMatch,
+                ScoreA = match.TeamAScore,
+                ScoreB = match.TeamBScore,
+                Teams = match.ParticipatingTeams.Select(pt => new {
+                    Id = pt.Team.Id,
+                    Name = pt.Team.Name
+                }).ToList()
+            })
+            .ToList();
+
+        return Ok(matches);
     }
+
+    
+/*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+    {
+        var matches = _context.Matches
+            .Include(mt => mt.ParticipatingTeams)
+            .ThenInclude(t => t.Team)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Ok(matches);
+    }*/
 }
