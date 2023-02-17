@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
@@ -51,9 +51,9 @@ export class MainTeamsComponent implements OnDestroy {
                 availability: team.isAvailable ? 'No' : 'Yes'
               }
             });
-            // console.log(this.matches);
             if (teams)
             {
+              this.toggleOverflowDiv();
               this.Hideloader();
             }
             this.teamsService.errorMessage.subscribe(error => {
@@ -65,10 +65,8 @@ export class MainTeamsComponent implements OnDestroy {
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });
-          },
-
+          }
         });   
-  
     }
   
     deleteTeam(id: string) {
@@ -103,6 +101,18 @@ export class MainTeamsComponent implements OnDestroy {
   
     GoAddTeam() {
       this.router.navigateByUrl('/teams/add')
+    }
+
+    isTableOverflowing(): boolean {
+      return this.el.nativeElement.querySelector('#tablediv').scrollHeight > this.el.nativeElement.querySelector('#tablediv').clientHeight;
+    }
+  
+    toggleOverflowDiv(): void {
+      if (this.isTableOverflowing()) {
+        this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'block');
+      } else {
+        this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
+      }
     }
 
 }

@@ -19,7 +19,7 @@ namespace trackingAPI.Models
         public Login()
         {
             Email = "";
-            Balance = 0;
+            Balance = 1000;
             Id = Guid.NewGuid();
         }
     }

@@ -2,14 +2,15 @@
 
 <div id="loading"></div>
 
-<div class="container divs my-2 py-5 d-1" style="background-color: rgba(0,0,0,0.6);">
-    <form class="my-4" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+<div class="container my-2 py-5 d-1">
+    <form class="my-4 formBox" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <div class="avatar mb-5"><img src="/images/logo.png"></div>
       <h2 class="form-signin-heading mb-4">LOGIN</h2>
-        <label for="username" class="sr-only">Email address</label>
+        <label for="username" class="sr-only mb-3">Username</label>
         <input type="email" id="username" name="username" [(ngModel)]="credentials.userName" 
           class="form-control" placeholder="User Name" required>
         <br/>
-        <label for="password" class="sr-only">Password</label>
+        <label for="password" class="sr-only mb-3">Password</label>
         <input type="password" id="password" name="password" [(ngModel)]="credentials.password" 
           class="form-control" placeholder="Password" required>
         <br/>

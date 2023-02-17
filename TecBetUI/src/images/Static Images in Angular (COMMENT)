@@ -1,0 +1,9 @@
+ If you're using Angular CLI to build your app, make sure that the image file is included in the assets section of the angular.json file. The assets section should look something like this:
+
+"assets": [
+  "src/favicon.ico",
+  "src/assets",
+  "src/images"
+]
+
+If the image file is not included in the assets section, it will not be copied to the dist folder during the build process, and therefore will not be available to the web app.
