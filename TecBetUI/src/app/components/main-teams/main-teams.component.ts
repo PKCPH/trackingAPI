@@ -94,8 +94,7 @@ export class MainTeamsComponent implements OnDestroy {
     } 
   
     Hideloader() {
-              // Setting display of spinner
-              // element to none
+              // Setting display of spinner element to none
               this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
               this.renderer.setStyle(this.el.nativeElement.querySelector('#teamcontainer'), 'display', 'block');
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
