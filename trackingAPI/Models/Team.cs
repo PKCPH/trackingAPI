@@ -20,6 +20,9 @@ public class Team
 
     [DefaultValue("true")]
     public bool? IsAvailable { get; set; }
-
     public ICollection<MatchTeam> Matches { get; set;}
+
+    //[ForeignKey("Player")]
+    //public Guid PlayerId { get; set; }
+    //public Team Player { get; set; }
 }
