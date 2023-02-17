@@ -19,8 +19,9 @@
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
     "@auth0/angular-jwt": "^5.1.2",
+    "@syncfusion/ej2-angular-splitbuttons": "^20.4.50",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
+    "tslib": "^2.5.0",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {

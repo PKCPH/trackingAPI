@@ -28,6 +28,7 @@ a:hover {
  width: 100%;
  background: rgba(0,0,0,0.8);
  backdrop-filter: blur(25px);
+ z-index: 1;
 }
 
 .menu2 {
@@ -108,10 +109,41 @@ span:hover {
 
 .logo2 img {
     position: absolute;
-    left: -20%;
+    left: -15%;
     top: -10%;
     height: 65px;
 }
+
+.dropDownBox {
+    position: fixed;
+    background-color: rgba(0,0,0,0.8);
+    padding: 1px;
+    top: 80%;
+    right: 13%;
+    z-index: 2;
+    border-radius: 10%;
+}
+
+.dropDownButton {
+    border: none;
+    background: none;
+  }
+
+.dropDownButton img {
+    margin-left: 3px;
+    height: 8px;
+} 
+
+.dropDownItems {
+    cursor: pointer;
+    padding: 4px;
+
+}
+
+.dropDownItems:hover {
+    background-color: rgba(0,0,0,0.5);
+}
+  
 
 @media screen and (max-width: 1000px) {
 

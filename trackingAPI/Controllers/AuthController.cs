@@ -94,4 +94,19 @@ public class AuthController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpDelete("{username}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(string username)
+    {
+        //finding the issue
+        var userToDelete = await _context.Logins.FirstOrDefaultAsync(x => x.UserName == username);
+
+        //otherwise remove the issue and save changes in DB
+        _context.Logins.Remove(userToDelete);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

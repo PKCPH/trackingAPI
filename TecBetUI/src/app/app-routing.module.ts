@@ -16,6 +16,7 @@ import { PlayerListComponent } from './components/main-player/player-list/player
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
+import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
 
 const routes: Routes = [
   {
@@ -78,6 +79,10 @@ const routes: Routes = [
   {
     path: 'teams/players/:id',
     component: PlayersOnTeamComponent
+  },
+  {
+    path: 'dashboard/:username',
+    component: UserprofileComponent
   }
 ];
 

@@ -71,7 +71,12 @@ export class AuthguardService implements CanActivate  {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
     addUserRequest.id = '00000000-0000-0000-0000-000000000000';
+    addUserRequest.balance = 1000;
     return this.http.post<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/register', addUserRequest);
+  }
+
+  deleteUser(username: string): Observable<LoginModel> {
+    return this.http.delete<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/' + username);
   }
 
   updateUser(id: string, updateUserRequest: LoginModel): Observable<LoginModel> {
