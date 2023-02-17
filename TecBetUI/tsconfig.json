@@ -3,7 +3,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     //Missing these types otherwise compilation errors
-    "types": ["node"],
+    "types": ["node", "jest"],
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

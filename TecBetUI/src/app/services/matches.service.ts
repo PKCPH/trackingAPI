@@ -38,7 +38,7 @@ export class MatchesService {
 
   getSchedule(): Observable<Match[]> {
     this.isLoading = true;
-    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/Matches')
+    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/matches')
       .pipe(
         tap(schedule => {
           this.errorSubject.next('');
