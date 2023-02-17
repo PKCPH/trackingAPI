@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { Match } from '../models/matches.model';
-import { ParticipatingTeam } from '../models/schedule.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import * as serviceVariables from './serviceVariables'
 

@@ -1,4 +1,3 @@
-import { ParticipatingTeam } from "./schedule.model"
 import { Team } from "./teams.model";
 
 export interface Match {
