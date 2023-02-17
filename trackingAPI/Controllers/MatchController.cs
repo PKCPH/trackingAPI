@@ -93,12 +93,13 @@ public class MatchController : ControllerBase
             .ThenInclude(t => t.Team)
             .Select(match => new {
                 Id = match.Id,
-                Date = match.DateOfMatch,
-                ScoreA = match.TeamAScore,
-                ScoreB = match.TeamBScore,
-                Teams = match.ParticipatingTeams.Select(pt => new {
+                dateOfMatch = match.DateOfMatch,
+                teamAScore = match.TeamAScore,
+                teamBScore = match.TeamBScore,
+                matchState = match.MatchState,
+                participatingTeams = match.ParticipatingTeams.Select(pt => new {
                     Id = pt.Team.Id,
-                    Name = pt.Team.Name
+                    name = pt.Team.Name
                 }).ToList()
             })
             .ToList();
