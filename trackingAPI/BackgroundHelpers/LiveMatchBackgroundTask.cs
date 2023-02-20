@@ -3,45 +3,75 @@ using System.Timers;
 using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace trackingAPI.BackgroundHelpers;
 
 
 public class LiveMatchBackgroundTask
 {
-    //private readonly PeriodicTimer _timer = new(LiveMatchConfiguration.TimerTickTimeSpan);
-    private static System.Timers.Timer _timer = new System.Timers.Timer(1000);
     private readonly IServiceProvider _services;
-    private readonly DatabaseContext _context;
-    private IServiceProvider services;
+    public int TeamAScore;
+    public int TeamBScore;
 
     public LiveMatchBackgroundTask(IServiceProvider services)
     {
-        this.services = services;
+        _services = services;
     }
 
     public Task ExecuteLiveMatch(GameMatch gameMatch)
     {
-        int count = 0;
-
-        _timer.Elapsed += _timer.Elapsed;
-
-        //Console.WriteLine($"{timer.ToString().PadLeft(2, '0')} ");
-        // $": {Convert.ToInt32(stopwatch.Elapsed.TotalSeconds).ToString().PadLeft(2, '0')}");
-        while (count < 5400)
+        using (var scope = _services.CreateScope())
         {
-            TimeSpan result = TimeSpan.FromSeconds(count);
-            string fromTimeString = result.ToString("mm':'ss");
-            Console.WriteLine(fromTimeString);
-            count++;
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            gameMatch.MatchState = MatchState.Playing;
+
+            _context.Entry(gameMatch).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
 
+            while (timer.Elapsed.TotalSeconds < 5400)
+            {
+                TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
+                string fromTimer = result.ToString("mm':'ss");
+
+                IsGoalScoredChance(gameMatch);
+                Console.WriteLine($"Match {gameMatch.Id} Time: {fromTimer}");
+                Console.WriteLine();
+                Thread.Sleep(1000);
+            }
+            timer.Stop();
+
+         
         return Task.CompletedTask;
-        //timer.WaitForNextTickAsync(stoppingToken);               
     }
 
+    public void IsGoalScoredChance(GameMatch gameMatch)
+    {
+        Random rnd = new Random();
+        var ballPossessionTeam = rnd.Next(100);
+        bool GoalToTeamA = false;
+        var chanceOfGoal = rnd.Next(1, 100);
+        if (ballPossessionTeam < 50) GoalToTeamA = true;
+        if (chanceOfGoal > 2) return;
 
+        Console.WriteLine($"GOAL IS SCORED");
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
 
+            if (GoalToTeamA) gameMatch.TeamAScore++; else gameMatch.TeamBScore++;
+
+            _context.Entry(gameMatch).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+    }
 }
 

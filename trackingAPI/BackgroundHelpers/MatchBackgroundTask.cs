@@ -41,7 +41,17 @@ public class MatchBackgroundTask
             // while now has past the schedule time of the match  
             if (now > firstGameMatch.DateOfMatch)
             {
-                PlayGameMatch(firstGameMatch);
+                firstGameMatch.MatchState = MatchState.Playing;
+                using (var scope = _services.CreateScope())
+                {
+                    var _context =
+                        scope.ServiceProvider
+                            .GetRequiredService<DatabaseContext>();
+                    _context.Entry(firstGameMatch).State = EntityState.Modified;
+                    _context.SaveChanges();
+                }
+                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
+                thread.Start();
             }
         }
     }
@@ -78,17 +88,13 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
+            //make cautios of a game that been paused of postponed and will resume another time
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
-                item.MatchState = MatchState.Playing;
                 liveMatchBackgroundTask.ExecuteLiveMatch(item);
-
-                //item.TeamAScore = random.Next(0, 3);
-                //item.TeamBScore = random.Next(0, 3);
-                //item.MatchState = MatchState.Finished;
-                
+                item.MatchState = MatchState.Finished;
+                _context.Entry(item).State = EntityState.Modified;
             }
-
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);
