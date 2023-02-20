@@ -41,7 +41,7 @@ public class LiveMatchBackgroundTask
                 string fromTimer = result.ToString("mm':'ss");
 
                 IsGoalScoredChance(gameMatch);
-                Console.WriteLine($"Match {gameMatch.Id} Time: {fromTimer}");
+                Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
                 Console.WriteLine();
                 Thread.Sleep(1000);
             }
