@@ -6,11 +6,9 @@
         <p>Username: {{ credentials.userName | titlecase }} </p>
         <p>Balance: {{credentials.balance}}$</p>
         <p>Role: {{credentials.role}}</p>
-    <div class="d-flex justify-content-center flex-column">
-        <a [routerLink]=""><button class="btn btn-success mt-3">Change Password</button></a>
-        <a><button class="btn btn-danger mt-3" (click)="deleteUser(credentials.userName)">Delete Account</button></a>
-
-      
+    <div class="profile">
+        <button class="btn btn-success mt-3" (click)="openPassword()">Change Password</button>
+        <button class="btn btn-danger mt-3" (click)="openConfirm()">Delete Account</button> 
     </div>
 </div>
 

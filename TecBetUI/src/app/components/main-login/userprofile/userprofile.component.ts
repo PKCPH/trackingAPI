@@ -1,19 +1,26 @@
 import { Component, Type } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmboxComponent } from './confirmbox/confirmbox.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+
+const MODALS: { [name: string]: Type<any> } = {
+	confirm: ConfirmboxComponent,
+  password: ChangepasswordComponent
+};
 
 @Component({
   selector: 'app-userprofile',
   templateUrl: './userprofile.component.html',
-  styleUrls: ['./userprofile.component.css']
+  styleUrls: ['./userprofile.component.css'],
 })
 export class UserprofileComponent {
 
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
-  constructor(private authService: AuthguardService, private route: ActivatedRoute, private router: Router) {
+  constructor(private authService: AuthguardService, private route: ActivatedRoute, private modalService: NgbModal) {
 
     this.route.paramMap.subscribe({
       next: (params) => {
@@ -23,11 +30,12 @@ export class UserprofileComponent {
 this.authService.getUser(userName)
 .subscribe({
   next: (response) => {
+this.credentials.id = response.id
 this.credentials.balance = response.balance,
 this.credentials.email = response.email,
 this.credentials.userName = response.userName,
 this.credentials.role = response.role
-console.log(this.credentials);
+// console.log(this.credentials);
   }
 });
         }
@@ -35,16 +43,14 @@ console.log(this.credentials);
     })
   }
 
-  deleteUser(username: string) {
-    this.authService.deleteUser(username)
-    .subscribe({
-      next: (response) => {
-        localStorage.removeItem("jwt");
-        localStorage.removeItem("credentials");
-        this.credentials.role = "";
-        this.router.navigate(['/'])
-      }
-    })
-  }
-  
+  openConfirm() {
+		this.modalService.open(MODALS['confirm'], {centered: true, size: 'lg'});
+	}
+
+  openPassword() {
+		const ref = this.modalService.open(ChangepasswordComponent, { centered: true });
+    ref.componentInstance.selectedUser = this.credentials;
+	}
 }
+
+

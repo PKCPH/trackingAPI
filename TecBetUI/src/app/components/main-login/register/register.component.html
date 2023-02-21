@@ -43,7 +43,7 @@
   <div id="" class="container divs my-5 py-5 successdiv" *ngIf="!invalidRegister">
     <p style="color: green;">Successfully registered an account!</p>
     <h1>Welcome to BetHaven</h1>
-    <p class="my-4">You've been logged in as <span>{{ addLoginRequest.userName }}</span></p>
+    <p class="my-4">You've been logged in as <span>{{ addLoginRequest.userName | titlecase}}</span></p>
     <img src="https://www.animatedimages.org/data/media/279/animated-sports-image-0052.gif">
     <div><a routerLink="/"><button type="button" class="btn btn-primary mx-2 my-5">Back</button></a>
     <a routerLink="/"><button type="button" class="btn btn-danger mx-2" (click)="logOut()">Logout</button></a></div>

@@ -25,6 +25,8 @@ import { EditPlayerComponent } from './components/main-player/edit-player/edit-p
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
+import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -50,6 +52,8 @@ export function tokenGetter() {
     EditPlayerComponent,
     PlayersOnTeamComponent,
     UserprofileComponent,
+    ConfirmboxComponent,
+    ChangepasswordComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,7 @@ export function tokenGetter() {
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ChangepasswordComponent, ConfirmboxComponent]
 })
 export class AppModule { }

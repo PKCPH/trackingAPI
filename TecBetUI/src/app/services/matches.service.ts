@@ -65,7 +65,7 @@ export class MatchesService {
   }
 
   updateMatch(id: string, updateMatchRequest: Match): Observable<Match> {
-    updateMatchRequest.participatingTeams = [];
+    // updateMatchRequest.participatingTeams = [];
     return this.http.put<Match>(serviceVariables.baseApiUrl + '/api/Match/' + id, updateMatchRequest);
   }
 
