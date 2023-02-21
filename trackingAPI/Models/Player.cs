@@ -10,9 +10,6 @@ namespace trackingAPI.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int age { get; set; }
-        [ForeignKey("Team")]
-        public Guid TeamId { get; set; }
-        [NotMapped]
-        public Team Team { get; set; }
+        public ICollection<PlayerTeam> Teams { get; set; }
     }
 }

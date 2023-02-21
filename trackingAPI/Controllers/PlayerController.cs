@@ -84,7 +84,6 @@ namespace trackingAPI.Controllers
             if (player == null) { return NotFound(); }
             player.Name = updatePlayerRequest.Name;
             player.age = updatePlayerRequest.age;
-            player.TeamId = updatePlayerRequest.TeamId;
 
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
@@ -105,13 +104,7 @@ namespace trackingAPI.Controllers
             }
 
             //removes all playerteams with the playerId from the playerTeam Table
-            foreach (var playerTeam in playerTeams)
-            {
-                if (playerTeam.PlayerId == id)
-                {
-                    this.databaseContext.PlayerTeams.Remove(playerTeam);
-                }
-            }
+            playerTeams.RemoveAll(p => p.PlayerId == id);
 
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
