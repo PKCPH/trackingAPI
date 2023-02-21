@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Net;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
@@ -16,7 +18,7 @@ public class ImplementBackgroundService : BackgroundService
         _services = services;
     }
 
-    //Task running when IHostedSErvice starts
+    //Task running when IHostedService starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using (var scope = _services.CreateScope())
@@ -26,17 +28,20 @@ public class ImplementBackgroundService : BackgroundService
                     .GetRequiredService<DatabaseContext>();
             do
             {
+                Task task;
                 MatchBackgroundTask matchBackgroundTask = new(_services);
-                //if loop to check if all matches has been played before creating new matches,
-                //so teams wont be matched with the same opponent
-                if (await _context.Matches.AnyAsync(x => x.MatchState == MatchState.NotStarted))
+                //if any matches has not finished then play matches
+                //else create new matches
+                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
                 {
-                    await matchBackgroundTask.FindAndPlayMatches();
+                    task = matchBackgroundTask.FindAndPlayMatches();
                 }
                 else
                 {
-                    await matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+                    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 }
+                await Task.WhenAny(task);
+                Console.WriteLine("ExecuteAsync loop in complete");
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);
         }

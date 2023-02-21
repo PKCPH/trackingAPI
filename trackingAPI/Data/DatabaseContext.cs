@@ -37,5 +37,9 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);
+
+        //modelBuilder.Entity<Score>().HasOne(x => x.GameMatch)
+        //    .WithMany(x => x.ParticipatingTeams)
+        //    .HasForeignKey(x => x.TeamId);
     }
 }
