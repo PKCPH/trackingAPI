@@ -16,6 +16,10 @@ export class PlayersService {
   }
   addPlayer(addPlayerRequest: Player): Observable<Player>{
     addPlayerRequest.id = '00000000-0000-0000-0000-000000000000'
+    addPlayerRequest.teams.forEach(element => {
+      element.id = '00000000-0000-0000-0000-000000000000';
+      element.playerId = '00000000-0000-0000-0000-000000000000'
+    });
     return this.http.post<Player>(serviceVariables.baseApiUrl + '/api/Player',addPlayerRequest);
   }
   getPlayer(id:string): Observable<Player>{

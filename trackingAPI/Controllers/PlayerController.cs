@@ -45,6 +45,7 @@ namespace trackingAPI.Controllers
             playerRequest.Id = Guid.NewGuid();
             foreach (var playerTeam in playerRequest.Teams)
             {
+                playerTeam.Id = Guid.NewGuid();
                 playerTeam.PlayerId = playerRequest.Id;
                 await this.databaseContext.PlayerTeams.AddAsync(playerTeam);
             }

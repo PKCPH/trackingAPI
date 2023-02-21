@@ -4,6 +4,7 @@ import { PlayersService } from 'src/app/services/players.service';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
 import { TeamsService } from 'src/app/services/teams.service';
+import { playerTeam } from 'src/app/models/playerTeam.model';
 
 @Component({
   selector: 'app-add-player',
@@ -11,21 +12,21 @@ import { TeamsService } from 'src/app/services/teams.service';
   styleUrls: ['./add-player.component.css']
 })
 export class AddPlayerComponent {
-
+  selectedTeamArray: Team[] = [];
   teams: Team[] = [];
-  team: Team = {
+  selectedTeam: Team = {
     id: '',
     name: '',
     isAvailable: true,
     matches: [],
-    availability:''
+    availability:'',
+    players:[]
   }
   addPlayerRequest: Player = {
     id: '',
     name: '',
     age: 0,
-    teamId: '',
-    team: this.team
+    teams:[]
   }
 
   constructor(private playerService: PlayersService, private teamsService: TeamsService, private router: Router){ }
@@ -43,8 +44,23 @@ export class AddPlayerComponent {
     })
   }
 
+  addTeam(){
+    if(this.selectedTeamArray.includes(this.selectedTeam) == true) return
+    this.selectedTeamArray.push(this.selectedTeam)
+    this.teams.splice(this.teams.indexOf(this.selectedTeam),1)
+    console.log(this.selectedTeamArray)
+  }
+
   addPlayer(){
-    this.addPlayerRequest.teamId = this.addPlayerRequest.team.id
+    this.selectedTeamArray.forEach(element => {
+      const addPlayerTeam: playerTeam = {
+        id: '',
+        playerId: '',
+        teamId: element.id
+      }
+      this.addPlayerRequest.teams.push(addPlayerTeam)
+    });
+
     console.log(this.addPlayerRequest)
     this.playerService.addPlayer(this.addPlayerRequest)
     .subscribe({
@@ -52,5 +68,11 @@ export class AddPlayerComponent {
         this.router.navigate(['players'])
       }
     })
+  }
+
+  removeFromSelectedTeamArray(team: Team){
+    this.teams.push(team);
+    this.selectedTeamArray.splice(this.selectedTeamArray.indexOf(team),1)
+    console.log(this.selectedTeamArray)
   }
 }

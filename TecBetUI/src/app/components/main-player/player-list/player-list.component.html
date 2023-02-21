@@ -8,7 +8,6 @@
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        <th>Team</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -16,7 +15,6 @@
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td> {{player.team.name}}</td>
                         <td><a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a></td>
                     </tr>
                 </tbody>

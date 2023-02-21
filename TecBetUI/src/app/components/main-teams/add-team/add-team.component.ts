@@ -16,7 +16,8 @@ export class AddTeamComponent {
     name: '',
     isAvailable: true,
     matches: [],
-    availability: ''
+    availability: '',
+    players: []
   };
   
   teamForm: FormGroup;

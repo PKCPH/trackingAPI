@@ -3,7 +3,7 @@
         <h1 class="mb-3">Edit Player</h1>
         <div class="row">
             <div class="col-6">          
-                <form #form="ngForm" (ngSubmit)="updatePlayer()">
+                <form #form="ngForm">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" 
@@ -15,7 +15,7 @@
                         name="age" [(ngModel)]="playerDetails.age">
                     </div>
                     <div class="mb-3">
-                        <select name="teams" id="teams" [(ngModel)]="playerDetails.team">
+                        <select name="teams" id="teams" [(ngModel)]="playerDetails.teams">
                             <option *ngFor="let team of teams" [ngValue]="team">{{team.name}}</option>
                         </select>
                     </div>

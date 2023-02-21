@@ -13,19 +13,11 @@ import { TeamsService } from 'src/app/services/teams.service';
 export class EditPlayerComponent {
 
   teams: Team[] = [];
-  team: Team = {
-    id: '',
-    name: '',
-    isAvailable: true,
-    matches: [],
-    availability:''
-  }
   playerDetails: Player = {
     id: '',
     name: '',
     age: 0,
-    teamId: '',
-    team: this.team
+    teams: []
   }
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }
@@ -53,16 +45,6 @@ export class EditPlayerComponent {
       },
       error: (response) => {
         console.log(response);
-      }
-    })
-  }
-
-  updatePlayer(){
-    this.playerDetails.teamId = this.playerDetails.team.id
-    this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
-    .subscribe({
-      next: (response) => {
-        this.router.navigate(['players'])
       }
     })
   }
