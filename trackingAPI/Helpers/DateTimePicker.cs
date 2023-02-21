@@ -15,7 +15,7 @@ namespace trackingAPI.Helpers
             //var response = req.GetResponse();
 
             var rnd = new Random();
-            var date = DateTime.Now;
+            var date = DateTime.Today; //.today when not testing
             DateTime dateTime = DateTime.UtcNow;
 
             //Timespan of the random scheduled time 
@@ -25,8 +25,8 @@ namespace trackingAPI.Helpers
             timeOfDayHours += TimeSpan.FromMinutes(minutes);
             var pickedDateTime = date + timeOfDayHours;
        
-            //if pickedDateTime is before CustomLocalTime return with +1 day else return
-            return (dateTime > pickedDateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
+            //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
+            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
         }
     }
 }

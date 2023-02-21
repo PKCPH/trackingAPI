@@ -2,9 +2,10 @@
 {
     public static class LiveMatchConfiguration
     {
-        public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(1);
+        ////not used yet
+        //public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(1);
 
-        public static TimeSpan MatchLength { get; set; } = TimeSpan.FromMinutes(5);
+        //public static TimeSpan MatchLength { get; set; } = TimeSpan.FromMinutes(5);
 
     }
 }

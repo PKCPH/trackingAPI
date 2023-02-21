@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Configurations;
 using trackingAPI.Data;
@@ -17,7 +18,7 @@ public class ImplementBackgroundService : BackgroundService
         _services = services;
     }
 
-    //Task running when IHostedSErvice starts
+    //Task running when IHostedService starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using (var scope = _services.CreateScope())
@@ -40,7 +41,6 @@ public class ImplementBackgroundService : BackgroundService
                     task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 }
                 await Task.WhenAny(task);
-
                 Console.WriteLine("ExecuteAsync loop in complete");
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);

@@ -4,6 +4,7 @@ using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -32,22 +33,24 @@ public class LiveMatchBackgroundTask
             _context.SaveChanges();
         }
 
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
+        Stopwatch timer = new Stopwatch();
+        timer.Start();
 
-            while (timer.Elapsed.TotalSeconds < 60)
-            {
-                TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
-                string fromTimer = result.ToString("mm':'ss");
+        while (timer.Elapsed.TotalSeconds < 60)
+        {
+            TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
+            string fromTimer = result.ToString("mm':'ss");
 
-                IsGoalScoredChance(gameMatch);
-                Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
-                Console.WriteLine();
-                Thread.Sleep(1000);
-            }
-            timer.Stop();
+            IsGoalScoredChance(gameMatch);
+            Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
 
-         
+            Console.WriteLine();
+
+            Thread.Sleep(1000);
+        }
+        timer.Stop();
+
+
         return Task.CompletedTask;
     }
 

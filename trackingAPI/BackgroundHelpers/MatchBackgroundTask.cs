@@ -34,6 +34,7 @@ public class MatchBackgroundTask
     public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
+        //var matches = GetListOfScheduledGameMatchesByDateTime();
         //while any matches has passed the datetime.now
         while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
         {
@@ -41,7 +42,6 @@ public class MatchBackgroundTask
             // while now has past the schedule time of the match  
             if (now > firstGameMatch.DateOfMatch)
             {
-                firstGameMatch.MatchState = MatchState.Playing;
                 using (var scope = _services.CreateScope())
                 {
                     var _context =
@@ -50,8 +50,8 @@ public class MatchBackgroundTask
                     _context.Entry(firstGameMatch).State = EntityState.Modified;
                     _context.SaveChanges();
                 }
+                //new thread is created and started per livematch
                 Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
-                //dont return, queue all matches before returning
                 thread.Start();
             }
         }
