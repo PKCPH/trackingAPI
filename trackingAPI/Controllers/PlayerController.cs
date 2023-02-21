@@ -21,15 +21,15 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetAllPlayers()
         {
             var players = await databaseContext.Players.ToListAsync();
-            var teams = await databaseContext.Teams.ToListAsync();
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
             //Goes through the list of teams and matches each player with the team they play on
             foreach (var player in players)
             {
-                foreach (var team in teams)
+                foreach (var playerTeam in playerTeams)
                 {
-                    if (team.Id == player.TeamId)
+                    if (playerTeam.PlayerId == player.Id)
                     {
-                        player.Team = team;
+                        player.Teams.Add(playerTeam);
                         //break not neccesary, but it should change O from n to n/2
                         break;
                     }
@@ -43,6 +43,12 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> AddPlayer([FromBody] Player playerRequest)
         {
             playerRequest.Id = Guid.NewGuid();
+            foreach (var playerTeam in playerRequest.Teams)
+            {
+                playerTeam.PlayerId = playerRequest.Id;
+                await this.databaseContext.PlayerTeams.AddAsync(playerTeam);
+            }
+            playerRequest.Teams.Clear();
             await this.databaseContext.Players.AddAsync(playerRequest);
             await this.databaseContext.SaveChangesAsync();
 
@@ -55,12 +61,17 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetPlayer([FromRoute] Guid id)
         {
             //gets the player by looking up the player table for ID matches
-            var player = await databaseContext.Players.FirstOrDefaultAsync(x => x.Id == id);
+            var player = await databaseContext.Players.FindAsync(id);
             if (player == null ) { return NotFound(); }
             //gets the team by looking up the team table for ID matches to the players teamID property
-            var team = await databaseContext.Teams.FirstOrDefaultAsync(x => x.Id == player.TeamId);
-            if (team == null) { return NotFound(); }
-            player.Team = team;
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+            foreach ( var playerTeam in playerTeams)
+            {
+                if (player.Id == playerTeam.PlayerId)
+                {
+                    player.Teams.Add(playerTeam);
+                }
+            }
             return Ok(player);
         }
 
@@ -85,9 +96,23 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> DeletePlayer([FromRoute] Guid id)
         {
             var player = await this.databaseContext.Players.FindAsync(id);
-            if (player == null) { return NotFound(); }
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
 
-            this.databaseContext.Players.Remove(player);
+            //removes the player from the player Table
+            if (player != null)
+            {
+                this.databaseContext.Players.Remove(player);
+            }
+
+            //removes all playerteams with the playerId from the playerTeam Table
+            foreach (var playerTeam in playerTeams)
+            {
+                if (playerTeam.PlayerId == id)
+                {
+                    this.databaseContext.PlayerTeams.Remove(playerTeam);
+                }
+            }
+
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
         }
