@@ -28,11 +28,10 @@ public class ImplementBackgroundService : BackgroundService
             do
             {
                 Task task;
-
                 MatchBackgroundTask matchBackgroundTask = new(_services);
-                //if loop to check if all matches has been played before creating new matches,
-                //so teams wont be matched with the same opponent
-                if (_context.Matches.Any(x => x.MatchState == MatchState.NotStarted))
+                //if any matches has not finished then play matches
+                //else create new matches
+                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
                 {
                     task = matchBackgroundTask.FindAndPlayMatches();
                 }
@@ -40,10 +39,9 @@ public class ImplementBackgroundService : BackgroundService
                 {
                     task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 }
-
                 await Task.WhenAny(task);
 
-                Console.WriteLine("end");
+                Console.WriteLine("ExecuteAsync loop in complete");
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);
         }

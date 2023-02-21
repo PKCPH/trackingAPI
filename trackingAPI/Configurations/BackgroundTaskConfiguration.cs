@@ -37,5 +37,5 @@ public static class BackgroundTaskConfiguration
     //How often the backgroundtask is checking for changes.
     public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(10);
 
-    public static DateTime CustomLocalTime { get; set; } = DateTime.UtcNow.AddHours(1);
+    //public static DateTime CustomLocalTime { get; set; } = DateTime.UtcNow;
 }

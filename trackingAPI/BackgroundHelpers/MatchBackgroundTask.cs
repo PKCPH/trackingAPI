@@ -31,7 +31,7 @@ public class MatchBackgroundTask
         }
     }
 
-    public async Task FindAndPlayMatches()
+    public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
         //while any matches has passed the datetime.now
@@ -51,9 +51,11 @@ public class MatchBackgroundTask
                     _context.SaveChanges();
                 }
                 Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
+                //dont return, queue all matches before returning
                 thread.Start();
             }
         }
+        return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
@@ -75,7 +77,7 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public void PlayGameMatch(GameMatch gameMatch)
+    public Task PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
@@ -107,5 +109,6 @@ public class MatchBackgroundTask
             }
             _context.SaveChanges();
         }
+        return Task.CompletedTask;
     }
 }
