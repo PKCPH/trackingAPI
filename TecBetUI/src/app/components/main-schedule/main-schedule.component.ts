@@ -19,8 +19,7 @@ export class MainScheduleComponent implements OnDestroy {
     this.updateSubscription.unsubscribe();
   } 
   
-    constructor(private matchesService: MatchesService, private router: Router, 
-      private location: Location, 
+    constructor(private matchesService: MatchesService, 
       private el: ElementRef, private renderer: Renderer2) {
   
         this.updateSubscription = interval(1500).pipe(

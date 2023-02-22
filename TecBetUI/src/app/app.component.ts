@@ -20,6 +20,9 @@ export class AppComponent {
   constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService)
   {
 
+    //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
+    //Timer is strictly for hiding the dropdown menu if not being used
+
     this.startTimer();
 
     this.loginService.currentCredentials.subscribe(credentials => {
@@ -40,6 +43,8 @@ export class AppComponent {
 
   }
 
+  //Basic boolean function that checks if youre on a certain page
+
   isRegisterPage = (): boolean => {
     if (this.router.url.includes('/register')) 
   {  
@@ -47,6 +52,8 @@ export class AppComponent {
   }
 return false;
   }
+
+  //Checks for token 
 
   isUserAuthenticated = (): boolean => {
     const token = localStorage.getItem("jwt");
@@ -56,12 +63,16 @@ return false;
     return false;
   }
 
+  //Clears localstorage and credential role
+
   logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
     this.credentials.role = "";
     this.router.navigateByUrl("/");
   }
+
+  //Listener on scroll, any scrolling on the page will trigger this function and set a number to either 1 or 0 (1 for it being scrolled)
 
   @HostListener('window:scroll', ['$event'])
   onWindowScroll($event: any) {
@@ -78,7 +89,8 @@ return false;
   startTimer() {
     this.timer = setTimeout(() => {
       this.showDropdown = false;
-    }, 4000); // 4 seconds
+      this.resetTimer();
+    }, 3000); // 4 seconds
   }
 
   resetTimer() {
@@ -93,7 +105,7 @@ return false;
   onItemClick(item: string) {
     // Handle the item click event here.
     // For example, you could emit an event or perform some action based on the clicked item.
-    console.log(`Item "${item}" clicked.`);
+    // console.log(`Item "${item}" clicked.`);
     
     // Hide the dropdown box.
     this.showDropdown = false;

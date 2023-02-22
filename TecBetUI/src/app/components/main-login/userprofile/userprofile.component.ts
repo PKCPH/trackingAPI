@@ -6,10 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmboxComponent } from './confirmbox/confirmbox.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
-const MODALS: { [name: string]: Type<any> } = {
-	confirm: ConfirmboxComponent,
-  password: ChangepasswordComponent
-};
 
 @Component({
   selector: 'app-userprofile',
@@ -44,7 +40,7 @@ this.credentials.role = response.role
   }
 
   openConfirm() {
-		this.modalService.open(MODALS['confirm'], {centered: true, size: 'lg'});
+		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg'});
 	}
 
   openPassword() {

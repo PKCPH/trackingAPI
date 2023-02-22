@@ -25,7 +25,7 @@
             </thead>
 
             <tr class="tablerow" *ngFor="let games of games"> 
-                <td>{{ games.dateOfMatch | date: 'dd/MM/yyyy hh:mm' }}</td>
+                <td>{{ games.dateOfMatch | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
                 <td>{{games.teamAScore}} - {{games.teamBScore}}</td>
