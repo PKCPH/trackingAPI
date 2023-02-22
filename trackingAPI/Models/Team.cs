@@ -26,5 +26,5 @@ public class Team
 
     //[ForeignKey("Player")]
     //public Guid PlayerId { get; set; }
-    //public Team Player { get; set; }//lol
+    //public Team Player { get; set; }//lol2
 }
