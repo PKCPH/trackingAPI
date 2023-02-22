@@ -9,7 +9,8 @@ namespace trackingAPI.Helpers
         public static DateTime CreateRandomMatchTime()
         {
             var rnd = new Random();
-            var date = DateTimeStartingPoint;
+            var date = DateTime.Today; //.today when not testing
+            DateTime dateTime = DateTime.UtcNow;
 
             //Timespan of the random scheduled time 
             var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
@@ -17,9 +18,11 @@ namespace trackingAPI.Helpers
             var timeOfDayHours = TimeSpan.FromHours(StartHourOfScheduledTimeSpan);
             timeOfDayHours += TimeSpan.FromMinutes(minutes);
             var pickedDateTime = date + timeOfDayHours;
-       
-            //if pickedDateTime is before CustomLocalTime return with +1 day else return
-            return (Convert.ToDateTime(CustomLocalTime) > pickedDateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
+
+            //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
+            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
+
+            //master merge
         }
     }
 }
