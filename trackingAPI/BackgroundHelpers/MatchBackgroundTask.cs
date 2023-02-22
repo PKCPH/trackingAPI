@@ -93,7 +93,7 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            //make cautios of a game that been paused of postponed and will resume another time
+            //make cautios of a game that been paused of postponed and will resume another time!
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
                 liveMatchBackgroundTask.ExecuteLiveMatch(item);
