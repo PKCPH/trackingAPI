@@ -32,9 +32,10 @@ public class MatchBackgroundTask
         }
     }
 
-    public async Task FindAndPlayMatches()
+    public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
+        //var matches = GetListOfScheduledGameMatchesByDateTime();
         //while any matches has passed the datetime.now
         while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
         {
@@ -57,6 +58,7 @@ public class MatchBackgroundTask
                 Thread.Sleep(100);
             }
         }
+        return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
@@ -78,10 +80,12 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public void PlayGameMatch(GameMatch gameMatch)
+    public Task PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
+        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+        CancellationToken stoppingToken;
 
         using (var scope = _services.CreateScope())
         {
@@ -89,13 +93,13 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
+            //make cautios of a game that been paused of postponed and will resume another time!
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
-                item.TeamAScore = random.Next(0, 3);
-                item.TeamBScore = random.Next(0, 3);
+                liveMatchBackgroundTask.ExecuteLiveMatch(item);
                 item.MatchState = MatchState.Finished;
+                _context.Entry(item).State = EntityState.Modified;
             }
-
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);
@@ -108,5 +112,6 @@ public class MatchBackgroundTask
             }
             _context.SaveChanges();
         }
+        return Task.CompletedTask;
     }
 }
