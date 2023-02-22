@@ -24,9 +24,11 @@ namespace trackingAPI.Helpers
             var timeOfDayHours = TimeSpan.FromHours(StartHourOfScheduledTimeSpan);
             timeOfDayHours += TimeSpan.FromMinutes(minutes);
             var pickedDateTime = date + timeOfDayHours;
-       
+
             //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
             return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
+
+            //cmon git bro
         }
     }
 }
