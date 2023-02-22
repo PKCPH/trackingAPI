@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
@@ -53,6 +54,8 @@ public class MatchBackgroundTask
                 //new thread is created and started per livematch
                 Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
                 thread.Start();
+                Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
+                Thread.Sleep(1000);
             }
         }
         return Task.CompletedTask;
@@ -79,36 +82,45 @@ public class MatchBackgroundTask
 
     public Task PlayGameMatch(GameMatch gameMatch)
     {
-        Random random = new Random();
-        List<MatchTeam> matchTeams = new List<MatchTeam>();
-        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
-        CancellationToken stoppingToken;
-
-        using (var scope = _services.CreateScope())
+        try
         {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
 
-            //make cautios of a game that been paused of postponed and will resume another time
-            foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
+            Random random = new Random();
+            List<MatchTeam> matchTeams = new List<MatchTeam>();
+            LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+            CancellationToken stoppingToken;
+
+            using (var scope = _services.CreateScope())
             {
-                liveMatchBackgroundTask.ExecuteLiveMatch(item);
-                item.MatchState = MatchState.Finished;
-                _context.Entry(item).State = EntityState.Modified;
+                var _context =
+                    scope.ServiceProvider
+                        .GetRequiredService<DatabaseContext>();
+
+                //make cautios of a game that been paused of postponed and will resume another time
+                foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
+                {
+                    liveMatchBackgroundTask.ExecuteLiveMatch(item);
+                    item.MatchState = MatchState.Finished;
+                    _context.Entry(item).State = EntityState.Modified;
+                }
+                foreach (var item in _context.MatchTeams)
+                {
+                    matchTeams.Add(item);
+                }
+                //foreach matchTeams where MatchId is matching the selected gameMatch.Id
+                foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
+                {
+                    //foreach team.id that is matching with matchTeams.teamId
+                    foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
+                }
+                _context.SaveChanges();
             }
-            foreach (var item in _context.MatchTeams)
-            {
-                matchTeams.Add(item);
-            }
-            //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-            foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
-            {
-                //foreach team.id that is matching with matchTeams.teamId
-                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
-            }
-            _context.SaveChanges();
+            return Task.CompletedTask;
         }
-        return Task.CompletedTask;
+        catch (Exception e)
+        {
+            Console.WriteLine("ERROR PLAYGAMEMATCH: " + e.Message);
+            return Task.CompletedTask;
+        }
     }
 }
