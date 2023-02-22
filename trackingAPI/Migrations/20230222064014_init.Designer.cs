@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230215071720_Player Migration")]
-    partial class PlayerMigration
+    [Migration("20230222064014_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,18 +83,6 @@ namespace trackingAPI.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Logins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("bc4703ab-c97c-4c86-889b-fea85208901f"),
-                            Balance = 0,
-                            Email = "",
-                            Password = "123456",
-                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Role = "Admin",
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -124,21 +112,36 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Players");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.PlayerTeam", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("age")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Players");
+                    b.ToTable("PlayerTeams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
@@ -179,15 +182,19 @@ namespace trackingAPI.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("trackingAPI.Models.Player", b =>
+            modelBuilder.Entity("trackingAPI.Models.PlayerTeam", b =>
                 {
-                    b.HasOne("trackingAPI.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
+                    b.HasOne("trackingAPI.Models.Player", null)
+                        .WithMany("Teams")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Team");
+                    b.HasOne("trackingAPI.Models.Team", null)
+                        .WithMany("Players")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
@@ -195,9 +202,16 @@ namespace trackingAPI.Migrations
                     b.Navigation("ParticipatingTeams");
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.Player", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
                 {
                     b.Navigation("Matches");
+
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

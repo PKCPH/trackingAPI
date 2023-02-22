@@ -15,7 +15,7 @@ namespace trackingAPI.Helpers
             //var response = req.GetResponse();
 
             var rnd = new Random();
-            var date = DateTime.Today; //.today when not testing
+            var date = DateTime.Now; //.today when not testing
             DateTime dateTime = DateTime.UtcNow;
 
             //Timespan of the random scheduled time 
