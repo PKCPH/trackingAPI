@@ -12,13 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-<<<<<<<< HEAD:trackingAPI/Migrations/20230214094901_2nd.Designer.cs
     [Migration("20230214094901_2nd")]
     partial class _2nd
-========
-    [Migration("20230213091621_init2")]
-    partial class init2
->>>>>>>> MatchSimulator:trackingAPI/Migrations/20230213091621_init2.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
