@@ -82,45 +82,36 @@ public class MatchBackgroundTask
 
     public Task PlayGameMatch(GameMatch gameMatch)
     {
-        try
+        Random random = new Random();
+        List<MatchTeam> matchTeams = new List<MatchTeam>();
+        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+        CancellationToken stoppingToken;
+
+        using (var scope = _services.CreateScope())
         {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
 
-            Random random = new Random();
-            List<MatchTeam> matchTeams = new List<MatchTeam>();
-            LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
-            CancellationToken stoppingToken;
-
-            using (var scope = _services.CreateScope())
+            //make cautios of a game that been paused of postponed and will resume another time
+            foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
-                var _context =
-                    scope.ServiceProvider
-                        .GetRequiredService<DatabaseContext>();
-
-                //make cautios of a game that been paused of postponed and will resume another time
-                foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
-                {
-                    liveMatchBackgroundTask.ExecuteLiveMatch(item);
-                    item.MatchState = MatchState.Finished;
-                    _context.Entry(item).State = EntityState.Modified;
-                }
-                foreach (var item in _context.MatchTeams)
-                {
-                    matchTeams.Add(item);
-                }
-                //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-                foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
-                {
-                    //foreach team.id that is matching with matchTeams.teamId
-                    foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
-                }
-                _context.SaveChanges();
+                liveMatchBackgroundTask.ExecuteLiveMatch(item);
+                item.MatchState = MatchState.Finished;
+                _context.Entry(item).State = EntityState.Modified;
             }
-            return Task.CompletedTask;
+            foreach (var item in _context.MatchTeams)
+            {
+                matchTeams.Add(item);
+            }
+            //foreach matchTeams where MatchId is matching the selected gameMatch.Id
+            foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
+            {
+                //foreach team.id that is matching with matchTeams.teamId
+                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
+            }
+            _context.SaveChanges();
         }
-        catch (Exception e)
-        {
-            Console.WriteLine("ERROR PLAYGAMEMATCH: " + e.Message);
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }
