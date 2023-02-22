@@ -17,7 +17,6 @@ import { AddPlayerComponent } from './components/main-player/add-player/add-play
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
-import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 
 const routes: Routes = [
   {

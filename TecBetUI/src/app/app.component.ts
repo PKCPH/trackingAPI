@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from './models/login.model';
 import { LoginService } from './services/login.service';
@@ -90,7 +90,7 @@ return false;
     this.timer = setTimeout(() => {
       this.showDropdown = false;
       this.resetTimer();
-    }, 3000); // 4 seconds
+    }, 4000); // 4 seconds
   }
 
   resetTimer() {

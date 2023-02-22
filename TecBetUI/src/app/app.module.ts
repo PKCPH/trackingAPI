@@ -27,6 +27,7 @@ import { UserprofileComponent } from './components/main-login/userprofile/userpr
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
 import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
+import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -54,6 +55,7 @@ export function tokenGetter() {
     UserprofileComponent,
     ConfirmboxComponent,
     ChangepasswordComponent,
+    AdminboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +76,6 @@ export function tokenGetter() {
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ChangepasswordComponent, ConfirmboxComponent]
+
 })
 export class AppModule { }

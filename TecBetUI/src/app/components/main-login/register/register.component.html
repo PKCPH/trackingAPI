@@ -2,8 +2,6 @@
 
     <div id="loading"></div>
     
-    <!-- Need better solution here not sure whats going on -->
-  <div class="d-flex"></div>
   <div class="container my-5 py-5" *ngIf="invalidRegister">
       <form [formGroup]="loginForm" (ngSubmit)="registerUser()" class="formBox">
       <div class="mb-3">
