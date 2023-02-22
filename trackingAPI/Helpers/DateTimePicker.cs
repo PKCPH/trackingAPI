@@ -9,7 +9,7 @@ namespace trackingAPI.Helpers
     {
         public static DateTime CreateRandomMatchTime()
         {
-            ////suggestion to use for internet time so API is not depended on localComputer time
+            ////suggestion to use for internet time so API is not depended on localComputer time!
             //var req = WebRequest.CreateHttp("https://worldtimeapi.org/api/timezone/Europe");
             //req.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => certificate.GetCertHashString() == "<real_Hash_here>";
             //var response = req.GetResponse();

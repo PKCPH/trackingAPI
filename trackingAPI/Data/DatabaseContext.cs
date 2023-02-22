@@ -17,7 +17,7 @@ public class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //Default value for IsAvailable = true
+        //Default value for IsAvailable = true!!!
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);

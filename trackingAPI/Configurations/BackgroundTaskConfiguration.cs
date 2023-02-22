@@ -34,4 +34,6 @@ public static class BackgroundTaskConfiguration
     //public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(6);
 
     ////public static DateTime CustomLocalTime { get; set; } = DateTime.UtcNow;
+    
+    ///fkkkkk
 }

@@ -12,7 +12,7 @@ public class League
     public LeagueState LeagueState { get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    //maybe add LeagueFormat?
+    //maybe add LeagueFormat?.
     public ICollection<Team> Teams { get; set; }
 }
 

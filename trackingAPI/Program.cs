@@ -28,7 +28,7 @@ public class Program
                 builder.Configuration.
             GetConnectionString("SqlServer")));
 
-        //Ensures that many to many models does not loop into each other lists
+        //Ensures that many to many models does not loop into each other lists.
         builder.Services.AddControllersWithViews()
             .AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

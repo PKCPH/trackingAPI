@@ -78,7 +78,7 @@ public class MatchController : ControllerBase
         //if issues does not exist
         if (issueToDelete == null) return NotFound();
 
-        //otherwise remove the issue and save changes in DB
+        //otherwise remove the issue and save changes in DB!
         _context.Matches.Remove(issueToDelete);
         await _context.SaveChangesAsync();
 

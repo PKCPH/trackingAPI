@@ -16,7 +16,7 @@ public class TeamController : ControllerBase
     public TeamController(DatabaseContext context) => _context = context;
 
     //action method, does as a response of the http request, to get a list of Issue
-    //attribute to make it handle httpGet
+    //attribute to make it handle httpGet!
     [HttpGet]
     public async Task<IEnumerable<Team>> Get()
         //get a list of Issue
