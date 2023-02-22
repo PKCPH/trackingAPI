@@ -12,13 +12,9 @@ public static class BackgroundTaskConfiguration
 
     //Datetime of which day the match is playing at (for now the same day as created)
     //using DateTime.Now for testing, but use DateTime.Today when not testing
-    //public static DateTime DateTimeStartingPoint { get; set; } = DateTime.Today;
 
     //How often the backgroundtask is checking for changes.
     public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(60);
-
-    //public static DateTime CustomLocalTime { get; set; } = DateTime.UtcNow.AddHours(1);
-
 
     ///////////////////////TESTING/////////////////////////////////
     /////
