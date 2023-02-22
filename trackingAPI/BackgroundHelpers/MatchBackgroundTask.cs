@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using trackingAPI.Controllers;
+﻿using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
@@ -31,10 +30,9 @@ public class MatchBackgroundTask
         }
     }
 
-    public Task FindAndPlayMatches()
+    public async Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
-        //var matches = GetListOfScheduledGameMatchesByDateTime();
         //while any matches has passed the datetime.now
         while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
         {
@@ -42,20 +40,9 @@ public class MatchBackgroundTask
             // while now has past the schedule time of the match  
             if (now > firstGameMatch.DateOfMatch)
             {
-                using (var scope = _services.CreateScope())
-                {
-                    var _context =
-                        scope.ServiceProvider
-                            .GetRequiredService<DatabaseContext>();
-                    _context.Entry(firstGameMatch).State = EntityState.Modified;
-                    _context.SaveChanges();
-                }
-                //new thread is created and started per livematch
-                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
-                thread.Start();
+                PlayGameMatch(firstGameMatch);
             }
         }
-        return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
@@ -77,12 +64,10 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public Task PlayGameMatch(GameMatch gameMatch)
+    public void PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
-        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
-        CancellationToken stoppingToken;
 
         using (var scope = _services.CreateScope())
         {
@@ -90,13 +75,13 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            //make cautios of a game that been paused of postponed and will resume another time
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {
-                liveMatchBackgroundTask.ExecuteLiveMatch(item);
+                item.TeamAScore = random.Next(0, 3);
+                item.TeamBScore = random.Next(0, 3);
                 item.MatchState = MatchState.Finished;
-                _context.Entry(item).State = EntityState.Modified;
             }
+
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);
@@ -109,6 +94,5 @@ public class MatchBackgroundTask
             }
             _context.SaveChanges();
         }
-        return Task.CompletedTask;
     }
 }
