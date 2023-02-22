@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
@@ -24,6 +24,22 @@ export class MainTeamsComponent implements OnDestroy {
       private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
 
+        let storedCredentials;
+
+        let storedCredentialsString = localStorage.getItem("credentials");
+        if (storedCredentialsString)
+        {
+        storedCredentials = JSON.parse(storedCredentialsString);
+
+        let role = storedCredentials.role;
+
+        if (role === 'Admin') {
+          this.router.navigate(['/teams']);
+          } else {
+            this.router.navigate(['/']);
+          }  
+        }
+
         this.updateSubscription = interval(1500).pipe(
           switchMap(() => this.teamsService.getAllTeams())
         )
@@ -35,27 +51,22 @@ export class MainTeamsComponent implements OnDestroy {
                 availability: team.isAvailable ? 'No' : 'Yes'
               }
             });
-            // console.log(this.matches);
             if (teams)
             {
+              this.toggleOverflowDiv();
               this.Hideloader();
             }
             this.teamsService.errorMessage.subscribe(error => {
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
               this.errorMessage = error;
-              
-              if (teams.length > 0)
+                           
+              if (this.errorMessage === '')
               {
-                this.errorMessage = "";
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });
-          },
-          error: (response) => {
-            console.log(response);
           }
         });   
-  
     }
   
     deleteTeam(id: string) {
@@ -81,8 +92,7 @@ export class MainTeamsComponent implements OnDestroy {
     } 
   
     Hideloader() {
-              // Setting display of spinner
-              // element to none
+              // Setting display of spinner element to none
               this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
               this.renderer.setStyle(this.el.nativeElement.querySelector('#teamcontainer'), 'display', 'block');
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
@@ -90,6 +100,18 @@ export class MainTeamsComponent implements OnDestroy {
   
     GoAddTeam() {
       this.router.navigateByUrl('/teams/add')
+    }
+
+    isTableOverflowing(): boolean {
+      return this.el.nativeElement.querySelector('#tablediv').scrollHeight > this.el.nativeElement.querySelector('#tablediv').clientHeight;
+    }
+  
+    toggleOverflowDiv(): void {
+      if (this.isTableOverflowing()) {
+        this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'block');
+      } else {
+        this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
+      }
     }
 
 }

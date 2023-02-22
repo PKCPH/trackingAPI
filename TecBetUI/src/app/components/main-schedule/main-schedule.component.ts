@@ -33,7 +33,7 @@ export class MainScheduleComponent implements OnDestroy {
                 ...game,
               }
             });
-            // console.log(this.matches);
+            console.log(this.games);
             if (games)
             {
               this.Hideloader();

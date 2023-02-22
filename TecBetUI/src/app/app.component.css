@@ -11,6 +11,10 @@
     font-size: 20px;
 }
 
+a:hover {
+    cursor: pointer;
+}
+
 /* .nav-title {
  color: white;
  text-decoration: none;
@@ -66,8 +70,104 @@
  background: rgba(0,0,0,0.8);
 }
 
-.menu a:hover, .menu2 a:hover {
+.leftsidenav a:hover, .menu2 a:hover {
  color: red;
  transition: all 400ms ease;
  font-size: 2rem;
 }
+
+.rightsidenav a:hover {
+    color: red;
+    transition: all 400ms ease;
+}
+
+p {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    color: lightblue;
+    align-items: center;
+}
+
+span {
+    color: lightseagreen;
+    transition: all 1000ms ease;
+}
+
+span:hover {
+    cursor: pointer;
+    color: seagreen;
+    transition: all 1000ms ease;
+}
+
+.logo img {
+    position: absolute;
+    left: -2%;
+    top: -45%;
+    height: 150px;
+}
+
+.logo2 img {
+    position: absolute;
+    left: -20%;
+    top: -10%;
+    height: 65px;
+}
+
+@media screen and (max-width: 1000px) {
+
+    .menu a {
+        font-size: 13px;
+    } 
+    
+    .menu2 a {
+        font-size: 15px;
+    }
+
+    .menu2 {
+        background: rgba(0,0,0,0.5);
+        width: max-content;
+        height: 150px;
+        display: block;
+        padding: 0.7rem 1.7rem;
+        position: fixed;
+        left: 8%;
+        transform: translateX(-50%);
+        bottom: 1%;
+        display: flex;
+        gap: 0.8rem;
+        backdrop-filter: blur(5px);
+        border: 5px solid rgba(0,0,0,0.2);
+        border-top: none;
+        border-bottom: none;
+        border-radius: 10px/90px;
+       }
+
+       .nav-text {
+        color: white;
+        text-decoration: none;
+        margin-left: 5px;
+        margin-right: 5px;
+        font-size: 1px;
+    }
+
+    .logo img {
+        top: 15%;
+        left: 0%;
+        height: 50px;
+    }
+
+    .logo2 img {
+        top: 0%;
+        left: 30%;
+        height: 50px;
+    }
+  }
+
+  @media screen and (max-width: 1400px)
+  {
+    .logo img {
+        top: 15%;
+        left: 0%;
+        height: 50px;
+    }
+  }
