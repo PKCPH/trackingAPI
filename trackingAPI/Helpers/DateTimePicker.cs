@@ -9,7 +9,8 @@ namespace trackingAPI.Helpers
         public static DateTime CreateRandomMatchTime()
         {
             var rnd = new Random();
-            var date = DateTimeStartingPoint;
+            var date = DateTime.Today; //.today when not testing
+            DateTime dateTime = DateTime.UtcNow;
 
             //Timespan of the random scheduled time 
             var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
