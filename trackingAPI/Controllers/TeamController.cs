@@ -88,13 +88,13 @@ public class TeamController : ControllerBase
     public async Task<IActionResult> GetPlayersFromTeam(Guid id)
     {
         var players = await _context.Players.ToListAsync();
-        foreach (var player in players)
-        {
-            if (player.TeamId != id)
-            {
-                players.Remove(player);
-            }
-        }
+        //foreach (var player in players)
+        //{
+        //    if (player.TeamId != id)
+        //    {
+        //        players.Remove(player);
+        //    }
+        //}
         return Ok(players);
     }
 }

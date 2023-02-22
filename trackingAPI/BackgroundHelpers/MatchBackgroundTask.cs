@@ -1,4 +1,6 @@
-﻿using trackingAPI.Controllers;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
@@ -40,7 +42,19 @@ public class MatchBackgroundTask
             // while now has past the schedule time of the match  
             if (now > firstGameMatch.DateOfMatch)
             {
-                PlayGameMatch(firstGameMatch);
+                using (var scope = _services.CreateScope())
+                {
+                    var _context =
+                        scope.ServiceProvider
+                            .GetRequiredService<DatabaseContext>();
+                    _context.Entry(firstGameMatch).State = EntityState.Modified;
+                    _context.SaveChanges();
+                }
+                //new thread is created and started per livematch
+                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
+                thread.Start();
+                Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
+                Thread.Sleep(100);
             }
         }
     }
