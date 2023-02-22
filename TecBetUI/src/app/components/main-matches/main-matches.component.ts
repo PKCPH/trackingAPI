@@ -23,6 +23,22 @@ export class MainMatchesComponent implements OnDestroy {
     constructor(private matchesService: MatchesService, private router: Router, 
       private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
+
+        let storedCredentials;
+
+        let storedCredentialsString = localStorage.getItem("credentials");
+        if (storedCredentialsString)
+        {
+        storedCredentials = JSON.parse(storedCredentialsString);
+
+        let role = storedCredentials.role;
+
+        if (role === 'Admin') {
+          this.router.navigate(['/matches']);
+          } else {
+            this.router.navigate(['/']);
+          }  
+        }
   
         this.updateSubscription = interval(1500).pipe(
           switchMap(() => this.matchesService.getAllMatches())
@@ -43,9 +59,8 @@ export class MainMatchesComponent implements OnDestroy {
               this.errorMessage = error;
               this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
 
-              if (matches.length > 0)
+              if (this.errorMessage === '')
               {
-                this.errorMessage = "";
                 this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
               }
             });
