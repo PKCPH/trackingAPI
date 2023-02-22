@@ -1,11 +1,10 @@
 <div class="section1">
     <!-- Need better solution here not sure whats going on -->
-  <div class="d-flex"></div>
   <div class="container divs my-5 py-5">
       <form [formGroup]="matchForm" (ngSubmit)="updateMatch()">
       <div class="mb-3">
           <h1 class="mb-5">Edit a match</h1>
-        <label for="matchState" class="form-label">Game State</label>
+        <label for="matchState" class="form-label mb-3">Game State</label>
 
         <select class="form-control" id="matchState" formControlName="matchState" [(ngModel)]= "matchDetails.matchState">
           <option value="0">Not started yet</option>

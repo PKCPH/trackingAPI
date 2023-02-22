@@ -8,6 +8,14 @@ import { MainScheduleComponent } from './components/main-schedule/main-schedule.
 import { AddTeamComponent } from './components/main-teams/add-team/add-team.component';
 import { EditTeamComponent } from './components/main-teams/edit-team/edit-team.component';
 import { MainTeamsComponent } from './components/main-teams/main-teams.component';
+import { LoginComponent } from './components/main-login/login/login.component';
+import { AuthguardService } from './services/authguard.service';
+import { CustomersComponent } from './components/customers/customers.component';
+import { RegisterComponent } from './components/main-login/register/register.component';
+import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
+import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
+import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
+import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 
 const routes: Routes = [
   {
@@ -41,6 +49,35 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: MainScheduleComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'customers',
+    component: CustomersComponent,
+    canActivate: [AuthguardService]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
+  },
+  {
+    path: 'players',
+    component: PlayerListComponent
+  },
+  {
+    path: 'players/add',
+    component: AddPlayerComponent
+  },
+  {
+    path: 'players/edit/:id',
+    component: EditPlayerComponent
+  },
+  {
+    path: 'teams/players/:id',
+    component: PlayersOnTeamComponent
   }
 ];
 

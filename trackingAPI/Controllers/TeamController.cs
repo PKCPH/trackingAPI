@@ -84,4 +84,17 @@ public class TeamController : ControllerBase
 
         return NoContent();
     }
+    [HttpGet("players/{id}")]
+    public async Task<IActionResult> GetPlayersFromTeam(Guid id)
+    {
+        var players = await _context.Players.ToListAsync();
+        //foreach (var player in players)
+        //{
+        //    if (player.TeamId != id)
+        //    {
+        //        players.Remove(player);
+        //    }
+        //}
+        return Ok(players);
+    }
 }

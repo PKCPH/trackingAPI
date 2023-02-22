@@ -1,7 +1,7 @@
 <!-- Inbuilt Bootstrap CSS -->
 <!-- my-5 = Margin on Y axis 5 (up and down) -->
 
-<div class="section1 tablediv">
+<div class="section1 tablediv" id="tablediv">
   
     <!-- spinnner element is 
         defined with id loading -->
@@ -11,6 +11,11 @@
     
     <div class="container my-2 divs py-5" id="teamcontainer">
         <h1 class="mb-3">Teams</h1>
+
+        <div id="overflow-div">
+            Scroll down for more..
+            <img style="height: 25px; position: absolute; top: -35%; right: -20%;" src="/images/arrow.png">
+          </div>
 
         <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton">Create a Team</button>
         <table class="table tabletext" *ngIf="teams && teams.length > 0">
@@ -26,6 +31,7 @@
                 <td>{{ teams.name }}</td>
                 <td>{{ teams.availability }}</td>
                 <td><a [routerLink]="['/teams', 'edit', teams.id]"><button class="btn btn-success mt-3">Edit</button></a>
+                    <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>
                     <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)">Delete</button></a></td>
             </tr> 
         </table>  

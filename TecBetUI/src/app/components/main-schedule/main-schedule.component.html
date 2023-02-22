@@ -24,16 +24,15 @@
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let game of games">  
-                <td>{{ game.dateOfMatch | date: 'dd/MM/yyyy hh:mm' }}</td>
-                <!-- <td *ngFor="let teams of match.participatingTeams">{{teams.team.name}} </td> -->
-                <td>{{game.participatingTeams[0].team.name}} vs {{game.participatingTeams[1].team.name}}</td>
+            <tr class="tablerow" *ngFor="let games of games"> 
+                <td>{{ games.dateOfMatch | date: 'dd/MM/yyyy hh:mm' }}</td>
+                <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
-                <td>{{game.teamAScore}} - {{game.teamBScore}}</td>
+                <td>{{games.teamAScore}} - {{games.teamBScore}}</td>
     
-                <td *ngIf="game.matchState == 0">Not Started Yet</td>
-                <td *ngIf="game.matchState == 1">Playing</td>
-                <td *ngIf="game.matchState == 2">Finished</td>
+                <td *ngIf="games.matchState == 0">Not Started Yet</td>
+                <td *ngIf="games.matchState == 1">Playing</td>
+                <td *ngIf="games.matchState == 2">Finished</td>
                 
                 <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>  
                 <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
