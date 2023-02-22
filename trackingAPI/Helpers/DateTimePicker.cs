@@ -27,8 +27,6 @@ namespace trackingAPI.Helpers
 
             //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
             return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
-
-            //cmon git bro
         }
     }
 }
