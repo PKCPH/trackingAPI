@@ -55,7 +55,7 @@ public class MatchBackgroundTask
                 Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
                 thread.Start();
                 Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
         }
         return Task.CompletedTask;
