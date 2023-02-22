@@ -20,5 +20,3 @@ GO
 UPDATE Teams set IsAvailable = 1
 
  */
-
-/* SUP BROTHER */
