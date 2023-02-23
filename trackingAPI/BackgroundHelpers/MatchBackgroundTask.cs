@@ -18,12 +18,14 @@ public class MatchBackgroundTask
     {
         using (var scope = _services.CreateScope())
         {
+            Console.WriteLine("*******CreateNewMatchesOfAvailableTeamsscope");
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
             while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
+                Console.WriteLine("**************whileloop CreateNewMatchesOfAvailableTeams");
                 MatchController matchController = new(_context);
                 TeamPicker teamPicker = new();
                 await matchController.Create(teamPicker);
@@ -48,6 +50,7 @@ public class MatchBackgroundTask
                     var _context =
                         scope.ServiceProvider
                             .GetRequiredService<DatabaseContext>();
+                    Console.WriteLine("***********FindAndPlayMatches scope");
                     _context.Entry(firstGameMatch).State = EntityState.Modified;
                     _context.SaveChanges();
                 }
@@ -67,6 +70,7 @@ public class MatchBackgroundTask
 
         using (var scope = _services.CreateScope())
         {
+            Console.WriteLine("*************GetListOfScheduledGameMatchesByDateTimeSCOPE");
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
@@ -92,7 +96,7 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-
+            Console.WriteLine("**************PlayGameMatchSCOPE");
             //make cautios of a game that been paused of postponed and will resume another time!
             foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
             {

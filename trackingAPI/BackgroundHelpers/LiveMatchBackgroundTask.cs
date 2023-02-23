@@ -61,9 +61,9 @@ public class LiveMatchBackgroundTask
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
         if (ballPossessionTeam < 50) GoalToTeamA = true;
-        if (chanceOfGoal > 2) return;
+        //if (chanceOfGoal > 2) return;
 
-        //if (chanceOfGoal > 2) { Console.WriteLine("no goal"); return; }
+        if (chanceOfGoal > 2) { Console.WriteLine("no goal"); return; }
 
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
@@ -73,7 +73,7 @@ public class LiveMatchBackgroundTask
                     .GetRequiredService<DatabaseContext>();
 
             if (GoalToTeamA) gameMatch.TeamAScore++; else gameMatch.TeamBScore++;
-
+            Console.WriteLine("*******ISGOALSCORED****SCOPE");
             _context.Entry(gameMatch).State = EntityState.Modified;
             _context.SaveChanges();
         }
