@@ -64,6 +64,7 @@ public class Program
 
 
         var app = builder.Build();
+        //allowing the angular app to talk to the API
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
         // Configure the HTTP request pipeline.
