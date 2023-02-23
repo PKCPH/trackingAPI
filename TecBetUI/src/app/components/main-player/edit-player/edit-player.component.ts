@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { MapType } from '@angular/compiler';
+import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/models/player.model';
 import { Team } from 'src/app/models/teams.model';
@@ -13,6 +14,15 @@ import { TeamsService } from 'src/app/services/teams.service';
 export class EditPlayerComponent {
 
   teams: Team[] = [];
+  selectedTeamArray: Team[] = [];
+  selectedTeam: Team = {
+    id: '',
+    name: '',
+    isAvailable: true,
+    matches: [],
+    availability:'',
+    players:[]
+  }
   playerDetails: Player = {
     id: '',
     name: '',
@@ -28,25 +38,42 @@ export class EditPlayerComponent {
         const id = params.get('id');
 
         if(id){
-          this.playerService.getPlayer(id)
-          .subscribe({
-            next: (response) => {
-              this.playerDetails = response;
-            }
-          })
+          this.getPlayer(id)
         }
       }
     })
-    this.teamsService.getAllTeams()
-    .subscribe({
-      next: (teams) => {
-        console.log(teams);
-        this.teams = teams
-      },
-      error: (response) => {
-        console.log(response);
+  }
+
+  getPlayer(id: string){
+    this.playerService.getPlayer(id)
+    .subscribe(
+      (response) => {
+        this.playerDetails = response;
+        console.log(this.playerDetails)
+        this.getAllTeams();
       }
-    })
+    )
+  }
+
+  getAllTeams(){
+    this.teamsService.getAllTeams()
+    .subscribe((teams) => {
+        this.teams = teams;
+        console.log(teams)
+        this.filterTeams();
+      }
+    )
+  }
+
+  filterTeams(){
+    this.playerDetails.teams.forEach(element => {
+      const team = this.teams.find(t => t.id == element.teamId);
+      console.log(team);
+      if(team !== undefined){
+        this.selectedTeamArray.push(team);
+        this.teams.splice(this.teams.indexOf(team),1)
+      }
+    });
   }
 
   deletePlayer(id: string){
@@ -56,5 +83,30 @@ export class EditPlayerComponent {
         this.router.navigate(['players'])
       }
     })
+  }
+
+  removeFromSelectedTeamArray(team: Team){
+    this.teams.push(team);
+    this.selectedTeamArray.splice(this.selectedTeamArray.indexOf(team),1)
+    console.log(this.selectedTeamArray)
+  }
+
+  addTeam(){
+    if(this.selectedTeamArray.includes(this.selectedTeam) == true) return
+    this.selectedTeamArray.push(this.selectedTeam)
+    this.teams.splice(this.teams.indexOf(this.selectedTeam),1)
+    console.log(this.selectedTeamArray)
+  }
+  
+  refresh(){
+    console.log(this.playerDetails)
+
+    this.playerDetails.teams.forEach(element => {
+      const team = this.teams.find(t => t.id == element.teamId);
+      console.log(team)
+      if(team !== undefined){
+        this.selectedTeamArray.push(team)
+      }
+    });
   }
 }
