@@ -31,6 +31,7 @@ this.credentials.balance = response.balance,
 this.credentials.email = response.email,
 this.credentials.userName = response.userName,
 this.credentials.role = response.role
+
 // console.log(this.credentials);
   }
 });
@@ -40,11 +41,11 @@ this.credentials.role = response.role
   }
 
   openConfirm() {
-		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg'});
+		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg', windowClass: 'modal-rounded'});
 	}
 
   openPassword() {
-		const ref = this.modalService.open(ChangepasswordComponent, { centered: true });
+		const ref = this.modalService.open(ChangepasswordComponent, { centered: true, windowClass: 'modal-rounded'});
     ref.componentInstance.selectedUser = this.credentials;
 	}
 }

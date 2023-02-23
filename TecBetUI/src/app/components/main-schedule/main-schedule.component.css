@@ -32,5 +32,17 @@
     padding: 4px;
     margin: auto;
    }
+
+   #archivedMatches {
+    display: none;
+   }
+
+   #activeMatchesButton {
+    display: none;
+   }
+
+   td {
+    border-bottom: none;
+   }
    
      

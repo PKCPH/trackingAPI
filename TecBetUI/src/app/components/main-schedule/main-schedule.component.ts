@@ -56,7 +56,22 @@ export class MainScheduleComponent implements OnDestroy {
               // Setting display of spinner
               // element to none
               this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block'); 
+              this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block');
+    }
+
+    showArchivedMatches() {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'contents'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
+    }
+
+    
+    showActiveMatches() {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'contents'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
     }
 
 }

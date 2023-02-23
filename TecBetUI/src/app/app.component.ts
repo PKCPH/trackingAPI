@@ -68,6 +68,7 @@ return false;
   logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
+    localStorage.removeItem("refreshToken");
     this.credentials.role = "";
     this.router.navigateByUrl("/");
   }

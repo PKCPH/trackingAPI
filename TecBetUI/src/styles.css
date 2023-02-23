@@ -97,5 +97,17 @@ form {
     color: white;
    }
 
+   /* MODAL STYLINGS (HAS TO BE IN GLOBAL CSS FILE) */
+
+   .modal-rounded .modal-content {
+    border-radius: 10px;
+    background-color: rgba(45,0,45,1)
+    }
+
+    .modal-confirmpass .modal-content {
+        border-radius: 60px;
+        background-color: rgba(45,0,45,1)
+     }
+
 /* MEDIA QUERIES */
 

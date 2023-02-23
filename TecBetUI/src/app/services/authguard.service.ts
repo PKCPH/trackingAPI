@@ -4,25 +4,29 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { LoginService } from './login.service';
 import { baseApiUrl } from './serviceVariables'
+import { CustomErrorHandlerService } from './custom-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthguardService implements CanActivate  {
 
+  isLoading: boolean = false;
   invalidLogin: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
+  private errorSubject = new BehaviorSubject<string>("");
+  errorMessage = this.errorSubject.asObservable();
 
-  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService){}
+  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService, private customErrorHandler: CustomErrorHandlerService){}
   
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
 
     if (token && !this.jwtHelper.isTokenExpired(token)){
-      console.log(this.jwtHelper.decodeToken(token))
+      // console.log(this.jwtHelper.decodeToken(token))
       return true;
     }
 
@@ -80,6 +84,21 @@ export class AuthguardService implements CanActivate  {
 
   updateUser(id: string, updateUserRequest: LoginModel): Observable<LoginModel> {
     return this.http.put<LoginModel>(baseApiUrl + '/api/Auth/' + id, updateUserRequest);
+  }
+
+  getUsers(): Observable<LoginModel[]> {
+    this.isLoading = true;
+    return this.http.get<LoginModel[]>(baseApiUrl + '/api/Auth/')
+          .pipe(
+            tap(logins => {
+              this.errorSubject.next('');
+            }),
+            catchError(error => {
+              this.errorSubject.next(this.customErrorHandler.handleError(error));
+              this.isLoading = false;
+              return of([]);
+            })
+          );
   }
 
   // login = ( form: NgForm) => {
