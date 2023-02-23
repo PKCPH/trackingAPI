@@ -63,6 +63,8 @@ public class LiveMatchBackgroundTask
         if (ballPossessionTeam < 50) GoalToTeamA = true;
         if (chanceOfGoal > 2) return;
 
+        //if (chanceOfGoal > 2) { Console.WriteLine("no goal"); return; }
+
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
         {

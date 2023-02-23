@@ -28,6 +28,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
 import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
+import { MainLeaguesComponent } from './components/main-leagues/main-leagues.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -56,6 +57,7 @@ export function tokenGetter() {
     ConfirmboxComponent,
     ChangepasswordComponent,
     AdminboardComponent,
+    MainLeaguesComponent,
   ],
   imports: [
     BrowserModule,
