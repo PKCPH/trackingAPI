@@ -9,6 +9,9 @@
           <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text" routerLink="teams">Teams</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-text " href="players">Players</a>
+          </li>
           <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text " routerLink="matches">Matches</a>
           </li>
@@ -18,9 +21,6 @@
           <li class="nav-item">
             <a class="nav-text " href="#section2">Betting</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-text " href="players">Players</a>
-          </li>
           <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text" routerLink="/customers">SikritStuf</a>
           </li>
@@ -29,17 +29,26 @@
 
     
 
-            <div class="rightsidenav">
+      <div class="rightsidenav">
       <ul class="navbar-nav">
-       
-        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <span routerLink="/">{{ credentials.userName | titlecase }}</span></li>
+  
+        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span>{{ credentials.userName | titlecase }}</span><img src="/images/dropdownarrow.png"></button>
+        </li>
+
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
         <li *ngIf="!isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" routerLink="/register">Register</a></li>
-        <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" (click)="logOut()">Logout</a></li>
+        <!-- <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" (click)="logOut()">Logout</a></li> -->
+      </ul>
+      <ul class="dropDownBox" *ngIf="showDropdown">
+        <li class="dropDownItems" *ngFor="let item of items" (click)="onItemClick(item.text)">
+          <a class="nav-text" *ngIf="item.text === 'Log Out'" (click)="logOut()">{{item.text}}</a>
+          <a class="nav-text" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]">{{item.text}}</a>
+        </li>
       </ul>
     </div>
-    </div>
+    </div> 
   </nav>
+  
   
   
   <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">

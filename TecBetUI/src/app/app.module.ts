@@ -23,6 +23,11 @@ import { PlayerListComponent } from './components/main-player/player-list/player
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
+import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
+import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
+import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -46,7 +51,11 @@ export function tokenGetter() {
     PlayerListComponent,
     AddPlayerComponent,
     EditPlayerComponent,
-    PlayersOnTeamComponent
+    PlayersOnTeamComponent,
+    UserprofileComponent,
+    ConfirmboxComponent,
+    ChangepasswordComponent,
+    AdminboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,11 +69,13 @@ export function tokenGetter() {
         allowedDomains: ["localhost:5001"],
         disallowedRoutes: []
       } 
-    })
+    }),
+    NgbModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
 })
 export class AppModule { }

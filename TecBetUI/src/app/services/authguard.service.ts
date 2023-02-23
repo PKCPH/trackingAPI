@@ -4,10 +4,9 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
-import { Observable, catchError, of } from 'rxjs';
-import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { LoginService } from './login.service';
-import * as serviceVariables from './serviceVariables'
+import { baseApiUrl } from './serviceVariables'
 
 @Injectable({
   providedIn: 'root'
@@ -64,46 +63,51 @@ export class AuthguardService implements CanActivate  {
   }
 
   getUser(username: string): Observable<LoginModel> {
-    return this.http.get<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/' + username);
+    return this.http.get<LoginModel>(baseApiUrl + '/api/Auth/' + username);
   }
 
   register(addUserRequest: LoginModel): Observable<LoginModel> {
     //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
     //just return an empty guid thats gonna be overwritten by the API either way
     addUserRequest.id = '00000000-0000-0000-0000-000000000000';
-    return this.http.post<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/register', addUserRequest);
+    addUserRequest.balance = 1000;
+    return this.http.post<LoginModel>(baseApiUrl + '/api/Auth/register', addUserRequest);
+  }
+
+  deleteUser(username: string): Observable<LoginModel> {
+    return this.http.delete<LoginModel>(baseApiUrl + '/api/Auth/' + username);
   }
 
   updateUser(id: string, updateUserRequest: LoginModel): Observable<LoginModel> {
-    return this.http.put<LoginModel>(serviceVariables.baseApiUrl + '/api/Auth/' + id, updateUserRequest);
+    return this.http.put<LoginModel>(baseApiUrl + '/api/Auth/' + id, updateUserRequest);
   }
 
-  login = ( form: NgForm) => {
-    if (form.valid) {
-      this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.credentials, {
-        headers: new HttpHeaders({ "Content-Type": "application/json"})
-      })
-      .subscribe({
-        next: (response: AuthenticatedResponse) => {
-          const token = response.token;
-          const refreshToken = response.refreshToken;
-          localStorage.setItem("jwt", token); 
-          localStorage.setItem("refreshToken", refreshToken);
-          this.invalidLogin = false; 
-          this.router.navigate(["/"]);
+  // login = ( form: NgForm) => {
+  //   if (form.valid) {
+  //     this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.credentials, {
+  //       headers: new HttpHeaders({ "Content-Type": "application/json"})
+  //     })
+  //     .subscribe({
+  //       next: (response: AuthenticatedResponse) => {
+  //         const token = response.token;
+  //         const refreshToken = response.refreshToken;
+  //         localStorage.setItem("jwt", token); 
+  //         localStorage.setItem("refreshToken", refreshToken);
+  //         this.invalidLogin = false; 
+  //         this.router.navigate(["/"]);
 
-          this.getUser(this.credentials.userName)
-          .subscribe({
-          next: (response) => {
-          this.credentials = response;
-          this.loginService.updateCredentials(this.credentials);  
-          localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
-          }
-        });  
-        },
-        error: (err: HttpErrorResponse) => this.invalidLogin = true
-      })
-    }
-  }
+  //         this.getUser(this.credentials.userName)
+  //         .subscribe({
+  //         next: (response) => {
+  //         this.credentials = response;
+  //         this.loginService.updateCredentials(this.credentials);  
+  //         localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
+  //         }
+  //       });  
+  //       },
+  //       error: (err: HttpErrorResponse) => this.invalidLogin = true
+  //     })
+  //   }
+  // }
 
 }
