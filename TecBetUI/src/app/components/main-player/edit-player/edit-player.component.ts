@@ -36,7 +36,6 @@ export class EditPlayerComponent {
     this.route.paramMap.subscribe({
       next: (params) => {
         const id = params.get('id');
-
         if(id){
           this.getPlayer(id)
         }

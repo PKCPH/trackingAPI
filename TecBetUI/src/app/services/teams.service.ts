@@ -55,7 +55,7 @@ export class TeamsService {
   }
 
   getPlayers(id: string): Observable<Player[]>{
-    return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/players/' + id)
+    return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/api/Team/players/' + id)
   }
 
 }

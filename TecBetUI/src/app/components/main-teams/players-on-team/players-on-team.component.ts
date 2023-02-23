@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/models/player.model';
-import { PlayersService } from 'src/app/services/players.service';
+import { TeamsService } from 'src/app/services/teams.service';
 
 @Component({
   selector: 'app-players-on-team',
@@ -11,19 +11,27 @@ import { PlayersService } from 'src/app/services/players.service';
 export class PlayersOnTeamComponent {
 
   players: Player[] = [];
-  constructor(private playersService: PlayersService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router) {}
 
   ngOnInit(): void {
-    this.playersService.getAllPlayers()
-    .subscribe({
-      next: (players) => {
-        console.log(players);
-        this.players = players
-      },
-      error: (response) => {
-        console.log(response);
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        const id = params.get('id');
+        if(id){
+          this.teamService.getPlayers(id)
+          .subscribe({
+            next: (players) => {
+              console.log(players);
+              this.players = players
+            },
+            error: (response) => {
+              console.log(response);
+            }
+          })
+        }       
       }
     })
+    
   }
   GoAddPlayer() {
     this.router.navigateByUrl('/players/add')
