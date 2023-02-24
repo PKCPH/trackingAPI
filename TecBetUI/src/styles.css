@@ -97,6 +97,33 @@ form {
     color: white;
    }
 
+   ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  canvas {
+    border: 1px solid black;
+  }
+  
+  #canvas {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+  }
+  
+  .sprite {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+  }
+
    /* MODAL STYLINGS (HAS TO BE IN GLOBAL CSS FILE) */
 
    .modal-rounded .modal-content {

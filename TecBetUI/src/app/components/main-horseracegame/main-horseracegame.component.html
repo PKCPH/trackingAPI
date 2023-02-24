@@ -1,0 +1,9 @@
+<div class="container">
+<ul>
+    <li *ngFor="let animal of animals">{{ animal.name }}: {{ animal.speed }} Speed - {{animal.strength}} Strength</li>
+  </ul>
+  <div *ngIf="winnerMsg"><h1>{{ winnerMsg }} WINS!!!!</h1></div>
+  <button (click)="simulateRace()">Start race</button>
+  <!-- <button (click)="resetRace()">Reset</button> -->
+  <canvas id="canvas"></canvas>
+</div>

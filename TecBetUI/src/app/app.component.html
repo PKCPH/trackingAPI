@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0">
-  <div class="logo"><a href="#section1"><img src="/images/logo.png"></a></div>
+<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0 && !isTestingPage()">
+  <div class="logo"><a href="#section1"><img src="images/logo.png"></a></div>
     <div class="container">
       <div class="leftsidenav">
         <ul class="navbar-nav">
@@ -32,7 +32,7 @@
       <div class="rightsidenav">
       <ul class="navbar-nav">
   
-        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span>{{ credentials.userName | titlecase }}</span><img src="/images/dropdownarrow.png"></button>
+        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span>{{ credentials.userName | titlecase }}</span><img src="images/dropdownarrow.png"></button>
         </li>
 
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
@@ -53,7 +53,7 @@
   
   <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">
     <div class="container">
-      <div class="logo2"><a href="#section1"><img src="/images/logo.png"></a></div>
+      <div class="logo2"><a href="#section1"><img src="images/logo.png"></a></div>
         <ul class="navbar-nav">
           <!-- <li class="nav-item">
             <a class="nav-text" aria-current="page" href="#section1">Home</a>

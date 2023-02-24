@@ -53,6 +53,14 @@ export class AppComponent {
 return false;
   }
 
+  isTestingPage = (): boolean => {
+    if (this.router.url.includes('/horserace')) 
+  {  
+     return true; 
+  }
+return false;
+  }
+
   //Checks for token 
 
   isUserAuthenticated = (): boolean => {

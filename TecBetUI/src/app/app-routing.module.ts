@@ -19,6 +19,7 @@ import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
+import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 
 const routes: Routes = [
   {
@@ -89,6 +90,10 @@ const routes: Routes = [
   {
     path: 'adminboard/edit-user/:username',
     component: EditUserComponent
+  },
+  {
+    path: 'horserace',
+    component: MainHorseracegameComponent
   }
 ];
 

@@ -29,6 +29,7 @@ import { ConfirmboxComponent } from './components/main-login/userprofile/confirm
 import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
+import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -58,6 +59,7 @@ export function tokenGetter() {
     ChangepasswordComponent,
     AdminboardComponent,
     EditUserComponent,
+    MainHorseracegameComponent,
   ],
   imports: [
     BrowserModule,
