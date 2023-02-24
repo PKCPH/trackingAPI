@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
-using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 namespace trackingAPI.Controllers;
@@ -42,48 +40,39 @@ public class LeagueController : ControllerBase
     //for creating a new issue
     public async Task<IActionResult> Create(League league)
     {
-
         //adding the issue submitted by the request
         await _context.Leagues.AddAsync(league);
-
-
         //saving the changes in the DB
         await _context.SaveChangesAsync();
-
         //returns the response with statuscode and a location in the editor
         return CreatedAtAction(nameof(GetById), new { id = league.Id }, league);
     }
 
-    //[HttpPut("{id}")]
-    //[ProducesResponseType(StatusCodes.Status204NoContent)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> Update(Guid id, GameMatch match)
-    //{
-    //    //if the id of the url and the id in the body does not match, then return
-    //    if (id != match.Id) return BadRequest();
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Update(Guid id, League league)
+    {
+        //if the id of the url and the id in the body does not match, then return
+        if (id != league.Id) return BadRequest();
 
-    //    //otherwise we update the issue, save changes and
-    //    _context.Entry(match).State = EntityState.Modified;
-    //    await _context.SaveChangesAsync();
-    //    return NoContent();
-    //}
+        //otherwise we update the issue, save changes and
+        _context.Entry(league).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
-    //[HttpDelete("{id}")]
-    //[ProducesResponseType(StatusCodes.Status204NoContent)]
-    //[ProducesResponseType(StatusCodes.Status404NotFound)]
-    //public async Task<IActionResult> Delete(Guid id)
-    //{
-    //    //finding the issue
-    //    var issueToDelete = await _context.Matches.FindAsync(id);
-    //    //if issues does not exist
-    //    if (issueToDelete == null) return NotFound();
-
-    //    //otherwise remove the issue and save changes in DB!
-    //    _context.Matches.Remove(issueToDelete);
-    //    await _context.SaveChangesAsync();
-
-    //    return NoContent();
-    //}
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var league = await _context.Leagues.FindAsync(id);
+        if (league == null) return NotFound();
+        _context.Leagues.Remove(league);
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
     //[HttpGet("/api/matches")]
     //public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
@@ -91,13 +80,15 @@ public class LeagueController : ControllerBase
     //    var matches = _context.Matches
     //        .Include(mt => mt.ParticipatingTeams)
     //        .ThenInclude(t => t.Team)
-    //        .Select(match => new {
+    //        .Select(match => new
+    //        {
     //            Id = match.Id,
     //            dateOfMatch = match.DateOfMatch,
     //            teamAScore = match.TeamAScore,
     //            teamBScore = match.TeamBScore,
     //            matchState = match.MatchState,
-    //            participatingTeams = match.ParticipatingTeams.Select(pt => new {
+    //            participatingTeams = match.ParticipatingTeams.Select(pt => new
+    //            {
     //                Id = pt.Team.Id,
     //                name = pt.Team.Name
     //            }).ToList()

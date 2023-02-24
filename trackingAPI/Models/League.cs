@@ -16,7 +16,8 @@ public class League
     ////maybe timeSpan instead of enddate
     //public DateTime EndDate { get; set; }
     ////maybe add LeagueFormat?.
-    //public ICollection<Team> LeagueTeams { get; set; }
+    public ICollection<Team> LeagueTeams { get; set; }
+    //public ICollection<GameMatch> LeagueMatches { get; set; }
     //public int NumberOfTeams { get; set; }
 }
 
