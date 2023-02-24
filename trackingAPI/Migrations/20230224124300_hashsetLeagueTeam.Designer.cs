@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230224124300_hashsetLeagueTeam")]
+    partial class hashsetLeagueTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Matches", (string)null);
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.League", b =>
@@ -64,7 +66,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Leagues", (string)null);
+                    b.ToTable("Leagues");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
@@ -85,7 +87,7 @@ namespace trackingAPI.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("LeagueTeams", (string)null);
+                    b.ToTable("LeagueTeams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Login", b =>
@@ -123,7 +125,7 @@ namespace trackingAPI.Migrations
                         .IsUnique()
                         .HasFilter("[UserName] IS NOT NULL");
 
-                    b.ToTable("Logins", (string)null);
+                    b.ToTable("Logins");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -144,7 +146,7 @@ namespace trackingAPI.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("MatchTeams", (string)null);
+                    b.ToTable("MatchTeams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Player", b =>
@@ -161,7 +163,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players", (string)null);
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.PlayerTeam", b =>
@@ -182,7 +184,7 @@ namespace trackingAPI.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("PlayerTeams", (string)null);
+                    b.ToTable("PlayerTeams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
@@ -201,7 +203,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
