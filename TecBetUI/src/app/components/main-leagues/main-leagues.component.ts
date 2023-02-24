@@ -13,7 +13,9 @@ export class MainLeaguesComponent {
 
     this.leaguesService.getAllLeagues()
     .subscribe({
-      next: (leagues) => {this.leagues = leagues},
+      next: (leagues) => {
+        this.leagues = leagues
+      },
       error: (response) => { 
         console.log(response);
     }

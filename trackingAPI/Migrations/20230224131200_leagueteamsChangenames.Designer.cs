@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230224131200_leagueteamsChangenames")]
+    partial class leagueteamsChangenames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -213,7 +215,7 @@ namespace trackingAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("trackingAPI.Models.Team", null)
-                        .WithMany("Leagues")
+                        .WithMany("Teams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -270,11 +272,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
                 {
-                    b.Navigation("Leagues");
-
                     b.Navigation("Matches");
 
                     b.Navigation("Players");
+
+                    b.Navigation("Teams");
                 });
 #pragma warning restore 612, 618
         }
