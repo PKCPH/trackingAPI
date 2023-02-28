@@ -43,7 +43,7 @@ public class TeamPicker
     {
         GameMatch gameMatch = new(_context);
         Random rnd = new Random();
-        var listOfRounds = Generate(16);
+        //var listOfRounds = Generate(16);
 
         //var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
         //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
