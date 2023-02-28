@@ -43,37 +43,49 @@ public class TeamPicker
     {
         GameMatch gameMatch = new(_context);
         Random rnd = new Random();
-        //var listOfRounds = Generate(16);
+
+        var rounds = Generate(8);
+        foreach (var round in rounds)
+        {
+            foreach (var match in round.Matches)
+            {
+                Console.WriteLine("{0} vs {1}", match.ParticipatingTeams.First(), match.ParticipatingTeams.Last());
+            }
+            Console.WriteLine();
+        }
+        Console.ReadKey();
+        return gameMatch;
 
         //var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
         //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
-        var AvailableTeams = _context.LeagueTeams.Where(x => x.LeagueId == league.Id).ToList();
-        var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
+        //var AvailableTeams = _context.LeagueTeams.Where(x => x.LeagueId == league.Id).ToList();
+        //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
-        if (TwoRandomAvailableTeams.Count().Equals(2))
-        {
-            var teamA = TwoRandomAvailableTeams.First().TeamId;
-            var teamB = TwoRandomAvailableTeams.Last().TeamId;
+        //var listOfRounds = Generate(16);
+        //if (TwoRandomAvailableTeams.Count().Equals(2))
+        //{
+        //    var teamA = TwoRandomAvailableTeams.First().TeamId;
+        //    var teamB = TwoRandomAvailableTeams.Last().TeamId;
 
-            MatchTeam matchTeamA = new MatchTeam { TeamId = teamA };
-            MatchTeam matchTeamB = new MatchTeam { TeamId = teamB };
+        //    MatchTeam matchTeamA = new MatchTeam { TeamId = teamA };
+        //    MatchTeam matchTeamB = new MatchTeam { TeamId = teamB };
 
-            gameMatch.ParticipatingTeams.Add(matchTeamA);
-            gameMatch.ParticipatingTeams.Add(matchTeamB);
+        //    gameMatch.ParticipatingTeams.Add(matchTeamA);
+        //    gameMatch.ParticipatingTeams.Add(matchTeamB);
 
-            gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-            Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
-        }
-        else
-        {
-            throw new Exception("Could not find enough available teams");
-        }
-        return gameMatch;
+        //    gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
+        //    Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
+        //}
+        //else
+        //{
+        //    throw new Exception("Could not find enough available teams");
+        //}
+        //return gameMatch;
     }
     
     //generating bracketrounds for single elimination tournaments
-    static Round[] Generate(int teamNumber, Team[] teams)
+    public static Round[] Generate(int teamNumber)
     {
         // only works for power of 2 number of players   
         var roundsNumber = (int)Math.Log(teamNumber, 2);
@@ -110,8 +122,8 @@ public class TeamPicker
                     next++;
                     round.Matches[next] = new GameMatch()
                     {
-                        TeamASeed = match.TeamASeed,
-                        TeamBSeed = (int)(median + Math.Abs(match.TeamASeed - median))
+                        TeamASeed = match.TeamBSeed,
+                        TeamBSeed = (int)(median + Math.Abs(match.TeamBSeed - median))
                     };
                     next++;
                 }

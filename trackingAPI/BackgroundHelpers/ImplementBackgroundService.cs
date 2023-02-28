@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Configurations;
 using trackingAPI.Data;
+using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 namespace trackingAPI.BackgroundHelpers;
@@ -32,13 +33,23 @@ public class ImplementBackgroundService : BackgroundService
                 MatchBackgroundTask matchBackgroundTask = new(_services);
                 //if any matches has not finished then play matches!
                 //else create new matches
-                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
+
+                //if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
+                //{
+                //    task = matchBackgroundTask.FindAndPlayMatches();
+                //}
+                //if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
+                //{
+                //    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+                //}
+                var rounds = TeamPicker.Generate(8);
+                foreach (var round in rounds)
                 {
-                    task = matchBackgroundTask.FindAndPlayMatches();
-                }
-                if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
-                {
-                    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+                    foreach (var match in round.Matches)
+                    {
+                        Console.WriteLine("{0} vs {1}", match.TeamASeed, match.TeamBSeed);
+                    }
+                    Console.WriteLine();
                 }
                 await Task.Delay(1000);
                 Console.WriteLine("ExecuteAsync loop in complete");
