@@ -42,15 +42,8 @@ public class ImplementBackgroundService : BackgroundService
                 //{
                 //    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 //}
-                var rounds = TeamPicker.Generate(8);
-                foreach (var round in rounds)
-                {
-                    foreach (var match in round.Matches)
-                    {
-                        Console.WriteLine("{0} vs {1}", match.TeamASeed, match.TeamBSeed);
-                    }
-                    Console.WriteLine();
-                }
+                TeamPicker.SeedDistribution();
+                
                 await Task.Delay(1000);
                 Console.WriteLine("ExecuteAsync loop in complete");
             } while (await _timer.WaitForNextTickAsync(stoppingToken)

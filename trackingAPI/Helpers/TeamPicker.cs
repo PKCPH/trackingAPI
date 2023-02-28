@@ -22,7 +22,7 @@ public class TeamPicker
             var teamB = TwoRandomAvailableTeams.Last();
             teamA.IsAvailable = false;
             teamB.IsAvailable = false;
-            
+
             MatchTeam matchTeamA = new MatchTeam { Team = teamA };
             MatchTeam matchTeamB = new MatchTeam { Team = teamB };
 
@@ -44,46 +44,55 @@ public class TeamPicker
         GameMatch gameMatch = new(_context);
         Random rnd = new Random();
 
+        //var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
+        //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
+
+        var AvailableTeams = _context.LeagueTeams.Where(x => x.LeagueId == league.Id).ToList();
+        var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
+
+        var listOfRounds = Generate(8);
+        if (TwoRandomAvailableTeams.Count().Equals(2))
+        {
+            var teamA = TwoRandomAvailableTeams.First().TeamId;
+            var teamB = TwoRandomAvailableTeams.Last().TeamId;
+
+            MatchTeam matchTeamA = new MatchTeam { TeamId = teamA };
+            MatchTeam matchTeamB = new MatchTeam { TeamId = teamB };
+
+            gameMatch.ParticipatingTeams.Add(matchTeamA);
+            gameMatch.ParticipatingTeams.Add(matchTeamB);
+
+            gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
+            Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
+        }
+        else
+        {
+            throw new Exception("Could not find enough available teams");
+        }
+        return gameMatch;
+    }
+
+    public static void SeedDistribution(IServiceProvider _service)
+    {
         var rounds = Generate(8);
         foreach (var round in rounds)
         {
             foreach (var match in round.Matches)
             {
-                Console.WriteLine("{0} vs {1}", match.ParticipatingTeams.First(), match.ParticipatingTeams.Last());
+                Console.WriteLine("{0} vs {1}", match.TeamASeed, match.TeamBSeed);
+                using (var scope = _service.CreateScope())
+                {
+                    var _context =
+                        scope.ServiceProvider
+                            .GetRequiredService<DatabaseContext>();
+
+                    _context.LeagueTeams.Where(x => x.TeamId == match.ParticipatingTeams.First().TeamId);
+                }
             }
             Console.WriteLine();
         }
-        Console.ReadKey();
-        return gameMatch;
-
-        //var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
-        //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-        //var AvailableTeams = _context.LeagueTeams.Where(x => x.LeagueId == league.Id).ToList();
-        //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-        //var listOfRounds = Generate(16);
-        //if (TwoRandomAvailableTeams.Count().Equals(2))
-        //{
-        //    var teamA = TwoRandomAvailableTeams.First().TeamId;
-        //    var teamB = TwoRandomAvailableTeams.Last().TeamId;
-
-        //    MatchTeam matchTeamA = new MatchTeam { TeamId = teamA };
-        //    MatchTeam matchTeamB = new MatchTeam { TeamId = teamB };
-
-        //    gameMatch.ParticipatingTeams.Add(matchTeamA);
-        //    gameMatch.ParticipatingTeams.Add(matchTeamB);
-
-        //    gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-        //    Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
-        //}
-        //else
-        //{
-        //    throw new Exception("Could not find enough available teams");
-        //}
-        //return gameMatch;
     }
-    
+
     //generating bracketrounds for single elimination tournaments
     public static Round[] Generate(int teamNumber)
     {
@@ -116,6 +125,7 @@ public class TeamPicker
                     // you can play here by switching PlayerA and PlayerB or reordering stuff
                     round.Matches[next] = new GameMatch()
                     {
+                        //_context.Entry(match.TeamASeed),
                         TeamASeed = match.TeamASeed,
                         TeamBSeed = (int)(median + Math.Abs(match.TeamASeed - median))
                     };
@@ -126,10 +136,34 @@ public class TeamPicker
                         TeamBSeed = (int)(median + Math.Abs(match.TeamBSeed - median))
                     };
                     next++;
+                    //_context.Entry(match.TeamASeed).State = EntityState.Modified;
+                    //_context.Entry(round.Matches[next].TeamASeed).State = EntityState.Modified;
                 }
             }
             rounds[i] = round;
         }
         return rounds.Reverse().ToArray();
+    }
+
+    public void DelegateSeeds(int teamNumber, League league)
+    {
+        //delegate seeds
+        //delegate opponents
+        //play match
+        //loser changes InTournament to false
+        //delegate seeds with remaining teams where InTournament is true //maybe... cause it doesn't work branchtree wise
+        //delegate new opponents
+        //...
+
+        var teams = league.Teams.Where(x => x.LeagueId == league.Id).Where(x => x.Seed == 0).ToList();
+        var count = 0;
+        //for(int i = 0; i < teamNumber; i++)
+        //{
+
+        //}
+        foreach (var item in teams)
+        {
+            item.Seed = count++;
+        } 
     }
 }
