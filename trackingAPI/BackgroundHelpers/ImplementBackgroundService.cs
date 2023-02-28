@@ -36,11 +36,11 @@ public class ImplementBackgroundService : BackgroundService
                 {
                     task = matchBackgroundTask.FindAndPlayMatches();
                 }
-                else
+                if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
                 {
                     task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 }
-                await Task.WhenAny(task);
+                await Task.Delay(1000);
                 Console.WriteLine("ExecuteAsync loop in complete");
             } while (await _timer.WaitForNextTickAsync(stoppingToken)
                     && !stoppingToken.IsCancellationRequested);
