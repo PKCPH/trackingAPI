@@ -16,6 +16,7 @@ public class LeagueTeam
     public Guid TeamId { get; set; }
     [DefaultValue(true)]
     public bool? InTournament { get; set; }
+    public int Seed { get; set; }
 }
 
 

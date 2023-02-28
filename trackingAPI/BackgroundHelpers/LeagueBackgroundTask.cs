@@ -2,6 +2,8 @@
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.Models;
+
 namespace trackingAPI.BackgroundHelpers;
 
 public class LeagueBackgroundTask
@@ -11,7 +13,7 @@ public class LeagueBackgroundTask
     {
         _services = services;
     }
-    public async Task CreateNewMatchesFromLeague()
+    public async Task CreateNewMatchesFromLeague(League league)
     {
         using (var scope = _services.CreateScope())
         {
@@ -19,14 +21,13 @@ public class LeagueBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            //while (_context.Leagues.Count(x => x. > 1))
-            //{
-            //    Console.WriteLine("**************whileloop CreateNewMatchesOfAvailableTeams");
-            //    MatchController matchController = new(_context);
-            //    TeamPicker teamPicker = new();
-            //    await matchController.Create(teamPicker);
-            //    await _context.SaveChangesAsync();
-            //}
+            Console.WriteLine("**************whileloop CreateNewMatchesFromLeague");
+            MatchController matchController = new(_context);
+            TeamPicker teamPicker = new();
+            await matchController.Create(teamPicker);
+            await _context.SaveChangesAsync();
+
         }
     }
 }
+
