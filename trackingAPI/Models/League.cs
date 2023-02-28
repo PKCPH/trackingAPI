@@ -16,7 +16,7 @@ public class League
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Sport { get; set; }
+    //public string Sport { get; set; }
     [DefaultValue(LeagueState.NotStarted)]
     public LeagueState LeagueState { get; set; }
     public DateTime StartDate { get; set; }
