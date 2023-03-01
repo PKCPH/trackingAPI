@@ -16,6 +16,7 @@ export class AppComponent {
   scrolled = 0;
   showDropdown = false;
   timer: any;
+  idleTimer: any;
 
   constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService)
   {
@@ -24,6 +25,8 @@ export class AppComponent {
     //Timer is strictly for hiding the dropdown menu if not being used
 
     this.startTimer();
+
+    this.startIdleTimer();
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
@@ -100,6 +103,12 @@ return false;
       this.showDropdown = false;
       this.resetTimer();
     }, 4000); // 4 seconds
+  }
+
+  startIdleTimer() {
+    this.idleTimer = setTimeout(() => {
+      this.logOut();
+    }, 600000); // 600 seconds
   }
 
   resetTimer() {

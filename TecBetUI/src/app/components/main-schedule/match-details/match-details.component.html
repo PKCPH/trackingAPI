@@ -1,0 +1,18 @@
+<div class="section1">
+    <div class="divs">
+        <p>{{matchDetails.dateOfMatch | date}}</p>
+            <div>
+            <h1>{{matchDetails.participatingTeams[0].name}} vs {{matchDetails.participatingTeams[1].name}}</h1>
+            <h2>{{matchDetails.teamAScore}} - {{matchDetails.teamBScore}}</h2>
+            <div class="my-5"><img src="images/simu.gif"></div>
+            <p *ngIf="matchDetails.matchState == 0">Not Started Yet</p>
+            <p *ngIf="matchDetails.matchState == 1">Playing</p>
+        </div>
+    </div>
+    <div class="divs"><h2>Betting</h2>
+        <p>______________________</p>
+        <button class="btn btn-warning">{{matchDetails.participatingTeams[0].name}} Wins</button>
+        <button class="btn btn-warning">{{matchDetails.participatingTeams[1].name}} Wins</button>
+        <button class="btn btn-warning">Draw</button>
+    </div>
+</div>

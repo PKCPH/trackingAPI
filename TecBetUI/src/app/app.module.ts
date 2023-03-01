@@ -30,6 +30,7 @@ import { ChangepasswordComponent } from './components/main-login/userprofile/cha
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
+import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -60,6 +61,7 @@ export function tokenGetter() {
     AdminboardComponent,
     EditUserComponent,
     MainHorseracegameComponent,
+    MatchDetailsComponent,
   ],
   imports: [
     BrowserModule,

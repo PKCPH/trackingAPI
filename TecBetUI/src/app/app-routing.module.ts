@@ -20,6 +20,7 @@ import { UserprofileComponent } from './components/main-login/userprofile/userpr
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
+import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
 
 const routes: Routes = [
   {
@@ -53,6 +54,11 @@ const routes: Routes = [
   {
     path: 'schedule',
     component: MainScheduleComponent
+  },
+  {
+    path: 'details/:id',
+    component: MatchDetailsComponent,
+    canActivate: [AuthguardService]
   },
   {
     path: 'login',
@@ -92,8 +98,9 @@ const routes: Routes = [
     component: EditUserComponent
   },
   {
-    path: 'horserace',
-    component: MainHorseracegameComponent
+    path: 'animalrace',
+    component: MainHorseracegameComponent,
+    canActivate: [AuthguardService]
   }
 ];
 

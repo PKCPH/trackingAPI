@@ -20,9 +20,9 @@ export class MainScheduleComponent implements OnDestroy {
   } 
   
     constructor(private matchesService: MatchesService, 
-      private el: ElementRef, private renderer: Renderer2) {
+      private el: ElementRef, private renderer: Renderer2, private router: Router) {
   
-        this.updateSubscription = interval(1500).pipe(
+        this.updateSubscription = interval(2500).pipe(
           switchMap(() => this.matchesService.getSchedule())
         )
         .subscribe({
@@ -32,7 +32,7 @@ export class MainScheduleComponent implements OnDestroy {
                 ...game,
               }
             });
-            console.log(this.games);
+            // console.log(this.games);
             if (games)
             {
               this.Hideloader();
@@ -50,6 +50,11 @@ export class MainScheduleComponent implements OnDestroy {
           }
         });   
 
+    }
+
+    GoMatchDetails(id: string)
+    {
+      this.router.navigateByUrl("details/" + id);
     }
 
     Hideloader() {

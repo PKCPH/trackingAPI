@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { color } from 'highcharts';
 
 interface Animal {
   name: string;
@@ -16,19 +17,18 @@ interface Animal {
 
 export class MainHorseracegameComponent {
 
-  rndInt = Math.floor(Math.random() * 100) + 1;
-
   animals: Animal[] = [
-    { name: 'Bear', speed: this.rndInt-20, strength: this.rndInt+30, position: 0, sprite: new Image() },
-    { name: 'Horse', speed: this.rndInt+30, strength: this.rndInt-10, position: 0, sprite: new Image() },
-    { name: 'Rabbit', speed: this.rndInt+20, strength: this.rndInt-20, position: 0, sprite: new Image() },
-    { name: 'Rhino', speed: this.rndInt-10, strength: this.rndInt+25, position: 0, sprite: new Image() },
-    { name: 'Sloth', speed: this.rndInt-25, strength: this.rndInt-25, position: 0, sprite: new Image() }
+    { name: 'Bear', speed: (Math.floor(Math.random() * 100)-20), strength: (Math.floor(Math.random() * 100)+30), position: 0, sprite: new Image() },
+    { name: 'Horse', speed: (Math.floor(Math.random() * 100)+30), strength: (Math.floor(Math.random() * 100)-10), position: 0, sprite: new Image() },
+    { name: 'Rabbit', speed: (Math.floor(Math.random() * 100)+20), strength: (Math.floor(Math.random() * 100)-20), position: 0, sprite: new Image() },
+    { name: 'Rhino', speed: (Math.floor(Math.random() * 100)-10), strength: (Math.floor(Math.random() * 100)+25), position: 0, sprite: new Image() },
+    { name: 'Sloth', speed: (Math.floor(Math.random() * 100)-25), strength: (Math.floor(Math.random() * 100)-25), position: 0, sprite: new Image() }
   ];
 
   winner: Animal | null = null;
   winnerMsg: string | any;
   state = false;
+  delay: any;
 
   @ViewChild('canvas')
   canvasRef!: ElementRef<HTMLCanvasElement>;
@@ -72,24 +72,24 @@ if(this.state === false)
       if(animal.name == 'Bear')
       {
         //Sæt lige en ny number generator ind for hvert dyr
-      animal.speed = rndIntAgane-20,
-      animal.strength = rndIntAgane+30
+      animal.speed = (Math.floor(Math.random() * 100)-20),
+      animal.strength = (Math.floor(Math.random() * 100)+30)
     }else if(animal.name == 'Horse')
     {
-      animal.speed = rndIntAgane+30,
-      animal.strength = rndIntAgane-10
+      animal.speed = (Math.floor(Math.random() * 100)+30),
+      animal.strength = (Math.floor(Math.random() * 100)-10)
     }else if(animal.name == 'Rabbit')
     {
-      animal.speed = rndIntAgane+20,
-      animal.strength = rndIntAgane-20
+      animal.speed = (Math.floor(Math.random() * 100)+20),
+      animal.strength = (Math.floor(Math.random() * 100)-20)
     }else if(animal.name == 'Rhino')
     {
-      animal.speed = rndIntAgane-10,
-      animal.strength = rndIntAgane+25
+      animal.speed = (Math.floor(Math.random() * 100)-10),
+      animal.strength = (Math.floor(Math.random() * 100)+25)
     }else if(animal.name == 'Sloth')
     {
-      animal.speed = rndIntAgane-25,
-      animal.strength = rndIntAgane-25
+      animal.speed = (Math.floor(Math.random() * 100)-25),
+      animal.strength = (Math.floor(Math.random() * 100)-25)
     }
     animal.position = 0;
     });
@@ -102,21 +102,21 @@ if(this.state === false)
       ctx.clearRect(0, 0, canvas.width, canvas.height);
   
       // Draw the start and finish lines
-      ctx.beginPath();
-      ctx.moveTo(50, 0);
-      ctx.lineTo(50, canvas.height);
-      ctx.stroke();
+      // ctx.beginPath();
+      // ctx.moveTo(50, 0);
+      // ctx.lineTo(50, canvas.height);
+      // ctx.stroke();
   
-      ctx.beginPath();
-      ctx.moveTo(canvas.width - 50, 0);
-      ctx.lineTo(canvas.width - 50, canvas.height);
-      ctx.stroke();
+      // ctx.beginPath();
+      // ctx.moveTo(canvas.width - 50, 0);
+      // ctx.lineTo(canvas.width - 50, canvas.height);
+      // ctx.stroke();
   
       // Calculate the race distance
-      const distance = canvas.width + 4500;
+      const distance = canvas.width + 10000;
   
       // Animate the animals
-      const fps = 60;
+      const fps = 20;
       const interval = 1000 / fps;
 
       let winner: Animal;
@@ -132,17 +132,18 @@ if(this.state === false)
         ctx.clearRect(0, 0, canvas.width, canvas.height);
   
         // Draw the start and finish lines
-        ctx.beginPath();
-        ctx.moveTo(50, 0);
-        ctx.lineTo(50, canvas.height);
+        // ctx.beginPath();
+        // ctx.moveTo(50, 0);
+        // ctx.lineTo(50, canvas.height);
   
         ctx.beginPath();
-        ctx.moveTo(canvas.width - 20, 0);
-        ctx.lineTo(canvas.width - 20, canvas.height);
+        ctx.moveTo(canvas.width - 10, 0);
+        ctx.lineTo(canvas.width - 10, canvas.height);
+        ctx.fillStyle = "green";
+        ctx.fillRect(canvas.width - 10, 0, 300, canvas.height);
         ctx.stroke();
 
-        
-  
+        this.delay = setTimeout(() => {
         // Update the position of each animal
         this.animals.forEach((animal) => {
           const speed = (1.5 * animal.speed) + (Math.random() * 2000) + (1.2 * animal.strength);
@@ -161,6 +162,7 @@ if(this.state === false)
             winner = animal;
           }
         });
+      }, 2000);
         setTimeout(animate, interval);
       };
       animate();

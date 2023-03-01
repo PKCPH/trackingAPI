@@ -28,7 +28,7 @@
 
             <div style="display:contents;"  id="activeMatches">
             <ng-container *ngFor="let games of games" >
-            <tr class="tablerow" *ngIf="games.matchState != 2"> 
+            <tr class="tablerow" *ngIf="games.matchState != 2" (click)="GoMatchDetails(games.id)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
@@ -37,7 +37,7 @@
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">Playing</td>
                 
-                <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>  
+                <!-- <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 </tr> 
             </ng-container>

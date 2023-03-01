@@ -1,0 +1,17 @@
+.section1 {
+    display: flex;
+    justify-content: center;
+}
+
+.divs {
+    height: 70vh;
+    padding: 60px;
+}
+
+.divs button {
+    width: 200px;
+    margin: auto;
+    margin-top: 10px;
+    display: block;
+}
+

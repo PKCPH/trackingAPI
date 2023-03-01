@@ -1,9 +1,12 @@
+<div class="gamesection">
 <div class="container">
+  <h1>Animal Race Craze</h1>
 <ul>
     <li *ngFor="let animal of animals">{{ animal.name }}: {{ animal.speed }} Speed - {{animal.strength}} Strength</li>
   </ul>
-  <div *ngIf="winnerMsg"><h1>{{ winnerMsg }} WINS!!!!</h1></div>
+  <div *ngIf="winnerMsg"><h2>{{ winnerMsg }} WINS!!!!</h2></div>
   <button (click)="simulateRace()">Start race</button>
   <!-- <button (click)="resetRace()">Reset</button> -->
   <canvas id="canvas"></canvas>
+</div>
 </div>

@@ -85,7 +85,7 @@ public class MatchController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("/api/matches")]
+    [HttpGet("/api/Matches")]
     public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
     {
         var matches = _context.Matches
@@ -107,16 +107,44 @@ public class MatchController : ControllerBase
         return Ok(matches);
     }
 
-    
-/*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+    [HttpGet("/api/MatchDetails/{id}")]
+    public async Task<ActionResult<IList<GameMatch>>> GetMatchDetails(Guid id)
     {
-        var matches = _context.Matches
-            .Include(mt => mt.ParticipatingTeams)
-            .ThenInclude(t => t.Team)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var match = await _context.Matches
+               .Include(mt => mt.ParticipatingTeams)
+               .ThenInclude(t => t.Team)
+               .Where(m => m.Id == id)
+               .Select(m => new {
+                   Id = m.Id,
+                   dateOfMatch = m.DateOfMatch,
+                   teamAScore = m.TeamAScore,
+                   teamBScore = m.TeamBScore,
+                   matchState = m.MatchState,
+                   participatingTeams = m.ParticipatingTeams.Select(pt => new {
+                       Id = pt.Team.Id,
+                       name = pt.Team.Name
+                   }).ToList()
+               })
+               .FirstOrDefaultAsync();
 
-        return Ok(matches);
-    }*/
+        if (match == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(match);
+    }
+
+
+    /*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+        {
+            var matches = _context.Matches
+                .Include(mt => mt.ParticipatingTeams)
+                .ThenInclude(t => t.Team)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(matches);
+        }*/
 }
