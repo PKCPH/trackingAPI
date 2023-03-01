@@ -47,49 +47,19 @@ public class LiveMatchBackgroundTask
         }
         timer.Stop();
 
-        //overtime
-        //if(
-        //    gameMatch.ParticipatingTeams.First().TeamScore == gameMatch.ParticipatingTeams.Last().TeamScore 
-        //    && !gameMatch.IsDrawAllowed)
-        //{
-        //    timer.Start();
-
-        //    while (timer.Elapsed.TotalSeconds < 10)
-        //    {
-        //        TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
-        //        string fromTimer = result.ToString("mm':'ss");
-
-        //        IsGoalScoredChance(gameMatch);
-        //        Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
-
-        //        Console.WriteLine();
-
-        //        Thread.Sleep(1000);
-        //    }
-        //    timer.Stop();
-        //}
+        var teamA = gameMatch.ParticipatingTeams.First();
+        var teamB = gameMatch.ParticipatingTeams.Last();
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            if (gameMatch.ParticipatingTeams.First().TeamScore > gameMatch.ParticipatingTeams.Last().TeamScore)
-            {
-                gameMatch.ParticipatingTeams.First().Result = Result.Winner;
-                gameMatch.ParticipatingTeams.Last().Result = Result.Loser;
-            }
-            else if (gameMatch.ParticipatingTeams.First().TeamScore < gameMatch.ParticipatingTeams.Last().TeamScore)
-            {
-                gameMatch.ParticipatingTeams.First().Result = Result.Loser;
-                gameMatch.ParticipatingTeams.Last().Result = Result.Winner;
-            }
-            else if (gameMatch.ParticipatingTeams.First().TeamScore == gameMatch.ParticipatingTeams.Last().TeamScore)
-            {
-                gameMatch.ParticipatingTeams.First().Result = Result.Draw;
-                gameMatch.ParticipatingTeams.Last().Result = Result.Draw;
-            }
-            _context.Entry(gameMatch.ParticipatingTeams.First()).State = EntityState.Modified;
-            _context.Entry(gameMatch.ParticipatingTeams.Last()).State = EntityState.Modified;
+            if (teamA.TeamScore > teamB.TeamScore) { teamA.Result = Result.Winner; teamB.Result = Result.Loser; }
+            if (teamA.TeamScore < teamB.TeamScore) { teamA.Result = Result.Loser; teamB.Result = Result.Winner; }
+            if (teamA.TeamScore == teamB.TeamScore) { teamA.Result = Result.Draw; teamB.Result = Result.Draw; }
+            
+            _context.Entry(teamA).State = EntityState.Modified;
+            _context.Entry(teamB).State = EntityState.Modified;
             _context.SaveChanges();
         }
         return Task.CompletedTask;
@@ -102,7 +72,7 @@ public class LiveMatchBackgroundTask
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
         if (ballPossessionTeam < 50) GoalToTeamA = true;
-        if (chanceOfGoal > 99) return gameMatch;
+        if (chanceOfGoal > 1) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
@@ -110,21 +80,20 @@ public class LiveMatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+            //if teamA is scoring then Teamscore++ other the same for teamB
             if (GoalToTeamA)
             {
                 gameMatch.ParticipatingTeams.First().TeamScore++;
                 _context.Entry(gameMatch.ParticipatingTeams.First()).State = EntityState.Modified;
-                _context.SaveChanges();
             }
             else
             {
                 gameMatch.ParticipatingTeams.Last().TeamScore++;
                 _context.Entry(gameMatch.ParticipatingTeams.Last()).State = EntityState.Modified;
-                _context.SaveChanges();
             }
+            _context.SaveChanges();
         }
         return gameMatch;
     }
-    //sup!
 }
 
