@@ -118,7 +118,7 @@ public class LiveMatchBackgroundTask
             else
             {
                 gameMatch.ParticipatingTeams.Last().TeamScore++;
-                //_context.Entry(gameMatch.ParticipatingTeams.Last()).State = EntityState.Modified;
+                _context.Entry(gameMatch.ParticipatingTeams.Last()).State = EntityState.Modified;
                 _context.SaveChanges();
             }
         }
