@@ -42,7 +42,8 @@ public class ImplementBackgroundService : BackgroundService
                 //{
                 //    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
                 //}
-                TeamPicker.SeedDistribution();
+                TeamPicker.SeedDistribution(_services);
+                
                 
                 await Task.Delay(1000);
                 Console.WriteLine("ExecuteAsync loop in complete");

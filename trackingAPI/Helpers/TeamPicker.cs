@@ -102,6 +102,7 @@ public class TeamPicker
         for (int i = 0; i < roundsNumber; i++)
         {
             var round = new Round();
+            //if prevRounds = is more than 0, give i-1 else null  
             var prevRound = i > 0 ? rounds[i - 1] : null;
             if (prevRound == null)
             {
@@ -125,6 +126,7 @@ public class TeamPicker
                     // you can play here by switching PlayerA and PlayerB or reordering stuff
                     round.Matches[next] = new GameMatch()
                     {
+                        
                         //_context.Entry(match.TeamASeed),
                         TeamASeed = match.TeamASeed,
                         TeamBSeed = (int)(median + Math.Abs(match.TeamASeed - median))
@@ -145,7 +147,7 @@ public class TeamPicker
         return rounds.Reverse().ToArray();
     }
 
-    public void DelegateSeeds(int teamNumber, League league)
+    public static void DelegateSeeds(int teamNumber, League league)
     {
         //delegate seeds
         //delegate opponents
@@ -164,6 +166,8 @@ public class TeamPicker
         foreach (var item in teams)
         {
             item.Seed = count++;
-        } 
+            Console.WriteLine($"Count is {item.Seed}");
+        }
+        
     }
 }
