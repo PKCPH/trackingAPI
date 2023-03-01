@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { color } from 'highcharts';
 
 interface Animal {
@@ -29,11 +29,13 @@ export class MainHorseracegameComponent {
   winnerMsg: string | any;
   state = false;
   delay: any;
+  countdown: number = 3;
+  interval: any;
 
   @ViewChild('canvas')
   canvasRef!: ElementRef<HTMLCanvasElement>;
 
-  constructor() {
+  constructor(private el: ElementRef, private renderer: Renderer2) {
     this.animals.forEach(animal => {
       animal.sprite.src = `images/${animal.name}.png`;
     });
@@ -58,10 +60,17 @@ export class MainHorseracegameComponent {
 
   simulateRace() {
 
+    this.startTimer()
       
     let finished = false;
 
     let rndIntAgane = Math.floor(Math.random() * 100) + 1;
+
+    this.delay = setTimeout(() => {  
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#go'), 'display', 'none');
+    this.countdown = 3;
+    clearInterval(this.interval)
+    }, 2500)
 
 if(this.state === false)
 {
@@ -117,7 +126,7 @@ if(this.state === false)
   
       // Animate the animals
       const fps = 20;
-      const interval = 1000 / fps;
+      const interval = 1500 / fps;
 
       let winner: Animal;
   
@@ -143,17 +152,19 @@ if(this.state === false)
         ctx.fillRect(canvas.width - 10, 0, 300, canvas.height);
         ctx.stroke();
 
-        this.delay = setTimeout(() => {
         // Update the position of each animal
         this.animals.forEach((animal) => {
+          this.delay = setTimeout(() => {   
           const speed = (1.5 * animal.speed) + (Math.random() * 2000) + (1.2 * animal.strength);
           animal.position += speed / fps;
+        }, 1500);
   
           // Draw the animal at its current position
           const x = 0 + (animal.position / distance) * (canvas.width - 30);
           const y = 0 + (this.animals.indexOf(animal) * 30);
           const width = 30;
           const height = 30;
+
           this.drawAnimal(animal, x, y, width, height);
   
           // Check if the animal has finished the race
@@ -162,12 +173,24 @@ if(this.state === false)
             winner = animal;
           }
         });
-      }, 2000);
+   
         setTimeout(animate, interval);
       };
       animate();
     }
   }
+}
+
+startTimer() {
+  this.renderer.setStyle(this.el.nativeElement.querySelector('#countdown'), 'display', 'block');
+  this.interval = setInterval(() => {
+    if(this.countdown > 1) {
+        this.countdown--;
+    } else {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#countdown'), 'display', 'none');
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#go'), 'display', 'block');
+    }
+  },500)
 }
 }
 
