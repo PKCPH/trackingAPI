@@ -38,8 +38,8 @@ public class LiveMatchBackgroundTask
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
 
-            var game = IsGoalScoredChance(gameMatch);
-            Console.WriteLine($"Match: {game.Id} Time: {fromTimer}");
+            IsGoalScoredChance(gameMatch);
+            Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
 
             Console.WriteLine();
 
@@ -88,7 +88,8 @@ public class LiveMatchBackgroundTask
                 gameMatch.ParticipatingTeams.First().Result = Result.Draw;
                 gameMatch.ParticipatingTeams.Last().Result = Result.Draw;
             }
-            _context.Entry(gameMatch).State = EntityState.Modified;
+            _context.Entry(gameMatch.ParticipatingTeams.First()).State = EntityState.Modified;
+            _context.Entry(gameMatch.ParticipatingTeams.Last()).State = EntityState.Modified;
             _context.SaveChanges();
         }
         return Task.CompletedTask;
