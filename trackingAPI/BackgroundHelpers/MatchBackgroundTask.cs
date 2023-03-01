@@ -70,14 +70,45 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            foreach (var item in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
+            //TeamController teamController = new TeamController(_context);
+            //Task<IEnumerable<Team>> task = teamController.Get();
+            ////gameMatches = (List<GameMatch>)task;
+            ///
+            //var teamList = _context.Teams.ToList();
+            foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
             {
-                gameMatches.Add(item);
+                var match2 = AddTeamsToParticipatingTeams(match, match.Id);
+
+                gameMatches.Add(match2);
             }
         }
+        //foreach (var item in task.Matches.Where(x => x.MatchState == MatchState.NotStarted))
+        //{
+        //    //matchController.GetById(item.Id);
+        //    gameMatches.Add(item);
+
+        //    //item.ParticipatingTeams.Add()
+        //    //foreach(var item2 in _context.MatchTeams.Where(x => x.TeamId == item.)))
+        //    //gameMatches.Add(_context.MatchTeams.Where(x => x.TeamId == gameMatches.First().ParticipatingTeams.Where(x => x.MatchId == gameMatches.First().Id))
+        //}
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
 
         return gameMatchesSortByOrder;
+    }
+
+    public GameMatch AddTeamsToParticipatingTeams(GameMatch gameMatch, Guid matchId)
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            var matches = _context.MatchTeams.Where(x => x.MatchId == matchId).ToList();
+            gameMatch.ParticipatingTeams.Add(matches.First());
+            gameMatch.ParticipatingTeams.Add(matches.Last());
+        }
+        return gameMatch;
+
     }
 
     public Task PlayGameMatch(GameMatch gameMatch)
@@ -93,13 +124,16 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            //make cautios of a game that been paused of postponed and will resume another time!
-            foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
-            {
-                liveMatchBackgroundTask.ExecuteLiveMatch(item);
-                item.MatchState = MatchState.Finished;
-                _context.Entry(item).State = EntityState.Modified;
-            }
+            liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
+            gameMatch.MatchState = MatchState.Finished;
+            _context.Entry(gameMatch).State = EntityState.Modified;
+            ////make cautios of a game that been paused of postponed and will resume another time!
+            //foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
+            //{
+            //    liveMatchBackgroundTask.ExecuteLiveMatch(item);
+            //    item.MatchState = MatchState.Finished;
+            //    _context.Entry(item).State = EntityState.Modified;
+            //}
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);
