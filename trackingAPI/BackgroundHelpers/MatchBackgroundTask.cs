@@ -18,14 +18,12 @@ public class MatchBackgroundTask
     {
         using (var scope = _services.CreateScope())
         {
-            Console.WriteLine("*******CreateNewMatchesOfAvailableTeamsscope");
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
             while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
-                Console.WriteLine("**************whileloop CreateNewMatchesOfAvailableTeams");
                 MatchController matchController = new(_context);
                 TeamPicker teamPicker = new();
                 await matchController.Create(teamPicker);
@@ -50,7 +48,6 @@ public class MatchBackgroundTask
                     var _context =
                         scope.ServiceProvider
                             .GetRequiredService<DatabaseContext>();
-                    Console.WriteLine("***********FindAndPlayMatches scope");
                     _context.Entry(firstGameMatch).State = EntityState.Modified;
                     _context.SaveChanges();
                 }
@@ -70,18 +67,33 @@ public class MatchBackgroundTask
 
         using (var scope = _services.CreateScope())
         {
-            Console.WriteLine("*************GetListOfScheduledGameMatchesByDateTimeSCOPE");
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            foreach (var item in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
+            foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
             {
-                gameMatches.Add(item);
+                var match2 = AddTeamsToParticipatingTeams(match, match.Id);
+                gameMatches.Add(match2);
             }
         }
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
 
         return gameMatchesSortByOrder;
+    }
+
+    public GameMatch AddTeamsToParticipatingTeams(GameMatch gameMatch, Guid matchId)
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            var matches = _context.MatchTeams.Where(x => x.MatchId == matchId).ToList();
+            gameMatch.ParticipatingTeams.Add(matches.First());
+            gameMatch.ParticipatingTeams.Add(matches.Last());
+        }
+        return gameMatch;
+
     }
 
     public Task PlayGameMatch(GameMatch gameMatch)
@@ -96,14 +108,11 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            Console.WriteLine("**************PlayGameMatchSCOPE");
-            //make cautios of a game that been paused of postponed and will resume another time!
-            foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
-            {
-                liveMatchBackgroundTask.ExecuteLiveMatch(item);
-                item.MatchState = MatchState.Finished;
-                _context.Entry(item).State = EntityState.Modified;
-            }
+
+            liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
+            gameMatch.MatchState = MatchState.Finished;
+            _context.Entry(gameMatch).State = EntityState.Modified;
+            
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);

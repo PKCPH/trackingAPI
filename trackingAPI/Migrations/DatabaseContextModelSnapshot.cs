@@ -31,6 +31,7 @@ namespace trackingAPI.Migrations
                     b.Property<DateTime>("DateOfMatch")
                         .HasColumnType("datetime2");
 
+<<<<<<< HEAD
                     b.Property<Guid?>("LeagueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -89,10 +90,14 @@ namespace trackingAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("InTournament")
+=======
+                    b.Property<bool>("IsDrawAllowed")
+>>>>>>> master
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
+<<<<<<< HEAD
                     b.Property<Guid>("LeagueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -109,6 +114,14 @@ namespace trackingAPI.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("LeagueTeams");
+=======
+                    b.Property<int>("MatchState")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Matches");
+>>>>>>> master
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Login", b =>
@@ -158,9 +171,23 @@ namespace trackingAPI.Migrations
                     b.Property<Guid>("MatchId")
                         .HasColumnType("uniqueidentifier");
 
+<<<<<<< HEAD
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
+=======
+                    b.Property<int>("Result")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TeamScore")
+                        .HasColumnType("int");
+
+>>>>>>> master
                     b.HasKey("Id");
 
                     b.HasIndex("MatchId");
@@ -208,6 +235,7 @@ namespace trackingAPI.Migrations
                     b.ToTable("PlayerTeams");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("trackingAPI.Models.Round", b =>
                 {
                     b.Property<Guid>("Id")
@@ -219,6 +247,8 @@ namespace trackingAPI.Migrations
                     b.ToTable("Rounds");
                 });
 
+=======
+>>>>>>> master
             modelBuilder.Entity("trackingAPI.Models.Team", b =>
                 {
                     b.Property<Guid>("Id")
@@ -238,6 +268,7 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
                 {
                     b.HasOne("trackingAPI.Models.League", "League")
@@ -266,6 +297,8 @@ namespace trackingAPI.Migrations
                         .IsRequired();
                 });
 
+=======
+>>>>>>> master
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
                 {
                     b.HasOne("trackingAPI.Models.GameMatch", "Match")
@@ -305,6 +338,7 @@ namespace trackingAPI.Migrations
                     b.Navigation("ParticipatingTeams");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("trackingAPI.Models.League", b =>
                 {
                     b.Navigation("GameMatches");
@@ -312,11 +346,14 @@ namespace trackingAPI.Migrations
                     b.Navigation("Teams");
                 });
 
+=======
+>>>>>>> master
             modelBuilder.Entity("trackingAPI.Models.Player", b =>
                 {
                     b.Navigation("Teams");
                 });
 
+<<<<<<< HEAD
             modelBuilder.Entity("trackingAPI.Models.Round", b =>
                 {
                     b.Navigation("Matches");
@@ -326,6 +363,10 @@ namespace trackingAPI.Migrations
                 {
                     b.Navigation("Leagues");
 
+=======
+            modelBuilder.Entity("trackingAPI.Models.Team", b =>
+                {
+>>>>>>> master
                     b.Navigation("Matches");
 
                     b.Navigation("Players");

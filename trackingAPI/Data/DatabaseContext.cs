@@ -41,6 +41,13 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);
+        modelBuilder.Entity<GameMatch>()
+            .Property(gm => gm.IsDrawAllowed)
+            .HasDefaultValue(true);
+        modelBuilder.Entity<MatchTeam>()
+            .Property(gm => gm.Result)
+            .HasDefaultValue(Result.Undetermined);
+
 
         modelBuilder.Entity<LeagueTeam>()
                 .Property(lt => lt.InTournament)
