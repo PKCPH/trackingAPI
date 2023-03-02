@@ -97,9 +97,8 @@ public class LeagueSeedingHelper
             else
             {
 
-                var match123 = round.Matches = new GameMatch[prevRound.Matches.Count * 2];
+                round.Matches = new GameMatch[prevRound.Matches.Count * 2];
 
-                var match234 = match123.ToArray();
                 // find median. For round 2 there are 4 players and median is 2.5 (between 2 and 3)
                 // for round 3 there are 8 players and median is 4.5 (between 4 and 5)
                 var median = (round.Matches.Count * 2 + 1) / 2f;
@@ -107,7 +106,7 @@ public class LeagueSeedingHelper
                 foreach (var match in prevRound.Matches)
                 {
                     // you can play here by switching PlayerA and PlayerB or reordering stuff
-                    match234[next] = new GameMatch()
+                    round.Matches.ToArray()[next]= new GameMatch()
                     {
 
                         //_context.Entry(match.TeamASeed),
@@ -115,7 +114,7 @@ public class LeagueSeedingHelper
                         TeamBSeed = (int)(median + Math.Abs(match.TeamASeed - median))
                     };
                     next++;
-                    match234[next] = new GameMatch()
+                    round.Matches.ToArray()[next] = new GameMatch()
                     {
                         TeamASeed = match.TeamBSeed,
                         TeamBSeed = (int)(median + Math.Abs(match.TeamBSeed - median))
