@@ -43,7 +43,7 @@ public class MatchBackgroundTask
             {
                 LeagueController leagueController = new(_context);
                 LeagueSeedingHelper leagueSeedingHelper = new();
-                var newLeague = leagueSeedingHelper.SeedDistribution(_context, rounds);
+                var newLeague = leagueSeedingHelper.SeedDistribution(_context);
                 await leagueController.Create(newLeague);
                 await _context.SaveChangesAsync();
             }
