@@ -78,7 +78,7 @@ public class MatchController : ControllerBase
         //if issues does not exist
         if (issueToDelete == null) return NotFound();
 
-        //otherwise remove the issue and save changes in DB
+        //otherwise remove the issue and save changes in DB!
         _context.Matches.Remove(issueToDelete);
         await _context.SaveChangesAsync();
 
@@ -94,12 +94,11 @@ public class MatchController : ControllerBase
             .Select(match => new {
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
-                teamAScore = match.TeamAScore,
-                teamBScore = match.TeamBScore,
                 matchState = match.MatchState,
                 participatingTeams = match.ParticipatingTeams.Select(pt => new {
                     Id = pt.Team.Id,
-                    name = pt.Team.Name
+                    name = pt.Team.Name,
+                    result= pt.Result,
                 }).ToList()
             })
             .ToList();

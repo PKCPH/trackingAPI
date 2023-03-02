@@ -21,4 +21,4 @@ UPDATE Teams set IsAvailable = 1
 
  */
 
-//hehe
+//hehe!!
