@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230301070142_roundModel")]
-    partial class roundModel
+    [Migration("20230302074534_leagues")]
+    partial class leagues
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,11 @@ namespace trackingAPI.Migrations
                     b.Property<DateTime>("DateOfMatch")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDrawAllowed")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
                     b.Property<Guid?>("LeagueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -42,13 +47,7 @@ namespace trackingAPI.Migrations
                     b.Property<Guid?>("RoundId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TeamAScore")
-                        .HasColumnType("int");
-
                     b.Property<int>("TeamASeed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamBScore")
                         .HasColumnType("int");
 
                     b.Property<int>("TeamBSeed")
@@ -98,11 +97,11 @@ namespace trackingAPI.Migrations
                     b.Property<Guid>("LeagueId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Seed")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("TeamSeed")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -160,8 +159,16 @@ namespace trackingAPI.Migrations
                     b.Property<Guid>("MatchId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("Result")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
                     b.Property<Guid>("TeamId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TeamScore")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

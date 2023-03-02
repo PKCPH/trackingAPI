@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
+using trackingAPI.Helpers;
+using trackingAPI.Migrations;
 using trackingAPI.Models;
 
 namespace trackingAPI.Controllers;
@@ -45,8 +47,21 @@ public class LeagueController : ControllerBase
         //saving the changes in the DB
         await _context.SaveChangesAsync();
         //returns the response with statuscode and a location in the editor
-        return CreatedAtAction(nameof(GetById), new { id = league.Id }, league);
+        return Ok(_context.Leagues);
     }
+
+    //[HttpPost]
+    //[ProducesResponseType(StatusCodes.Status201Created)]
+    ////for creating a new issue
+    //public async Task<IActionResult> Create(LeagueSeedingHelper leagueSeedingHelper)
+    //{
+    //    //adding the issue submitted by the request
+    //    await _context.Leagues.AddAsync(leagueSeedingHelper.SeedDistribution(_context));
+    //    //saving the changes in the DB
+    //    await _context.SaveChangesAsync();
+    //    //returns the response with statuscode and a location in the editor
+    //    return CreatedAtAction(nameof(GetById), new { id = league.Id }, league);
+    //}
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -31,6 +31,24 @@ public class MatchBackgroundTask
             }
         }
     }
+    public async Task CreateNewLeagueOfAvailableTeams()
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+
+            while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
+            {
+                LeagueController leagueController = new(_context);
+                LeagueSeedingHelper leagueSeedingHelper = new();
+                var newLeague = leagueSeedingHelper.SeedDistribution(_context, rounds);
+                await leagueController.Create(newLeague);
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
 
     public Task FindAndPlayMatches()
     {

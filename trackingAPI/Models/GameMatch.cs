@@ -25,6 +25,8 @@ public class GameMatch
     public League? League { get; set; }
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
+    public int TeamASeed { get; set; }
+    public int TeamBSeed { get; set; }
 }
 
 public enum MatchState

@@ -19,6 +19,7 @@ namespace trackingAPI.Models
         public Guid TeamId { get; set; }
         public Team Team { get; set; }
         public int TeamScore { get; set; }
+
         [DefaultValue(Result.Undetermined)]
         public Result Result { get; set; }
     }

@@ -10,13 +10,15 @@ public class LeagueTeam
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
+
     [ForeignKey("League")]
     public Guid LeagueId { get; set; }
+
     [ForeignKey("Team")]
     public Guid TeamId { get; set; }
     [DefaultValue(true)]
     public bool? InTournament { get; set; }
-    public int Seed { get; set; }
+    public int? TeamSeed { get; set; }
 }
 
 

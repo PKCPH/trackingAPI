@@ -16,7 +16,7 @@ namespace trackingAPI.Helpers
 
             var rnd = new Random();
             var date = DateTime.Now; //.today when not testing
-            DateTime dateTime = DateTime.UtcNow;
+            DateTime dateTime = DateTime.Now;
 
             //Timespan of the random scheduled time 
             var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
