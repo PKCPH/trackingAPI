@@ -18,7 +18,9 @@ export class EditPlayerComponent {
     name: '',
     isAvailable: true,
     matches: [],
-    availability:''
+    availability:'',
+    score: 0,
+    result: 0
   }
   playerDetails: Player = {
     id: '',

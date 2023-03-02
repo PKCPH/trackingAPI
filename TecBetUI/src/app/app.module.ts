@@ -31,6 +31,7 @@ import { AdminboardComponent } from './components/main-login/adminboard/adminboa
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
+import { BettingWindowComponent } from './components/betting/betting-window/betting-window.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -62,6 +63,7 @@ export function tokenGetter() {
     EditUserComponent,
     MainHorseracegameComponent,
     MatchDetailsComponent,
+    BettingWindowComponent,
   ],
   imports: [
     BrowserModule,

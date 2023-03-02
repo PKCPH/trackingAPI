@@ -15,8 +15,6 @@ export class AddMatchComponent {
 
   addMatchRequest: Match = {
     id: '',
-    teamAScore: 0,
-    teamBScore: 0,
     matchState: 0,
     dateOfMatch: new Date(),
     participatingTeams: [],

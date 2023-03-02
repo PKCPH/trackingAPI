@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h4 class="modal-title">Place a bet</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="amount">Bet Amount:</label>
+        <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="amount" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>

@@ -32,7 +32,7 @@
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
-                <td>{{games.teamAScore}} - {{games.teamBScore}}</td>
+                <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
     
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">Playing</td>
@@ -49,7 +49,7 @@
                     <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                     <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
     
-                    <td>{{games.teamAScore}} - {{games.teamBScore}}</td>
+                    <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
         
                     <td *ngIf="games.matchState == 2">Finished</td>
                     <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->

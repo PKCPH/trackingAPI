@@ -6,5 +6,7 @@ export interface Team {
     isAvailable: boolean;
     matches: Match[];
     availability: string;
+    score: number;
+    result: number;
 }
 

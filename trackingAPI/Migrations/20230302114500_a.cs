@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trackingAPI.Migrations
 {
-    public partial class init : Migration
+    public partial class a : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,6 +68,33 @@ namespace trackingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    GameMatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoginId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Team = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bets_Logins_LoginId",
+                        column: x => x.LoginId,
+                        principalTable: "Logins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bets_Matches_GameMatchId",
+                        column: x => x.GameMatchId,
+                        principalTable: "Matches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MatchTeams",
                 columns: table => new
                 {
@@ -119,6 +146,21 @@ namespace trackingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Logins",
+                columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
+                values: new object[] { new Guid("6faa07b9-fade-48ef-bf7e-59dfa1df2b97"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bets_GameMatchId",
+                table: "Bets",
+                column: "GameMatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bets_LoginId",
+                table: "Bets",
+                column: "LoginId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Logins_UserName",
                 table: "Logins",
@@ -150,13 +192,16 @@ namespace trackingAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Logins");
+                name: "Bets");
 
             migrationBuilder.DropTable(
                 name: "MatchTeams");
 
             migrationBuilder.DropTable(
                 name: "PlayerTeams");
+
+            migrationBuilder.DropTable(
+                name: "Logins");
 
             migrationBuilder.DropTable(
                 name: "Matches");

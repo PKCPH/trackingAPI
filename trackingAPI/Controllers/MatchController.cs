@@ -99,6 +99,7 @@ public class MatchController : ControllerBase
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
                     result= pt.Result,
+                    score = pt.TeamScore
                 }).ToList()
             })
             .ToList();
@@ -116,12 +117,12 @@ public class MatchController : ControllerBase
                .Select(m => new {
                    Id = m.Id,
                    dateOfMatch = m.DateOfMatch,
-                   teamAScore = m.TeamAScore,
-                   teamBScore = m.TeamBScore,
                    matchState = m.MatchState,
                    participatingTeams = m.ParticipatingTeams.Select(pt => new {
                        Id = pt.Team.Id,
-                       name = pt.Team.Name
+                       name = pt.Team.Name,
+                       result = pt.Result,
+                       score = pt.TeamScore
                    }).ToList()
                })
                .FirstOrDefaultAsync();

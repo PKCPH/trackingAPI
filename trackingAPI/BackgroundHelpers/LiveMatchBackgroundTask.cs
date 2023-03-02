@@ -72,7 +72,7 @@ public class LiveMatchBackgroundTask
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
         if (ballPossessionTeam < 50) GoalToTeamA = true;
-        if (chanceOfGoal > 1) return gameMatch;
+        if (chanceOfGoal > 20) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())

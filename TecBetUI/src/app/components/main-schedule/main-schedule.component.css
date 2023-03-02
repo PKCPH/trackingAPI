@@ -52,7 +52,6 @@
    .tablerow:hover {
     transition: all 400ms;
     background-color: rgb(0,0,0,0.5);
-    font-size: 20px;
     cursor: pointer;
    }
    
