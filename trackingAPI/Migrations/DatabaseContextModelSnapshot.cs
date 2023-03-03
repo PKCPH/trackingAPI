@@ -112,7 +112,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fd51d470-e4e1-4e84-955e-15a8c50ae8d3"),
+                            Id = new Guid("9e6ce42b-1045-4c37-897d-26f03713ded8"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",

@@ -34,7 +34,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 120)
+        while (timer.Elapsed.TotalSeconds < 20)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
