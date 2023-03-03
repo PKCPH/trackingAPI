@@ -45,6 +45,13 @@ public class LeagueSeedingHelper
         var rounds = Generate(8);
 
         rounds.ElementAt(0).Matches.ElementAt(0);
+        foreach (var round in rounds)
+        {
+            foreach (var match in round.Matches)
+            {
+                Console.WriteLine($"{match.Id}");
+            }
+        }
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
         var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
@@ -106,7 +113,7 @@ public class LeagueSeedingHelper
                 foreach (var match in prevRound.Matches)
                 {
                     // you can play here by switching PlayerA and PlayerB or reordering stuff
-                    round.Matches.ToArray()[next]= new GameMatch()
+                    round.Matches.ToArray()[next] = new GameMatch()
                     {
 
                         //_context.Entry(match.TeamASeed),

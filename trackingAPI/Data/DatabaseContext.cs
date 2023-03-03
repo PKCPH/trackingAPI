@@ -48,7 +48,6 @@ public class DatabaseContext : DbContext
             .Property(gm => gm.Result)
             .HasDefaultValue(Result.Undetermined);
 
-
         modelBuilder.Entity<LeagueTeam>()
                 .Property(lt => lt.InTournament)
                 .HasDefaultValue(true);
