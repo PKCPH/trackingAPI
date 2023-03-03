@@ -41,6 +41,7 @@ public class MatchBackgroundTask
         {
             var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
             // while now has past the schedule time of the match  
+
             if (now > firstGameMatch.DateOfMatch)
             {
                 using (var scope = _services.CreateScope())
@@ -72,7 +73,7 @@ public class MatchBackgroundTask
                     .GetRequiredService<DatabaseContext>();
             foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
             {
-                var match2 = AddTeamsToParticipatingTeams(match, match.Id);
+                var match2 = AddTeamsToParticipatingTeams(match);
                 gameMatches.Add(match2);
             }
         }
@@ -81,16 +82,15 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    public GameMatch AddTeamsToParticipatingTeams(GameMatch gameMatch, Guid matchId)
+    public GameMatch AddTeamsToParticipatingTeams(GameMatch gameMatch)
     {
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            var matches = _context.MatchTeams.Where(x => x.Match.Id == matchId).Include(x => x.Team).ToList();
-            gameMatch.ParticipatingTeams.Add(matches.First());
-            gameMatch.ParticipatingTeams.Add(matches.Last());
+            gameMatch.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == gameMatch.Id).Include(x => x.Team).ToList();
+            //gameMatch.ParticipatingTeams.Add(matches);
         }
         return gameMatch;
 
@@ -101,8 +101,8 @@ public class MatchBackgroundTask
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
         LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+        BetsHandler betsHandler = new(_services);
         CancellationToken stoppingToken;
-
 
         using (var scope = _services.CreateScope())
         {
@@ -111,37 +111,24 @@ public class MatchBackgroundTask
                     .GetRequiredService<DatabaseContext>();
 
             liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
-             BetsHandler betsHandler = new(_services);
             gameMatch.MatchState = MatchState.Finished;
-         
-
-                if (gameMatch.MatchState == MatchState.Finished)
+            await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
+    
+                //updating teams to is available
+                foreach (var item in gameMatch.ParticipatingTeams)
                 {
-                    await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
+                    item.Team.IsAvailable = true;
+                    _context.Entry(item.Team).State = EntityState.Modified;
                 }
+                // detach the gameMatch instance to avoid conflicts with the context
+                _context.Entry(gameMatch).State = EntityState.Detached;
 
-            // detach the gameMatch instance to avoid conflicts with the context
-            _context.Entry(gameMatch).State = EntityState.Detached;
+                // attach the updated gameMatch instance to the context and save changes
+                _context.Matches.Update(gameMatch);
+                await _context.SaveChangesAsync();
 
-            // attach the updated gameMatch instance to the context and save changes
-            _context.Matches.Update(gameMatch);
-            await _context.SaveChangesAsync();
-
- /*           _context.Entry(gameMatch).State = EntityState.Modified;*/
-
-
-
-            foreach (var item in _context.MatchTeams)
-            {
-                matchTeams.Add(item);
-            }
-            //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-            foreach (var item2 in matchTeams.Where(x => x.Match.Id == gameMatch.Id))
-            {
-                //foreach team.id that is matching with matchTeams.teamId
-                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.Team.Id)) item3.IsAvailable = true;
-            }
-            _context.SaveChanges();
+                _context.SaveChanges();
+       
         }
     }
 }
