@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trackingAPI.Migrations
 {
-    public partial class a : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -149,7 +149,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("6faa07b9-fade-48ef-bf7e-59dfa1df2b97"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("fd51d470-e4e1-4e84-955e-15a8c50ae8d3"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_GameMatchId",

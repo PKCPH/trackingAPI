@@ -34,7 +34,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 30)
+        while (timer.Elapsed.TotalSeconds < 120)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -73,8 +73,8 @@ public class LiveMatchBackgroundTask
         var ballPossessionTeam = rnd.Next(100);
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam < 100) GoalToTeamA = true;
-        if (chanceOfGoal > 20) return gameMatch;
+        if (ballPossessionTeam < 50) GoalToTeamA = true;
+        if (chanceOfGoal > 2) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
