@@ -32,7 +32,7 @@ public class MatchBackgroundTask
         }
     }
 
-    public Task FindAndPlayMatches()
+    public async Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
         //var matches = GetListOfScheduledGameMatchesByDateTime();
@@ -52,13 +52,13 @@ public class MatchBackgroundTask
                     _context.SaveChanges();
                 }
                 //new thread is created and started per livematch
-                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
-                thread.Start();
-                Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
+                await PlayGameMatch(firstGameMatch);
+
+                //Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
                 Thread.Sleep(100);
             }
         }
-        return Task.CompletedTask;
+        //return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
@@ -88,7 +88,7 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            var matches = _context.MatchTeams.Where(x => x.MatchId == matchId).ToList();
+            var matches = _context.MatchTeams.Where(x => x.MatchId == matchId).Include(x => x.Team).ToList();
             gameMatch.ParticipatingTeams.Add(matches.First());
             gameMatch.ParticipatingTeams.Add(matches.Last());
         }
@@ -96,12 +96,13 @@ public class MatchBackgroundTask
 
     }
 
-    public Task PlayGameMatch(GameMatch gameMatch)
+    public async Task PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
         LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
         CancellationToken stoppingToken;
+
 
         using (var scope = _services.CreateScope())
         {
@@ -110,9 +111,24 @@ public class MatchBackgroundTask
                     .GetRequiredService<DatabaseContext>();
 
             liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
+             BetsHandler betsHandler = new(_services);
             gameMatch.MatchState = MatchState.Finished;
-            _context.Entry(gameMatch).State = EntityState.Modified;
-            
+         
+
+                if (gameMatch.MatchState == MatchState.Finished)
+                {
+                    await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
+                }
+
+            // detach the gameMatch instance to avoid conflicts with the context
+            _context.Entry(gameMatch).State = EntityState.Detached;
+
+            // attach the updated gameMatch instance to the context and save changes
+            _context.Matches.Update(gameMatch);
+            await _context.SaveChangesAsync();
+
+ /*           _context.Entry(gameMatch).State = EntityState.Modified;*/
+
             foreach (var item in _context.MatchTeams)
             {
                 matchTeams.Add(item);
@@ -121,10 +137,9 @@ public class MatchBackgroundTask
             foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
             {
                 //foreach team.id that is matching with matchTeams.teamId
-                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
+                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.Team.Id)) item3.IsAvailable = true;
             }
             _context.SaveChanges();
         }
-        return Task.CompletedTask;
     }
 }

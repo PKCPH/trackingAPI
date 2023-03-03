@@ -12,7 +12,10 @@ namespace trackingAPI.Models
 
         [ForeignKey("Login")]
         public Guid LoginId { get; set; }
-        public string Team { get; set; } // Can be empty string or "draw" for a draw
+        public string Team { get; set; }
+
+        // Can be empty string or "draw" for a draw
+        // Instead of doing a team/player/draw u vote on as a string pass ID's instead
         public int Amount { get; set; }
  
     }

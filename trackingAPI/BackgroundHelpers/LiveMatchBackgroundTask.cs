@@ -5,6 +5,7 @@ using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using trackingAPI.Helpers;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -33,7 +34,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 60)
+        while (timer.Elapsed.TotalSeconds < 30)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -60,6 +61,7 @@ public class LiveMatchBackgroundTask
             
             _context.Entry(teamA).State = EntityState.Modified;
             _context.Entry(teamB).State = EntityState.Modified;
+
             _context.SaveChanges();
         }
         return Task.CompletedTask;
@@ -71,7 +73,7 @@ public class LiveMatchBackgroundTask
         var ballPossessionTeam = rnd.Next(100);
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam < 50) GoalToTeamA = true;
+        if (ballPossessionTeam < 100) GoalToTeamA = true;
         if (chanceOfGoal > 20) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
