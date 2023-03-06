@@ -63,8 +63,6 @@ public class MatchBackgroundTask
     public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
     {
         List<GameMatch> gameMatches = new List<GameMatch>();
-        //List<MatchTeam> matchTeams = new List<MatchTeam>();
-        //List<Team> teams = new List<Team>();
 
         using (var scope = _services.CreateScope())
         {
