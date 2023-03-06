@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
-using trackingAPI.Migrations;
 using trackingAPI.Models;
 
 namespace trackingAPI.Controllers;
@@ -11,9 +10,6 @@ namespace trackingAPI.Controllers;
 [ApiController]
 public class LeagueController : ControllerBase
 {
-    /// <summary>
-    /// accessing the database at runtime
-    /// </summary>
     private readonly DatabaseContext _context;
 
     public LeagueController(DatabaseContext context) => _context = context;
@@ -88,41 +84,4 @@ public class LeagueController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
-
-    //[HttpGet("/api/matches")]
-    //public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
-    //{
-    //    var matches = _context.Matches
-    //        .Include(mt => mt.ParticipatingTeams)
-    //        .ThenInclude(t => t.Team)
-    //        .Select(match => new
-    //        {
-    //            Id = match.Id,
-    //            dateOfMatch = match.DateOfMatch,
-    //            teamAScore = match.TeamAScore,
-    //            teamBScore = match.TeamBScore,
-    //            matchState = match.MatchState,
-    //            participatingTeams = match.ParticipatingTeams.Select(pt => new
-    //            {
-    //                Id = pt.Team.Id,
-    //                name = pt.Team.Name
-    //            }).ToList()
-    //        })
-    //        .ToList();
-
-    //    return Ok(matches);
-    //}
-
-
-    /*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
-        {
-            var matches = _context.Matches
-                .Include(mt => mt.ParticipatingTeams)
-                .ThenInclude(t => t.Team)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-
-            return Ok(matches);
-        }*/
 }

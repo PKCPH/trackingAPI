@@ -41,10 +41,11 @@ public class MatchBackgroundTask
 
             while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
-                LeagueController leagueController = new(_context);
+                //LeagueController leagueController = new(_context);
                 LeagueSeedingHelper leagueSeedingHelper = new();
                 var newLeague = leagueSeedingHelper.SeedDistribution(_context);
-                await leagueController.Create(newLeague);
+                _context.Leagues.Add(newLeague);
+                //await leagueController.Create(newLeague);
                 await _context.SaveChangesAsync();
             }
         }
