@@ -16,11 +16,11 @@ public class DatabaseContext : DbContext
     public DbSet<Player> Players { get; set; }
     public DbSet<League> Leagues { get; set; }
     public DbSet<GameMatch> Matches { get; set; }
-    public DbSet<Round> Rounds { get; set; }
 
     public DbSet<LeagueTeam> LeagueTeams { get; set; }
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<PlayerTeam> PlayerTeams { get; set; }
+    public DbSet<LeagueMatches> LeagueMatches { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
