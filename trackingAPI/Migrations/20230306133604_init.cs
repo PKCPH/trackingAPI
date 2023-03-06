@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace trackingAPI.Migrations
 {
-    public partial class leagues : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,6 +42,22 @@ namespace trackingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MatchState = table.Column<int>(type: "int", nullable: false),
+                    DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    TeamASeed = table.Column<int>(type: "int", nullable: false),
+                    TeamBSeed = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
@@ -52,17 +68,6 @@ namespace trackingAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rounds",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Rounds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -79,30 +84,19 @@ namespace trackingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Matches",
+                name: "Round",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MatchState = table.Column<int>(type: "int", nullable: false),
-                    DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    TeamASeed = table.Column<int>(type: "int", nullable: false),
-                    TeamBSeed = table.Column<int>(type: "int", nullable: false),
-                    RoundId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.PrimaryKey("PK_Round", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Matches_Leagues_LeagueId",
+                        name: "FK_Round_Leagues_LeagueId",
                         column: x => x.LeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Matches_Rounds_RoundId",
-                        column: x => x.RoundId,
-                        principalTable: "Rounds",
                         principalColumn: "Id");
                 });
 
@@ -127,31 +121,6 @@ namespace trackingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LeagueTeams_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlayerTeams",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PlayerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerTeams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PlayerTeams_Players_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "Players",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerTeams_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
                         principalColumn: "Id",
@@ -185,6 +154,56 @@ namespace trackingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PlayerTeams",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayerTeams", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlayerTeams_Players_PlayerId",
+                        column: x => x.PlayerId,
+                        principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayerTeams_Teams_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LeagueMatches",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerA = table.Column<int>(type: "int", nullable: false),
+                    PlayerB = table.Column<int>(type: "int", nullable: false),
+                    RoundsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LeagueMatches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LeagueMatches_Round_RoundsId",
+                        column: x => x.RoundsId,
+                        principalTable: "Round",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeagueMatches_RoundsId",
+                table: "LeagueMatches",
+                column: "RoundsId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_LeagueTeams_LeagueId",
                 table: "LeagueTeams",
@@ -201,16 +220,6 @@ namespace trackingAPI.Migrations
                 column: "UserName",
                 unique: true,
                 filter: "[UserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Matches_LeagueId",
-                table: "Matches",
-                column: "LeagueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Matches_RoundId",
-                table: "Matches",
-                column: "RoundId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MatchTeams_MatchId",
@@ -231,10 +240,18 @@ namespace trackingAPI.Migrations
                 name: "IX_PlayerTeams_TeamId",
                 table: "PlayerTeams",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Round_LeagueId",
+                table: "Round",
+                column: "LeagueId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "LeagueMatches");
+
             migrationBuilder.DropTable(
                 name: "LeagueTeams");
 
@@ -248,6 +265,9 @@ namespace trackingAPI.Migrations
                 name: "PlayerTeams");
 
             migrationBuilder.DropTable(
+                name: "Round");
+
+            migrationBuilder.DropTable(
                 name: "Matches");
 
             migrationBuilder.DropTable(
@@ -258,9 +278,6 @@ namespace trackingAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Leagues");
-
-            migrationBuilder.DropTable(
-                name: "Rounds");
         }
     }
 }
