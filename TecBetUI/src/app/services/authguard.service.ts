@@ -8,6 +8,8 @@ import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { LoginService } from './login.service';
 import { baseApiUrl } from './serviceVariables'
 import { CustomErrorHandlerService } from './custom-error-handler.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from '../components/main-login/login/login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class AuthguardService implements CanActivate  {
   private errorSubject = new BehaviorSubject<string>("");
   errorMessage = this.errorSubject.asObservable();
 
-  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService, private customErrorHandler: CustomErrorHandlerService){}
+  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private modalService: NgbModal, private customErrorHandler: CustomErrorHandlerService){}
   
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
@@ -32,7 +34,8 @@ export class AuthguardService implements CanActivate  {
 
     const isRefreshSuccess = await this.tryRefreshingTokens(token); 
     if (!isRefreshSuccess) { 
-      this.router.navigate(["login"]); 
+      // this.router.navigate(["/"]); 
+      this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
     }
 
     return isRefreshSuccess;

@@ -13,6 +13,7 @@ import { AuthguardService } from 'src/app/services/authguard.service';
   styleUrls: ['./betting-window.component.css']
 })
 export class BettingWindowComponent {
+
   match: Match | any;
   // match: Match = {
   //   id: '',
@@ -23,8 +24,15 @@ export class BettingWindowComponent {
   // };
   team: Team | any;
   user: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
-
+  errorMsg: string = '';
   amount: number = 0;
+
+  max = 100;
+  min = 0;
+  showTicks = false;
+  step = 1;
+  thumbLabel = false;
+  value = 0;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -40,7 +48,7 @@ export class BettingWindowComponent {
     storedCredentials = JSON.parse(storedCredentialsString);
     }
     
-        const userName = storedCredentials.username
+        const userName = storedCredentials.userName
         if (userName) {
           //Call API
 this.authService.getUser(userName)
@@ -49,15 +57,17 @@ this.authService.getUser(userName)
 this.user.id = response.id
 this.user.balance = response.balance,
 this.user.userName = response.userName,
+this.user.role = response.role,
+// this.max = response.balance,
 
 console.log(this.user);
+// console.log(this.max, this.min);
   }
 });
         }
   }
 
   onSubmit() {
-
     console.log(this.user);
     if (this.amount > 0) {
       const bet: Bet = {
@@ -71,19 +81,26 @@ console.log(this.user);
         result: null,
       };
 
-      console.log("Team: " + this.team.name);
-      console.log("Amount: " + this.amount)
-      console.log("Match ID: " + this.match.id)
+      // console.log("Team: " + this.team.name);
+      // console.log("Amount: " + this.amount);
+      // console.log("Match ID: " + this.match.id);
 
       this.betService.placeBet(bet).subscribe(
         (bet: Bet) => {
           // Update match details component with bet information
           // ...
+          let storedCredentials = {
+            userName: this.user.userName,
+            role: this.user.role,
+          };
+
+          localStorage.setItem("credentials", JSON.stringify(storedCredentials));
           this.activeModal.close();
         },
         (error: any) => {
           // Handle error
-          console.error(error);
+          this.errorMsg = error;
+          console.log(this.errorMsg);
         }
       );
     }

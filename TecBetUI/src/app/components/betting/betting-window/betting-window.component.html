@@ -1,8 +1,12 @@
 <div class="modal-header">
-    <h4 class="modal-title">Place a bet</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <h4 class="modal-title">Place your bet!</h4>
+    <button
+    type="button"
+    class="btn-close"
+    aria-label="Close button"
+    aria-describedby="modal-title"
+    (click)="activeModal.dismiss('Cross click')"
+></button>
   </div>
   <div class="modal-body">
     <form (ngSubmit)="onSubmit()">
@@ -10,6 +14,20 @@
         <label for="amount">Bet Amount:</label>
         <input type="number" class="form-control" id="amount" name="amount" [(ngModel)]="amount" required>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+
+    <mat-slider
+        class="slider"
+        [max]="user.balance"
+        [min]="min"
+        [step]="step"
+        [discrete]="thumbLabel"
+        [showTickMarks]="showTicks">
+      <input matSliderThumb [(ngModel)]="amount">
+    </mat-slider>   
   </div>
+  <div class="modal-footer">
+    <button (click)="onSubmit()" type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+

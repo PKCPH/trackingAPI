@@ -9,7 +9,7 @@ form {
   }
 
   select {
-    width: 12%;
+    width: 14%;
     margin: 0 auto;
   }
 
@@ -21,7 +21,6 @@ form {
   border-radius: 5px;
   border: 1px black solid;
 }
-
 
 .readonly:focus {
  border: none;

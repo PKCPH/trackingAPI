@@ -1,4 +1,4 @@
-<div class="section1">
+
 
 <div id="loading"></div>
 
@@ -15,7 +15,7 @@
           class="form-control" placeholder="Password" required>
         <br/>
         <button class="btn btn-lg btn-primary my-3" type="submit" [disabled]="!loginForm.valid">Login</button>
-        <a routerLink="/"><button type="button" class="btn btn-lg btn-primary mx-3">Back</button></a>
+        <button (click)="close()" type="button" class="btn btn-lg btn-primary mx-3">Back</button>
 
         <div class="errorMsg">
           <div *ngIf="invalidLogin" class="alert">Invalid username or password.</div>
@@ -24,4 +24,3 @@
 
     </form>
   </div>
-</div>

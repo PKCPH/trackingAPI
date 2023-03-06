@@ -52,8 +52,9 @@ public class MatchBackgroundTask
                     _context.SaveChanges();
                 }
                 //new thread is created and started per livematch
-                await PlayGameMatch(firstGameMatch);
-
+        /*        await PlayGameMatch(firstGameMatch);*/
+                Thread thread = new Thread(async () => { await PlayGameMatch(firstGameMatch); });
+                thread.Start();
                 //Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
                 Thread.Sleep(100);
             }

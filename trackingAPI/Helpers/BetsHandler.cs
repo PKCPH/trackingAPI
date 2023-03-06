@@ -43,16 +43,6 @@ namespace trackingAPI.Helpers
                         }
                     }
 
-                // Calculate refunds for draw bets
-                var drawBets = bets.Where(b => b.Team == null);
-                foreach (var bet in drawBets)
-                {
-                    var user = await _context.Logins.FindAsync(bet.LoginId);
-                    if (user != null)
-                    {
-                        user.Balance += bet.Amount;
-                    }
-                }
                 await _context.SaveChangesAsync();
             }
         }
@@ -69,7 +59,7 @@ namespace trackingAPI.Helpers
                 }
                 else if (item.Result == Result.Draw)
                 {
-                    winningTeamName = null;
+                    winningTeamName = "draw";
                 }
 
             }

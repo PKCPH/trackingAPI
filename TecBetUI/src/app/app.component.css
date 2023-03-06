@@ -143,6 +143,21 @@ span:hover {
 .dropDownItems:hover {
     background-color: rgba(0,0,0,0.5);
 }
+
+.balance {
+    font-size: 15px;
+    position: absolute;
+    right: 17.8%;
+    top: 45%;
+}
+
+.balance span {
+    color: yellow;
+}
+
+.balance:hover {
+    cursor: default;
+}
   
 
 @media screen and (max-width: 1000px) {

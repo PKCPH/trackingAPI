@@ -32,6 +32,11 @@ import { EditUserComponent } from './components/main-login/adminboard/edit-user/
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
 import { BettingWindowComponent } from './components/betting/betting-window/betting-window.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatCardModule} from '@angular/material/card';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -78,7 +83,12 @@ export function tokenGetter() {
         disallowedRoutes: []
       } 
     }),
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatCardModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

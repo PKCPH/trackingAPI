@@ -22,6 +22,17 @@ export class MatchDetailsComponent implements OnDestroy {
     state: ''
   };
 
+  drawRequest: Team = {
+    id: '',
+    name: 'draw',
+    isAvailable: true,
+    matches: [],
+    availability: '',
+    score: 0,
+    result: 0
+  };
+  
+
   updateSubscription: Subscription;
   id: any;
 
@@ -82,21 +93,21 @@ export class MatchDetailsComponent implements OnDestroy {
   }
 
   onBetTeamA() {
-    const modalRef = this.modalService.open(BettingWindowComponent);
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
     modalRef.componentInstance.match = this.matchDetails;
     modalRef.componentInstance.team = this.matchDetails.participatingTeams[0];
   }
 
   onBetTeamB() {
-    const modalRef = this.modalService.open(BettingWindowComponent);
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
     modalRef.componentInstance.match = this.matchDetails;
-    modalRef.componentInstance.team = this.matchDetails.participatingTeams[0];
+    modalRef.componentInstance.team = this.matchDetails.participatingTeams[1];
   }
 
   onBetDraw() {
-    const modalRef = this.modalService.open(BettingWindowComponent);
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
     modalRef.componentInstance.match = this.matchDetails;
-    modalRef.componentInstance.team = null;
+    modalRef.componentInstance.team = this.drawRequest;
   }
 
 

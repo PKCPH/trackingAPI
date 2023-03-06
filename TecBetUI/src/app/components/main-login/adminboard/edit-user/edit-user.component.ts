@@ -32,7 +32,7 @@ export class EditUserComponent {
       storedCredentials = JSON.parse(storedCredentialsString);
 
       let role = storedCredentials.role;
-      this.adminUsername = storedCredentials.username;
+      this.adminUsername = storedCredentials.userName;
 
       if (role === 'Admin') {
         // console.log("youre good!");

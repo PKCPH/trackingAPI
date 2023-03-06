@@ -91,11 +91,13 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/:username',
-    component: UserprofileComponent
+    component: UserprofileComponent,
+    canActivate: [AuthguardService]
   },
   {
     path: 'adminboard/edit-user/:username',
-    component: EditUserComponent
+    component: EditUserComponent,
+    canActivate: [AuthguardService]
   },
   {
     path: 'animalrace',
