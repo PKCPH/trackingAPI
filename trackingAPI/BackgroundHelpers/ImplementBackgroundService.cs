@@ -21,6 +21,8 @@ public class ImplementBackgroundService : BackgroundService
     //Task running when IHostedService starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        Task task;
+        MatchBackgroundTask matchBackgroundTask = new(_services);
         using (var scope = _services.CreateScope())
         {
             var _context =
@@ -28,11 +30,10 @@ public class ImplementBackgroundService : BackgroundService
                     .GetRequiredService<DatabaseContext>();
             do
             {
-                Task task;
-                MatchBackgroundTask matchBackgroundTask = new(_services);
+                var matches = _context.Matches.All(x => x.MatchState == MatchState.Finished);
                 //if any matches has not finished then play matches!
                 //else create new matches
-                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
+                if (matches)
                 {
                     task = matchBackgroundTask.FindAndPlayMatches();
                 }

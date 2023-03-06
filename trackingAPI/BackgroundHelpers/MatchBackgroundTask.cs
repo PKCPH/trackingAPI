@@ -25,9 +25,8 @@ public class MatchBackgroundTask
 
             while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
-                MatchController matchController = new(_context);
                 TeamPicker teamPicker = new();
-                await matchController.Create(teamPicker);
+                await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
                 await _context.SaveChangesAsync();
             }
         }
@@ -75,7 +74,6 @@ public class MatchBackgroundTask
                 match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id).Include(x => x.Team).ToList();
                 gameMatches.Add(match);
             }
-
         }
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
         return gameMatchesSortByOrder;
