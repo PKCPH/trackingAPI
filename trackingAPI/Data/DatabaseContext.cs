@@ -36,8 +36,8 @@ public class DatabaseContext : DbContext
 
         //Default value for IsAvailable = true
         modelBuilder.Entity<Bet>()
-    .Property(b => b.)
-    .HasDefaultValue(true);
+    .Property(b => b.Result)
+    .HasDefaultValue(Result.);
         modelBuilder.Entity<Bet>()
     .Property(gm => gm.IsDrawAllowed)
     .HasDefaultValue(true);

@@ -31,7 +31,7 @@ public class BetController : ControllerBase
     public async Task<ActionResult<Bet>> PlaceBet(Bet bet)
     {
         // Retrieve the match that the user is betting on
-        var match = await _context.Matches.FindAsync(bet.GameMatchId);
+        var match = await _context.Matches.FindAsync(bet.Match.Id);
 
         if (match == null)
         {

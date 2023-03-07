@@ -32,6 +32,6 @@ namespace trackingAPI.Models
 
     public enum BetResult
     {
-        Loss, Win
+        Undetermined, Loss, Win
     }
 }
