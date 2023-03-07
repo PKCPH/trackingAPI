@@ -6,14 +6,14 @@ using System.ComponentModel;
 
 namespace trackingAPI.Models;
 
-public class GameMatch
+public class Gamematch
 {
-    public GameMatch(DatabaseContext databaseContext)
+    public Gamematch(DatabaseContext databaseContext)
     {
         this.ParticipatingTeams = new HashSet<MatchTeam>();
         
     }
-    public GameMatch()
+    public Gamematch()
     {
     }
 

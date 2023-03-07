@@ -17,7 +17,7 @@ public class LiveMatchBackgroundTask
         _services = services;
     }
 
-    public Task ExecuteLiveMatch(GameMatch gameMatch)
+    public Task ExecuteLiveMatch(Gamematch gameMatch)
     {
         using (var scope = _services.CreateScope())
         {
@@ -65,7 +65,7 @@ public class LiveMatchBackgroundTask
         return Task.CompletedTask;
     }
 
-    public GameMatch IsGoalScoredChance(GameMatch gameMatch)
+    public Gamematch IsGoalScoredChance(Gamematch gameMatch)
     {
         Random rnd = new Random();
         var ballPossessionTeam = rnd.Next(100);

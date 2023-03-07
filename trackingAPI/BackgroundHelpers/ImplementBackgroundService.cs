@@ -28,6 +28,24 @@ public class ImplementBackgroundService : BackgroundService
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+
+
+            //Task task;
+            League league = new(_context);
+            LeagueSeedingHelper leagueSeedingHelper = new LeagueSeedingHelper();
+            //TeamController teamController = new(_context);
+            //var teams = teamController.Get().Result;
+            var leagueTeams = leagueSeedingHelper.SeedDistribution(league, _context);
+
+            league.StartDate = DateTime.Now;
+            league.LeagueState = LeagueState.NotStarted;
+            league.Teams = leagueTeams.Teams.ToList();
+            league.Name = "testleague123";
+
+            LeagueHelpers.CreateRounds(league);
+
+            Console.WriteLine();
+
             do
             {
                 //League league = new League(_context);
@@ -36,12 +54,12 @@ public class ImplementBackgroundService : BackgroundService
                 //LeagueSeedingHelper leagueSeedingHelper = new();
                 //leagueSeedingHelper.SeedDistribution(_context);
 
-                Task task;
+
+
                 
 
-
-                MatchBackgroundTask matchBackgroundTask = new(_services);
-                task = matchBackgroundTask.CreateNewLeagueOfAvailableTeams(); 
+                //MatchBackgroundTask matchBackgroundTask = new(_services);
+                //task = matchBackgroundTask.CreateNewLeagueOfAvailableTeams(); 
                 ////if any matches has not finished then play matches!
                 ////else create new matches
 

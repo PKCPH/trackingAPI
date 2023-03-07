@@ -31,25 +31,25 @@ public class MatchBackgroundTask
             }
         }
     }
-    public async Task CreateNewLeagueOfAvailableTeams()
-    {
-        using (var scope = _services.CreateScope())
-        {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
+    //public async Task CreateNewLeagueOfAvailableTeams()
+    //{
+    //    using (var scope = _services.CreateScope())
+    //    {
+    //        var _context =
+    //            scope.ServiceProvider
+    //                .GetRequiredService<DatabaseContext>();
 
-            while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
-            {
-                //LeagueController leagueController = new(_context);
-                LeagueSeedingHelper leagueSeedingHelper = new();
-                var newLeague = leagueSeedingHelper.SeedDistribution(_context);
-                _context.Leagues.Add(newLeague);
-                //await leagueController.Create(newLeague);
-                await _context.SaveChangesAsync();
-            }
-        }
-    }
+    //        while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
+    //        {
+    //            //LeagueController leagueController = new(_context);
+    //            LeagueSeedingHelper leagueSeedingHelper = new();
+    //            var newLeague = leagueSeedingHelper.SeedDistribution(_context);
+    //            _context.Leagues.Add(newLeague);
+    //            //await leagueController.Create(newLeague);
+    //            await _context.SaveChangesAsync();
+    //        }
+    //    }
+    //}
 
     public Task FindAndPlayMatches()
     {
@@ -80,9 +80,9 @@ public class MatchBackgroundTask
         return Task.CompletedTask;
     }
 
-    public IOrderedEnumerable<GameMatch> GetListOfScheduledGameMatchesByDateTime()
+    public IOrderedEnumerable<Gamematch> GetListOfScheduledGameMatchesByDateTime()
     {
-        List<GameMatch> gameMatches = new List<GameMatch>();
+        List<Gamematch> gamematches = new List<Gamematch>();
 
         using (var scope = _services.CreateScope())
         {
@@ -92,15 +92,15 @@ public class MatchBackgroundTask
             foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
             {
                 var match2 = AddTeamsToParticipatingTeams(match, match.Id);
-                gameMatches.Add(match2);
+                gamematches.Add(match2);
             }
         }
-        var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
+        var gamematchesSortByOrder = gamematches.OrderBy(x => x.DateOfMatch);
 
-        return gameMatchesSortByOrder;
+        return gamematchesSortByOrder;
     }
 
-    public GameMatch AddTeamsToParticipatingTeams(GameMatch gameMatch, Guid matchId)
+    public Gamematch AddTeamsToParticipatingTeams(Gamematch gameMatch, Guid matchId)
     {
         using (var scope = _services.CreateScope())
         {
@@ -115,7 +115,7 @@ public class MatchBackgroundTask
 
     }
 
-    public Task PlayGameMatch(GameMatch gameMatch)
+    public Task PlayGameMatch(Gamematch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();

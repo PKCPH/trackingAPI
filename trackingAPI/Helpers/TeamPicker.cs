@@ -9,9 +9,9 @@ public class TeamPicker
 {
     
     //Read list of teams and choose two random team to be put in ParticipatingTeams.
-    public GameMatch CreateMatch(DatabaseContext _context)
+    public Gamematch CreateMatch(DatabaseContext _context)
     {
-        GameMatch gameMatch = new(_context);
+        Gamematch gameMatch = new(_context);
         Random rnd = new Random();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
@@ -39,40 +39,4 @@ public class TeamPicker
         }
         return gameMatch;
     }
-    //For Leagues
-    //public GameMatch CreateMatchFirstRound(DatabaseContext _context, League league)
-    //{
-    //    LeagueGamematch leagueMatch = new();
-    //    Round[] round = new Round[32]();
-    //    Random rnd = new Random();
-
-    //    //var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
-    //    //var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-    //    //var teams = league.Teams;
-
-    //    //var AvailableTeams = _context.LeagueTeams.Where(x => x.LeagueId == league.Id).ToList();
-    //    var TwoRandomAvailableTeams = league.Teams.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-    //    //var listOfRounds = Generate(8);
-    //    if (TwoRandomAvailableTeams.Count().Equals(2))
-    //    {
-    //        var teamA = TwoRandomAvailableTeams.First();
-    //        var teamB = TwoRandomAvailableTeams.Last().TeamId;
-
-    //        GameMatch gamematchA = new GameMatch { ParticipatingTeams = teamA };
-    //        GameMatch gamematchB = new GameMatch { TeamId = teamB };
-
-    //        leagueMatch.TeamASeed.Add(matchTeamA);
-    //        leagueMatch.ParticipatingTeams.Add(matchTeamB);
-
-    //        gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-    //        Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
-    //    }
-    //    else
-    //    {
-    //        throw new Exception("Could not find enough available teams");
-    //    }
-    //    return gameMatch;
-    //}
 }

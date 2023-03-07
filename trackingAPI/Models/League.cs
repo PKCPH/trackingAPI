@@ -10,6 +10,7 @@ public class League
     public League(DatabaseContext databaseContext)
     {
         this.Teams= new HashSet<LeagueTeam>();
+        //this.Rounds = new HashSet<Round>();
         //this.Rounds= new HashSet<Round>();
         //this.Rounds = new HashSet<MatchupModel>();
     }
@@ -21,7 +22,7 @@ public class League
     public LeagueState LeagueState { get; set; }
     public DateTime StartDate { get; set; }
     public ICollection<LeagueTeam> Teams { get; set; }
-    public List<List<MatchupModel>> Rounds { get; set; } = new List<List<MatchupModel>>();
+    public ICollection<LeagueGamematchRound> MatchLeagueRounds { get; set; }
 
 
 }

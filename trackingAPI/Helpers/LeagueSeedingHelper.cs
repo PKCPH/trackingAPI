@@ -38,38 +38,18 @@ public class LeagueSeedingHelper
     //    }
 
     //}
-    public League SeedDistribution(DatabaseContext _context)
+    public League SeedDistribution(League league, DatabaseContext _context)
     {
-        //var teams = league.Teams.ToList();
-        League league = new(_context);
         Random rnd = new Random();
-        //var rounds = Generate(8);
-        //foreach (var round in rounds)
-        //{
-            
-        //    //_context.Rounds.Add(round);
-        //    foreach (var match in round.Matches)
-        //    {
-        //        Console.WriteLine("{0} vs {1}", match.TeamASeed, match.TeamBSeed);
-        //        //_context.LeagueMatches.Add(match); //add leagueMatch
-        //    }
-        //    Console.WriteLine();
-        //}
-        //_context.SaveChanges();
-        //Console.ReadKey();
 
-        var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
-        var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
+        var eightAvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(8);
 
-        if (TwoRandomAvailableTeams.Count().Equals(2))
+        foreach (var team in eightAvailableTeams)
         {
-            var teamA = TwoRandomAvailableTeams.First();
-            var teamB = TwoRandomAvailableTeams.Last();
-            teamA.IsAvailable = false;
-            teamB.IsAvailable = false;
+        
 
-            MatchTeam matchTeamA = new MatchTeam { Team = teamA };
-            MatchTeam matchTeamB = new MatchTeam { Team = teamB };
+            LeagueTeam leagueTeamA = new LeagueTeam { Team = team };
+            league.Teams.Add(leagueTeamA);
 
             //rounds.FirstOrDefault().Matches.FirstOrDefault().ParticipatingTeams.Add(matchTeamA);
             //league.Rounds.FirstOrDefault().Matches;
@@ -77,12 +57,9 @@ public class LeagueSeedingHelper
             //league.GameMatches.First().ParticipatingTeams.Add(matchTeamA);
             //league.GameMatches.First().ParticipatingTeams.Add(matchTeamB);
 
-            Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
+            Console.WriteLine($"LEAGUE MATCH CREATED: {leagueTeamA.Team.Name}");
         }
-        else
-        {
-            throw new Exception("Could not find enough available teams");
-        }
+
         return league;
     }
     //static Round[] Generate(int playersNumber)

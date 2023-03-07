@@ -10,7 +10,7 @@ public class MatchTeam
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public GameMatch Match { get; set; }
+    public Gamematch Match { get; set; }
     public Team Team { get; set; }
     public int TeamScore { get; set; }
     [DefaultValue(Result.Undetermined)]

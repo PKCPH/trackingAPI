@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230307131803_init123")]
+    partial class init123
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,7 +41,7 @@ namespace trackingAPI.Migrations
                     b.Property<bool>("IsLeagueGame")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("LeagueGamematchRoundId")
+                    b.Property<int?>("MatchLeagueRoundsId")
                         .HasColumnType("int");
 
                     b.Property<int>("MatchState")
@@ -53,7 +55,7 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LeagueGamematchRoundId");
+                    b.HasIndex("MatchLeagueRoundsId");
 
                     b.ToTable("Matches");
                 });
@@ -77,24 +79,6 @@ namespace trackingAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Leagues");
-                });
-
-            modelBuilder.Entity("trackingAPI.Models.LeagueGamematchRound", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<Guid>("LeagueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeagueId");
-
-                    b.ToTable("LeagueGamematchRound");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
@@ -162,6 +146,24 @@ namespace trackingAPI.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Logins");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.MatchLeagueRounds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<Guid>("LeagueId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeagueId");
+
+                    b.ToTable("MatchLeagueRounds");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -252,20 +254,9 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
                 {
-                    b.HasOne("trackingAPI.Models.LeagueGamematchRound", null)
+                    b.HasOne("trackingAPI.Models.MatchLeagueRounds", null)
                         .WithMany("Matches")
-                        .HasForeignKey("LeagueGamematchRoundId");
-                });
-
-            modelBuilder.Entity("trackingAPI.Models.LeagueGamematchRound", b =>
-                {
-                    b.HasOne("trackingAPI.Models.League", "League")
-                        .WithMany("MatchLeagueRounds")
-                        .HasForeignKey("LeagueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("League");
+                        .HasForeignKey("MatchLeagueRoundsId");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
@@ -285,6 +276,17 @@ namespace trackingAPI.Migrations
                     b.Navigation("Leagues");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.MatchLeagueRounds", b =>
+                {
+                    b.HasOne("trackingAPI.Models.League", "League")
+                        .WithMany("MatchLeagueRounds")
+                        .HasForeignKey("LeagueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("League");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -333,7 +335,7 @@ namespace trackingAPI.Migrations
                     b.Navigation("Teams");
                 });
 
-            modelBuilder.Entity("trackingAPI.Models.LeagueGamematchRound", b =>
+            modelBuilder.Entity("trackingAPI.Models.MatchLeagueRounds", b =>
                 {
                     b.Navigation("Matches");
                 });
