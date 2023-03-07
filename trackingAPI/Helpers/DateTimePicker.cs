@@ -26,9 +26,7 @@ namespace trackingAPI.Helpers
             var pickedDateTime = date + timeOfDayHours;
 
             //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
-            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(0) : pickedDateTime;
-
-            //cmon git bro
+            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(DaysAddedThanNow) : pickedDateTime;
         }
     }
 }

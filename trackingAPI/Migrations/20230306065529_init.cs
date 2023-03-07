@@ -149,7 +149,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("fd51d470-e4e1-4e84-955e-15a8c50ae8d3"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("15c2f223-ecda-47c8-ae2b-10b1b0748f35"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_GameMatchId",
