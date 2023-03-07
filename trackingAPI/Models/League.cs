@@ -10,7 +10,7 @@ public class League
     public League(DatabaseContext databaseContext)
     {
         this.Teams= new HashSet<LeagueTeam>();
-        this.Rounds= new HashSet<Round>();
+        //this.Rounds= new HashSet<Round>();
     }
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -27,7 +27,10 @@ public class League
     //public ICollection<GameMatch> LeagueMatches { get; set; }
     //public int NumberOfTeams { get; set; }
     //public ICollection<GameMatch> GameMatches { get; set; }
-    public ICollection<Round> Rounds { get; set; }
+    //public ICollection<Round> Rounds { get; set; }
+
+    public List<ICollection<MatchupModel>> MatchupModels { get; set; } = new List<ICollection<MatchupModel>>();
+
 
 }
 

@@ -43,20 +43,20 @@ public class LeagueSeedingHelper
         //var teams = league.Teams.ToList();
         League league = new(_context);
         Random rnd = new Random();
-        var rounds = Generate(8);
-        foreach (var round in rounds)
-        {
+        //var rounds = Generate(8);
+        //foreach (var round in rounds)
+        //{
             
-            //_context.Rounds.Add(round);
-            foreach (var match in round.Matches)
-            {
-                Console.WriteLine("{0} vs {1}", match.PlayerA, match.PlayerB);
-                _context.LeagueMatches.Add(match);
-            }
-            Console.WriteLine();
-        }
-        _context.SaveChanges();
-        Console.ReadKey();
+        //    //_context.Rounds.Add(round);
+        //    foreach (var match in round.Matches)
+        //    {
+        //        Console.WriteLine("{0} vs {1}", match.TeamASeed, match.TeamBSeed);
+        //        //_context.LeagueMatches.Add(match); //add leagueMatch
+        //    }
+        //    Console.WriteLine();
+        //}
+        //_context.SaveChanges();
+        //Console.ReadKey();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
         var TwoRandomAvailableTeams = AvailableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
@@ -85,54 +85,54 @@ public class LeagueSeedingHelper
         }
         return league;
     }
-    static Round[] Generate(int playersNumber)
-    {
-        // only works for power of 2 number of players   
-        var roundsNumber = (int)Math.Log(playersNumber, 2);
-        var rounds = new Round[roundsNumber];
-        for (int i = 0; i < roundsNumber; i++)
-        {
-            var round = new Round();
-            var prevRound = i > 0 ? rounds[i - 1] : null;
-            if (prevRound == null)
-            {
-                // if first round - result is known
-                round.Matches = new[] {
-                    new LeagueMatches() {
-                        PlayerA = 1,
-                        PlayerB = 2
-                    }
-                };
-            }
-            else
-            {
-                round.Matches = new LeagueMatches[prevRound.Matches.Length * 2];
-                // find median. For round 2 there are 4 players and median is 2.5 (between 2 and 3)
-                // for round 3 there are 8 players and median is 4.5 (between 4 and 5)
-                var median = (round.Matches.Length * 2 + 1) / 2f;
-                var next = 0;
-                foreach (var match in prevRound.Matches)
-                {
-                    // you can play here by switching PlayerA and PlayerB or reordering stuff
-                    round.Matches[next] = new LeagueMatches()
-                    {
-                        PlayerA = match.PlayerA,
-                        PlayerB = (int)(median + Math.Abs(match.PlayerA - median)),
-                        //Rounds = roundsNumber
-                    };
-                    next++;
-                    round.Matches[next] = new LeagueMatches()
-                    {
-                        PlayerA = match.PlayerB,
-                        PlayerB = (int)(median + Math.Abs(match.PlayerB - median))
-                    };
-                    next++;
-                }
-            }
-            rounds[i] = round;
-        }
-        return rounds.Reverse().ToArray();
-    }
+    //static Round[] Generate(int playersNumber)
+    //{
+    //    // only works for power of 2 number of players   
+    //    var roundsNumber = (int)Math.Log(playersNumber, 2);
+    //    var rounds = new Round[roundsNumber];
+    //    for (int i = 0; i < roundsNumber; i++)
+    //    {
+    //        var round = new Round();
+    //        var prevRound = i > 0 ? rounds[i - 1] : null;
+    //        if (prevRound == null)
+    //        {
+    //            // if first round - result is known
+    //            round.Matches = new[] {
+    //                new LeagueGamematch() {
+    //                    TeamASeed = 1,
+    //                    TeamBSeed = 2
+    //                }
+    //            };
+    //        }
+    //        else
+    //        {
+    //            round.Matches = new LeagueGamematch[prevRound.Matches.Length * 2];
+    //            // find median. For round 2 there are 4 players and median is 2.5 (between 2 and 3)
+    //            // for round 3 there are 8 players and median is 4.5 (between 4 and 5)
+    //            var median = (round.Matches.Length * 2 + 1) / 2f;
+    //            var next = 0;
+    //            foreach (var match in prevRound.Matches)
+    //            {
+    //                // you can play here by switching PlayerA and PlayerB or reordering stuff
+    //                round.Matches[next] = new LeagueGamematch()
+    //                {
+    //                    TeamASeed = match.TeamASeed,
+    //                    TeamBSeed = (int)(median + Math.Abs(match.TeamASeed - median)),
+    //                    //Rounds = roundsNumber
+    //                };
+    //                next++;
+    //                round.Matches[next] = new LeagueGamematch()
+    //                {
+    //                    TeamASeed = match.TeamBSeed,
+    //                    TeamBSeed = (int)(median + Math.Abs(match.TeamBSeed - median))
+    //                };
+    //                next++;
+    //            }
+    //        }
+    //        rounds[i] = round;
+    //    }
+    //    return rounds.Reverse().ToArray();
+    //}
 
     ////generating bracketrounds for single elimination tournaments
     //public static ICollection<Round> Generate(int teamNumber)

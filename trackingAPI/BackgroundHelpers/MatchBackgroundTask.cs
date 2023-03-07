@@ -107,7 +107,7 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            var matches = _context.MatchTeams.Where(x => x.MatchId == matchId).ToList();
+            var matches = _context.MatchTeams.Where(x => x.Match.Id == matchId).ToList();
             gameMatch.ParticipatingTeams.Add(matches.First());
             gameMatch.ParticipatingTeams.Add(matches.Last());
         }
@@ -137,10 +137,10 @@ public class MatchBackgroundTask
                 matchTeams.Add(item);
             }
             //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-            foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
+            foreach (var item2 in matchTeams.Where(x => x.Match.Id == gameMatch.Id))
             {
                 //foreach team.id that is matching with matchTeams.teamId
-                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
+                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.Team.Id)) item3.IsAvailable = true;
             }
             _context.SaveChanges();
         }

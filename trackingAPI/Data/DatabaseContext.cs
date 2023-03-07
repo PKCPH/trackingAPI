@@ -20,8 +20,11 @@ public class DatabaseContext : DbContext
     public DbSet<LeagueTeam> LeagueTeams { get; set; }
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<PlayerTeam> PlayerTeams { get; set; }
-    public DbSet<LeagueMatches> LeagueMatches { get; set; }
+    public DbSet<LeagueGamematch> LeagueMatches { get; set; }
 
+    public DbSet<MatchupModel> MatchupModels { get; set; }
+    public DbSet<MatchupEntryModel> MatchupEntryModels { get; set; }
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //modelBuilder.Entity<Login>().HasData(new Login

@@ -8,5 +8,5 @@ public class Round
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public LeagueMatches[] Matches { get; set; }
+    public GameMatch[] Matches { get; set; }
 }
