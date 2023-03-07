@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from './models/login.model';
@@ -7,6 +7,7 @@ import { Subscription, interval, switchMap } from 'rxjs';
 import { AuthguardService } from './services/authguard.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/main-login/login/login.component';
+import * as jwt from 'jsonwebtoken';
 
 @Component({
   selector: 'app-root',
@@ -15,18 +16,20 @@ import { LoginComponent } from './components/main-login/login/login.component';
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  credentials: LoginModel = {userName:'', password:'', role: '', id: '', balance: 0, email: ''};
+  credentials: LoginModel | any;
   title = 'Soccer-Database';
   scrolled = 0;
   showDropdown = false;
   timer: any;
   idleTimer: any;
-  updateSubscription: Subscription;
+  updateSubscription: Subscription | any;
+  updating = false;
+  userAuthenticated = false;
+  // isLoggedin = false;
 
   constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService, 
     private authService: AuthguardService, private modalService: NgbModal)
   {
-
     //If there is credentials filled, make it do the checkAuthGuarD() function !!!
 
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
@@ -38,40 +41,40 @@ export class AppComponent {
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
-    });   
- 
+    });  
 
-//Fetching stuff from localstorage
+    this.updateUserInfo();
 
-    let storedCredentialsString = localStorage.getItem("credentials");
-    if (storedCredentialsString)
-    {
-      this.credentials =  JSON.parse(storedCredentialsString);
-    }
-
-    //Repeated API calls for balance update, maybe theres a better way to do this? Tried to bind to localstorage and eventually reached conclusion
-    //that it would require the same api calls to update.
-
-    this.updateSubscription = interval(2000).pipe(
-      switchMap(() => this.authService.getUser(this.credentials.userName))
-    ).subscribe({
-      next: (response) => {
-      this.credentials.id = response.id
-      this.credentials.balance = response.balance,
-      this.credentials.userName = response.userName,
-      this.credentials.role = response.role
-      // console.log(this.credentials);
-      this.isUserAuthenticated();  
-      },
-      error: (response) => {
-        console.log(response);
-      }
-    }); 
+    window.addEventListener('userLoggedIn', this.updateUserInfo.bind(this));
   }
+
 
   openLogin() {
 		this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
 	}
+
+  updateUserInfo() {
+    let storedCredentialsString = localStorage.getItem("credentials");
+    if (storedCredentialsString)
+    {
+      this.credentials =  JSON.parse(storedCredentialsString);
+      this.updateSubscription = interval(1500).pipe(
+        switchMap(() => this.authService.getUser(this.credentials.userName))
+      ).subscribe({
+        next: (response) => {
+        this.credentials.id = response.id
+        this.credentials.balance = response.balance,
+        this.credentials.userName = response.userName,
+        this.credentials.role = response.role,
+        this.credentials.password = "",
+        console.log(this.credentials);
+        },
+        error: (response) => {
+          console.log(response);
+        }
+      }); 
+    }
+  }
 
   //Basic boolean function that checks if youre on a certain page
 
@@ -95,9 +98,11 @@ return false;
 
   isUserAuthenticated = (): boolean => {
     const token = localStorage.getItem("jwt");
+    // if (token){
     if (token && !this.jwtHelper.isTokenExpired(token)){
       return true;
     }
+    console.log("relog brother");
     return false;
   }
 
@@ -109,6 +114,8 @@ return false;
     localStorage.removeItem("refreshToken");
     this.credentials.role = "";
     this.router.navigateByUrl("/");
+    this.updateSubscription.unsubscribe();
+    this.userAuthenticated = false;
   }
 
   //Listener on scroll, any scrolling on the page will trigger this function and set a number to either 1 or 0 (1 for it being scrolled)
@@ -135,7 +142,7 @@ return false;
   startIdleTimer() {
     this.idleTimer = setTimeout(() => {
       this.logOut();
-    }, 600000); // 600 seconds
+    }, 900000); // 900 seconds
   }
 
   resetTimer() {

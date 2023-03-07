@@ -94,6 +94,10 @@ span {
     transition: all 1000ms ease;
 }
 
+span img{
+    height: 20px;
+}
+
 span:hover {
     cursor: pointer;
     color: seagreen;

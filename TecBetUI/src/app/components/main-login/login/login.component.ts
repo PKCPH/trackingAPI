@@ -13,17 +13,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   invalidLogin: boolean = false;
   invalidConn: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService,
     private el: ElementRef, private renderer: Renderer2, public activeModal: NgbActiveModal) { }
-  
-  ngOnInit(): void {
-    
-  }
 
   login = ( form: NgForm) => {
     if (form.valid) {
@@ -52,6 +48,10 @@ export class LoginComponent implements OnInit {
           };
 
           localStorage.setItem("credentials", JSON.stringify(storedCredentials));
+
+          const event = new CustomEvent('userLoggedIn');
+          window.dispatchEvent(event);
+          
           this.hideLoader();
           this.activeModal.close();
           }
