@@ -37,7 +37,7 @@ export class MatchesService {
 
   getSchedule(): Observable<Match[]> {
     this.isLoading = true;
-    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/matches')
+    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/Matches')
       .pipe(
         tap(schedule => {
           this.errorSubject.next('');
@@ -71,5 +71,9 @@ export class MatchesService {
 
   deleteMatch(id: string): Observable<Match> {
     return this.http.delete<Match>(serviceVariables.baseApiUrl + '/api/Match/' + id)
+  }
+
+  getMatchDetails(id: string): Observable<Match> {
+    return this.http.get<Match>(serviceVariables.baseApiUrl + '/api/MatchDetails/' + id);
   }
 }

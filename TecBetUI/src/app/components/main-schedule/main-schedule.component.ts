@@ -20,9 +20,23 @@ export class MainScheduleComponent implements OnDestroy {
   } 
   
     constructor(private matchesService: MatchesService, 
-      private el: ElementRef, private renderer: Renderer2) {
+      private el: ElementRef, private renderer: Renderer2, private router: Router) {
+
+        this.matchesService.getSchedule()
+        .subscribe({
+          next: (games) => {
+            this.games = games;  
+            if (games)
+            {
+              this.Hideloader();
+            }  
+          },
+          error: (response) => {
+            console.log(response);
+          }
+        });     
   
-        this.updateSubscription = interval(1500).pipe(
+        this.updateSubscription = interval(3000).pipe(
           switchMap(() => this.matchesService.getSchedule())
         )
         .subscribe({
@@ -32,7 +46,7 @@ export class MainScheduleComponent implements OnDestroy {
                 ...game,
               }
             });
-            console.log(this.games);
+            // console.log(this.games);
             if (games)
             {
               this.Hideloader();
@@ -52,11 +66,31 @@ export class MainScheduleComponent implements OnDestroy {
 
     }
 
+    GoMatchDetails(id: string)
+    {
+      this.router.navigateByUrl("details/" + id);
+    }
+
     Hideloader() {
               // Setting display of spinner
               // element to none
               this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block'); 
+              this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block');
+    }
+
+    showArchivedMatches() {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'contents'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
+    }
+
+    
+    showActiveMatches() {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'contents'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
     }
 
 }

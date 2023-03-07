@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230301130557_init")]
+    [Migration("20230306065529_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,6 +23,34 @@ namespace trackingAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("trackingAPI.Models.Bet", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("GameMatchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LoginId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Team")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameMatchId");
+
+                    b.HasIndex("LoginId");
+
+                    b.ToTable("Bets");
+                });
 
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
                 {
@@ -82,6 +110,18 @@ namespace trackingAPI.Migrations
                         .HasFilter("[UserName] IS NOT NULL");
 
                     b.ToTable("Logins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("15c2f223-ecda-47c8-ae2b-10b1b0748f35"),
+                            Balance = 1000,
+                            Email = "",
+                            Password = "123456",
+                            RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "Admin",
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
@@ -170,6 +210,21 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.Bet", b =>
+                {
+                    b.HasOne("trackingAPI.Models.GameMatch", null)
+                        .WithMany("Bets")
+                        .HasForeignKey("GameMatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("trackingAPI.Models.Login", null)
+                        .WithMany("Bets")
+                        .HasForeignKey("LoginId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>
                 {
                     b.HasOne("trackingAPI.Models.GameMatch", "Match")
@@ -206,7 +261,14 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.GameMatch", b =>
                 {
+                    b.Navigation("Bets");
+
                     b.Navigation("ParticipatingTeams");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.Login", b =>
+                {
+                    b.Navigation("Bets");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Player", b =>

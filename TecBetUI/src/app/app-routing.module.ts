@@ -17,6 +17,10 @@ import { AddPlayerComponent } from './components/main-player/add-player/add-play
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
+import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
+import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
+import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
+import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
 
 const routes: Routes = [
   {
@@ -52,12 +56,17 @@ const routes: Routes = [
     component: MainScheduleComponent
   },
   {
+    path: 'details/:id',
+    component: MatchDetailsComponent,
+    canActivate: [AuthguardService]
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
   {
-    path: 'customers',
-    component: CustomersComponent,
+    path: 'adminboard',
+    component: AdminboardComponent,
     canActivate: [AuthguardService]
   },
   {
@@ -82,8 +91,19 @@ const routes: Routes = [
   },
   {
     path: 'dashboard/:username',
-    component: UserprofileComponent
+    component: UserprofileComponent,
+    canActivate: [AuthguardService]
   },
+  {
+    path: 'adminboard/edit-user/:username',
+    component: EditUserComponent,
+    canActivate: [AuthguardService]
+  },
+  {
+    path: 'animalrace',
+    component: MainHorseracegameComponent,
+    canActivate: [AuthguardService]
+  }
 ];
 
 @NgModule({

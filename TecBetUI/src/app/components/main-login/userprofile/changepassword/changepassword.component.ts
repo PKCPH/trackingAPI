@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, Input, Type } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -62,7 +62,7 @@ if(this.selectedUser.passwordCheck === this.selectedUser.password) {
       }})
         this.modal.close();
         this.timer = setTimeout(() => {
-          this.modalService.open(MODALS['confirm'], {centered: true, size: 'sm'});
+          this.modalService.open(MODALS['confirm'], {centered: true, size: 'sm', windowClass: 'modal-confirmpass', keyboard: true});
         }, 1000); 
         this.timer = setTimeout(() => {
           this.modalService.dismissAll();
@@ -82,29 +82,18 @@ if(this.selectedUser.passwordCheck === this.selectedUser.password) {
   }
 }
 }}}
-
 }
 
 @Component({
 	selector: 'confirm',
 	template: `
-  <div style="background-color: rgba(45,0,45,1)">
   <div class="d-flex" style="justify-content: flex-end;">
-  <button
-      type="button"
-      ngbAutofocus
-      class="btn-close my-2 mx-2"
-      aria-label="Close button"
-      aria-describedby="modal-title"
-      (click)="modal.dismiss('Cross click')"
-  ></button>
 </div>
 		<div class="modal-body" style="text-align:center">
-			<p class="pb-3">
+			<p class="">
 				Your password has been changed.
 			</p>
 		</div>
-    </div>
 	`,
 })
 

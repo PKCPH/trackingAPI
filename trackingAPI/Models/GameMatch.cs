@@ -21,6 +21,7 @@ public class GameMatch
     public DateTime DateOfMatch { get; set; }
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
+    public ICollection<Bet> Bets { get; set; }
 }
 
 public enum MatchState

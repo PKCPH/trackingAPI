@@ -3,6 +3,10 @@ import { Component, HostListener, ViewEncapsulation } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from './models/login.model';
 import { LoginService } from './services/login.service';
+import { Subscription, interval, switchMap } from 'rxjs';
+import { AuthguardService } from './services/authguard.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from './components/main-login/login/login.component';
 
 @Component({
   selector: 'app-root',
@@ -16,37 +20,71 @@ export class AppComponent {
   scrolled = 0;
   showDropdown = false;
   timer: any;
+  idleTimer: any;
+  updateSubscription: Subscription;
 
-  constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService)
+  constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService, 
+    private authService: AuthguardService, private modalService: NgbModal)
   {
+
+    //If there is credentials filled, make it do the checkAuthGuarD() function !!!
 
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
     //Timer is strictly for hiding the dropdown menu if not being used
 
     this.startTimer();
 
+    this.startIdleTimer();
+
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
-    }); 
+    });   
+ 
 
-    let storedCredentials;
+//Fetching stuff from localstorage
 
     let storedCredentialsString = localStorage.getItem("credentials");
     if (storedCredentialsString)
     {
-    storedCredentials = JSON.parse(storedCredentialsString);
-    let role = storedCredentials.role;
-    let displayName = storedCredentials.username;
-    this.credentials.role = role;
-    this.credentials.userName = displayName; 
+      this.credentials =  JSON.parse(storedCredentialsString);
     }
 
+    //Repeated API calls for balance update, maybe theres a better way to do this? Tried to bind to localstorage and eventually reached conclusion
+    //that it would require the same api calls to update.
+
+    this.updateSubscription = interval(1000).pipe(
+      switchMap(() => this.authService.getUser(this.credentials.userName))
+    ).subscribe({
+      next: (response) => {
+      this.credentials.id = response.id
+      this.credentials.balance = response.balance,
+      this.credentials.userName = response.userName,
+      this.credentials.role = response.role
+      // console.log(this.credentials);
+      this.isUserAuthenticated();  
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    }); 
   }
+
+  openLogin() {
+		this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
+	}
 
   //Basic boolean function that checks if youre on a certain page
 
   isRegisterPage = (): boolean => {
     if (this.router.url.includes('/register')) 
+  {  
+     return true; 
+  }
+return false;
+  }
+
+  isTestingPage = (): boolean => {
+    if (this.router.url.includes('/horserace')) 
   {  
      return true; 
   }
@@ -68,6 +106,7 @@ return false;
   logOut = () => {
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
+    localStorage.removeItem("refreshToken");
     this.credentials.role = "";
     this.router.navigateByUrl("/");
   }
@@ -91,6 +130,12 @@ return false;
       this.showDropdown = false;
       this.resetTimer();
     }, 4000); // 4 seconds
+  }
+
+  startIdleTimer() {
+    this.idleTimer = setTimeout(() => {
+      this.logOut();
+    }, 600000); // 600 seconds
   }
 
   resetTimer() {

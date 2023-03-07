@@ -89,8 +89,8 @@ export class RegisterComponent {
               this.loginService.updateCredentials(this.addLoginRequest);  
 
               let storedCredentials = {
-                username: this.addLoginRequest.userName,
-                role: this.addLoginRequest.role
+                userName: this.addLoginRequest.userName,
+                role: this.addLoginRequest.role,
               };
     
               localStorage.setItem("credentials", JSON.stringify(storedCredentials));

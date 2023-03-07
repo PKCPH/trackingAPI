@@ -11,6 +11,8 @@
     
     <div class="container my-2 divs py-5" id="schedulecontainer">
         <h1 class="mb-3">Schedule of Matches</h1>
+        <button class="btn btn-warning" id="archivedMatchesButton" (click)="showArchivedMatches()">Show Archived Matches</button>
+        <button class="btn btn-warning" id="activeMatchesButton" (click)="showActiveMatches()">Show Active Matches</button>
 
         <!-- <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddMatch()" id="addbutton">Create a Match</button> -->
         <table class="table tabletext" *ngIf="games && games.length > 0">
@@ -24,19 +26,36 @@
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let games of games"> 
-                <td>{{ games.dateOfMatch | date: 'dd/MM/yyyy hh:mm:ss' }}</td>
+            <div style="display:contents;"  id="activeMatches">
+            <ng-container *ngFor="let games of games" >
+            <tr class="tablerow" *ngIf="games.matchState != 2" (click)="GoMatchDetails(games.id)"> 
+                <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
-                <td>{{games.teamAScore}} - {{games.teamBScore}}</td>
+                <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
     
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">Playing</td>
-                <td *ngIf="games.matchState == 2">Finished</td>
                 
-                <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>  
+                <!-- <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 </tr> 
+            </ng-container>
+        </div>
+          
+        <div id="archivedMatches">
+            <ng-container *ngFor="let games of games" >
+                <tr class="tablerow" *ngIf="games.matchState == 2"> 
+                    <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
+                    <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
+    
+                    <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
+        
+                    <td *ngIf="games.matchState == 2">Finished</td>
+                    <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
+                    </tr> 
+                </ng-container>
+            </div>
         </table>  
     
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
 import { TeamsService } from 'src/app/services/teams.service';

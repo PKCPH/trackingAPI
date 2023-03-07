@@ -5,6 +5,7 @@ using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using trackingAPI.Helpers;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -33,16 +34,13 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 60)
+        while (timer.Elapsed.TotalSeconds < BackgroundTaskConfiguration.MatchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
 
             IsGoalScoredChance(gameMatch);
             Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
-
-            Console.WriteLine();
-
             Thread.Sleep(1000);
         }
         timer.Stop();
@@ -57,9 +55,10 @@ public class LiveMatchBackgroundTask
             if (teamA.TeamScore > teamB.TeamScore) { teamA.Result = Result.Winner; teamB.Result = Result.Loser; }
             if (teamA.TeamScore < teamB.TeamScore) { teamA.Result = Result.Loser; teamB.Result = Result.Winner; }
             if (teamA.TeamScore == teamB.TeamScore) { teamA.Result = Result.Draw; teamB.Result = Result.Draw; }
-            
+
             _context.Entry(teamA).State = EntityState.Modified;
             _context.Entry(teamB).State = EntityState.Modified;
+
             _context.SaveChanges();
         }
         return Task.CompletedTask;
@@ -68,20 +67,20 @@ public class LiveMatchBackgroundTask
     public GameMatch IsGoalScoredChance(GameMatch gameMatch)
     {
         Random rnd = new Random();
-        var ballPossessionTeam = rnd.Next(100);
-        bool GoalToTeamA = false;
+        var ballPossessionNumber = rnd.Next(100);
+        bool goalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam < 50) GoalToTeamA = true;
-        if (chanceOfGoal > 1) return gameMatch;
-
+        if (ballPossessionNumber < 50) goalToTeamA = true;
+        if (chanceOfGoal > 2) return gameMatch;
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
+                   .GetRequiredService<DatabaseContext>();
+
             //if teamA is scoring then Teamscore++ other the same for teamB
-            if (GoalToTeamA)
+            if (goalToTeamA)
             {
                 gameMatch.ParticipatingTeams.First().TeamScore++;
                 _context.Entry(gameMatch.ParticipatingTeams.First()).State = EntityState.Modified;
