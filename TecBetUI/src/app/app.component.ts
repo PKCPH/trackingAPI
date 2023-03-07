@@ -52,7 +52,7 @@ export class AppComponent {
     //Repeated API calls for balance update, maybe theres a better way to do this? Tried to bind to localstorage and eventually reached conclusion
     //that it would require the same api calls to update.
 
-    this.updateSubscription = interval(1000).pipe(
+    this.updateSubscription = interval(2000).pipe(
       switchMap(() => this.authService.getUser(this.credentials.userName))
     ).subscribe({
       next: (response) => {

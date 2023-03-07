@@ -33,7 +33,7 @@ public class ImplementBackgroundService : BackgroundService
                 var matches = _context.Matches.All(x => x.MatchState == MatchState.Finished);
                 //if any matches has not finished then play matches!
                 //else create new matches
-                if (matches)
+                if (!matches)
                 {
                     task = matchBackgroundTask.FindAndPlayMatches();
                 }
