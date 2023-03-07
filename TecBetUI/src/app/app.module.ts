@@ -37,6 +37,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -69,6 +70,7 @@ export function tokenGetter() {
     MainHorseracegameComponent,
     MatchDetailsComponent,
     BettingWindowComponent,
+    UserbetsComponent,
   ],
   imports: [
     BrowserModule,

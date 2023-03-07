@@ -84,7 +84,7 @@ public class BetController : ControllerBase
     }
 
     [HttpGet("mybets/{userId}")]
-    public async Task<ActionResult<IEnumerable<Bet>>> GetBetsForUser(Guid userId)
+    public async Task<IEnumerable<Bet>> GetBetsForUser(Guid userId)
     {
         return await _context.Bets.Where(b => b.LoginId == userId).ToListAsync();
     }
@@ -101,5 +101,10 @@ public class BetController : ControllerBase
 
         return bet;
     }
+
+    [HttpGet]
+    public async Task<IEnumerable<Bet>> Get()
+    //get a list of Issue
+    => await _context.Bets.ToListAsync();
 }
 

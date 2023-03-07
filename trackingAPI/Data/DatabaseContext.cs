@@ -35,6 +35,12 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Login>().HasIndex(u => u.UserName).IsUnique();
 
         //Default value for IsAvailable = true
+        modelBuilder.Entity<Bet>()
+    .Property(b => b.)
+    .HasDefaultValue(true);
+        modelBuilder.Entity<Bet>()
+    .Property(gm => gm.IsDrawAllowed)
+    .HasDefaultValue(true);
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);

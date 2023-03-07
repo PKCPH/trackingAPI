@@ -48,6 +48,7 @@
         <li class="dropDownItems" *ngFor="let item of items" (click)="onItemClick(item.text)">
           <a class="nav-text" *ngIf="item.text === 'Log Out'" (click)="logOut()">{{item.text}}</a>
           <a class="nav-text" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]">{{item.text}}</a>
+          <a class="nav-text" *ngIf="item.text === 'My Bets'" [routerLink]="['/dashboard', credentials.userName, 'mybets']">{{item.text}}</a>
         </li>
       </ul>
     </div>

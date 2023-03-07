@@ -8,7 +8,9 @@ namespace trackingAPI.Models
         public Guid Id { get; set; }
 
         [ForeignKey("GameMatch")]
-        public Guid GameMatchId { get; set; }
+
+        /*public Guid GameMatchId { get; set; }*/
+        public GameMatch Match { get; set; }
 
         [ForeignKey("Login")]
         public Guid LoginId { get; set; }
@@ -17,6 +19,19 @@ namespace trackingAPI.Models
         // Can be empty string or "draw" for a draw
         // Instead of doing a team/player/draw u vote on as a string pass ID's instead
         public int Amount { get; set; }
- 
+
+        public Result Result { get; set; }
+
+        public BetState BetState { get; set; }
+    }
+
+    public enum BetState
+    {
+        InProgress, Finished
+    }
+
+    public enum BetResult
+    {
+        Loss, Win
     }
 }

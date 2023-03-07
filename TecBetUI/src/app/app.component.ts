@@ -35,8 +35,6 @@ export class AppComponent {
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
     //Timer is strictly for hiding the dropdown menu if not being used
 
-    this.startTimer();
-
     this.startIdleTimer();
 
     this.loginService.currentCredentials.subscribe(credentials => {
@@ -66,8 +64,8 @@ export class AppComponent {
         this.credentials.balance = response.balance,
         this.credentials.userName = response.userName,
         this.credentials.role = response.role,
-        this.credentials.password = "",
-        console.log(this.credentials);
+        this.credentials.password = ""
+        // console.log(this.credentials);
         },
         error: (response) => {
           console.log(response);
@@ -102,7 +100,9 @@ return false;
     if (token && !this.jwtHelper.isTokenExpired(token)){
       return true;
     }
-    console.log("relog brother");
+    localStorage.removeItem("jwt");
+    localStorage.removeItem("credentials");
+    localStorage.removeItem("refreshToken");
     return false;
   }
 
@@ -135,8 +135,8 @@ return false;
   startTimer() {
     this.timer = setTimeout(() => {
       this.showDropdown = false;
-      this.resetTimer();
-    }, 4000); // 4 seconds
+ 
+    }, 5000); // 4 seconds
   }
 
   startIdleTimer() {
@@ -145,12 +145,10 @@ return false;
     }, 900000); // 900 seconds
   }
 
-  resetTimer() {
-    clearTimeout(this.timer);
-    this.startTimer();
-  }
+ 
 
   toggleDropdown() {
+    this.startTimer();
     this.showDropdown = !this.showDropdown;
   }
 
@@ -161,7 +159,6 @@ return false;
     
     // Hide the dropdown box.
     this.showDropdown = false;
-    this.resetTimer();
   }
 
    //DropDownButton items definition
@@ -170,6 +167,10 @@ return false;
         text: 'Dashboard',
     },
     {
-        text: 'Log Out',
-    }];
+      text: 'My Bets'
+    },
+    {
+      text: 'Log Out',
+    }
+  ];
 }

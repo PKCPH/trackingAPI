@@ -4,7 +4,7 @@ export interface Bet {
     id: string;
     gameMatchId: string;
     loginId: string;
-    team: Team;
+    team: string;
     amount: number;
     payoutAmount: number;
     betTime: Date;
@@ -13,8 +13,7 @@ export interface Bet {
 
   export enum BetResult {
     Win = 'win',
-    Loss = 'loss',
-    Draw = 'draw'
+    Loss = 'loss'
   }
 
 

@@ -1,0 +1,31 @@
+<div class="section1">
+    <div class="container divs my-2 py-5">
+        <h1>My Bets:</h1>
+
+
+        <table class="table tabletext" *ngIf="bets && bets.length > 0">
+            <thead>
+                <tr>
+                    <th>MatchID</th>
+                    <th>Bet on</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+
+            <div style="display:contents;"  id="activeMatches">
+            <ng-container *ngFor="let bets of bets" >
+            <tr class="tablerow"> 
+                <td>{{ bets.gameMatchId }}</td>
+                <td>{{ bets.team | titlecase }}</td>
+                <td>{{ bets.amount }}$</td>
+                </tr> 
+            </ng-container>
+            </div>
+            </table>
+
+            <div *ngIf="bets.length === 0"><p>Uhhhh go place some bets!!!<p></div>
+
+
+        <button type="button" class="btn btn-primary mt-4 mx-3 button-danger" (click)="goBack()">Go Back</button>
+    </div>
+</div>

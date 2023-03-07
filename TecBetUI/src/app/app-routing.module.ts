@@ -21,6 +21,7 @@ import { AdminboardComponent } from './components/main-login/adminboard/adminboa
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
+import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 
 const routes: Routes = [
   {
@@ -92,6 +93,11 @@ const routes: Routes = [
   {
     path: 'dashboard/:username',
     component: UserprofileComponent,
+    canActivate: [AuthguardService]
+  },
+  {
+    path: 'dashboard/:username/mybets',
+    component: UserbetsComponent,
     canActivate: [AuthguardService]
   },
   {
