@@ -27,6 +27,8 @@ export class AppComponent {
     private authService: AuthguardService, private modalService: NgbModal)
   {
 
+    //If there is credentials filled, make it do the checkAuthGuarD() function !!!
+
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
     //Timer is strictly for hiding the dropdown menu if not being used
 
@@ -58,12 +60,13 @@ export class AppComponent {
       this.credentials.balance = response.balance,
       this.credentials.userName = response.userName,
       this.credentials.role = response.role
+      // console.log(this.credentials);
+      this.isUserAuthenticated();  
       },
       error: (response) => {
         console.log(response);
       }
-    });   
-
+    }); 
   }
 
   openLogin() {

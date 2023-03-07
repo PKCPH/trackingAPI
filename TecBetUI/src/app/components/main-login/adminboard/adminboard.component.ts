@@ -67,6 +67,19 @@ export class AdminboardComponent implements OnDestroy{
             });
           }
         });   
+
+        this.authService.getUsers()
+        .subscribe({
+          next: (users) => {
+            this.users = users.map(users => {
+              return {
+                ...users,
+                password: '',
+                id: users.id.substring(0, 8),
+              }
+            });
+          }
+        }); 
     }
   
     deleteUser(username: string) {

@@ -30,7 +30,7 @@ export class BettingWindowComponent {
   max = 100;
   min = 0;
   showTicks = false;
-  step = 1;
+  step = 100;
   thumbLabel = false;
   value = 0;
 
@@ -57,10 +57,10 @@ this.authService.getUser(userName)
 this.user.id = response.id
 this.user.balance = response.balance,
 this.user.userName = response.userName,
-this.user.role = response.role,
+this.user.role = response.role
 // this.max = response.balance,
 
-console.log(this.user);
+// console.log(this.user);
 // console.log(this.max, this.min);
   }
 });
@@ -68,7 +68,6 @@ console.log(this.user);
   }
 
   onSubmit() {
-    console.log(this.user);
     if (this.amount > 0) {
       const bet: Bet = {
         id: '',

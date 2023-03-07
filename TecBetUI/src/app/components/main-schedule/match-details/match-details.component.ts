@@ -51,7 +51,7 @@ export class MatchDetailsComponent implements OnDestroy {
             .subscribe({
               next: (response) => {
                 this.matchDetails = response;
-                console.log(this.matchDetails);
+                // console.log(this.matchDetails);
               }
             });
         }
