@@ -10,7 +10,7 @@ public class LeagueHelpers
     //create the rest of the rounds
     public static void CreateRounds(League league)
     {
-        List<Team> randomizedTeams = RandomizeTeamOrder((List<Team>)league.Teams);
+        var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
         int rounds = FindNumberOfRounds(randomizedTeams.Count);
         int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
@@ -102,8 +102,9 @@ public class LeagueHelpers
         }
         return output;
     }
-    private static List<Team> RandomizeTeamOrder(List<Team> teams)
+    private static List<Team> RandomizeTeamOrder(List<LeagueTeam> teams)
     {
-        return teams.OrderBy(x => Guid.NewGuid()).ToList();
+        //return teams.OrderBy(x => Guid.NewGuid()).ToList();
+        return (List<Team>)teams.OrderBy(x => Guid.NewGuid());
     }
 }
