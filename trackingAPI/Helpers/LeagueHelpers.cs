@@ -15,8 +15,30 @@ namespace trackingAPI.Helpers
             int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
             //adding the first round to league
-            league.MatchupModels.Add(CreateFirstRound(byes, randomizedTeams));
+            league.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
+
+            CreateOtherRounds(league, rounds);
         }
+
+        private static void CreateOtherRounds(League league, int rounds)
+        {
+            int round = 2;
+            List<MatchupModel> previousRound = league.Rounds[0];
+            List<MatchupModel> currentRound = new List<MatchupModel>();
+            MatchupModel currentMatchup = new MatchupModel();
+
+            while (rounds <= rounds)
+            {
+                foreach (MatchupModel match in previousRound)
+                {
+                    currentMatchup.Entries.Add(new MatchupEntryModel { ParentMatchup = match });
+                    if(currentMatchup.Entries.Count > 1)
+                    {
+                        currentRound.Add(currentMatchup);
+                    }
+                }
+            }
+        } 
 
         private static List<MatchupModel> CreateFirstRound(int byes, List<Team> teams)
         {

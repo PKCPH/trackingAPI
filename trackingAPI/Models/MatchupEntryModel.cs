@@ -14,7 +14,7 @@ namespace trackingAPI.Models
         /// <summary>
         /// Represents one team in the matchup
         /// </summary>
-        public Team TeamCompeting { get; set; }
+        public Team? TeamCompeting { get; set; }
         /// <summary>
         /// Represents the score for this particular team
         /// </summary>
