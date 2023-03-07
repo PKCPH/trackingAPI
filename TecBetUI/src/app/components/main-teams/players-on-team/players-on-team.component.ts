@@ -11,6 +11,7 @@ import { TeamsService } from 'src/app/services/teams.service';
 export class PlayersOnTeamComponent {
 
   players: Player[] = [];
+  id: string = '';
   constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router) {}
 
   ngOnInit(): void {
@@ -18,6 +19,7 @@ export class PlayersOnTeamComponent {
       next: (params) => {
         const id = params.get('id');
         if(id){
+          this.id = id
           this.teamService.getPlayers(id)
           .subscribe({
             next: (players) => {
@@ -33,7 +35,14 @@ export class PlayersOnTeamComponent {
     })
     
   }
-  GoAddPlayer() {
-    this.router.navigateByUrl('/players/add')
+  GoAddPlayers() {
+    this.router.navigateByUrl('/teams/players/' + this.id + '/add')
+  }
+  NewPlayer(){
+    this.router.navigateByUrl('/teams/players/' + this.id + '/new')
+  }
+
+  ChangePlayer(playerId: string){
+    this.router.navigateByUrl('/teams/players/' + this.id + '/change/' + playerId)
   }
 }

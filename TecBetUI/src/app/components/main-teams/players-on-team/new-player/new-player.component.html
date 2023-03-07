@@ -1,22 +1,21 @@
 <div class="section1">
-    <div class="container my-5">
-        <h1 class="mb-3">Edit Player</h1>
+    <div class="container my-2 divs py-5">
+        <h1 class="mb-3">Add new Player</h1>
         <div class="row">
             <div class="col-4">          
-                <form #form="ngForm">
+                <form #form="ngForm" (ngSubmit)="addPlayer()">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="playerDetails.name">
+                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="addPlayerRequest.name">
                     </div>
                     <div class="mb-3">
                         <label for="age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="age" name="age" [(ngModel)]="playerDetails.age">
+                        <input type="number" class="form-control" id="age" name="age" [(ngModel)]="addPlayerRequest.age">
                     </div>
                     <div class="mb-3">
                     </div>
                     <button type="submit" class="btn btn-success mt-1">Add Player</button>
-                    <button type="button" class="btn btn-danger mt-1" (click)="deletePlayer(playerDetails.id)">Delete Player</button>
-                    <a routerLink="/players"><button type="button" class="btn btn-primary mt-1">Go Back</button></a>
+                    <button type="button" class="btn btn-primary mt-1" (click)="GoBack()">Go Back</button>
                 </form>
             </div>
             <div class="col-4">

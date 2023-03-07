@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { Player } from '../models/player.model';
+import { playerTeam } from '../models/playerTeam.model';
 import { Team } from '../models/teams.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import * as serviceVariables from './serviceVariables'
@@ -58,4 +59,8 @@ export class TeamsService {
     return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/api/Team/players/' + id)
   }
 
+  changePlayers(playerTeams: playerTeam[][]): Observable<playerTeam[][]>{
+    console.log(playerTeams);
+    return this.http.post<playerTeam[][]>(serviceVariables.baseApiUrl + '/api/Team/players/add', playerTeams)
+  }
 }

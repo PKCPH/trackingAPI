@@ -23,17 +23,10 @@ namespace trackingAPI.Controllers
             var players = await databaseContext.Players.ToListAsync();
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
             //Goes through the list of teams and matches each player with the team they play on
-            foreach (var player in players)
+            foreach (var playerTeam in playerTeams)
             {
-                foreach (var playerTeam in playerTeams)
-                {
-                    if (playerTeam.PlayerId == player.Id)
-                    {
-                        player.Teams.Add(playerTeam);
-                        //break not neccesary, but it should change O from n to n/2
-                        break;
-                    }
-                }
+                int index = players.FindIndex(p => p.Id == playerTeam.PlayerId);
+                players[index].Teams.Add(playerTeam);
             }
             return Ok(players);
         }
@@ -82,9 +75,30 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, Player updatePlayerRequest)
         {
             var player = await this.databaseContext.Players.FindAsync(id);
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
             if (player == null) { return NotFound(); }
             player.Name = updatePlayerRequest.Name;
             player.age = updatePlayerRequest.age;
+
+            foreach ( var playerTeam in playerTeams)
+            {
+                if (playerTeam.PlayerId == updatePlayerRequest.Id)
+                {
+                    if(updatePlayerRequest.Teams.ToList().Exists(t => t.TeamId == playerTeam.Id))
+                    {
+                        this.databaseContext.Players.Remove(playerTeam);
+                    }
+                }
+            }
+
+            foreach (var team in updatePlayerRequest.Teams)
+            {
+                if (playerTeams.Exists(p => p.PlayerId == team.PlayerId && p.TeamId == team.TeamId) == false)
+                {
+                    team.Id = Guid.NewGuid();
+                    await this.databaseContext.PlayerTeams.AddAsync(team);
+                }
+            }
 
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);

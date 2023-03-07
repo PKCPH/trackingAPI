@@ -23,6 +23,9 @@ import { PlayerListComponent } from './components/main-player/player-list/player
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
+import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
+import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
+import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -46,7 +49,10 @@ export function tokenGetter() {
     PlayerListComponent,
     AddPlayerComponent,
     EditPlayerComponent,
-    PlayersOnTeamComponent
+    PlayersOnTeamComponent,
+    PlayersToTeamComponent,
+    NewPlayerComponent,
+    ChangePlayerComponent
   ],
   imports: [
     BrowserModule,

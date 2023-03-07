@@ -19,12 +19,9 @@
                 </form>
             </div>
             <div class="col-4">
-                <form #form="ngForm" (ngSubmit)="addTeam()">
-                    <select name="teams" id="teams" [(ngModel)]="selectedTeam">
-                        <option *ngFor="let team of teams" [ngValue]="team">{{team.name}}</option>
-                    </select>
-                    <button type="submit" class="btn btn-success mt-4">Add Team</button>
-                </form>
+                <select name="teams" id="teams" [(ngModel)]="selectedTeam" (change)="addTeam()">
+                    <option *ngFor="let team of teams" [ngValue]="team">{{team.name}}</option>
+                </select>
             </div>
             <div class="col-4">
                 <table>
