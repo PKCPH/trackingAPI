@@ -11,11 +11,15 @@ public class LeagueSeedingLogic
     //create the rest of the rounds
     public static void CreateRounds(League league)
     {
+        MatchTeam matchTeam = new();
         var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
         int rounds = FindNumberOfRounds(randomizedTeams.Count);
         //int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
-        BracketHelper.Play(randomizedTeams);
+        //var matches = GenerateTournamentMatches(league);
+
+        Console.WriteLine();
+        //BracketHelper.Play(randomizedTeams);
 
         //CreateFirstRound(0, randomizedTeams);
         //adding the first round to league
@@ -54,30 +58,79 @@ public class LeagueSeedingLogic
     //    }
     //}
 
-    
-
-    private static List<MatchupModel> CreateFirstRound(int byes, List<Team> teams)
+    private static List<Gamematch> GenerateTournamentMatches(ICollection<MatchTeam> teams, League league)
     {
-        List<MatchupModel> output = new List<MatchupModel>();
-        MatchupModel curr = new MatchupModel();
+        List<Gamematch> matches = new List<Gamematch>();
 
-        foreach (Team team in teams)
+        // Create initial matches with randomized team order
+        var randomize3dTeams = teams.OrderBy(x => Guid.NewGuid()).ToList();
+
+        //var randomize3dTeams = league.Teams.OrderBy(x => Guid.NewGuid()).ToList();
+
+        //var randomizedTeams = league.Teams.ToList();
+
+        //var rt = league.MatchLeagueRounds.OrderBy(x => Guid.NewGuid()).ToArray();
+
+        for (int i = 0; i < randomize3dTeams.Count(); i += 2)
         {
-            curr.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
-            if (byes > 0 || curr.Entries.Count > 1)
+            var match = new Gamematch
             {
-                curr.MatchupRound = 1;
-                output.Add(curr);
-                curr = new MatchupModel();
-                if (byes > 0)
+                ParticipatingTeams = new List<MatchTeam> { randomize3dTeams[i], randomize3dTeams[i + 1] },
+                MatchState = MatchState.NotStarted
+            };
+            matches.Add(match);
+        }
+
+        // Loop through each round and generate matches
+        var round = 2;
+        while (matches.Count > 1)
+        {
+            var roundMatches = new List<Gamematch>();
+            for (int i = 0; i < matches.Count; i += 2)
+            {
+                var winner1 = matches[i].ParticipatingTeams.OrderBy(x => x.Seed).First();
+                var winner2 = matches[i + 1].ParticipatingTeams.OrderBy(x => x.Seed).First();
+
+                var match = new Gamematch
                 {
-                    byes -= 1;
-                }
+                    ParticipatingTeams = new List<MatchTeam> { winner1, winner2 },
+                    MatchState = MatchState.NotStarted,
+                    TeamASeed = (int)winner1.Seed,
+                    TeamBSeed = (int)winner2.Seed
+                };
+                roundMatches.Add(match);
             }
 
+            matches = roundMatches;
+            round++;
         }
-        return output;
+
+        return matches;
     }
+
+
+    //private static List<MatchupModel> CreateFirstRound(int byes, List<Team> teams)
+    //{
+    //    List<MatchupModel> output = new List<MatchupModel>();
+    //    MatchupModel curr = new MatchupModel();
+
+    //    foreach (Team team in teams)
+    //    {
+    //        curr.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
+    //        if (byes > 0 || curr.Entries.Count > 1)
+    //        {
+    //            curr.MatchupRound = 1;
+    //            output.Add(curr);
+    //            curr = new MatchupModel();
+    //            if (byes > 0)
+    //            {
+    //                byes -= 1;
+    //            }
+    //        }
+
+    //    }
+    //    return output;
+    //}
 
     //private static int NumberOfByes(int rounds, int numberOfTeams)
     //{

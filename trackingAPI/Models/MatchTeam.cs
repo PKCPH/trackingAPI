@@ -12,10 +12,11 @@ public class MatchTeam
     public Guid Id { get; set; }
     public Gamematch Match { get; set; }
     public Team Team { get; set; }
+    public League? League { get; set; }
     public int TeamScore { get; set; }
     [DefaultValue(Result.Undetermined)]
     public Result Result { get; set; }
-    public int Seed { get; set; }
+    public int? Seed { get; set; }
 }
 
 public enum Result

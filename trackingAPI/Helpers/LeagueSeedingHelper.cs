@@ -7,11 +7,6 @@ namespace trackingAPI.Helpers;
 
 public class LeagueSeedingHelper
 {
-
-    public void SeedDistribution(League league, DatabaseContext _context)
-    {
-        
-    }
     public League GetListOfEightTeams(League league, DatabaseContext _context)
     {
         Random rnd = new Random();

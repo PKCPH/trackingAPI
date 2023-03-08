@@ -34,8 +34,8 @@ public class Gamematch
     public int TeamASeed { get; set; }
     public int TeamBSeed { get; set; }
     public bool IsLeagueGame { get; set; }
-    public Team Winner { get; set; }
-    public int WinnerSeed => this.ParticipatingTeams.First(x => x.Team == this.Winner).Seed;
+    //public Team Winner { get; set; }
+    //public int WinnerSeed => this.ParticipatingTeams.First(x => x.Team == this.Winner).Seed;
 }
 
 public enum MatchState
