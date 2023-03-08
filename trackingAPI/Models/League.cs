@@ -25,7 +25,7 @@ public class League
     public ICollection<LeagueTeam> Teams { get; set; }
     //public ICollection<LeagueGamematchRound> MatchLeagueRounds { get; set; }
 
-    public ICollection<MatchTeam> MatchTeams { get; set; }
+    public ICollection<Gamematch> Gamematches { get; set; }
 
 
 }

@@ -28,7 +28,7 @@ public class Gamematch
     /// League relevant properties
     /// </summary>
 
-    //public League? League { get; set; }
+    public League? League { get; set; }
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
     public int TeamASeed { get; set; }
