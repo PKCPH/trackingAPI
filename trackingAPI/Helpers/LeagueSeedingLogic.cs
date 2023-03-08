@@ -1,8 +1,9 @@
-﻿using trackingAPI.Models;
+﻿using trackingAPI.Data;
+using trackingAPI.Models;
 
 namespace trackingAPI.Helpers;
 
-public class LeagueHelpers
+public class LeagueSeedingLogic
 {
     //Order list of teams randomly
     //check if list is big enough, if not add byes - 2*2*2*2 - 2^4
@@ -12,9 +13,11 @@ public class LeagueHelpers
     {
         var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
         int rounds = FindNumberOfRounds(randomizedTeams.Count);
-        int byes = NumberOfByes(rounds, randomizedTeams.Count);
+        //int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
-        CreateFirstRound(byes, randomizedTeams);
+        BracketHelper.Play(randomizedTeams);
+
+        //CreateFirstRound(0, randomizedTeams);
         //adding the first round to league
         //league.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
         Console.WriteLine();
@@ -51,6 +54,8 @@ public class LeagueHelpers
     //    }
     //}
 
+    
+
     private static List<MatchupModel> CreateFirstRound(int byes, List<Team> teams)
     {
         List<MatchupModel> output = new List<MatchupModel>();
@@ -74,18 +79,18 @@ public class LeagueHelpers
         return output;
     }
 
-    private static int NumberOfByes(int rounds, int numberOfTeams)
-    {
-        int output = 0;
-        int totalTeams = 1;
+    //private static int NumberOfByes(int rounds, int numberOfTeams)
+    //{
+    //    int output = 0;
+    //    int totalTeams = 1;
 
-        for (int i = 1; i < rounds; i++)
-        {
-            totalTeams *= 2;
-        }
-        output = totalTeams - numberOfTeams;
-        return output;
-    }
+    //    for (int i = 1; i < rounds; i++)
+    //    {
+    //        totalTeams *= 2;
+    //    }
+    //    output = totalTeams - numberOfTeams;
+    //    return output;
+    //}
 
     private static int FindNumberOfRounds(int teamCount)
     {
@@ -105,6 +110,7 @@ public class LeagueHelpers
     private static List<Team> RandomizeTeamOrder(List<LeagueTeam> teams)
     {
         //return teams.OrderBy(x => Guid.NewGuid()).ToList();
-        return (List<Team>)teams.OrderBy(x => Guid.NewGuid());
+        return (List<Team>)teams.OrderBy(x => Guid.NewGuid())
+            .Select(x => x.Team).ToList();
     }
 }

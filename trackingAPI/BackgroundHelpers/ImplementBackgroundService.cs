@@ -35,14 +35,14 @@ public class ImplementBackgroundService : BackgroundService
             LeagueSeedingHelper leagueSeedingHelper = new LeagueSeedingHelper();
             //TeamController teamController = new(_context);
             //var teams = teamController.Get().Result;
-            var leagueTeams = leagueSeedingHelper.SeedDistribution(league, _context);
+            var leagueTeams = leagueSeedingHelper.GetListOfEightTeams(league, _context);
 
             league.StartDate = DateTime.Now;
             league.LeagueState = LeagueState.NotStarted;
             league.Teams = leagueTeams.Teams.ToList();
             league.Name = "testleague123";
 
-            LeagueHelpers.CreateRounds(league);
+            LeagueSeedingLogic.CreateRounds(league);
 
             Console.WriteLine();
 
