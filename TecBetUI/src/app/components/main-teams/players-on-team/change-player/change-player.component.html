@@ -2,7 +2,7 @@
     <div class="container my-5">
         <h1 class="mb-3">Edit Player</h1>
         <div class="row">
-            <div class="col-4">          
+            <div class="col-4">
                 <form #form="ngForm" (ngSubmit)="updatePlayer()">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -14,12 +14,13 @@
                     </div>
                     <div class="mb-3">
                     </div>
-                    <button type="submit" class="btn btn-success mt-1">Add Player</button>
+                    <button type="submit" class="btn btn-success mt-1">Save Changes</button>
                     <button type="button" class="btn btn-danger mt-1" (click)="deletePlayer(playerDetails.id)">Delete Player</button>
                     <button type="button" class="btn btn-primary mt-1" (click)="GoBack()">Go Back</button>
                 </form>
             </div>
             <div class="col-4">
+                <label for="teams">Select teams that the player plays on</label>
                 <select name="teams" id="teams" [(ngModel)]="selectedTeam" (change)="addTeam()">
                     <option *ngFor="let team of teams" [ngValue]="team">{{team.name}}</option>
                 </select>

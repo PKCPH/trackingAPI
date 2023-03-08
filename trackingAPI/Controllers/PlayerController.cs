@@ -84,9 +84,9 @@ namespace trackingAPI.Controllers
             {
                 if (playerTeam.PlayerId == updatePlayerRequest.Id)
                 {
-                    if(updatePlayerRequest.Teams.ToList().Exists(t => t.TeamId == playerTeam.Id))
+                    if(updatePlayerRequest.Teams.ToList().Exists(t => t.TeamId == playerTeam.TeamId) == false)
                     {
-                        this.databaseContext.Players.Remove(playerTeam);
+                        this.databaseContext.PlayerTeams.Remove(playerTeam);
                     }
                 }
             }

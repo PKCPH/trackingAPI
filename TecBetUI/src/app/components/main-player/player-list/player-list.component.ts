@@ -27,4 +27,7 @@ export class PlayerListComponent {
   GoAddPlayer() {
     this.router.navigateByUrl('/players/add')
   }
+  FilterPlayers(search: string){
+
+  }
 }

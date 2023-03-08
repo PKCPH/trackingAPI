@@ -1,7 +1,6 @@
 <div class="section1 tablediv">
     <div class="container my-2 divs py-5">
         <div>
-            <p>{{test}}</p>
             <button class="btn btn-success" (click)="saveChanges()">Save changes</button>
         </div>
         <div class="d-flex justify-content-between">
@@ -16,34 +15,6 @@
                     <tr *ngFor="let player of playersNotOnTeam">
                         <td>{{player.name}}</td>
                         <td><button class="btn-danger btn" (click)="addPlayerToTeam(player.id)">Add player to team</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <table>
-                <thead>
-                    <tr>
-                        <th>team ID</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let player of selectedTeam.players">
-                        <td>{{player.teamId}}</td>
-                    </tr>
-                </tbody>
-                <thead>
-                    <th>remove id</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let playerTeam of playersTeamsRemovedFromTeam">
-                        <td>{{playerTeam.playerId}}</td>
-                    </tr>
-                </tbody>
-                <thead>
-                    <th>add id</th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let playerTeam of playersTeamsAddedToTeam">
-                        <td>{{playerTeam.playerId}}</td>
                     </tr>
                 </tbody>
             </table>

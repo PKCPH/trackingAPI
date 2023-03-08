@@ -2,6 +2,7 @@ import { MapType } from '@angular/compiler';
 import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/models/player.model';
+import { playerTeam } from 'src/app/models/playerTeam.model';
 import { Team } from 'src/app/models/teams.model';
 import { PlayersService } from 'src/app/services/players.service';
 import { TeamsService } from 'src/app/services/teams.service';
@@ -73,6 +74,9 @@ export class EditPlayerComponent {
         this.teams.splice(this.teams.indexOf(team),1)
       }
     });
+    if(this.playerDetails.teams.length > 0){
+      this.playerDetails.teams = []
+    }
   }
 
   deletePlayer(id: string){
@@ -96,16 +100,26 @@ export class EditPlayerComponent {
     this.teams.splice(this.teams.indexOf(this.selectedTeam),1)
     console.log(this.selectedTeamArray)
   }
-  
-  refresh(){
-    console.log(this.playerDetails)
 
-    this.playerDetails.teams.forEach(element => {
-      const team = this.teams.find(t => t.id == element.teamId);
-      console.log(team)
-      if(team !== undefined){
-        this.selectedTeamArray.push(team)
+  updatePlayer(){
+    this.selectedTeamArray.forEach(element => {
+      const addPlayerTeam: playerTeam = {
+        id: '',
+        playerId: this.playerDetails.id,
+        teamId: element.id
+      }
+      if(this.playerDetails.teams != null){
+        this.playerDetails.teams.push(addPlayerTeam)
+      }
+      else{
+        this.playerDetails.teams = [addPlayerTeam]
       }
     });
+    this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
+    .subscribe({
+      next: (response) => {
+        this.router.navigate(['players/'])
+      }
+    })
   }
 }

@@ -84,6 +84,7 @@ export class ChangePlayerComponent {
         this.teams.splice(this.teams.indexOf(team),1)
       }
     });
+    this.playerDetails.teams = []
   }
 
   deletePlayer(id: string){

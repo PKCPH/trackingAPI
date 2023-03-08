@@ -75,32 +75,22 @@ export class PlayersToTeamComponent {
     if(player){
       this.playersOnTeam.push(player)
       this.playersNotOnTeam.splice(this.playersNotOnTeam.indexOf(player),1)
-      
-      this.test = 30000
+
       if(this.selectedTeam.players != null){
-        this.test = 30010
         if(!this.selectedTeam.players.some(p => p.playerId == player?.id)){
-          this.test = 30100
           const playerTeamm: playerTeam = {
             id: '00000000-0000-0000-0000-000000000000',
             playerId: player.id,
             teamId: this.id
           }
           console.log(playerTeamm)
-          this.test = 30110
           this.playersTeamsAddedToTeam.push(playerTeamm)
-          this.test = 30120
         }
         else{
-          this.test = 30200
           var playerteam = this.playersTeamsRemovedFromTeam.find(p => p.playerId == player?.id)
-          this.test = 30210
           if(playerteam){
-            this.test = 30220
             var index = this.playersTeamsRemovedFromTeam.indexOf(playerteam)
-            this.test = 30230
             this.playersTeamsRemovedFromTeam.splice(index, 1)
-            this.test = 30240
           }
         }
       }
@@ -112,23 +102,17 @@ export class PlayersToTeamComponent {
           teamId: this.id
         }
         console.log(playerTeamm)
-        this.test = 31110
         this.playersTeamsAddedToTeam.push(playerTeamm)
-        this.test = 31120
       }
     }
   }
 
   removePlayerFromTeam(id: string){
     const player = this.playersOnTeam.find(p => p.id == id)
-    this.test = 35000
     if(player){
-      this.test = 35010
       this.playersNotOnTeam.push(player)
       this.playersOnTeam.splice(this.playersOnTeam.indexOf(player),1)
-      this.test = 35020
       if(this.selectedTeam.players.findIndex(p => p.playerId == player.id) > -1){
-        this.test = 35100
         this.playersTeamsRemovedFromTeam.push(this.selectedTeam.players[this.selectedTeam.players.findIndex(p => p.playerId == player.id)])
       }
       else{
@@ -137,16 +121,13 @@ export class PlayersToTeamComponent {
     }
   }
 
-  saveChanges(){  
-    this.test = 50000
+  saveChanges(){
     var playerTeams: playerTeam[][] = [this.playersTeamsRemovedFromTeam, this.playersTeamsAddedToTeam];
-    this.test = 50010
     this.teamsService.changePlayers(playerTeams)
     .subscribe({
       next: (members) => {
         this.router.navigate(['/teams/players/' + this.id])
       }
     })
-    this.test = 60000
   }
 }

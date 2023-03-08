@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/models/player.model';
+import { Team } from 'src/app/models/teams.model';
+import { PlayersService } from 'src/app/services/players.service';
 import { TeamsService } from 'src/app/services/teams.service';
 
 @Component({
@@ -12,7 +14,15 @@ export class PlayersOnTeamComponent {
 
   players: Player[] = [];
   id: string = '';
-  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router) {}
+  selectedTeam: Team = {
+    id: '',
+    name: '',
+    isAvailable: true,
+    matches: [],
+    availability:'',
+    players:[]
+  }
+  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -20,6 +30,13 @@ export class PlayersOnTeamComponent {
         const id = params.get('id');
         if(id){
           this.id = id
+          this.teamService.getTeam(id)
+          .subscribe({
+            next: (team) => {
+              console.log(team);
+              this.selectedTeam = team
+            }
+          })
           this.teamService.getPlayers(id)
           .subscribe({
             next: (players) => {
@@ -44,5 +61,14 @@ export class PlayersOnTeamComponent {
 
   ChangePlayer(playerId: string){
     this.router.navigateByUrl('/teams/players/' + this.id + '/change/' + playerId)
+  }
+
+  deletePlayer(id: string){
+    this.playerService.deletePlayer(id)
+    .subscribe({
+      next: (response) => {
+        this.router.navigate(['players'])
+      }
+    })
   }
 }
