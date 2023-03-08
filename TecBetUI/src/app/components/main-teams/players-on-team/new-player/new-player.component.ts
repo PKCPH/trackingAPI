@@ -21,7 +21,9 @@ export class NewPlayerComponent {
     isAvailable: true,
     matches: [],
     availability:'',
-    players:[]
+    players:[],
+    score: 0,
+    result: 0,
   }
   addPlayerRequest: Player = {
     id: '',

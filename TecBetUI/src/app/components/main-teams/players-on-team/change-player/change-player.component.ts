@@ -24,7 +24,9 @@ export class ChangePlayerComponent {
     isAvailable: true,
     matches: [],
     availability:'',
-    players:[]
+    players:[],
+    score: 0,
+    result: 0,
   }
   playerDetails: Player = {
     id: '',

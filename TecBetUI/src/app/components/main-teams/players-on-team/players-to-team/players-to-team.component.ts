@@ -29,7 +29,9 @@ export class PlayersToTeamComponent {
     isAvailable: true,
     matches: [],
     availability:'',
-    players:[]
+    players:[],
+    score: 0,
+    result: 0,
   }
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }
   

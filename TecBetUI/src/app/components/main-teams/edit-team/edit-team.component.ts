@@ -21,8 +21,7 @@ export class EditTeamComponent {
     matches: [],
     availability: '',
     score: 0,
-    result: 0
-    availability: '',
+    result: 0,
     players: []
   };
 
