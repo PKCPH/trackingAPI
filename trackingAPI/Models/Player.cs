@@ -6,15 +6,11 @@ namespace trackingAPI.Models
 {
     public class Player
     {
-        public Player() 
-        {
-            this.Teams = new HashSet<PlayerTeam>();
-        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-        public string? Name { get; set; }
-        public int Age { get; set; }
-        public ICollection <PlayerTeam> Teams { get; set; }
+        public string Name { get; set; }
+        public int age { get; set; }
+        public ICollection<PlayerTeam> Teams { get; set; }
     }
 }

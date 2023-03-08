@@ -1,14 +1,12 @@
 <div class="section1 tablediv">
     <div class="container my-2 divs py-5">
         <h1 class="mb-3">Players</h1>
-        <div>
-            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>            
+        <div><button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>
             <table class="table tabletext" *ngIf="players && players.length > 0">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        <th>Team</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -16,7 +14,6 @@
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td> {{player.team.name}}</td>
                         <td><a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a></td>
                     </tr>
                 </tbody>

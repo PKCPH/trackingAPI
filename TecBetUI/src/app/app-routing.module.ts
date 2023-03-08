@@ -21,6 +21,9 @@ import { AdminboardComponent } from './components/main-login/adminboard/adminboa
 import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
 import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
 import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
+import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
+import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
+import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 
 const routes: Routes = [
   {
@@ -103,6 +106,18 @@ const routes: Routes = [
     path: 'animalrace',
     component: MainHorseracegameComponent,
     canActivate: [AuthguardService]
+  },
+  {
+    path: 'teams/players/:id/add',
+    component: PlayersToTeamComponent
+  },
+  {
+    path: 'teams/players/:id/new',
+    component: NewPlayerComponent
+  },
+  {
+    path: 'teams/players/:teamId/change/:playerId',
+    component: ChangePlayerComponent
   }
 ];
 

@@ -17,6 +17,8 @@ export class AddTeamComponent {
     isAvailable: true,
     matches: [],
     availability: '',
+    players: []
+    availability: '',
     score: 0,
     result: 0
   };

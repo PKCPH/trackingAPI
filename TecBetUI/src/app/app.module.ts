@@ -37,6 +37,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
+import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
+import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -69,6 +72,10 @@ export function tokenGetter() {
     MainHorseracegameComponent,
     MatchDetailsComponent,
     BettingWindowComponent,
+    PlayersOnTeamComponent,
+    PlayersToTeamComponent,
+    NewPlayerComponent,
+    ChangePlayerComponent
   ],
   imports: [
     BrowserModule,
