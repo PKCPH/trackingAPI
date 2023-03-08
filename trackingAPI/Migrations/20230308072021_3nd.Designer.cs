@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230306065529_init")]
-    partial class init
+    [Migration("20230308072021_3nd")]
+    partial class _3nd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,20 @@ namespace trackingAPI.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("GameMatchId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("BetResult")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("BetState")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<Guid>("LoginId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("MatchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Team")
@@ -45,9 +55,9 @@ namespace trackingAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameMatchId");
-
                     b.HasIndex("LoginId");
+
+                    b.HasIndex("MatchId");
 
                     b.ToTable("Bets");
                 });
@@ -114,7 +124,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("15c2f223-ecda-47c8-ae2b-10b1b0748f35"),
+                            Id = new Guid("e5525fdd-1eab-4eb9-9bcd-22b71439aae5"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -212,17 +222,17 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Bet", b =>
                 {
-                    b.HasOne("trackingAPI.Models.GameMatch", null)
-                        .WithMany("Bets")
-                        .HasForeignKey("GameMatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("trackingAPI.Models.Login", null)
                         .WithMany("Bets")
                         .HasForeignKey("LoginId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("trackingAPI.Models.GameMatch", "Match")
+                        .WithMany("Bets")
+                        .HasForeignKey("MatchId");
+
+                    b.Navigation("Match");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>

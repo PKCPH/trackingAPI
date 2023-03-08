@@ -161,12 +161,7 @@ span:hover {
 
 .balance:hover {
     cursor: default;
-}
-
-.logout {
-    color: rgba(200,0,100,1)
-}
-  
+}  
 
 @media screen and (max-width: 1000px) {
 

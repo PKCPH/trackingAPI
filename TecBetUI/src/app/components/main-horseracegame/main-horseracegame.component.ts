@@ -1,5 +1,4 @@
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { color } from 'highcharts';
 
 interface Animal {
   name: string;

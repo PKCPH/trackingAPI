@@ -25,7 +25,8 @@ export class MainScheduleComponent implements OnDestroy {
         this.matchesService.getSchedule()
         .subscribe({
           next: (games) => {
-            this.games = games;  
+            this.games = games; 
+            // console.log(this.games); 
             if (games)
             {
               this.Hideloader();

@@ -18,7 +18,7 @@ namespace trackingAPI.Helpers
                 claims: claims,
                 //This fucking stupid line!! - Expiration of refreshtoken, need better understanding and implementation of this - also why(?) Do we need a expiration time on refreshTokens? Could be in handy for auto logouts
                 //Altho kinda doing this already in angular app itself, but that only logs you out if youre inactive, lets say you leave the browser after the 60 minutes since logging in, then this will "auto" log you out.
-                expires: DateTime.Now.AddMinutes(60),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);

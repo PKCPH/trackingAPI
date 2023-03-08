@@ -109,6 +109,10 @@ const routes: Routes = [
     path: 'animalrace',
     component: MainHorseracegameComponent,
     canActivate: [AuthguardService]
+  },
+  {
+    path: '404',
+    component: CustomersComponent
   }
 ];
 

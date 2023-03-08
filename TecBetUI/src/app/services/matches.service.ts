@@ -11,9 +11,7 @@ import * as serviceVariables from './serviceVariables'
 export class MatchesService {
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {
-
-   }
+  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
    private errorSubject = new BehaviorSubject<string>("");
    errorMessage = this.errorSubject.asObservable();
@@ -46,7 +44,6 @@ export class MatchesService {
           console.error(error);
           this.errorSubject.next(this.customErrorHandlerService.handleError(error));
           this.isLoading = false;
-          this.customErrorHandlerService.handleError(error);
           return of([]);
         })
       );

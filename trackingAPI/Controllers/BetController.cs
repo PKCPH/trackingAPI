@@ -30,8 +30,9 @@ public class BetController : ControllerBase
     [HttpPost("place")]
     public async Task<ActionResult<Bet>> PlaceBet(Bet bet)
     {
+        Console.WriteLine("#######################" + bet.MatchId + "##############################");
         // Retrieve the match that the user is betting on
-        var match = await _context.Matches.FindAsync(bet.Match.Id);
+        var match = await _context.Matches.FindAsync(bet.MatchId);
 
         if (match == null)
         {
@@ -67,6 +68,7 @@ public class BetController : ControllerBase
 
         // Update the user's balance
         user.Balance -= bet.Amount;
+        bet.Match = match;
 
         // Add the bet to the database
         _context.Bets.Add(bet);
@@ -80,13 +82,41 @@ public class BetController : ControllerBase
     [HttpGet("matchbets/{matchId}")]
     public async Task<ActionResult<IEnumerable<Bet>>> GetBetsForMatch(Guid matchId)
     {
-        return await _context.Bets.Where(b => b.GameMatchId == matchId).ToListAsync();
+        return await _context.Bets.Where(b => b.Match.Id == matchId).ToListAsync();
     }
 
     [HttpGet("mybets/{userId}")]
-    public async Task<IEnumerable<Bet>> GetBetsForUser(Guid userId)
+    public async Task<ActionResult<IList<Bet>>> GetBetsForUser(Guid userId)
     {
-        return await _context.Bets.Where(b => b.LoginId == userId).ToListAsync();
+        /*return await _context.Bets.Include(mt => mt.Match).ThenInclude(t => t.ParticipatingTeams).ThenInclude(t => t.Team).Where(b => b.LoginId == userId).ToListAsync();*/
+
+        var bets = _context.Bets
+              .Include(mt => mt.Match)
+              .ThenInclude(t => t.ParticipatingTeams)
+              .ThenInclude(t => t.Team)
+              .Where(m => m.LoginId == userId)
+              .Select(m => new {
+                  Id = m.Id,
+                  MatchId = m.MatchId,
+                  BetState = m.BetState,
+                  BetResult = m.BetResult,
+                  Team = m.Team,
+                  Amount = m.Amount,
+                  participatingTeams = m.Match.ParticipatingTeams.Select(pt => new {
+                      Id = pt.Team.Id,
+                      name = pt.Team.Name,
+                      result = pt.Result,
+                      score = pt.TeamScore
+                  }).ToList()
+              })
+              .ToList();
+
+        if (bets == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(bets);
     }
 
     [HttpGet("{id}")]

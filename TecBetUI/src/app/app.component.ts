@@ -30,12 +30,9 @@ export class AppComponent {
   constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService, 
     private authService: AuthguardService, private modalService: NgbModal)
   {
-    //If there is credentials filled, make it do the checkAuthGuarD() function !!!
+    this.startIdleTimer();
 
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
-    //Timer is strictly for hiding the dropdown menu if not being used
-
-    this.startIdleTimer();
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
@@ -43,14 +40,27 @@ export class AppComponent {
 
     this.updateUserInfo();
 
+    //This will listen for events. userLoggedIn is a custom event made from the login component. When it detects that user has logged in, it'll trigger the updateUserInfo function
+
     window.addEventListener('userLoggedIn', this.updateUserInfo.bind(this));
+    
+    this.router.events.subscribe(event => {
+      if (event.constructor.name === "NavigationStart") {
+        this.resetIdleTimer()
+      }
+    })
+    
   }
 
-
+//Login modal function
   openLogin() {
 		this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
 	}
 
+  //UserInfo updates moved out of constructor, but basically does the same as before
+  //Creates a temporary string to store credentials from localstorage
+  //With the help of JSON.parse we can fill our credentials model with the information from localstorage
+  //This is used to maintain user roles, balances and showing of navigation items
   updateUserInfo() {
     let storedCredentialsString = localStorage.getItem("credentials");
     if (storedCredentialsString)
@@ -132,13 +142,14 @@ return false;
     }
   }
 
+  //Timer that starts when you trigger the dropdown menu, after 5 seconds it'll automatically close itself.
   startTimer() {
     this.timer = setTimeout(() => {
       this.showDropdown = false;
- 
-    }, 5000); // 4 seconds
+    }, 3000); // 3 seconds
   }
 
+  //Idle timer that kicks in when the navbar is loaded, when you navigate around it'll retrigger the timer. In that sense it'll act like an "idle timer"
   startIdleTimer() {
     this.idleTimer = setTimeout(() => {
       this.logOut();
@@ -146,10 +157,19 @@ return false;
   }
 
  
-
+//Dropdown menu toggler
   toggleDropdown() {
+    this.resetTimer();
     this.startTimer();
     this.showDropdown = !this.showDropdown;
+  }
+
+  resetTimer() {
+    clearTimeout(this.timer);
+  }
+
+  resetIdleTimer() {
+    clearTimeout(this.idleTimer);
   }
 
   onItemClick(item: string) {
@@ -161,10 +181,10 @@ return false;
     this.showDropdown = false;
   }
 
-   //DropDownButton items definition
+   //DropDownButton item definitions, using these strings in .html to do various things
     items = [
     {
-        text: 'Dashboard',
+      text: 'Dashboard',
     },
     {
       text: 'My Bets'
