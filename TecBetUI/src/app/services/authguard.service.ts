@@ -1,7 +1,7 @@
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
@@ -34,7 +34,7 @@ export class AuthguardService implements CanActivate  {
 
     const isRefreshSuccess = await this.tryRefreshingTokens(token); 
     if (!isRefreshSuccess) { 
-      if (this.router.url.includes('/'))
+      if (this.router.url === ('/'))
       {
         this.router.navigateByUrl('/404')
       } 
