@@ -29,7 +29,8 @@ export class MatchDetailsComponent implements OnDestroy {
     matches: [],
     availability: '',
     score: 0,
-    result: 0
+    result: 0,
+    players:[]
   };
   
 

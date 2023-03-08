@@ -21,7 +21,8 @@ export class EditTeamComponent {
     matches: [],
     availability: '',
     score: 0,
-    result: 0
+    result: 0,
+    players: []
   };
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {

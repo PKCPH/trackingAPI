@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { Player } from '../models/player.model';
+import { playerTeam } from '../models/playerTeam.model';
 import { Team } from '../models/teams.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import * as serviceVariables from './serviceVariables'
@@ -15,16 +16,9 @@ export class TeamsService {
 
   constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
-  //Declaring error variables to dynicamally update it depending on what error you encounter
-  //The components who wants to use these will then have to .subscribe to it
-  private errorSubject = new BehaviorSubject<string>("");
-  errorMessage = this.errorSubject.asObservable();
+   private errorSubject = new BehaviorSubject<string>("");
+   errorMessage = this.errorSubject.asObservable();
 
-  //Observable is a class in the RxJS library that represents a data stream that can emit zero or more values over time. 
-  //Observables are often used to represent asynchronous data sources, such as HTTP requests or user input events.
-   //pipe() is a method that allows you to chain together multiple operators to transform or filter the data emitted by an Observable. 
-   //An operator is a function that takes an Observable as input and returns a new Observable with modified data. (Below we use .tap() and catchError())
-   //tap() is a method that allows you to inspect the data stream without modifying it. It's useful for debugging or logging purposes. 
    getAllTeams(): Observable<Team[]> {
     this.isLoading = true;
     return this.http.get<Team[]>(serviceVariables.baseApiUrl + '/api/Team')
@@ -33,7 +27,6 @@ export class TeamsService {
               this.errorSubject.next('');
             }),
             catchError(error => {
-              console.error(error);
               this.errorSubject.next(this.customErrorHandlerService.handleError(error));
               this.isLoading = false;
               return of([]);
@@ -59,11 +52,15 @@ export class TeamsService {
   }
 
   deleteTeam(id: string): Observable<Team> {
-    return this.http.delete<Team>(serviceVariables.baseApiUrl + '/api/Team/' + id);
+    return this.http.delete<Team>(serviceVariables.baseApiUrl + '/api/Team/' + id)
   }
 
   getPlayers(id: string): Observable<Player[]>{
-    return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/players/' + id);
+    return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/api/Team/players/' + id)
   }
 
+  changePlayers(playerTeams: playerTeam[][]): Observable<playerTeam[][]>{
+    console.log(playerTeams);
+    return this.http.post<playerTeam[][]>(serviceVariables.baseApiUrl + '/api/Team/players/add', playerTeams)
+  }
 }

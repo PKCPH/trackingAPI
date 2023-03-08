@@ -7,13 +7,15 @@ import { Team } from 'src/app/models/teams.model';
 import { PlayersService } from 'src/app/services/players.service';
 import { TeamsService } from 'src/app/services/teams.service';
 
-@Component({
-  selector: 'app-edit-player',
-  templateUrl: './edit-player.component.html',
-  styleUrls: ['./edit-player.component.css']
-})
-export class EditPlayerComponent {
 
+@Component({
+  selector: 'app-change-player',
+  templateUrl: './change-player.component.html',
+  styleUrls: ['./change-player.component.css']
+})
+export class ChangePlayerComponent {
+
+  teamId: string = ''
   teams: Team[] = [];
   selectedTeamArray: Team[] = [];
   selectedTeam: Team = {
@@ -24,7 +26,7 @@ export class EditPlayerComponent {
     availability:'',
     players:[],
     score: 0,
-    result: 0
+    result: 0,
   }
   playerDetails: Player = {
     id: '',
@@ -38,9 +40,17 @@ export class EditPlayerComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe({
       next: (params) => {
-        const id = params.get('id');
+        const id = params.get('playerId');
         if(id){
           this.getPlayer(id)
+        }
+      }
+    })
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        const id = params.get('teamId');
+        if(id){
+          this.teamId = id
         }
       }
     })
@@ -76,9 +86,7 @@ export class EditPlayerComponent {
         this.teams.splice(this.teams.indexOf(team),1)
       }
     });
-    if(this.playerDetails.teams.length > 0){
-      this.playerDetails.teams = []
-    }
+    this.playerDetails.teams = []
   }
 
   deletePlayer(id: string){
@@ -103,6 +111,10 @@ export class EditPlayerComponent {
     console.log(this.selectedTeamArray)
   }
 
+  GoBack(){
+    this.router.navigate(['teams/players/' + this.teamId])
+  }
+
   updatePlayer(){
     this.selectedTeamArray.forEach(element => {
       const addPlayerTeam: playerTeam = {
@@ -110,17 +122,13 @@ export class EditPlayerComponent {
         playerId: this.playerDetails.id,
         teamId: element.id
       }
-      if(this.playerDetails.teams != null){
-        this.playerDetails.teams.push(addPlayerTeam)
-      }
-      else{
-        this.playerDetails.teams = [addPlayerTeam]
-      }
+      this.playerDetails.teams.push(addPlayerTeam)
     });
+
     this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
     .subscribe({
       next: (response) => {
-        this.router.navigate(['players/'])
+        this.router.navigate(['teams/players/' + this.teamId])
       }
     })
   }
