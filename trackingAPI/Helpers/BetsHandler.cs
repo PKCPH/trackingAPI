@@ -30,18 +30,27 @@ namespace trackingAPI.Helpers
                 // Calculate payouts for winning bets
                 var winningTeam = DetermineWinningTeam(match);
 
-                   var bets = _context.Bets.Where(b => b.GameMatchId == match.Id).ToList(); 
-                   var winningBets = bets.Where(b => b.Team == winningTeam).ToList();
-                    
-                    foreach (var bet in winningBets)
+                var bets = _context.Bets.Where(b => b.Match.Id == match.Id).ToList();
+                var winningBets = bets.Where(b => b.Team == winningTeam).ToList();
+                var losingBets = bets.Where(b => b.Team != winningTeam).ToList();
+
+                foreach (var bet in winningBets)
+                {
+                    var user = await _context.Logins.FindAsync(bet.LoginId);
+                    if (user != null)
                     {
-                        var user = await _context.Logins.FindAsync(bet.LoginId);
-                        if (user != null)
-                        {
-                            user.Balance += bet.Amount * 2;
-                            /* user.Balance += bet.Amount * match.GetOddsForTeam(bet.Team);*/
-                        }
+                        user.Balance += bet.Amount * 2;
+                        bet.BetResult = BetResult.Win;
+                        bet.BetState = BetState.Finished;
+                        /* user.Balance += bet.Amount * match.GetOddsForTeam(bet.Team);*/
                     }
+                }
+
+                foreach (var bet in losingBets)
+                {
+                    bet.BetResult = BetResult.Loss;
+                    bet.BetState = BetState.Finished;
+                }
 
                 await _context.SaveChangesAsync();
             }
@@ -55,7 +64,7 @@ namespace trackingAPI.Helpers
             {
                 if (item.Result == Result.Winner)
                 {
-                     winningTeamName = item.Team.Name;
+                    winningTeamName = item.Team.Name;
                 }
                 else if (item.Result == Result.Draw)
                 {

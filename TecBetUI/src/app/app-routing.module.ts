@@ -24,6 +24,7 @@ import { MatchDetailsComponent } from './components/main-schedule/match-details/
 import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
 import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
+import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 
 const routes: Routes = [
   {
@@ -98,6 +99,11 @@ const routes: Routes = [
     canActivate: [AuthguardService]
   },
   {
+    path: 'dashboard/:username/mybets',
+    component: UserbetsComponent,
+    canActivate: [AuthguardService]
+  },
+  {
     path: 'adminboard/edit-user/:username',
     component: EditUserComponent,
     canActivate: [AuthguardService]
@@ -118,6 +124,10 @@ const routes: Routes = [
   {
     path: 'teams/players/:teamId/change/:playerId',
     component: ChangePlayerComponent
+  },
+  {
+    path: '404',
+    component: CustomersComponent
   }
 ];
 

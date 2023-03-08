@@ -1,11 +1,10 @@
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
-import { LoginService } from './login.service';
 import { baseApiUrl } from './serviceVariables'
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -22,7 +21,8 @@ export class AuthguardService implements CanActivate  {
   private errorSubject = new BehaviorSubject<string>("");
   errorMessage = this.errorSubject.asObservable();
 
-  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private modalService: NgbModal, private customErrorHandler: CustomErrorHandlerService){}
+  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, 
+    private modalService: NgbModal, private customErrorHandler: CustomErrorHandlerService){}
   
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
@@ -34,7 +34,10 @@ export class AuthguardService implements CanActivate  {
 
     const isRefreshSuccess = await this.tryRefreshingTokens(token); 
     if (!isRefreshSuccess) { 
-      // this.router.navigate(["/"]); 
+      if (this.router.url === ('/'))
+      {
+        this.router.navigateByUrl('/404')
+      } 
       this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
     }
 
@@ -133,3 +136,5 @@ export class AuthguardService implements CanActivate  {
   // }
 
 }
+
+
