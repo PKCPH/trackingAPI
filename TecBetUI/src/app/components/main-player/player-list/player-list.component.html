@@ -1,20 +1,25 @@
 <div class="section1 tablediv">
     <div class="container my-2 divs py-5">
         <h1 class="mb-3">Players</h1>
-        <div><button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>
+        <div>
+            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
             <table class="table tabletext" *ngIf="players && players.length > 0">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        <th></th>
+                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td><a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a></td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+                            <a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a>
+                            <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
+                        </td>
+                        
                     </tr>
                 </tbody>
             </table>
