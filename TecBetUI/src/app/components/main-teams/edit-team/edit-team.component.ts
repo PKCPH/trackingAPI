@@ -20,6 +20,9 @@ export class EditTeamComponent {
     isAvailable: true,
     matches: [],
     availability: '',
+    score: 0,
+    result: 0
+    availability: '',
     players: []
   };
 
@@ -73,4 +76,5 @@ this.teamDetails = response;
           console.log(key, control.errors);
   }
 }
-}}}}
+}}}
+}

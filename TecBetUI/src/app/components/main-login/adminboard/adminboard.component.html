@@ -1,0 +1,43 @@
+<!-- Inbuilt Bootstrap CSS -->
+<!-- my-5 = Margin on Y axis 5 (up and down) -->
+
+<div class="section1 tablediv">
+  
+    <!-- spinnner element is 
+        defined with id loading -->
+        <div id="loading"></div>
+      
+    <!-- data from API is displayed  -->
+    
+    <div class="container my-2 divs py-5" id="usercontainer">
+        <h1 class="mb-3">List of Users</h1>
+
+        <!-- <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddMatch()" id="addbutton">Create a Match</button> -->
+        <table class="table tabletext" *ngIf="users && users.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Balance</th>
+                    <th> </th>
+                </tr>
+            </thead>
+
+            <ng-container *ngFor="let user of users" >
+            <tr class="tablerow" *ngIf="user.userName != adminUsername && user.userName != 'admin'">      
+                <td>{{ user.id }}</td>
+                <td>{{ user.userName }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.balance }}$</td>
+                <td><a [routerLink]="['/adminboard', 'edit-user', user.userName]"><button class="btn btn-success mt-3">Edit</button></a>
+                    <a><button class="btn btn-danger mt-3" (click)="deleteUser(user.userName)">Delete</button></a></td>
+                </tr>    
+            </ng-container>
+        </table>  
+    
+        <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+    </div>
+    </div>

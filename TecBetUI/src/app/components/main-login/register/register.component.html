@@ -2,12 +2,11 @@
 
     <div id="loading"></div>
     
-    <!-- Need better solution here not sure whats going on -->
-  <div class="d-flex"></div>
-  <div class="container divs my-5 py-5" *ngIf="invalidRegister">
-      <form [formGroup]="loginForm" (ngSubmit)="registerUser()">
+  <div class="container my-5 py-5" *ngIf="invalidRegister">
+      <form [formGroup]="loginForm" (ngSubmit)="registerUser()" class="formBox">
       <div class="mb-3">
-          <h1 class="mb-5">New account</h1>
+          <h1 class="mb-4">New account</h1>
+          <div class="avatar mb-4"><img src="images/avatar.png"></div>
         <label for="username" class="form-label">Username</label>
         <!-- One way to bind data to model in Angular  -->
         <input type="text" class="form-control" id="username" formControlName="username" />
@@ -42,7 +41,7 @@
   <div id="" class="container divs my-5 py-5 successdiv" *ngIf="!invalidRegister">
     <p style="color: green;">Successfully registered an account!</p>
     <h1>Welcome to BetHaven</h1>
-    <p class="my-4">You've been logged in as <span>{{ addLoginRequest.userName }}</span></p>
+    <p class="my-4">You've been logged in as <span>{{ addLoginRequest.userName | titlecase}}</span></p>
     <img src="https://www.animatedimages.org/data/media/279/animated-sports-image-0052.gif">
     <div><a routerLink="/"><button type="button" class="btn btn-primary mx-2 my-5">Back</button></a>
     <a routerLink="/"><button type="button" class="btn btn-danger mx-2" (click)="logOut()">Logout</button></a></div>

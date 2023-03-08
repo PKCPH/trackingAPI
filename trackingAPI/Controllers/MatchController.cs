@@ -78,20 +78,73 @@ public class MatchController : ControllerBase
         //if issues does not exist
         if (issueToDelete == null) return NotFound();
 
-        //otherwise remove the issue and save changes in DB
+        //otherwise remove the issue and save changes in DB!
         _context.Matches.Remove(issueToDelete);
         await _context.SaveChangesAsync();
 
         return NoContent();
     }
 
-    [HttpGet("/api/matches")]
-    public ActionResult<IList<GameMatch>> GetAllMatches()
+    [HttpGet("/api/Matches")]
+    public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
     {
-        var matches = from match in _context.Matches
-                      .Include(mt => mt.ParticipatingTeams)
-                      .ThenInclude(t => t.Team)
-                      select match;
-        return Ok(matches.ToList());
+        var matches = _context.Matches
+            .Include(mt => mt.ParticipatingTeams)
+            .ThenInclude(t => t.Team)
+            .Select(match => new {
+                Id = match.Id,
+                dateOfMatch = match.DateOfMatch,
+                matchState = match.MatchState,
+                participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                    Id = pt.Team.Id,
+                    name = pt.Team.Name,
+                    result= pt.Result,
+                    score = pt.TeamScore
+                }).ToList()
+            })
+            .ToList();
+
+        return Ok(matches);
     }
+
+    [HttpGet("/api/MatchDetails/{id}")]
+    public async Task<ActionResult<IList<GameMatch>>> GetMatchDetails(Guid id)
+    {
+        var match = await _context.Matches
+               .Include(mt => mt.ParticipatingTeams)
+               .ThenInclude(t => t.Team)
+               .Where(m => m.Id == id)
+               .Select(m => new {
+                   Id = m.Id,
+                   dateOfMatch = m.DateOfMatch,
+                   matchState = m.MatchState,
+                   participatingTeams = m.ParticipatingTeams.Select(pt => new {
+                       Id = pt.Team.Id,
+                       name = pt.Team.Name,
+                       result = pt.Result,
+                       score = pt.TeamScore
+                   }).ToList()
+               })
+               .FirstOrDefaultAsync();
+
+        if (match == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(match);
+    }
+
+
+    /*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+        {
+            var matches = _context.Matches
+                .Include(mt => mt.ParticipatingTeams)
+                .ThenInclude(t => t.Team)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(matches);
+        }*/
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using trackingAPI.Data;
 using System.Security.Cryptography.X509Certificates;
+using System.ComponentModel;
 
 namespace trackingAPI.Models;
 
@@ -16,10 +17,11 @@ public class GameMatch
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public ICollection<MatchTeam> ParticipatingTeams { get; set; }
-    public int TeamAScore { get; set; }
-    public int TeamBScore { get; set; } //string Score for both teams instead ?
     public MatchState MatchState { get; set; } //0 MatchNotStarted, 1 MatchInPlay, 2 MatchFinished
     public DateTime DateOfMatch { get; set; }
+    [DefaultValue(true)]
+    public bool IsDrawAllowed { get; set; }
+    public ICollection<Bet> Bets { get; set; }
 }
 
 public enum MatchState

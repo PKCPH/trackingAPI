@@ -1,13 +1,18 @@
-<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0">
+<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0 && !isTestingPage()">
+  <div class="logo"><a href="#section1"><img src="images/logo.png"></a></div>
     <div class="container">
+      <div class="leftsidenav">
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-text" aria-current="page" href="#section1">Home</a>
-          </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
+          </li> -->
+          <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
             <a class="nav-text" routerLink="teams">Teams</a>
           </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
+          <li class="nav-item">
+            <a class="nav-text " routerLink="players">Players</a>
+          </li>
+          <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
             <a class="nav-text " routerLink="matches">Matches</a>
           </li>
           <li class="nav-item">
@@ -16,30 +21,49 @@
           <li class="nav-item">
             <a class="nav-text " href="#section2">Betting</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-text " href="players">Players</a>
+          <li class="nav-item" *ngIf="isUserAuthenticated()">
+            <a class="nav-text " href="/animalrace">Minigame</a>
           </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
-            <a class="nav-text" routerLink="/customers">SikritStuf</a>
+          <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+            <a class="nav-text" routerLink="/adminboard">Admin Board</a>
           </li>
         </ul> 
-        <ul class="navbar-nav">
-          <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><p>Logged in as <span>{{ credentials.userName | titlecase }}</span></p></li>
-        </ul>
-        <ul class="navbar-nav">
-        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" routerLink="/login">Login</a></li>
+      </div>
+
+    
+
+      <div class="rightsidenav">
+      <ul class="navbar-nav">
+  
+        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span>{{ credentials.userName | titlecase }}</span><img src="images/dropdownarrow.png"></button>
+        </li>
+        <li>
+          <p *ngIf="isUserAuthenticated() && !isRegisterPage()" class="balance">Balance: <span *ngIf="credentials.balance || credentials.balance == 0" class="balanceTxt">{{ credentials.balance}}$</span></p>
+        </li>
+
+        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" (click)="openLogin()">Login</a></li>
         <li *ngIf="!isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" routerLink="/register">Register</a></li>
-        <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" (click)="logOut()">Logout</a></li>
+        <!-- <li *ngIf="isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" (click)="logOut()">Logout</a></li> -->
+      </ul>
+      <ul class="dropDownBox" *ngIf="showDropdown">
+        <li class="dropDownItems" *ngFor="let item of items" (click)="onItemClick(item.text)">
+          <a class="nav-text" *ngIf="item.text === 'Log Out'" (click)="logOut()">{{item.text}}</a>
+          <a class="nav-text" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]">{{item.text}}</a>
+        </li>
       </ul>
     </div>
+    </div> 
   </nav>
+  
+  
   
   <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">
     <div class="container">
+      <div class="logo2"><a href="#section1"><img src="images/logo.png"></a></div>
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-text" aria-current="page" href="#section1">Home</a>
-          </li>
+          </li> -->
           <li class="nav-item" *ngIf="credentials.role === 'Admin'">
             <a class="nav-text " routerLink="teams">Teams</a>
           </li>

@@ -23,6 +23,9 @@ export class EditPlayerComponent {
     matches: [],
     availability:'',
     players:[]
+    availability:'',
+    score: 0,
+    result: 0
   }
   playerDetails: Player = {
     id: '',

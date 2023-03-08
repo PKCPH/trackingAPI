@@ -10,6 +10,7 @@ public class Team
     public Team()
     {
         this.Matches = new HashSet<MatchTeam>();
+        this.Players = new HashSet<PlayerTeam>();
     }
 
     [Key]
@@ -25,5 +26,5 @@ public class Team
 
     //[ForeignKey("Player")]
     //public Guid PlayerId { get; set; }
-    //public Team Player { get; set; }
+    //public Team Player { get; set; }//loooool
 }

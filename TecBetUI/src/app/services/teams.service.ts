@@ -47,7 +47,7 @@ export class TeamsService {
   }
 
   updateTeam(id: string, updateTeamRequest: Team): Observable<Team> {
-    updateTeamRequest.matches = [];
+    // updateTeamRequest.matches = [];
     return this.http.put<Team>(serviceVariables.baseApiUrl + '/api/Team/' + id, updateTeamRequest);
   }
 

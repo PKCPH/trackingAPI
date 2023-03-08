@@ -1,4 +1,7 @@
-﻿using trackingAPI.Controllers;
+﻿using System.Diagnostics;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using trackingAPI.Controllers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
@@ -22,9 +25,8 @@ public class MatchBackgroundTask
 
             while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
             {
-                MatchController matchController = new(_context);
                 TeamPicker teamPicker = new();
-                await matchController.Create(teamPicker);
+                await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
                 await _context.SaveChangesAsync();
             }
         }
@@ -38,9 +40,21 @@ public class MatchBackgroundTask
         {
             var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
             // while now has past the schedule time of the match  
+
             if (now > firstGameMatch.DateOfMatch)
             {
-                PlayGameMatch(firstGameMatch);
+                using (var scope = _services.CreateScope())
+                {
+                    var _context =
+                        scope.ServiceProvider
+                            .GetRequiredService<DatabaseContext>();
+                    _context.Entry(firstGameMatch).State = EntityState.Modified;
+                    _context.SaveChanges();
+                }
+                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
+                thread.Start();
+                Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
+                Thread.Sleep(100);
             }
         }
     }
@@ -54,20 +68,24 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            foreach (var item in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted))
+
+            foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted).ToList())
             {
-                gameMatches.Add(item);
+                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id).Include(x => x.Team).ToList();
+                gameMatches.Add(match);
             }
         }
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
-
         return gameMatchesSortByOrder;
     }
 
-    public void PlayGameMatch(GameMatch gameMatch)
+    public async Task PlayGameMatch(GameMatch gameMatch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
+        LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
+        BetsHandler betsHandler = new(_services);
+        CancellationToken stoppingToken;
 
         using (var scope = _services.CreateScope())
         {
@@ -75,23 +93,23 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            foreach (var item in _context.Matches.Where(x => x.Id == gameMatch.Id))
-            {
-                item.TeamAScore = random.Next(0, 3);
-                item.TeamBScore = random.Next(0, 3);
-                item.MatchState = MatchState.Finished;
-            }
+            await liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
+            gameMatch.MatchState = MatchState.Finished;
+            await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
 
-            foreach (var item in _context.MatchTeams)
+            //updating teams to is available
+            foreach (var item in gameMatch.ParticipatingTeams)
             {
-                matchTeams.Add(item);
+                item.Team.IsAvailable = true;
+                _context.Entry(item.Team).State = EntityState.Modified;
             }
-            //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-            foreach (var item2 in matchTeams.Where(x => x.MatchId == gameMatch.Id))
-            {
-                //foreach team.id that is matching with matchTeams.teamId
-                foreach (var item3 in _context.Teams.Where(x => x.Id == item2.TeamId)) item3.IsAvailable = true;
-            }
+            // detach the gameMatch instance to avoid conflicts with the context
+            _context.Entry(gameMatch).State = EntityState.Detached;
+
+            // attach the updated gameMatch instance to the context and save changes
+            _context.Matches.Update(gameMatch);
+            await _context.SaveChangesAsync();
+
             _context.SaveChanges();
         }
     }

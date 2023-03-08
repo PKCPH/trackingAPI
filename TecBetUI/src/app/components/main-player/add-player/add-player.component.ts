@@ -21,6 +21,9 @@ export class AddPlayerComponent {
     matches: [],
     availability:'',
     players:[]
+    availability:'',
+    score: 0,
+    result: 0
   }
   addPlayerRequest: Player = {
     id: '',

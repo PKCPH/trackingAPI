@@ -5,6 +5,7 @@ using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -54,6 +55,13 @@ public class AuthController : ControllerBase
         });
     }
 
+    //action method, does as a response of the http request, to get a list of Issue
+    //attribute to make it handle httpGet
+    [HttpGet, Authorize(Roles = "Admin")]
+    public async Task<IEnumerable<Login>> Get()
+        //get a list of Issue
+        => await _context.Logins.ToListAsync();
+
     [HttpPost, Route("register")]
     public async Task<IActionResult> Create(Login login)
     {
@@ -92,6 +100,21 @@ public class AuthController : ControllerBase
         //otherwise we update the issue, save changes and
         _context.Entry(login).State = EntityState.Modified;
         await _context.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpDelete("{username}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(string username)
+    {
+        //finding the issue
+        var userToDelete = await _context.Logins.FirstOrDefaultAsync(x => x.UserName == username);
+
+        //otherwise remove the issue and save changes in DB
+        _context.Logins.Remove(userToDelete);
+        await _context.SaveChangesAsync();
+
         return NoContent();
     }
 }

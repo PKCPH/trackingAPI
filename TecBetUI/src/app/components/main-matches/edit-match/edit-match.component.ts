@@ -16,8 +16,6 @@ export class EditMatchComponent {
 
   matchDetails: Match = {
     id: '',
-    teamAScore: 0,
-    teamBScore: 0,
     matchState: 0,
     dateOfMatch: new Date(),
     participatingTeams: [],
@@ -39,8 +37,7 @@ export class EditMatchComponent {
 this.matchesService.getMatch(id)
 .subscribe({
   next: (response) => {
-this.matchDetails = response;
-console.log(this.matchDetails)     
+this.matchDetails = response;  
   }
 });  
         }

@@ -6,6 +6,7 @@ import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
 import { NgForm } from '@angular/forms';
 import { AuthguardService } from 'src/app/services/authguard.service';
 import { LoginService } from 'src/app/services/login.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService,
-    private el: ElementRef, private renderer: Renderer2) { }
+    private el: ElementRef, private renderer: Renderer2, public activeModal: NgbActiveModal) { }
   
   ngOnInit(): void {
     
@@ -46,12 +47,13 @@ export class LoginComponent implements OnInit {
           this.loginService.updateCredentials(this.credentials); 
 
           let storedCredentials = {
-            username: this.credentials.userName,
-            role: this.credentials.role
+            userName: this.credentials.userName,
+            role: this.credentials.role,
           };
 
           localStorage.setItem("credentials", JSON.stringify(storedCredentials));
           this.hideLoader();
+          this.activeModal.close();
           }
         });  
         },
@@ -70,6 +72,10 @@ export class LoginComponent implements OnInit {
         }
       })
     }
+  }
+
+  close() {
+    this.activeModal.close();
   }
 
   showLoader() {

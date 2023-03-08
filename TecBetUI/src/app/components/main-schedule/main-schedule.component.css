@@ -32,4 +32,27 @@
     padding: 4px;
     margin: auto;
    }
+
+   #archivedMatches {
+    display: none;
+   }
+
+   #activeMatchesButton {
+    display: none;
+   }
+
+   td {
+    border-bottom: none;
+   }
+
+   .tablerow {
+    transition: all 400ms;
+   }
+
+   .tablerow:hover {
+    transition: all 400ms;
+    background-color: rgb(0,0,0,0.5);
+    cursor: pointer;
+   }
+   
      

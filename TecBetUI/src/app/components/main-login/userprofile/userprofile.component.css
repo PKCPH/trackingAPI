@@ -1,0 +1,27 @@
+img {
+    height: 150px;
+    width: 150px;
+   }
+
+
+.profile {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+   .profile button {
+    width: 20%;
+   }
+
+.divs {
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 5%;
+}
+
+.modal-rounded .modal-content {
+    border-radius: 20px !important;
+    background-color: rgba(45,0,45,1)
+}
+
