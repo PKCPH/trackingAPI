@@ -2,10 +2,6 @@
  display: none;
 }
 
-#addbutton {
- display: none;
-}
-
 .errorMsg {
  font-weight: bold;
  font-size: 20px;

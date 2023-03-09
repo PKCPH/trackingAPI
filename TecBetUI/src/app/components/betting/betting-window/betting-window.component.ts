@@ -15,13 +15,6 @@ import { AuthguardService } from 'src/app/services/authguard.service';
 export class BettingWindowComponent {
 
   match: Match | any;
-  // match: Match = {
-  //   id: '',
-  //   matchState: 0,
-  //   dateOfMatch: new Date(),
-  //   participatingTeams: [],
-  //   state: ''
-  // };
   team: Team | any;
   user: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
   errorMsg: string = '';
@@ -71,18 +64,20 @@ this.user.role = response.role
     if (this.amount > 0) {
       const bet: Bet = {
         id: '',
-        gameMatchId: this.match.id,
+        matchId: this.match.id,
         loginId: this.user.id,
         team: this.team.name,
         amount: this.amount,
         payoutAmount: 0,
         betTime: new Date(),
-        result: null,
+        betResult: '0',
+        betState: '0',
+        participatingTeams: []
       };
 
-      // console.log("Team: " + this.team.name);
-      // console.log("Amount: " + this.amount);
-      // console.log("Match ID: " + this.match.id);
+      console.log("Team: " + this.team.name);
+      console.log("Amount: " + this.amount);
+      console.log("Match ID: " + this.match.id);
 
       this.betService.placeBet(bet).subscribe(
         (bet: Bet) => {

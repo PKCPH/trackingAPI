@@ -20,8 +20,3 @@ img {
     border-radius: 5%;
 }
 
-.modal-rounded .modal-content {
-    border-radius: 20px !important;
-    background-color: rgba(45,0,45,1)
-}
-
