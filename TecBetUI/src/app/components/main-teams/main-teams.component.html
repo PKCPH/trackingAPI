@@ -17,7 +17,8 @@
             <img style="height: 25px; position: absolute; top: -35%; right: -20%;" src="/images/arrow.png">
           </div>
 
-        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton">Create a Team</button>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'Admin'">Create a Team</button>
+
         <table class="table tabletext" *ngIf="teams && teams.length > 0">
             <thead>
                 <tr>
@@ -30,9 +31,9 @@
             <tr class="tablerow" *ngFor="let teams of teams">  
                 <td>{{ teams.name }}</td>
                 <td>{{ teams.availability }}</td>
-                <td><a [routerLink]="['/teams', 'edit', teams.id]"><button class="btn btn-success mt-3">Edit</button></a>
+                <td><a><button class="btn btn-success mt-3" (click)="GoEditTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Edit</button></a>
                     <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>
-                    <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)">Delete</button></a></td>
+                    <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Delete</button></a></td>
             </tr> 
         </table>  
     

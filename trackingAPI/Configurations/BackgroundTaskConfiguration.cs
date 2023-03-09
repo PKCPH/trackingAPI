@@ -31,7 +31,7 @@ public static class BackgroundTaskConfiguration
     //How often the backgroundtask is checking for changes.
     public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(6); //default is 60, testing is 6
 
-    public static int MatchLengthInSeconds { get; set; } = 20; //default is 5400, testing is 20
+    public static int MatchLengthInSeconds { get; set; } = 60; //default is 5400, testing is 20
 
     public static int DaysAddedThanNow { get; set; } = 0; //default is 1, testing is 0
 

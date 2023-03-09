@@ -94,6 +94,10 @@ span {
     transition: all 1000ms ease;
 }
 
+span img{
+    height: 20px;
+}
+
 span:hover {
     cursor: pointer;
     color: seagreen;
@@ -157,8 +161,7 @@ span:hover {
 
 .balance:hover {
     cursor: default;
-}
-  
+}  
 
 @media screen and (max-width: 1000px) {
 

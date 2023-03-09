@@ -72,10 +72,12 @@ namespace trackingAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GameMatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Team = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    BetResult = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    BetState = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -87,8 +89,8 @@ namespace trackingAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Bets_Matches_GameMatchId",
-                        column: x => x.GameMatchId,
+                        name: "FK_Bets_Matches_MatchId",
+                        column: x => x.MatchId,
                         principalTable: "Matches",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -149,17 +151,17 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("15c2f223-ecda-47c8-ae2b-10b1b0748f35"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Bets_GameMatchId",
-                table: "Bets",
-                column: "GameMatchId");
+                values: new object[] { new Guid("d3e4e1f2-7fd3-4037-9bb9-490350cf157e"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
                 table: "Bets",
                 column: "LoginId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bets_MatchId",
+                table: "Bets",
+                column: "MatchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logins_UserName",
