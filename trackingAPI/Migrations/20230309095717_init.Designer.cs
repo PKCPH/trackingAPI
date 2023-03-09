@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230309092912_init")]
+    [Migration("20230309095717_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

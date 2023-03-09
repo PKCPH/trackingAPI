@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -68,6 +69,7 @@ public class LeagueSeedingLogic
         while (roundsNumber > 0)
         {
             teamsCount /= 2;
+            var maxTeamCount = teamsCount;
             for (int i = 1; i < teamsCount; i++)
             {
                 Gamematch gamematch = new()
@@ -78,8 +80,8 @@ public class LeagueSeedingLogic
 
                 MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
                 i++;
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = i };
-
+                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount };
+                maxTeamCount--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
                 gamematch.ParticipatingTeams.Add(matchTeamB);
                 gamematch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
@@ -97,7 +99,8 @@ public class LeagueSeedingLogic
         //var rounds = new Array[roundsNumber];
         List<Gamematch> gamematches = new List<Gamematch>();
         Random rnd = new();
-
+        var maxTeamCount = teams.Count;
+        //change int here to half
         for (int i = 1; i < teams.Count; i++)
         {
             Gamematch gamematch = new()
@@ -114,8 +117,9 @@ public class LeagueSeedingLogic
             teamB.IsAvailable = false;
 
             MatchTeam matchTeamA = new MatchTeam { Team = teamA, Seed = i };
-            i++;
-            MatchTeam matchTeamB = new MatchTeam { Team = teamB, Seed = i };
+            
+            MatchTeam matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
+            maxTeamCount--;
 
             gamematch.ParticipatingTeams.Add(matchTeamA);
             gamematch.ParticipatingTeams.Add(matchTeamB);
@@ -128,94 +132,54 @@ public class LeagueSeedingLogic
         return gamematches;
     }
 
-
-    //private List<Gamematch> GenerateTournamentMatches(ICollection<MatchTeam> teams, League league)
+    //static League Generate(int playersNumber)
     //{
-    //    List<Gamematch> matches = new List<Gamematch>();
-
-    //    // Create initial matches with randomized team order
-    //    var randomize3dTeams = teams.OrderBy(x => Guid.NewGuid()).ToList();
-
-    //    //var randomize3dTeams = league.Teams.OrderBy(x => Guid.NewGuid()).ToList();
-
-    //    //var randomizedTeams = league.Teams.ToList();
-
-    //    //var rt = league.MatchLeagueRounds.OrderBy(x => Guid.NewGuid()).ToArray();
-
-    //    for (int i = 0; i < randomize3dTeams.Count(); i += 2)
+    //    // only works for power of 2 number of players   
+    //    var roundsNumber = (int)Math.Log(playersNumber, 2);
+    //    var rounds = roundsNumber;
+    //    for (int i = 0; i < roundsNumber; i++)
     //    {
-    //        var match = new Gamematch
+    //        var round = 1;
+    //        var prevRound = i;
+    //        if (prevRound == null)
     //        {
-    //            ParticipatingTeams = new List<MatchTeam> { randomize3dTeams[i], randomize3dTeams[i + 1] },
-    //            MatchState = MatchState.NotStarted
-    //        };
-    //        matches.Add(match);
-    //    }
-
-    //    // Loop through each round and generate matches
-    //    var round = 2;
-    //    while (matches.Count > 1)
-    //    {
-    //        var roundMatches = new List<Gamematch>();
-    //        for (int i = 0; i < matches.Count; i += 2)
-    //        {
-    //            var winner1 = matches[i].ParticipatingTeams.OrderBy(x => x.Seed).First();
-    //            var winner2 = matches[i + 1].ParticipatingTeams.OrderBy(x => x.Seed).First();
-
-    //            var match = new Gamematch
-    //            {
-    //                ParticipatingTeams = new List<MatchTeam> { winner1, winner2 },
-    //                MatchState = MatchState.NotStarted,
-    //                TeamASeed = (int)winner1.Seed,
-    //                TeamBSeed = (int)winner2.Seed
+    //            // if first round - result is known
+    //            round = new[] {
+    //                new Match() {
+    //                    PlayerA = 1,
+    //                    PlayerB = 2
+    //                }
     //            };
-    //            roundMatches.Add(match);
     //        }
-
-    //        matches = roundMatches;
-    //        round++;
-    //    }
-
-    //    return matches;
-    //}
-
-
-
-    //private static List<MatchupModel> CreateFirstRound(int byes, List<Team> teams)
-    //{
-    //    List<MatchupModel> output = new List<MatchupModel>();
-    //    MatchupModel curr = new MatchupModel();
-
-    //    foreach (Team team in teams)
-    //    {
-    //        curr.Entries.Add(new MatchupEntryModel { TeamCompeting = team });
-    //        if (byes > 0 || curr.Entries.Count > 1)
+    //        else
     //        {
-    //            curr.MatchupRound = 1;
-    //            output.Add(curr);
-    //            curr = new MatchupModel();
-    //            if (byes > 0)
+    //            round.Matches = new Match[prevRound.Matches.Length * 2];
+    //            // find median. For round 2 there are 4 players and median is 2.5 (between 2 and 3)
+    //            // for round 3 there are 8 players and median is 4.5 (between 4 and 5)
+    //            var median = (round.Matches.Length * 2 + 1) / 2f;
+    //            var next = 0;
+    //            foreach (var match in prevRound.Matches)
     //            {
-    //                byes -= 1;
+    //                // you can play here by switching PlayerA and PlayerB or reordering stuff
+    //                round.Matches[next] = new Match()
+    //                {
+    //                    PlayerA = match.PlayerA,
+    //                    PlayerB = (int)(median + Math.Abs(match.PlayerA - median))
+    //                };
+    //                next++;
+    //                round.Matches[next] = new Match()
+    //                {
+    //                    PlayerA = match.PlayerB,
+    //                    PlayerB = (int)(median + Math.Abs(match.PlayerB - median))
+    //                };
+    //                next++;
     //            }
     //        }
-
+    //        rounds[i] = round;
     //    }
-    //    return output;
+    //    return rounds.Reverse().ToArray();
     //}
 
-    //private static int NumberOfByes(int rounds, int numberOfTeams)
-    //{
-    //    int output = 0;
-    //    int totalTeams = 1;
-
-    //    for (int i = 1; i < rounds; i++)
-    //    {
-    //        totalTeams *= 2;
-    //    }
-    //    output = totalTeams - numberOfTeams;
-    //    return output;
-    //}
 
     private static int FindNumberOfRounds(int teamCount)
     {
