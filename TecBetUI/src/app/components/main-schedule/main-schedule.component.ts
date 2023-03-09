@@ -22,49 +22,38 @@ export class MainScheduleComponent implements OnDestroy {
     constructor(private matchesService: MatchesService, 
       private el: ElementRef, private renderer: Renderer2, private router: Router) {
 
-        this.matchesService.getSchedule()
-        .subscribe({
-          next: (games) => {
-            this.games = games; 
-            // console.log(this.games); 
-            if (games)
-            {
-              this.Hideloader();
-            }  
-          },
-          error: (response) => {
-            console.log(response);
-          }
-        });     
-  
-        this.updateSubscription = interval(3000).pipe(
-          switchMap(() => this.matchesService.getSchedule())
-        )
-        .subscribe({
-          next: (games) => {
-            this.games = games.map(game => {
-              return {
-                ...game,
-              }
-            });
-            // console.log(this.games);
-            if (games)
-            {
-              this.Hideloader();
-            }
-            this.matchesService.errorMessage.subscribe(error => {
-              this.errorMessage = error;
-              if (games.length > 0)
-              {
-                this.errorMessage = "";
-              }
-            });
-          },
-          error: (response) => {
-            console.log(response);
-          }
-        });   
+        this.fetch();
 
+        this.updateSubscription = interval(2500).subscribe(() => {
+          this.fetch();
+        });
+    }
+
+    fetch() {    
+      this.matchesService.getSchedule().subscribe({
+        next: (games) => {
+          this.games = games.map(game => {
+            return {
+              ...game,
+            }
+          });
+          // console.log(this.games);
+          if (games)
+          {
+            this.Hideloader();
+          }
+          this.matchesService.errorMessage.subscribe(error => {
+            this.errorMessage = error;
+            if (games.length > 0)
+            {
+              this.errorMessage = "";
+            }
+          });
+        },
+        error: (response) => {
+          console.log(response);
+        }
+      });   
     }
 
     GoMatchDetails(id: string)

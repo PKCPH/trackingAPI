@@ -24,6 +24,8 @@ export class AuthguardService implements CanActivate  {
   constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, 
     private modalService: NgbModal, private customErrorHandler: CustomErrorHandlerService){}
   
+//Function that protect components from getting accessed without being authenticated
+
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
 
@@ -106,35 +108,6 @@ export class AuthguardService implements CanActivate  {
             })
           );
   }
-
-  // login = ( form: NgForm) => {
-  //   if (form.valid) {
-  //     this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.credentials, {
-  //       headers: new HttpHeaders({ "Content-Type": "application/json"})
-  //     })
-  //     .subscribe({
-  //       next: (response: AuthenticatedResponse) => {
-  //         const token = response.token;
-  //         const refreshToken = response.refreshToken;
-  //         localStorage.setItem("jwt", token); 
-  //         localStorage.setItem("refreshToken", refreshToken);
-  //         this.invalidLogin = false; 
-  //         this.router.navigate(["/"]);
-
-  //         this.getUser(this.credentials.userName)
-  //         .subscribe({
-  //         next: (response) => {
-  //         this.credentials = response;
-  //         this.loginService.updateCredentials(this.credentials);  
-  //         localStorage.setItem("credentials", JSON.stringify(this.credentials.role));
-  //         }
-  //       });  
-  //       },
-  //       error: (err: HttpErrorResponse) => this.invalidLogin = true
-  //     })
-  //   }
-  // }
-
 }
 
 

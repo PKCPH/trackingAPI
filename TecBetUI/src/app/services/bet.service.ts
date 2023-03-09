@@ -16,10 +16,6 @@ export class BetService {
 
   constructor(private http: HttpClient, private customErrorHandler: CustomErrorHandlerService) { }
 
-  // getUserBets(userid: string): Observable<Bet> {
-  //   return this.http.get<Bet>(baseApiUrl + '/api/Bet/mybets/' + userid);
-  // }
-
   getUserBets(userid: string): Observable<Bet[]> {
     this.isLoading = true;
     return this.http.get<Bet[]>(baseApiUrl + '/api/Bet/mybets/' + userid)

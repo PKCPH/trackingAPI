@@ -92,7 +92,8 @@ export class AdminboardComponent implements OnDestroy{
                 this.users = users.map(users => {
                   return {
                     ...users,
-                    password: ''
+                    password: '',
+                    id: users.id.substring(0, 8),
                   }
                 });
               },

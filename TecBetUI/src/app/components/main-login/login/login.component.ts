@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
@@ -14,7 +14,7 @@ import { Location } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   invalidLogin: boolean = false;
   invalidConn: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
@@ -81,6 +81,13 @@ export class LoginComponent {
 
   close() {
     this.activeModal.close();
+  }
+
+  ngOnDestroy() {
+    if(this.router.url.includes("404"))
+    {
+      this.router.navigateByUrl('/');
+    }
   }
 
   showLoader() {
