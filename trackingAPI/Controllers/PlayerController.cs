@@ -2,6 +2,7 @@
 using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.Helpers;
 
 namespace trackingAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace trackingAPI.Controllers
     public class PlayerController : Controller
     {
         private readonly DatabaseContext databaseContext;
+        PlayerHelper playerHelper;
 
-        public PlayerController(DatabaseContext databaseContext)
+        public PlayerController(DatabaseContext databaseContext, PlayerHelper playerHelper)
         {
             this.databaseContext = databaseContext;
+            this.playerHelper = playerHelper;
         }
 
         //Read All
@@ -23,29 +26,17 @@ namespace trackingAPI.Controllers
             var players = await databaseContext.Players.ToListAsync();
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
             //Goes through the list of teams and matches each player with the team they play on
-            foreach (var playerTeam in playerTeams)
-            {
-                int index = players.FindIndex(p => p.Id == playerTeam.PlayerId);
-                players[index].Teams.Add(playerTeam);
-            }
-            return Ok(players);
+            return Ok(playerHelper.ReadAllPlayers(players, playerTeams));
         }
 
         //Create
         [HttpPost]
         public async Task<IActionResult> AddPlayer([FromBody] Player playerRequest)
         {
-            playerRequest.Id = Guid.NewGuid();
-            foreach (var playerTeam in playerRequest.Teams)
+            if (playerRequest != null) 
             {
-                playerTeam.Id = Guid.NewGuid();
-                playerTeam.PlayerId = playerRequest.Id;
-                await this.databaseContext.PlayerTeams.AddAsync(playerTeam);
+                await playerHelper.CreatePlayer(playerRequest);
             }
-            playerRequest.Teams.Clear();
-            await this.databaseContext.Players.AddAsync(playerRequest);
-            await this.databaseContext.SaveChangesAsync();
-
             return Ok(playerRequest);
         }
 
@@ -59,14 +50,8 @@ namespace trackingAPI.Controllers
             if (player == null ) { return NotFound(); }
             //gets the team by looking up the team table for ID matches to the players teamID property
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
-            foreach ( var playerTeam in playerTeams)
-            {
-                if (player.Id == playerTeam.PlayerId)
-                {
-                    player.Teams.Add(playerTeam);
-                }
-            }
-            return Ok(player);
+            playerHelper.AssignTeamsToPlayer(player, playerTeams);
+            return Ok(playerHelper.AssignTeamsToPlayer(player, playerTeams));
         }
 
         //Update
