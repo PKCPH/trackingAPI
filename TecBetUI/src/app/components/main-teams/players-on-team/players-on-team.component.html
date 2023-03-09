@@ -2,7 +2,7 @@
     <div class="container my-2 divs py-5">
         <h1 class="mb-3">{{selectedTeam.name}}</h1>
         <div>
-            <div>
+            <div *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                 <table class="w-100">
                     <tbody>
                         <tr>
@@ -21,15 +21,14 @@
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        <th></th>
-                        <th></th>
+                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                             <button type="button" class="btn btn-primary" (click)="ChangePlayer(player.id)">Change player</button>
                             <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
                         </td>

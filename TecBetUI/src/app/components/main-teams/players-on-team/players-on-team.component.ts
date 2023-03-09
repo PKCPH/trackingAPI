@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
+import { LoginModel } from 'src/app/models/login.model';
 import { Player } from 'src/app/models/player.model';
 import { Team } from 'src/app/models/teams.model';
 import { PlayersService } from 'src/app/services/players.service';
@@ -24,7 +26,9 @@ export class PlayersOnTeamComponent {
     score: 0,
     result: 0,
   }
-  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService) {}
+  credentials: LoginModel = this.app.credentials
+  
+  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService, private app: AppComponent) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -69,8 +73,12 @@ export class PlayersOnTeamComponent {
     this.playerService.deletePlayer(id)
     .subscribe({
       next: (response) => {
-        this.router.navigate(['players'])
       }
     })
+    this.players.splice(this.players.findIndex(p => p.id == id),1)
+  }
+
+  isUserAuthenticated = (): boolean => {
+    return this.app.isUserAuthenticated()
   }
 }
