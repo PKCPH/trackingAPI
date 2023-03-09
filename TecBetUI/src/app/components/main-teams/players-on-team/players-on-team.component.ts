@@ -35,18 +35,20 @@ export class PlayersOnTeamComponent {
     this.updateSubscription.unsubscribe();
   }
   
-  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService, private app: AppComponent) {this.updateSubscription = interval(3000).pipe(
-    switchMap(() => this.teamService.getPlayers(this.id))
-  )
-  .subscribe({
-    next: (players) => {
-      console.log(players);
-      this.players = players
-    },
-    error: (response) => {
-      console.log(response);
-    }
-  })}
+  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService, private app: AppComponent) {
+    this.updateSubscription = interval(3000).pipe(
+      switchMap(() => this.teamService.getPlayers(this.id))
+    )
+    .subscribe({
+      next: (players) => {
+        console.log(players);
+        this.players = players
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -59,6 +61,16 @@ export class PlayersOnTeamComponent {
             next: (team) => {
               console.log(team);
               this.selectedTeam = team
+            }
+          })
+          this.teamService.getPlayers(id)
+          .subscribe({
+            next: (players) => {
+              console.log(players);
+              this.players = players
+            },
+            error: (response) => {
+              console.log(response);
             }
           })
         }
