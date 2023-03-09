@@ -21,7 +21,6 @@ export class MainMatchesComponent implements OnDestroy {
   }
   
     constructor(private matchesService: MatchesService, private router: Router, 
-      private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
 
         this.getCredentials(); 
@@ -31,6 +30,7 @@ export class MainMatchesComponent implements OnDestroy {
         this.updateSubscription = interval(2500).subscribe(() => {
           this.fetch();
         });
+        
     }
 
     fetch() {  

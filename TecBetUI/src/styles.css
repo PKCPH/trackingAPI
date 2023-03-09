@@ -106,6 +106,10 @@ form {
     width: auto;
    }
 
+   .modal-login {
+    background-color: rgba(0,0,0,0.6);
+   }
+
    .modal-bet .modal-content{
     background-color: rgba(45,0,45,1);
     border-radius: 10px;

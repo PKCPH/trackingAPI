@@ -56,22 +56,18 @@
   
   <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">
     <div class="container">
-      <div class="logo2"><a href="#section1"><img src="images/logo.png"></a></div>
         <ul class="navbar-nav">
-          <!-- <li class="nav-item">
-            <a class="nav-text" aria-current="page" href="#section1">Home</a>
-          </li> -->
-          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
-            <a class="nav-text " routerLink="teams">Teams</a>
-          </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin'">
-            <a class="nav-text " routerLink="matches">Matches</a>
+          <li class="nav-item">
+            <a class="nav-text" aria-current="page" href="#section1"><mat-icon class="test">home</mat-icon></a>
           </li>
           <li class="nav-item">
-            <a class="nav-text " routerLink="schedule">Schedule</a>
+            <a class="nav-text " routerLink="teams"><mat-icon class="test">group</mat-icon></a>
           </li>
           <li class="nav-item">
-            <a class="nav-text " href="#section2">Betting</a>
+            <a class="nav-text " routerLink="schedule"><mat-icon class="test">schedule</mat-icon></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-text " href="#section2"><mat-icon class="test">casino</mat-icon></a>
           </li>
         </ul>  
     </div>

@@ -3,7 +3,7 @@
         <img src="images/arrow2.png">
     </button>
     <div class="divs">
-        <p>{{matchDetails.dateOfMatch | date: 'dd. MMM yyyy HH:mm:ss' }}</p>
+        <p>{{matchDetails.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</p>
             <div>
             <h1>{{matchDetails.participatingTeams[0].name}} vs {{matchDetails.participatingTeams[1].name}}</h1>
             <h2>{{matchDetails.participatingTeams[0].score}} - {{matchDetails.participatingTeams[1].score}}</h2>

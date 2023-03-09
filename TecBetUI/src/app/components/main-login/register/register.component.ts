@@ -7,6 +7,7 @@ import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
 import { LoginService } from 'src/app/services/login.service';
+import { Location } from '@angular/common'
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,6 @@ import { LoginService } from 'src/app/services/login.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnDestroy {
-
   
   addLoginRequest: LoginModel = {
     id: '',
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnDestroy {
   
   constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: 
     FormBuilder, private http: HttpClient, private loginService: LoginService,
-    private el: ElementRef, private renderer: Renderer2) {
+    private el: ElementRef, private renderer: Renderer2, private location: Location) {
     this.loginForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', [Validators.minLength(6), Validators.required]]
@@ -133,6 +133,10 @@ export class RegisterComponent implements OnDestroy {
 
   hideLoader() {
     this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

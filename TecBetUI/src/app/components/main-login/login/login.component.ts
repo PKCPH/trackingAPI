@@ -36,7 +36,6 @@ export class LoginComponent implements OnDestroy {
           localStorage.setItem("refreshToken", refreshToken);
           this.invalidLogin = false; 
           
-
           this.authguard.getUser(this.credentials.userName)
           .subscribe({
           next: (response) => {
@@ -53,6 +52,9 @@ export class LoginComponent implements OnDestroy {
           const event = new CustomEvent('userLoggedIn');
           window.dispatchEvent(event);
           
+// If theres no main component behind the locked component, it'll forward you to a non existent page, for that I've created my own custom 404 page, that will handle unexpected navigation
+// This if statement will make sure you return to your intended location (after logging in)
+
           if(this.router.url.includes('404'))
           {
             this.location.back();

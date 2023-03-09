@@ -14,44 +14,49 @@ import { ChangepasswordComponent } from './changepassword/changepassword.compone
 })
 export class UserprofileComponent {
 
-  credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
+  credentials: LoginModel = { userName: '', password: '', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: '' };
 
   constructor(private authService: AuthguardService, private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {
 
+    this.fetch();
+
+  }
+
+  fetch() {
     this.route.paramMap.subscribe({
       next: (params) => {
         const userName = params.get('username');
         if (userName) {
           //Call API
-this.authService.getUser(userName)
-.subscribe({
-  next: (response) => {
-this.credentials.id = response.id
-this.credentials.balance = response.balance,
-this.credentials.email = response.email,
-this.credentials.userName = response.userName,
-this.credentials.role = response.role
+          this.authService.getUser(userName)
+            .subscribe({
+              next: (response) => {
+                this.credentials.id = response.id
+                this.credentials.balance = response.balance,
+                  this.credentials.email = response.email,
+                  this.credentials.userName = response.userName,
+                  this.credentials.role = response.role
 
-// console.log(this.credentials);
-  }
-});
+                // console.log(this.credentials);
+              }
+            });
         }
       }
     })
   }
 
   goMyBets() {
-		this.router.navigateByUrl('dashboard/' + this.credentials.userName + '/mybets')
-	}
+    this.router.navigateByUrl('dashboard/' + this.credentials.userName + '/mybets')
+  }
 
   openConfirm() {
-		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg', windowClass: 'modal-rounded'});
-	}
+    this.modalService.open(ConfirmboxComponent, { centered: true, size: 'lg', windowClass: 'modal-rounded' });
+  }
 
   openPassword() {
-		const ref = this.modalService.open(ChangepasswordComponent, { centered: true, windowClass: 'modal-rounded'});
+    const ref = this.modalService.open(ChangepasswordComponent, { centered: true, windowClass: 'modal-rounded' });
     ref.componentInstance.selectedUser = this.credentials;
-	}
+  }
 }
 
 

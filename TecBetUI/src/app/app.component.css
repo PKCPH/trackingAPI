@@ -163,6 +163,11 @@ span:hover {
     cursor: default;
 }  
 
+.test {
+    font-size: 25px;
+    margin-right: 10px;
+}
+
 @media screen and (max-width: 1000px) {
 
     .menu a {

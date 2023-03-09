@@ -30,9 +30,9 @@ export class MatchDetailsComponent implements OnDestroy {
     availability: '',
     score: 0,
     result: 0,
-    players:[]
+    players: []
   };
-  
+
 
   updateSubscription: Subscription;
   id: any;
@@ -43,50 +43,47 @@ export class MatchDetailsComponent implements OnDestroy {
 
   constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router, private modalService: NgbModal) {
 
+    this.getId();
+
+    this.fetch();
+
+    this.updateSubscription = interval(1500).subscribe(() => {
+      this.fetch();
+    });
+    
+  }
+
+  fetch() {
+    this.matchesService.getMatchDetails(this.id).subscribe({
+      next: (response) => {
+        this.matchDetails = response
+        // console.log(this.matchDetails);
+        // console.log(this.games);
+        if (this.matchDetails) {
+          if (this.matchDetails.matchState == 2) {
+            this.modalService.dismissAll(BettingWindowComponent);
+          }
+          // this.Hideloader();
+        }
+        this.matchesService.errorMessage.subscribe(error => {
+          // this.errorMessage = error;
+          if (this.matchDetails == null) {
+            // this.errorMessage = "";
+          }
+        });
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    });
+  }
+
+  getId() {
     this.route.paramMap.subscribe({
       next: (params) => {
         this.id = params.get('id');
-        if (this.id) {
-          //Call API
-          this.matchesService.getMatchDetails(this.id)
-            .subscribe({
-              next: (response) => {
-                this.matchDetails = response;
-                // console.log(this.matchDetails);
-              }
-            });
-        }
       }
     })
-
-    this.updateSubscription = interval(2500).pipe(
-      switchMap(() => this.matchesService.getMatchDetails(this.id))
-    )
-      .subscribe({
-        next: (response) => {
-          this.matchDetails = response
-          // console.log(this.matchDetails);
-          // console.log(this.games);
-          if (this.matchDetails) {
-            if (this.matchDetails.matchState == 2) {
-              this.modalService.dismissAll(BettingWindowComponent);
-            }
-            // this.Hideloader();
-          }
-          this.matchesService.errorMessage.subscribe(error => {
-            // this.errorMessage = error;
-            if (this.matchDetails == null) {
-              // this.errorMessage = "";
-            }
-          });
-        },
-        error: (response) => {
-          console.log(response);
-        }
-      });
-
-
-
   }
 
   goBack() {
@@ -94,19 +91,19 @@ export class MatchDetailsComponent implements OnDestroy {
   }
 
   onBetTeamA() {
-    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet' });
     modalRef.componentInstance.match = this.matchDetails;
     modalRef.componentInstance.team = this.matchDetails.participatingTeams[0];
   }
 
   onBetTeamB() {
-    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet' });
     modalRef.componentInstance.match = this.matchDetails;
     modalRef.componentInstance.team = this.matchDetails.participatingTeams[1];
   }
 
   onBetDraw() {
-    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet'});
+    const modalRef = this.modalService.open(BettingWindowComponent, { centered: true, windowClass: 'modal-bet' });
     modalRef.componentInstance.match = this.matchDetails;
     modalRef.componentInstance.team = this.drawRequest;
   }

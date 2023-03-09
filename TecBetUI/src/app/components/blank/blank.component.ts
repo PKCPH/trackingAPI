@@ -1,4 +1,3 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -8,14 +7,7 @@ import { Component } from '@angular/core';
 })
 export class BlankComponent {
 
-  customers: any;
+  constructor() {
 
-  constructor(private http: HttpClient) {
-    // this.http.get("https://localhost:5001/api/customers")
-    // .subscribe({
-    //   next: (result: any) => this.customers = result,
-    //   error: (err: HttpErrorResponse) => console.log(err)
-    // })
   }
-
 }
