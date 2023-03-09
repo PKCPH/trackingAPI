@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230308095721_init")]
+    [Migration("20230309092912_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,10 +47,7 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
 
-                    b.Property<int>("TeamASeed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamBSeed")
+                    b.Property<int?>("Round")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -165,7 +162,7 @@ namespace trackingAPI.Migrations
                     b.Property<int?>("Seed")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TeamId")
+                    b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("TeamScore")
@@ -275,9 +272,7 @@ namespace trackingAPI.Migrations
 
                     b.HasOne("trackingAPI.Models.Team", "Team")
                         .WithMany("Matches")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeamId");
 
                     b.Navigation("Match");
 

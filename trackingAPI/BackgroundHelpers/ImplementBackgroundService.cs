@@ -31,52 +31,41 @@ public class ImplementBackgroundService : BackgroundService
 
 
             //Task task;
-            League league = new(_context);
-            LeagueSeedingHelper leagueSeedingHelper = new LeagueSeedingHelper();
-            //TeamController teamController = new(_context);
-            //var teams = teamController.Get().Result;
-            var leagueTeams = leagueSeedingHelper.GetListOfEightTeams(league, _context);
+            
 
-            league.StartDate = DateTime.Now;
-            league.LeagueState = LeagueState.NotStarted;
-            league.Teams = leagueTeams.Teams.ToList();
-            league.Name = "testleague123";
+            //Console.WriteLine();
 
-            LeagueSeedingLogic.CreateRounds(league);
-
-            Console.WriteLine();
-
-            do
-            {
-                //League league = new League(_context);
-                //TeamController teamController = new(_context);
-                //var teams = teamController.Get().Result.Where(x => x.IsAvailable != false);
-                //LeagueSeedingHelper leagueSeedingHelper = new();
-                //leagueSeedingHelper.SeedDistribution(_context);
+            //do
+            //{
+            //    //League league = new League(_context);
+            //    //TeamController teamController = new(_context);
+            //    //var teams = teamController.Get().Result.Where(x => x.IsAvailable != false);
+            //    //LeagueSeedingHelper leagueSeedingHelper = new();
+            //    //leagueSeedingHelper.SeedDistribution(_context);
 
 
 
                 
 
-                //MatchBackgroundTask matchBackgroundTask = new(_services);
-                //task = matchBackgroundTask.CreateNewLeagueOfAvailableTeams(); 
-                ////if any matches has not finished then play matches!
-                ////else create new matches
+            //    //MatchBackgroundTask matchBackgroundTask = new(_services);
+            //    //task = matchBackgroundTask.CreateNewLeagueOfAvailableTeams(); 
+            //    ////if any matches has not finished then play matches!
+            //    ////else create new matches
 
-                //if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
-                //{
-                //    task = matchBackgroundTask.FindAndPlayMatches();
-                //}
-                //if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
-                //{
-                //    tak = matchBackgroundTask.SeedDistribution(_context);
-                //}
-                //TeamPicker.SeedDistribution(_services);
+            //    //if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
+            //    //{
+            //    //    task = matchBackgroundTask.FindAndPlayMatches();
+            //    //}
+            //    //if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
+            //    //{
+            //    //    tak = matchBackgroundTask.SeedDistribution(_context);
+            //    //}
+            //    //TeamPicker.SeedDistribution(_services);
 
-                await Task.Delay(1000);
-                Console.WriteLine("ExecuteAsync loop in complete");
-            } while (await _timer.WaitForNextTickAsync(stoppingToken)
-                    && !stoppingToken.IsCancellationRequested);
+            //    await Task.Delay(1000);
+            //    Console.WriteLine("ExecuteAsync loop in complete");
+            //} while (await _timer.WaitForNextTickAsync(stoppingToken)
+            //        && !stoppingToken.IsCancellationRequested);
         }
     }
 }

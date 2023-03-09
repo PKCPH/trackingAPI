@@ -11,7 +11,7 @@ public class LeagueSeedingHelper
     {
         Random rnd = new Random();
 
-        var eightAvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(8);
+        var eightAvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(16);
 
         foreach (var team in eightAvailableTeams)
         {
@@ -20,6 +20,4 @@ public class LeagueSeedingHelper
         }
         return league;
     }
-
-
 }

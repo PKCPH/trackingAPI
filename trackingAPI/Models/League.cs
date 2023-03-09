@@ -10,6 +10,7 @@ public class League
     public League(DatabaseContext databaseContext)
     {
         this.Teams= new HashSet<LeagueTeam>();
+        this.Gamematches = new HashSet<Gamematch>();
         //this.Rounds = new HashSet<Round>();
         //this.Rounds= new HashSet<Round>();
         //this.Rounds = new HashSet<MatchupModel>();

@@ -74,11 +74,10 @@ namespace trackingAPI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MatchState = table.Column<int>(type: "int", nullable: false),
                     DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    TeamASeed = table.Column<int>(type: "int", nullable: false),
-                    TeamBSeed = table.Column<int>(type: "int", nullable: false),
-                    IsLeagueGame = table.Column<bool>(type: "bit", nullable: false)
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsLeagueGame = table.Column<bool>(type: "bit", nullable: false),
+                    Round = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -148,7 +147,7 @@ namespace trackingAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TeamScore = table.Column<int>(type: "int", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Seed = table.Column<int>(type: "int", nullable: true)
@@ -166,8 +165,7 @@ namespace trackingAPI.Migrations
                         name: "FK_MatchTeams_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
