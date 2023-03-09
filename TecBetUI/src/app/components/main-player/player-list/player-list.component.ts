@@ -4,6 +4,7 @@ import { PlayersService } from 'src/app/services/players.service';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { LoginModel } from 'src/app/models/login.model';
+import { interval, Subscription, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-player-list',
@@ -13,8 +14,27 @@ import { LoginModel } from 'src/app/models/login.model';
 export class PlayerListComponent {
   players: Player[] = [];
   credentials: LoginModel = this.app.credentials
-  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent) {
+  updateSubscription: Subscription;
+  
+  ngOnDestroy() {
+    this.updateSubscription.unsubscribe();
   }
+
+  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent) {
+    this.updateSubscription = interval(3000).pipe(
+      switchMap(() => this.playersService.getAllPlayers())
+    )
+    .subscribe({
+      next: (players) => {
+        console.log(players);
+        this.players = players
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    })
+  }
+
 
   ngOnInit(): void {
     this.playersService.getAllPlayers()
