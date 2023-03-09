@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { interval, Subscription, switchMap } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
 import { LoginModel } from 'src/app/models/login.model';
 import { Player } from 'src/app/models/player.model';
@@ -13,9 +14,12 @@ import { TeamsService } from 'src/app/services/teams.service';
   styleUrls: ['./players-on-team.component.css']
 })
 export class PlayersOnTeamComponent {
-
+  
   players: Player[] = [];
   id: string = '';
+  updateSubscription: Subscription;
+  credentials: LoginModel = this.app.credentials
+  
   selectedTeam: Team = {
     id: '',
     name: '',
@@ -26,9 +30,23 @@ export class PlayersOnTeamComponent {
     score: 0,
     result: 0,
   }
-  credentials: LoginModel = this.app.credentials
+
+  ngOnDestroy() {
+    this.updateSubscription.unsubscribe();
+  }
   
-  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService, private app: AppComponent) {}
+  constructor(private route: ActivatedRoute, private teamService: TeamsService, private router: Router, private playerService: PlayersService, private app: AppComponent) {this.updateSubscription = interval(3000).pipe(
+    switchMap(() => this.teamService.getPlayers(this.id))
+  )
+  .subscribe({
+    next: (players) => {
+      console.log(players);
+      this.players = players
+    },
+    error: (response) => {
+      console.log(response);
+    }
+  })}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe({
@@ -43,20 +61,9 @@ export class PlayersOnTeamComponent {
               this.selectedTeam = team
             }
           })
-          this.teamService.getPlayers(id)
-          .subscribe({
-            next: (players) => {
-              console.log(players);
-              this.players = players
-            },
-            error: (response) => {
-              console.log(response);
-            }
-          })
-        }       
+        }
       }
     })
-    
   }
   GoAddPlayers() {
     this.router.navigateByUrl('/teams/players/' + this.id + '/add')
