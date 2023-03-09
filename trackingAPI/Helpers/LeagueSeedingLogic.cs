@@ -63,14 +63,14 @@ public class LeagueSeedingLogic
     private void CreateOtherRounds(ref List<Gamematch> gamematches, List<Team> teams, int roundsNumber)
     {
         Random rnd = new Random();
-        var teamsCount = teams.Count;
+        var teamsCount = teams.Count/2;
         //var qualTeams = teamsCount / 2;
-
         while (roundsNumber > 0)
         {
-            teamsCount /= 2;
             var maxTeamCount = teamsCount;
-            for (int i = 1; i < teamsCount; i++)
+            teamsCount /= 2;
+            //var teamLoopCount = teams.Count/2;
+            for (int i = 1; i <= teamsCount; i++)
             {
                 Gamematch gamematch = new()
                 {
@@ -79,7 +79,6 @@ public class LeagueSeedingLogic
                 };
 
                 MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
-                i++;
                 MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount };
                 maxTeamCount--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
@@ -100,8 +99,9 @@ public class LeagueSeedingLogic
         List<Gamematch> gamematches = new List<Gamematch>();
         Random rnd = new();
         var maxTeamCount = teams.Count;
+        var teamLoopCount = teams.Count/2;
         //change int here to half
-        for (int i = 1; i < teams.Count; i++)
+        for (int i = 1; i <= teamLoopCount; i++)
         {
             Gamematch gamematch = new()
             {
