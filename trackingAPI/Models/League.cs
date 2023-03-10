@@ -11,9 +11,6 @@ public class League
     {
         this.Teams= new HashSet<LeagueTeam>();
         this.Gamematches = new HashSet<Gamematch>();
-        //this.Rounds = new HashSet<Round>();
-        //this.Rounds= new HashSet<Round>();
-        //this.Rounds = new HashSet<MatchupModel>();
     }
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

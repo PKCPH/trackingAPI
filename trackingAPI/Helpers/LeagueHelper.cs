@@ -9,94 +9,43 @@ public class LeagueHelper
 {
     public League CreateRounds(League league, DatabaseContext _context)
     {
-        
-        
         LeagueHelper leagueHelper = new LeagueHelper();
-        var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
+        ////testing
+        //var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
+        //league.Teams = leagueTeams.Teams.ToList();
 
-        league.Teams = leagueTeams.Teams.ToList();
-        league.StartDate = DateTime.Now;
         league.LeagueState = LeagueState.NotStarted;
-        league.Name = "testleague123";
 
         var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
-
         int rounds = FindNumberOfRounds(randomizedTeams.Count);
         //int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
-        //var matches = GenerateTournamentMatches(,league);
-        Console.WriteLine();
-        //BracketHelper.Play(randomizedTeams);
+        var teams = randomizedTeams.Select(x => x.Team).ToList();
+        var gamematches = CreateGamematchRounds(teams, league.StartDate);
 
-        var teams = randomizedTeams.Select(x => x.Team).Where(x => x.IsAvailable == true).ToList();
-
-        //int[] array = new int[] { };
-
-        var roundsNumber = 0;
-        var gamematches = CreateFirstRound(ref teams, out roundsNumber);
-
-        //adding the first round to league
-        //league.Rounds.Add(CreateFirstRound(byes, randomizedTeams));
-        Console.WriteLine();
-        CreateOtherRounds(ref gamematches, teams, roundsNumber);
-
-        league.Gamematches= gamematches;
-
+        league.Gamematches = gamematches;
         return league;
-        //foreach (var item in gamematches)
-        //{
-        //    league.Gamematches.Add(item);
-        //}
     }
-    private void CreateOtherRounds(ref List<Gamematch> gamematches, List<Team> teams, int roundsNumber)
+
+    private List<Gamematch> CreateGamematchRounds(List<Team> teams, DateTime leagueDateTime)
     {
-        Random rnd = new Random();
-        var teamsCount = teams.Count/2;
-        //var qualTeams = teamsCount / 2;
-        while (roundsNumber > 0)
-        {
-            var maxTeamCount = teamsCount;
-            teamsCount /= 2;
-            //var teamLoopCount = teams.Count/2;
-            for (int i = 1; i <= teamsCount; i++)
-            {
-                Gamematch gamematch = new()
-                {
-                    ParticipatingTeams = new List<MatchTeam>(),
-                    Round = roundsNumber
-                };
-
-                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount };
-                maxTeamCount--;
-                gamematch.ParticipatingTeams.Add(matchTeamA);
-                gamematch.ParticipatingTeams.Add(matchTeamB);
-                gamematch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-
-                gamematches.Add(gamematch);
-
-                if (roundsNumber == 1) i = (int)teamsCount;
-            }
-            roundsNumber--;
-        }
-    }
-    private List<Gamematch> CreateFirstRound(ref List<Team> teams, out int roundsNumber)
-    {
-        roundsNumber = (int)Math.Log(teams.Count, 2);
-        //var rounds = new Array[roundsNumber];
+        /////////////////FIRST ROUNDS///////////////////////////
+        var roundsNumber = (int)Math.Log(teams.Count, 2);
         List<Gamematch> gamematches = new List<Gamematch>();
         Random rnd = new();
         var maxTeamCount = teams.Count;
-        var teamLoopCount = teams.Count/2;
-        //change int here to half
+        var teamLoopCount = teams.Count / 2;
         for (int i = 1; i <= teamLoopCount; i++)
         {
             Gamematch gamematch = new()
             {
                 ParticipatingTeams = new List<MatchTeam>(),
-                Round = roundsNumber
+                Round = roundsNumber,
+                IsLeagueGame = true,
+                DateOfMatch = leagueDateTime
             };
 
+            leagueDateTime = leagueDateTime.AddDays(1);
             var TwoRandomAvailableTeams = teams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
             var teamA = TwoRandomAvailableTeams.First();
@@ -105,18 +54,41 @@ public class LeagueHelper
             teamB.IsAvailable = false;
 
             MatchTeam matchTeamA = new MatchTeam { Team = teamA, Seed = i };
-            
             MatchTeam matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
             maxTeamCount--;
 
             gamematch.ParticipatingTeams.Add(matchTeamA);
             gamematch.ParticipatingTeams.Add(matchTeamB);
-            gamematch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
-
             gamematches.Add(gamematch);
         }
         roundsNumber--;
+        ////////////////////////OTher rounds
 
+        var teamsCount = teams.Count / 2;
+        while (roundsNumber > 0)
+        {
+            var maxTeamCount1 = teamsCount;
+            teamsCount /= 2;
+            for (int i = 1; i <= teamsCount; i++)
+            {
+                Gamematch gamematch = new()
+                {
+                    ParticipatingTeams = new List<MatchTeam>(),
+                    Round = roundsNumber,
+                    IsLeagueGame = true,
+                    DateOfMatch = leagueDateTime
+                };
+
+                leagueDateTime = leagueDateTime.AddDays(1);
+                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
+                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1 };
+                maxTeamCount1--;
+                gamematch.ParticipatingTeams.Add(matchTeamA);
+                gamematch.ParticipatingTeams.Add(matchTeamB);
+                gamematches.Add(gamematch);
+            }
+            roundsNumber--;
+        }
         return gamematches;
     }
 
@@ -152,7 +124,5 @@ public class LeagueHelper
     private static ICollection<LeagueTeam> RandomizeTeamOrder(List<LeagueTeam> teams)
     {
         return teams.OrderBy(x => Guid.NewGuid()).ToList();
-        //return (teams.OrderBy(x => Guid.NewGuid())
-        //    .Select(x => x.Team);
     }
 }
