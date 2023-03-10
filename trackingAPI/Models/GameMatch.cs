@@ -34,7 +34,7 @@ public class Gamematch
     public League? League { get; set; }
     public bool IsLeagueGame { get; set; }
 
-    public int? Round { get; set; }
+    
 }
 
 public enum MatchState

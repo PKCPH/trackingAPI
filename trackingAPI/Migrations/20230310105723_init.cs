@@ -76,8 +76,7 @@ namespace trackingAPI.Migrations
                     DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsLeagueGame = table.Column<bool>(type: "bit", nullable: false),
-                    Round = table.Column<int>(type: "int", nullable: true)
+                    IsLeagueGame = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,7 +149,8 @@ namespace trackingAPI.Migrations
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TeamScore = table.Column<int>(type: "int", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Seed = table.Column<int>(type: "int", nullable: true)
+                    Seed = table.Column<int>(type: "int", nullable: true),
+                    Round = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

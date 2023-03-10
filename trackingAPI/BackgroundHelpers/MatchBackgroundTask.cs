@@ -30,25 +30,6 @@ public class MatchBackgroundTask
             }
         }
     }
-    //public async Task CreateNewLeagueOfAvailableTeams()
-    //{
-    //    using (var scope = _services.CreateScope())
-    //    {
-    //        var _context =
-    //            scope.ServiceProvider
-    //                .GetRequiredService<DatabaseContext>();
-
-    //        while (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
-    //        {
-    //            //LeagueController leagueController = new(_context);
-    //            LeagueSeedingHelper leagueSeedingHelper = new();
-    //            var newLeague = leagueSeedingHelper.SeedDistribution(_context);
-    //            _context.Leagues.Add(newLeague);
-    //            //await leagueController.Create(newLeague);
-    //            await _context.SaveChangesAsync();
-    //        }
-    //    }
-    //}
 
     public Task FindAndPlayMatches()
     {
@@ -91,7 +72,7 @@ public class MatchBackgroundTask
 
             foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted).ToList())
             {
-                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id).Include(x => x.Team).ToList();
+                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id).Where(x => x.Team != null).Include(x => x.Team).ToList();
                 gameMatches.Add(match);
             }
         }

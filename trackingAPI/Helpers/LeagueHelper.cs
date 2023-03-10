@@ -9,18 +9,15 @@ public class LeagueHelper
 {
     public League CreateRounds(League league, DatabaseContext _context)
     {
-        LeagueHelper leagueHelper = new LeagueHelper();
-        ////testing
-        var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
-        league.Teams = leagueTeams.Teams.ToList();
+        var leagueWithTeams = GetListOfEightTeams(league, _context);
+        league.Teams = leagueWithTeams.Teams.ToList();
 
         league.LeagueState = LeagueState.NotStarted;
+        var teams = league.Teams.Select(x => x.Team).ToList();
 
-        var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
-        int rounds = FindNumberOfRounds(randomizedTeams.Count);
+        int rounds = FindNumberOfRounds(teams.Count);
         //int byes = NumberOfByes(rounds, randomizedTeams.Count);
 
-        var teams = randomizedTeams.Select(x => x.Team).ToList();
         var gamematches = CreateGamematchRounds(teams, league.StartDate);
 
         league.Gamematches = gamematches;
@@ -35,31 +32,33 @@ public class LeagueHelper
         Random rnd = new();
         var maxTeamCount = teams.Count;
         var teamLoopCount = teams.Count / 2;
+
         for (int i = 1; i <= teamLoopCount; i++)
         {
             Gamematch gamematch = new()
             {
                 ParticipatingTeams = new List<MatchTeam>(),
-                Round = roundsNumber,
+
                 IsLeagueGame = true,
                 DateOfMatch = leagueDateTime
             };
+            leagueDateTime = leagueDateTime.AddSeconds(30);
+            var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
+            var twoRandomAvailableTeams = availableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
-            leagueDateTime = leagueDateTime.AddMinutes(4);
-            var TwoRandomAvailableTeams = teams.OrderBy(x => rnd.Next()).Take(2).ToList();
-
-            var teamA = TwoRandomAvailableTeams.First();
-            var teamB = TwoRandomAvailableTeams.Last();
+            var teamA = twoRandomAvailableTeams.First();
+            var teamB = twoRandomAvailableTeams.Last();
             teamA.IsAvailable = false;
             teamB.IsAvailable = false;
 
-            MatchTeam matchTeamA = new MatchTeam { Team = teamA, Seed = i };
-            MatchTeam matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
+            MatchTeam matchTeamA = new MatchTeam { Team = teamA, Seed = i, Round = roundsNumber };
+            MatchTeam matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount, Round = roundsNumber };
             maxTeamCount--;
 
             gamematch.ParticipatingTeams.Add(matchTeamA);
             gamematch.ParticipatingTeams.Add(matchTeamB);
             gamematches.Add(gamematch);
+            //teams.Add(teamA.IsAvailable);
         }
         roundsNumber--;
         ////////////////////////OTher rounds
@@ -74,14 +73,13 @@ public class LeagueHelper
                 Gamematch gamematch = new()
                 {
                     ParticipatingTeams = new List<MatchTeam>(),
-                    Round = roundsNumber,
                     IsLeagueGame = true,
                     DateOfMatch = leagueDateTime
                 };
 
-                leagueDateTime = leagueDateTime.AddDays(1);
-                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1 };
+                leagueDateTime = leagueDateTime.AddSeconds(30);
+                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = roundsNumber };
+                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = roundsNumber };
                 maxTeamCount1--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
                 gamematch.ParticipatingTeams.Add(matchTeamB);
@@ -96,9 +94,9 @@ public class LeagueHelper
     {
         Random rnd = new Random();
 
-        var eightAvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(16);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(16);
 
-        foreach (var team in eightAvailableTeams)
+        foreach (var team in availableTeams)
         {
             LeagueTeam leagueTeamA = new LeagueTeam { Team = team };
             league.Teams.Add(leagueTeamA);

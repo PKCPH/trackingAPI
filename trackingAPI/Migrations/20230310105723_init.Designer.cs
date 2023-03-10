@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230309095717_init")]
+    [Migration("20230310105723_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,9 +45,6 @@ namespace trackingAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MatchState")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Round")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -158,6 +155,9 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<int?>("Round")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Seed")
                         .HasColumnType("int");

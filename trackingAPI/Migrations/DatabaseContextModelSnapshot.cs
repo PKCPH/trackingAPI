@@ -45,9 +45,6 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Round")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LeagueId");
@@ -156,6 +153,9 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<int?>("Round")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Seed")
                         .HasColumnType("int");
