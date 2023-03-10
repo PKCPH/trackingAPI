@@ -62,6 +62,8 @@ public class Program
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+        builder.Services.AddScoped<IPlayerService, PlayerService>();
+
 
         var app = builder.Build();
         app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
