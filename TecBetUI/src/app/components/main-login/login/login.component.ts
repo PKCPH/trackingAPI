@@ -22,6 +22,12 @@ export class LoginComponent implements OnDestroy {
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService,
     private el: ElementRef, private renderer: Renderer2, public activeModal: NgbActiveModal, private location: Location) { }
 
+    // Login function is fairly simple, it takes the credentials model - and populates it with user inputs. Then it does a post to the API, where it gets authenticated if the user inputs
+    // matches a set of login information in the database.
+    // Couple booleans are made to ensure that both the login is valid and that the connection is valid, otherwise a error msg will be displayed
+    //It also sets the user inputs as credentials if vaild in localstorage for further use mainly username and role.
+    //Also sends out a custom "event" that lets other components know that the user has logged in.
+
   login = ( form: NgForm) => {
     if (form.valid) {
       this.showLoader();

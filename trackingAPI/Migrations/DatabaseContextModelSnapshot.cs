@@ -122,7 +122,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fa041e2d-a73c-4f6a-8c7f-3047993333b0"),
+                            Id = new Guid("6084e7e0-e02e-42f2-849f-813f0991323b"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -167,10 +167,8 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("age")
@@ -262,12 +260,6 @@ namespace trackingAPI.Migrations
                     b.HasOne("trackingAPI.Models.Player", null)
                         .WithMany("Teams")
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("trackingAPI.Models.Team", null)
-                        .WithMany("Players")
-                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

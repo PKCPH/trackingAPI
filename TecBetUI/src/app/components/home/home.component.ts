@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -7,15 +7,21 @@ import { Component } from '@angular/core';
 })
 export class HomeComponent {
 
-  constructor() { }
-
-  restartVideo() {
+  
+  constructor() { 
     const video = document.querySelector('video');
-    if(video)
+    if (video)
+    {
+    video.play;
+  }
+  }
+
+restartVideo() {
+    const video = document.querySelector('video');
+    if (video)
     {
     video.currentTime = 0;
     video.play();
   }
-  }
-
+}
 }

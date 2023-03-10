@@ -1,11 +1,11 @@
 <div class="section1" id="section1">
 
     <div class="video">
-        <video autoplay loop muted (ended)="restartVideo()" style="pointer-events: none; width: 1725px; overflow: hidden; border: solid 10px rgba(0,0,0,0.1);">
-            <source src="assets/montage2.mp4" type="video/mp4">
+        <video autoplay loop muted (ended)="restartVideo()" oncanplay="this.play()" style="pointer-events: none; width: 1725px; overflow: hidden; border: solid 10px rgba(0,0,0,0.1);" onloadedmetadata="this.muted = true">
+            <source src="assets/montage.mp4" type="video/mp4">
             Your browser does not support the video tag.
-          </video>
-        </div>
+        </video>
+    </div>
 
     <div class="container divs py-4"><h1 style="color: white; font-size: 80px;">BetHaven</h1>
     <p class="my-4">LOW RISK LOW REWARD</p>

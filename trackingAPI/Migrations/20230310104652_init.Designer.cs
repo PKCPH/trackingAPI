@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230308072021_3nd")]
-    partial class _3nd
+    [Migration("20230310104652_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,7 @@ namespace trackingAPI.Migrations
                     b.Property<Guid>("LoginId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("MatchId")
+                    b.Property<Guid>("MatchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Team")
@@ -124,7 +124,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e5525fdd-1eab-4eb9-9bcd-22b71439aae5"),
+                            Id = new Guid("6084e7e0-e02e-42f2-849f-813f0991323b"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -169,11 +169,12 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("age")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -230,7 +231,9 @@ namespace trackingAPI.Migrations
 
                     b.HasOne("trackingAPI.Models.GameMatch", "Match")
                         .WithMany("Bets")
-                        .HasForeignKey("MatchId");
+                        .HasForeignKey("MatchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Match");
                 });

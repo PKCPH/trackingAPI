@@ -11,6 +11,8 @@ import * as serviceVariables from './serviceVariables'
 export class MatchesService {
   isLoading: boolean = false;
 
+  ////// For code clarification look in teams.serviec.ts //////
+
   constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
    private errorSubject = new BehaviorSubject<string>("");
