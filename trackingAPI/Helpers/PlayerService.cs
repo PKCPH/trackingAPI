@@ -3,11 +3,11 @@ using trackingAPI.Models;
 
 namespace trackingAPI.Helpers
 {
-    public class PlayerHelper
+    public class PlayerService : IPlayerService
     {
         private readonly DatabaseContext databaseContext;
 
-        public PlayerHelper(DatabaseContext databaseContext)
+        public PlayerService(DatabaseContext databaseContext)
         {
             this.databaseContext = databaseContext;
         }
@@ -60,6 +60,20 @@ namespace trackingAPI.Helpers
                     }
                 }
             }
+            await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task PlayerUpdateAddPlayerTeams(Player player, List<PlayerTeam> playerTeams)
+        {
+            foreach (var team in player.Teams)
+            {
+                if (playerTeams.Exists(p => p.PlayerId == team.PlayerId && p.TeamId == team.TeamId) == false)
+                {
+                    team.Id = Guid.NewGuid();
+                    await this.databaseContext.PlayerTeams.AddAsync(team);
+                }
+            }
+            await databaseContext.SaveChangesAsync();
         }
     }
 }

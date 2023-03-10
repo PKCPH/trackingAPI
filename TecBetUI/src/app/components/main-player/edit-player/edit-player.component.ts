@@ -120,6 +120,7 @@ export class EditPlayerComponent {
     this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
     .subscribe({
       next: (response) => {
+        console.log(response)
         this.router.navigate(['players/'])
       }
     })
