@@ -63,27 +63,10 @@ namespace trackingAPI.Controllers
         {
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
 
-            foreach ( var playerTeam in playerTeams)
-            {
-                if (playerTeam.PlayerId == updatePlayerRequest.Id)
-                {
-                    if(updatePlayerRequest.Teams.ToList().Exists(t => t.TeamId == playerTeam.TeamId) == false)
-                    {
-                        this.databaseContext.PlayerTeams.Remove(playerTeam);
-                    }
-                }
-            }
+            await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
 
-            foreach (var team in updatePlayerRequest.Teams)
-            {
-                if (playerTeams.Exists(p => p.PlayerId == team.PlayerId && p.TeamId == team.TeamId) == false)
-                {
-                    team.Id = Guid.NewGuid();
-                    await this.databaseContext.PlayerTeams.AddAsync(team);
-                }
-            }
+            await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
 
-            await this.databaseContext.SaveChangesAsync();
             return Ok(updatePlayerRequest);
         }
 
@@ -100,9 +83,6 @@ namespace trackingAPI.Controllers
             {
                 this.databaseContext.Players.Remove(player);
             }
-
-            //removes all playerteams with the playerId from the playerTeam Table
-            playerTeams.RemoveAll(p => p.PlayerId == id);
 
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
