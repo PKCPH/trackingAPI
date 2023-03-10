@@ -9,6 +9,7 @@ import { baseApiUrl } from './serviceVariables'
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from '../components/main-login/login/login.component';
+import { Match } from '../models/matches.model';
 
 @Injectable({
   providedIn: 'root'
@@ -107,6 +108,10 @@ export class AuthguardService implements CanActivate  {
               return of([]);
             })
           );
+  }
+
+  resetMatchesAndTeams() {
+    console.log('a');
   }
 }
 

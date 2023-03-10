@@ -75,7 +75,7 @@ export function tokenGetter() {
     PlayersOnTeamComponent,
     PlayersToTeamComponent,
     NewPlayerComponent,
-    ChangePlayerComponent
+    ChangePlayerComponent,
   ],
   imports: [
     BrowserModule,

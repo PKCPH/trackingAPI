@@ -25,7 +25,7 @@ export class RegisterComponent implements OnDestroy {
     email: ''
   };
   
-  loginForm: FormGroup;
+  loginForm: FormGroup | any;
   submitted = false;
   errorMessage: string = "";
   invalidRegister: boolean = true;
@@ -34,16 +34,22 @@ export class RegisterComponent implements OnDestroy {
   constructor(private authguardService: AuthguardService, private router: Router, private formBuilder: 
     FormBuilder, private http: HttpClient, private loginService: LoginService,
     private el: ElementRef, private renderer: Renderer2, private location: Location) {
-    this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(4)]],
-      password: ['', [Validators.minLength(6), Validators.required]]
-      // Validators.pattern("^[a-zA-Z]*$")]
-    });
+
+this.buildValidator();
+
   }
 
   ngOnDestroy(): void {
     const event = new CustomEvent('userLoggedIn');
     window.dispatchEvent(event);
+  }
+
+  buildValidator() {
+    this.loginForm = this.formBuilder.group({
+      username: ['', [Validators.required, Validators.minLength(4)]],
+      password: ['', [Validators.minLength(6), Validators.required]]
+      // Validators.pattern("^[a-zA-Z]*$")]
+    });
   }
   
   registerUser() {

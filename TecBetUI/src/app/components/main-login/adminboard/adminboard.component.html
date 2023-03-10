@@ -1,7 +1,7 @@
 <!-- Inbuilt Bootstrap CSS -->
 <!-- my-5 = Margin on Y axis 5 (up and down) -->
 
-<div class="section1 tablediv">
+<div class="section1 tablediv" id="section1">
   
     <!-- spinnner element is 
         defined with id loading -->
@@ -9,7 +9,7 @@
       
     <!-- data from API is displayed  -->
     
-    <div class="container my-2 divs py-5" id="usercontainer">
+    <div class="divs main" id="admincontainer">
         <h1 class="mb-3">List of Users</h1>
 
         <!-- <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddMatch()" id="addbutton">Create a Match</button> -->
@@ -39,5 +39,11 @@
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
+    </div>
+    <div class="divs" id="adminpanel">
+        <h1>Admin Panel</h1>
+        <p class="mb-4">______________________________</p>
+        <button class="btn btn-danger" (click)="openReset()">Delete all matches</button>
+        <img src="images/snoop.gif" style="height: 340px; margin-top: 40px;">
     </div>
     </div>
