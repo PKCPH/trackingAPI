@@ -30,7 +30,14 @@ export class EditPlayerComponent {
     id: '',
     name: '',
     age: 0,
-    teams: []
+    teams: [],
+    goals: 0,
+    assists: 0,
+    yellow: 0,
+    red: 0,
+    spG: 0,
+    psPercent: 0,
+    motm: 0,
   }
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }

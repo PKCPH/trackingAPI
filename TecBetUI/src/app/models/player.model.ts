@@ -6,4 +6,11 @@ export interface Player{
     name: string;
     age: number;
     teams: playerTeam[];
+    goals: number;
+    assists: number;
+    yellow: number;
+    red: number;
+    spG: number;
+    psPercent: number;
+    motm: number;
 }
