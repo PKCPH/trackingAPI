@@ -80,24 +80,6 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
-    //public Gamematch AddTeamsToParticipatingTeams(Gamematch gameMatch, Guid matchId)
-    //{
-    //    using (var scope = _services.CreateScope())
-    //    {
-    //        var _context =
-    //            scope.ServiceProvider
-    //                .GetRequiredService<DatabaseContext>();
-    //        var matches = _context.MatchTeams.Where(x => x.Match.Id == matchId).ToList();
-    //        var teamA = _context.Teams.Where(x => x.Id == gameMatch.ParticipatingTeams.First().Id).First();
-    //        var teamB = _context.Teams.Where(x => x.Id == gameMatch.ParticipatingTeams.Last().Id);
-    //        gameMatch.ParticipatingTeams.Add(matches.First());
-    //        gameMatch.ParticipatingTeams.Add(matches.Last());
-    //        gameMatch.ParticipatingTeams.Where(x => x.Team)
-    //    }
-    //    return gameMatch;
-
-    //}
-
     public async Task PlayGameMatch(Gamematch gameMatch)
     {
         Random random = new Random();
@@ -132,36 +114,4 @@ public class MatchBackgroundTask
             _context.SaveChanges();
         }
     }
-
-    //public Task PlayGameMatch(Gamematch gameMatch)
-    //{
-    //    Random random = new Random();
-    //    List<MatchTeam> matchTeams = new List<MatchTeam>();
-    //    LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
-    //    CancellationToken stoppingToken;
-
-    //    using (var scope = _services.CreateScope())
-    //    {
-    //        var _context =
-    //            scope.ServiceProvider
-    //                .GetRequiredService<DatabaseContext>();
-
-    //        liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
-    //        gameMatch.MatchState = MatchState.Finished;
-    //        _context.Entry(gameMatch).State = EntityState.Modified;
-            
-    //        foreach (var item in _context.MatchTeams)
-    //        {
-    //            matchTeams.Add(item);
-    //        }
-    //        //foreach matchTeams where MatchId is matching the selected gameMatch.Id
-    //        foreach (var item2 in matchTeams.Where(x => x.Match.Id == gameMatch.Id))
-    //        {
-    //            //foreach team.id that is matching with matchTeams.teamId
-    //            foreach (var item3 in _context.Teams.Where(x => x.Id == item2.Team.Id)) item3.IsAvailable = true;
-    //        }
-    //        _context.SaveChanges();
-    //    }
-    //    return Task.CompletedTask;
-    //}
 }
