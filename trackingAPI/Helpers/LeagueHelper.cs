@@ -11,8 +11,8 @@ public class LeagueHelper
     {
         LeagueHelper leagueHelper = new LeagueHelper();
         ////testing
-        //var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
-        //league.Teams = leagueTeams.Teams.ToList();
+        var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
+        league.Teams = leagueTeams.Teams.ToList();
 
         league.LeagueState = LeagueState.NotStarted;
 
@@ -45,7 +45,7 @@ public class LeagueHelper
                 DateOfMatch = leagueDateTime
             };
 
-            leagueDateTime = leagueDateTime.AddDays(1);
+            leagueDateTime = leagueDateTime.AddMinutes(4);
             var TwoRandomAvailableTeams = teams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
             var teamA = TwoRandomAvailableTeams.First();

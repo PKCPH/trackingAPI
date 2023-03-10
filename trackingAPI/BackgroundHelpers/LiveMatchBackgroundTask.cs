@@ -33,7 +33,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 60)
+        while (timer.Elapsed.TotalSeconds < 20)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -54,10 +54,23 @@ public class LiveMatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+
             if (teamA.TeamScore > teamB.TeamScore) { teamA.Result = Result.Winner; teamB.Result = Result.Loser; }
             if (teamA.TeamScore < teamB.TeamScore) { teamA.Result = Result.Loser; teamB.Result = Result.Winner; }
-            if (teamA.TeamScore == teamB.TeamScore) { teamA.Result = Result.Draw; teamB.Result = Result.Draw; }
-            
+            if (teamA.TeamScore == teamB.TeamScore && gameMatch.IsDrawAllowed) { teamA.Result = Result.Draw; teamB.Result = Result.Draw; }
+
+            if (gameMatch.IsLeagueGame)
+            {
+                //var winnerSeed = teamA.Seed;
+                //var nextRound = gameMatch.Round;
+                //nextRound--;
+                //var nexRoundtMatches = _context.Matches.Where(x => x.Round == nextRound).Where(x => x.Id == );
+                //var nextMatchTeamSeeds = _context.MatchTeams.Where(x => x.Seed == winnerSeed).Where(x => x.Match.Id == );
+                //var nextMatch = _context.MatchTeams.Where(x => x.Seed);
+                ////matchteam matchid should be matching with sorted of nextround
+                ////find matchTeam of same winningSeed and add winning team.
+            }
+
             _context.Entry(teamA).State = EntityState.Modified;
             _context.Entry(teamB).State = EntityState.Modified;
             _context.SaveChanges();

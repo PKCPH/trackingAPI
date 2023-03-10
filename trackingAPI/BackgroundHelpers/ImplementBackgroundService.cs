@@ -28,44 +28,26 @@ public class ImplementBackgroundService : BackgroundService
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+            Task task;
+            do
+            {
+                MatchBackgroundTask matchBackgroundTask = new(_services);
+                //if any matches has not finished then play matches!
+                //else create new matches
+                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
+                {
+                    task = matchBackgroundTask.FindAndPlayMatches();
+                }
+                if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
+                {
+                    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+                }
 
-
-            //Task task;
-            
-
-            //Console.WriteLine();
-
-            //do
-            //{
-            //    //League league = new League(_context);
-            //    //TeamController teamController = new(_context);
-            //    //var teams = teamController.Get().Result.Where(x => x.IsAvailable != false);
-            //    //LeagueSeedingHelper leagueSeedingHelper = new();
-            //    //leagueSeedingHelper.SeedDistribution(_context);
-
-
-
-                
-
-            //    //MatchBackgroundTask matchBackgroundTask = new(_services);
-            //    //task = matchBackgroundTask.CreateNewLeagueOfAvailableTeams(); 
-            //    ////if any matches has not finished then play matches!
-            //    ////else create new matches
-
-            //    //if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
-            //    //{
-            //    //    task = matchBackgroundTask.FindAndPlayMatches();
-            //    //}
-            //    //if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
-            //    //{
-            //    //    tak = matchBackgroundTask.SeedDistribution(_context);
-            //    //}
-            //    //TeamPicker.SeedDistribution(_services);
-
-            //    await Task.Delay(1000);
-            //    Console.WriteLine("ExecuteAsync loop in complete");
-            //} while (await _timer.WaitForNextTickAsync(stoppingToken)
-            //        && !stoppingToken.IsCancellationRequested);
+                await Task.Delay(1000);
+                Console.WriteLine("ExecuteAsync loop in complete");
+            } while (await _timer.WaitForNextTickAsync(stoppingToken)
+                && !stoppingToken.IsCancellationRequested);
         }
     }
+
 }
