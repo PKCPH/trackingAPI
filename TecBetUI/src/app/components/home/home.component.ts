@@ -9,4 +9,13 @@ export class HomeComponent {
 
   constructor() { }
 
+  restartVideo() {
+    const video = document.querySelector('video');
+    if(video)
+    {
+    video.currentTime = 0;
+    video.play();
+  }
+  }
+
 }
