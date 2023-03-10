@@ -133,7 +133,7 @@ export class AdminboardComponent implements OnDestroy {
 </div>
 <div class="modal-body rounded-0" style="text-align: center;">
   <p>
-      Are you sure you want to delete the account: 
+      Are you sure you want to delete all matches?
 </p>
 </div>
 <div class="modal-footer d-flex justify-content-center">

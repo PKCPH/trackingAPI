@@ -77,7 +77,7 @@ a:hover {
  font-size: 2rem;
 }
 
-.rightsidenav a:hover {
+.rightsidenav a:hover, span:hover {
     color: red;
     transition: all 400ms ease;
 }
@@ -89,16 +89,16 @@ p {
     align-items: center;
 }
 
-span {
+.username {
     color: lightseagreen;
     transition: all 1000ms ease;
 }
 
-span img{
+.username img{
     height: 20px;
 }
 
-span:hover {
+.username:hover {
     cursor: pointer;
     color: seagreen;
     transition: all 1000ms ease;
@@ -141,11 +141,18 @@ span:hover {
 .dropDownItems {
     cursor: pointer;
     padding: 4px;
+    padding-top: 10px;
+}
 
+.dropDownItem {
+    color: white;
+    text-decoration: none;
+    margin: auto;
+    font-size: 20px;
 }
 
 .dropDownItems:hover {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(50,0,0,0.5);
 }
 
 .balance {
@@ -153,6 +160,10 @@ span:hover {
     position: absolute;
     right: 17.8%;
     top: 45%;
+}
+
+.balance img {
+    height: 20px;
 }
 
 .balance span {
@@ -163,7 +174,7 @@ span:hover {
     cursor: default;
 }  
 
-.test {
+.navIcons {
     font-size: 25px;
     margin-right: 10px;
 }

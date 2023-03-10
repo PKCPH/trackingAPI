@@ -187,7 +187,7 @@ return false;
       text: 'Dashboard',
     },
     {
-      text: 'My Bets'
+      text: 'My Bets',
     },
     {
       text: 'Log Out',
