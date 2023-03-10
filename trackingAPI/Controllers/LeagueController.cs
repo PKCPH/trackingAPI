@@ -38,7 +38,7 @@ public class LeagueController : ControllerBase
     //for creating a new issue
     public async Task<IActionResult> Create(League league)
     {
-        LeagueSeedingLogic leagueSeedingLogic = new LeagueSeedingLogic();
+        LeagueHelper leagueSeedingLogic = new LeagueHelper();
         ////adding the issue submitted by the request
         await _context.Leagues.AddAsync(leagueSeedingLogic.CreateRounds(league, _context));
         ////saving the changes in the DB

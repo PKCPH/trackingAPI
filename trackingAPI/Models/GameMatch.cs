@@ -21,7 +21,7 @@ public class Gamematch
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     public ICollection<MatchTeam> ParticipatingTeams { get; set; }
-    public MatchState MatchState { get; set; } //0 MatchNotStarted, 1 MatchInPlay, 2 MatchFinished
+    public MatchState MatchState { get; set; }
     public DateTime DateOfMatch { get; set; }
 
     [DefaultValue(true)]
@@ -35,8 +35,6 @@ public class Gamematch
     public bool IsLeagueGame { get; set; }
 
     public int? Round { get; set; }
-    //public Team Winner { get; set; }
-    //public int WinnerSeed => this.ParticipatingTeams.First(x => x.Team == this.Winner).Seed;
 }
 
 public enum MatchState

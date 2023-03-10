@@ -5,32 +5,20 @@ using trackingAPI.Models;
 
 namespace trackingAPI.Helpers;
 
-public class LeagueSeedingLogic
+public class LeagueHelper
 {
-    //Order list of teams randomly
-    //check if list is big enough, if not add byes - 2*2*2*2 - 2^4
-    //create first round of matchups
-    //create the rest of the rounds
     public League CreateRounds(League league, DatabaseContext _context)
     {
         
-        LeagueSeedingHelper leagueSeedingHelper = new LeagueSeedingHelper();
-        //TeamController teamController = new(_context);
-        //var teams = teamController.Get().Result;
-        var leagueTeams = leagueSeedingHelper.GetListOfEightTeams(league, _context);
+        
+        LeagueHelper leagueHelper = new LeagueHelper();
+        var leagueTeams = leagueHelper.GetListOfEightTeams(league, _context);
 
         league.Teams = leagueTeams.Teams.ToList();
         league.StartDate = DateTime.Now;
         league.LeagueState = LeagueState.NotStarted;
         league.Name = "testleague123";
 
-        LeagueSeedingLogic leagueSeedingLogic = new LeagueSeedingLogic();
-
-        //leagueSeedingLogic.CreateRounds(ref league);
-
-        //List<Gamematch> gamematches1 = new List<Gamematch>();
-        ////league.Gamematches= gamematches1;
-        //MatchTeam matchTeam = new();
         var randomizedTeams = RandomizeTeamOrder(league.Teams.ToList());
 
         int rounds = FindNumberOfRounds(randomizedTeams.Count);
@@ -132,54 +120,19 @@ public class LeagueSeedingLogic
         return gamematches;
     }
 
-    //static League Generate(int playersNumber)
-    //{
-    //    // only works for power of 2 number of players   
-    //    var roundsNumber = (int)Math.Log(playersNumber, 2);
-    //    var rounds = roundsNumber;
-    //    for (int i = 0; i < roundsNumber; i++)
-    //    {
-    //        var round = 1;
-    //        var prevRound = i;
-    //        if (prevRound == null)
-    //        {
-    //            // if first round - result is known
-    //            round = new[] {
-    //                new Match() {
-    //                    PlayerA = 1,
-    //                    PlayerB = 2
-    //                }
-    //            };
-    //        }
-    //        else
-    //        {
-    //            round.Matches = new Match[prevRound.Matches.Length * 2];
-    //            // find median. For round 2 there are 4 players and median is 2.5 (between 2 and 3)
-    //            // for round 3 there are 8 players and median is 4.5 (between 4 and 5)
-    //            var median = (round.Matches.Length * 2 + 1) / 2f;
-    //            var next = 0;
-    //            foreach (var match in prevRound.Matches)
-    //            {
-    //                // you can play here by switching PlayerA and PlayerB or reordering stuff
-    //                round.Matches[next] = new Match()
-    //                {
-    //                    PlayerA = match.PlayerA,
-    //                    PlayerB = (int)(median + Math.Abs(match.PlayerA - median))
-    //                };
-    //                next++;
-    //                round.Matches[next] = new Match()
-    //                {
-    //                    PlayerA = match.PlayerB,
-    //                    PlayerB = (int)(median + Math.Abs(match.PlayerB - median))
-    //                };
-    //                next++;
-    //            }
-    //        }
-    //        rounds[i] = round;
-    //    }
-    //    return rounds.Reverse().ToArray();
-    //}
+    public League GetListOfEightTeams(League league, DatabaseContext _context)
+    {
+        Random rnd = new Random();
 
+        var eightAvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(16);
+
+        foreach (var team in eightAvailableTeams)
+        {
+            LeagueTeam leagueTeamA = new LeagueTeam { Team = team };
+            league.Teams.Add(leagueTeamA);
+        }
+        return league;
+    }
 
     private static int FindNumberOfRounds(int teamCount)
     {
