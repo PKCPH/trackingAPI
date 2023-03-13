@@ -51,8 +51,8 @@ public class LiveMatchBackgroundTask
         var teamA = gameMatch.ParticipatingTeams.First();
         var teamB = gameMatch.ParticipatingTeams.Last();
         //if draw and draw in not allowed then play overtime
-        if (teamA.TeamScore == teamB.TeamScore && !gameMatch.IsDrawAllowed) PlayOvertime(gameMatch); 
-        
+        if (teamA.TeamScore == teamB.TeamScore && !gameMatch.IsDrawAllowed) PlayOvertime(gameMatch);
+
         using (var scope = _services.CreateScope())
         {
             var _context =
@@ -71,7 +71,18 @@ public class LiveMatchBackgroundTask
 
             var nextRound = gameMatch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
             nextRound--;
-            if (nextRound == 0) return Task.CompletedTask;
+            if (nextRound == 0)
+            {
+                League league = new(_context)
+                {
+                    Id = (Guid)gameMatch.LeagueId,
+                    LeagueState = LeagueState.Finished
+                };
+                _context.Entry(league.LeagueState).State = EntityState.Modified;
+                _context.SaveChanges();
+                
+                return Task.CompletedTask;
+            }
 
             //takes lowest int of Seeds
             var winnerSeed = Math.Min(Convert.ToByte(teamA.Seed), Convert.ToByte(teamB.Seed));
@@ -141,7 +152,7 @@ public class LiveMatchBackgroundTask
                     teamAPKScore++;
                     teamA.TeamScore++;
                     _context.Entry(teamA).State = EntityState.Modified;
-                Console.WriteLine($"{teamA.Team.Name} SCORED! PK SCORE: {teamA.Team.Name} - {teamAPKScore} VS {teamB.Team.Name} - {teamBPKScore}");
+                    Console.WriteLine($"{teamA.Team.Name} SCORED! PK SCORE: {teamA.Team.Name} - {teamAPKScore} VS {teamB.Team.Name} - {teamBPKScore}");
                 }
                 Thread.Sleep(1000);
 
