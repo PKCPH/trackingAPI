@@ -40,9 +40,7 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);
-        //modelBuilder.Entity<Gamematch>()
-        //    .Property(gm => gm.IsDrawAllowed)
-        //    .HasDefaultValue(true);
+
         modelBuilder.Entity<MatchTeam>()
             .Property(gm => gm.Result)
             .HasDefaultValue(Result.Undetermined);
