@@ -73,25 +73,11 @@ public class LiveMatchBackgroundTask
             nextRound--;
             if (nextRound == 0)
             {
-                try
-                {
-                    var league = _context.Leagues.Where(x => x.Id == gameMatch.LeagueId).First();
+                var league = _context.Leagues.Where(x => x.Id == gameMatch.LeagueId).First()
+                league.LeagueState = LeagueState.Finished;
+                _context.Entry(league).State = EntityState.Modified;
+                _context.SaveChanges();
 
-                    league.LeagueState = LeagueState.Finished;
-                    _context.Entry(league).State = EntityState.Modified;
-                    //League league = new(_context)
-                    //{
-                    //};
-                    //_context.GetType().GUID = gameMatch.LeagueId.ToString();
-                    //_context.Entry(league).State = EntityState.Modified;
-                    //_context.Update(league);
-                    _context.SaveChanges();
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
                 return Task.CompletedTask;
             }
 
