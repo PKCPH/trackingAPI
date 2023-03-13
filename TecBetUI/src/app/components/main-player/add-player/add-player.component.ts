@@ -29,13 +29,14 @@ export class AddPlayerComponent {
     name: '',
     age: 0,
     teams:[],
-    goals: 0,
-    assists: 0,
-    yellow: 0,
-    red: 0,
-    spG: 0,
-    psPercent: 0,
-    motm: 0,
+    overall: 0,
+    potential: 0,
+    pace: 0,
+    shooting: 0,
+    passing: 0,
+    dribbling: 0,
+    defense: 0,
+    physical: 0,
   }
 
   constructor(private playerService: PlayersService, private teamsService: TeamsService, private router: Router){ }

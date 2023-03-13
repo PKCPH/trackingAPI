@@ -19,6 +19,7 @@ export class PlayersOnTeamComponent {
   id: string = '';
   updateSubscription: Subscription;
   credentials: LoginModel = this.app.credentials
+  filterString=""
   
   selectedTeam: Team = {
     id: '',

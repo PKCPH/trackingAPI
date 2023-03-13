@@ -62,12 +62,28 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, Player updatePlayerRequest)
         {
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+            var player = await databaseContext.Players.FindAsync(id);
+            if(player == null ) { return NotFound(); }
 
             await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
 
             await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
+            
+            player.Id = updatePlayerRequest.Id;
+            player.Name= updatePlayerRequest.Name;
+            player.Age = updatePlayerRequest.Age;
+            player.Overall = updatePlayerRequest.Overall;
+            player.Potential = updatePlayerRequest.Potential;
+            player.Pace = updatePlayerRequest.Pace;
+            player.Shooting = updatePlayerRequest.Shooting;
+            player.Passing = updatePlayerRequest.Passing;
+            player.Dribbling = updatePlayerRequest.Dribbling;
+            player.Defense = updatePlayerRequest.Defense;
+            player.Physical = updatePlayerRequest.Physical;
 
-            return Ok(updatePlayerRequest);
+            await databaseContext.SaveChangesAsync();
+
+            return Ok(player);
         }
 
         //Delete
