@@ -63,7 +63,7 @@ public class LiveMatchBackgroundTask
             _context.Entry(teamB).State = EntityState.Modified;
             _context.SaveChanges();
 
-            if (!gameMatch.IsLeagueGame) return Task.CompletedTask;
+            if (gameMatch.LeagueId == null) return Task.CompletedTask;
 
             var nextRound = gameMatch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
             nextRound--;

@@ -38,8 +38,6 @@ public class LeagueHelper
             Gamematch gamematch = new()
             {
                 ParticipatingTeams = new List<MatchTeam>(),
-
-                IsLeagueGame = true,
                 DateOfMatch = leagueDateTime
             };
             leagueDateTime = leagueDateTime.AddSeconds(30);
@@ -73,7 +71,6 @@ public class LeagueHelper
                 Gamematch gamematch = new()
                 {
                     ParticipatingTeams = new List<MatchTeam>(),
-                    IsLeagueGame = true,
                     DateOfMatch = leagueDateTime
                 };
 
@@ -94,7 +91,7 @@ public class LeagueHelper
     {
         Random rnd = new Random();
 
-        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(16);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(4);
 
         foreach (var team in availableTeams)
         {
@@ -119,8 +116,8 @@ public class LeagueHelper
         }
         return output;
     }
-    private static ICollection<LeagueTeam> RandomizeTeamOrder(List<LeagueTeam> teams)
-    {
-        return teams.OrderBy(x => Guid.NewGuid()).ToList();
-    }
+    //private static ICollection<LeagueTeam> RandomizeTeamOrder(List<LeagueTeam> teams)
+    //{
+    //    return teams.OrderBy(x => Guid.NewGuid()).ToList();
+    //}
 }

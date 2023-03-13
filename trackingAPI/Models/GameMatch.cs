@@ -31,10 +31,10 @@ public class Gamematch
     /// League relevant properties
     /// </summary>
 
-    public League? League { get; set; }
-    public bool IsLeagueGame { get; set; }
+    public Guid? LeagueId { get; set; }
+    //public bool IsLeagueGame { get; set; }
 
-    
+
 }
 
 public enum MatchState
