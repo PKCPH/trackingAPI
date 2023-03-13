@@ -26,15 +26,7 @@ public class Gamematch
 
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
-
-    /// <summary>
-    /// League relevant properties
-    /// </summary>
-
     public Guid? LeagueId { get; set; }
-    //public bool IsLeagueGame { get; set; }
-
-
 }
 
 public enum MatchState
