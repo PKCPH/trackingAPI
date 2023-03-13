@@ -21,6 +21,14 @@
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
+                        <th>Overall</th>
+                        <th>Potential</th>
+                        <th>Pace</th>
+                        <th>Shooting</th>
+                        <th>Passing</th>
+                        <th>Dribbling%</th>
+                        <th>Defense</th>
+                        <th>Physical</th>
                         <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                     </tr>
                 </thead>
@@ -28,6 +36,14 @@
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
+                        <td> {{player.overall}}</td>
+                        <td> {{player.potential}}</td>
+                        <td> {{player.pace}}</td>
+                        <td> {{player.shooting}}</td>
+                        <td> {{player.passing}}</td>
+                        <td> {{player.dribbling}}</td>
+                        <td> {{player.defense}}</td>
+                        <td> {{player.physical}}</td>
                         <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                             <button type="button" class="btn btn-primary" (click)="ChangePlayer(player.id)">Change player</button>
                             <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>

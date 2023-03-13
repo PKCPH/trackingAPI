@@ -30,7 +30,15 @@ export class EditPlayerComponent {
     id: '',
     name: '',
     age: 0,
-    teams: []
+    teams:[],
+    overall: 0,
+    potential: 0,
+    pace: 0,
+    shooting: 0,
+    passing: 0,
+    dribbling: 0,
+    defense: 0,
+    physical: 0,
   }
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }

@@ -19,11 +19,6 @@ namespace trackingAPI.Migrations
                 table: "Players",
                 newName: "Age");
 
-            migrationBuilder.RenameColumn(
-                name: "Age",
-                table: "Players",
-                newName: "Yellow");
-
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
                 table: "Players",
@@ -33,6 +28,13 @@ namespace trackingAPI.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "Yellow",
+                table: "Players",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "Assists",
@@ -79,6 +81,10 @@ namespace trackingAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Yellow",
+                table: "Players");
+
             migrationBuilder.DropColumn(
                 name: "Assists",
                 table: "Players");

@@ -37,6 +37,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { Sort } from '@angular/material/sort';
 import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
 import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
