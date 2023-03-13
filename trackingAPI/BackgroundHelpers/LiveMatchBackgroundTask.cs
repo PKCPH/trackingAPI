@@ -135,10 +135,7 @@ public class LiveMatchBackgroundTask
 
         var teamA = gamematch.ParticipatingTeams.First();
         var teamAPKScore = 0;
-        var teamAChance = 0;
-
         var teamB = gamematch.ParticipatingTeams.Last();
-        var teamBChance = 0;
         var teamBPKScore = 0;
 
         using (var scope = _services.CreateScope())
@@ -149,8 +146,8 @@ public class LiveMatchBackgroundTask
 
             while (teamAPKScore == teamBPKScore || rounds < 4)
             {
-                teamAChance = rnd.Next(1, 100);
-                if (teamAChance > 45)
+                int chance = rnd.Next(1, 100);
+                if (chance > 45)
                 {
                     teamAPKScore++;
                     teamA.TeamScore++;
@@ -159,8 +156,8 @@ public class LiveMatchBackgroundTask
                 }
                 Thread.Sleep(1000);
 
-                teamBChance = rnd.Next(1, 100);
-                if (teamBChance > 45)
+                chance = rnd.Next(1, 100);
+                if (chance > 45)
                 {
                     teamBPKScore++;
                     teamB.TeamScore++;
