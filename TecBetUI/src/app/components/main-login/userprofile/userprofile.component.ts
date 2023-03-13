@@ -1,5 +1,5 @@
 import { Component, Type } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +16,7 @@ export class UserprofileComponent {
 
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
-  constructor(private authService: AuthguardService, private route: ActivatedRoute, private modalService: NgbModal) {
+  constructor(private authService: AuthguardService, private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {
 
     this.route.paramMap.subscribe({
       next: (params) => {
@@ -31,6 +31,7 @@ this.credentials.balance = response.balance,
 this.credentials.email = response.email,
 this.credentials.userName = response.userName,
 this.credentials.role = response.role
+
 // console.log(this.credentials);
   }
 });
@@ -39,12 +40,16 @@ this.credentials.role = response.role
     })
   }
 
+  goMyBets() {
+		this.router.navigateByUrl('dashboard/' + this.credentials.userName + '/mybets')
+	}
+
   openConfirm() {
-		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg'});
+		this.modalService.open(ConfirmboxComponent, {centered: true, size: 'lg', windowClass: 'modal-rounded'});
 	}
 
   openPassword() {
-		const ref = this.modalService.open(ChangepasswordComponent, { centered: true });
+		const ref = this.modalService.open(ChangepasswordComponent, { centered: true, windowClass: 'modal-rounded'});
     ref.componentInstance.selectedUser = this.credentials;
 	}
 }

@@ -1,34 +1,44 @@
 import { AuthenticatedResponse } from '../models/AuthenticatedResponse';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LoginModel } from '../models/login.model';
-import { Observable } from 'rxjs';
-import { LoginService } from './login.service';
+import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { baseApiUrl } from './serviceVariables'
+import { CustomErrorHandlerService } from './custom-error-handler.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LoginComponent } from '../components/main-login/login/login.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthguardService implements CanActivate  {
 
+  isLoading: boolean = false;
   invalidLogin: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
+  private errorSubject = new BehaviorSubject<string>("");
+  errorMessage = this.errorSubject.asObservable();
 
-  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, private loginService: LoginService){}
+  constructor(private router:Router, private jwtHelper: JwtHelperService, private http: HttpClient, 
+    private modalService: NgbModal, private customErrorHandler: CustomErrorHandlerService){}
   
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const token = localStorage.getItem("jwt");
 
     if (token && !this.jwtHelper.isTokenExpired(token)){
-      console.log(this.jwtHelper.decodeToken(token))
+      // console.log(this.jwtHelper.decodeToken(token))
       return true;
     }
 
     const isRefreshSuccess = await this.tryRefreshingTokens(token); 
     if (!isRefreshSuccess) { 
-      this.router.navigate(["login"]); 
+      if (this.router.url === ('/'))
+      {
+        this.router.navigateByUrl('/404')
+      } 
+      this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
     }
 
     return isRefreshSuccess;
@@ -82,6 +92,21 @@ export class AuthguardService implements CanActivate  {
     return this.http.put<LoginModel>(baseApiUrl + '/api/Auth/' + id, updateUserRequest);
   }
 
+  getUsers(): Observable<LoginModel[]> {
+    this.isLoading = true;
+    return this.http.get<LoginModel[]>(baseApiUrl + '/api/Auth/')
+          .pipe(
+            tap(logins => {
+              this.errorSubject.next('');
+            }),
+            catchError(error => {
+              this.errorSubject.next(this.customErrorHandler.handleError(error));
+              this.isLoading = false;
+              return of([]);
+            })
+          );
+  }
+
   // login = ( form: NgForm) => {
   //   if (form.valid) {
   //     this.http.post<AuthenticatedResponse>("https://localhost:5001/api/auth/login", this.credentials, {
@@ -111,3 +136,5 @@ export class AuthguardService implements CanActivate  {
   // }
 
 }
+
+

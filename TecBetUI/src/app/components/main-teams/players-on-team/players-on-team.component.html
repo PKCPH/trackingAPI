@@ -1,23 +1,37 @@
 <div class="section1 tablediv">
     <div class="container my-2 divs py-5">
-        <h1 class="mb-3">Players</h1>
+        <h1 class="mb-3">{{selectedTeam.name}}</h1>
         <div>
-            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" id="addbutton">Create a Player</button>            
+            <div *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+                <table class="w-100">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayers()" id="addbutton">Change player roster for the team</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary mt-3 mb-5" (click)="NewPlayer()" id="addbutton">Create player for the team</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <table class="table tabletext" *ngIf="players && players.length > 0">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Age</th>
-                        <th>Team</th>
-                        <th></th>
+                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let player of players">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
-                        <td> {{player.team.name}}</td>
-                        <td><a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a></td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+                            <button type="button" class="btn btn-primary" (click)="ChangePlayer(player.id)">Change player</button>
+                            <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

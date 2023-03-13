@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -32,6 +33,14 @@ public class TeamController : ControllerBase
     {
         //finding Issue with the id
         var team = await _context.Teams.FindAsync(id);
+        var playerTeams = await _context.PlayerTeams.ToListAsync();
+        foreach (var playerTeam in playerTeams)
+        {
+            if (playerTeam.TeamId == team.Id)
+            {
+                team.Players.Add(playerTeam);
+            }
+        }
         //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
         return team == null ? NotFound() : Ok(team);
     }
@@ -84,17 +93,50 @@ public class TeamController : ControllerBase
 
         return NoContent();
     }
+
+    //get players from a specific team
     [HttpGet("players/{id}")]
     public async Task<IActionResult> GetPlayersFromTeam(Guid id)
     {
         var players = await _context.Players.ToListAsync();
-        //foreach (var player in players)
-        //{
-        //    if (player.TeamId != id)
-        //    {
-        //        players.Remove(player);
-        //    }
-        //}
+        var playerTeams = await _context.PlayerTeams.ToListAsync();
+
+        playerTeams.RemoveAll(s => s.TeamId != id);
+
+        players.RemoveAll(p => !playerTeams.Exists(s => s.PlayerId == p.Id));
+        
         return Ok(players);
+    }
+
+    [HttpPost("players/add")]
+    public async Task<IActionResult> ChangePlayersOnTeam(List<List<PlayerTeam>> playerTeamsList)
+        {
+        var playerTeams = await _context.PlayerTeams.ToListAsync();
+
+        foreach (var playerTeam in playerTeamsList[0])
+        {
+            for (int i = 0; i < playerTeams.Count; i++)
+            {
+                if (playerTeams[i].Id == playerTeam.Id)
+                {
+                    _context.PlayerTeams.Remove(playerTeams[i]);
+                    await _context.SaveChangesAsync();
+                    playerTeams.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
+        foreach (var playerTeam in playerTeamsList[1]) 
+        {
+            if (!playerTeams.Contains(playerTeam))
+            {
+                playerTeam.Id = Guid.NewGuid();
+                await _context.PlayerTeams.AddAsync(playerTeam);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        return playerTeamsList == null ? NotFound() : Ok(playerTeamsList);
     }
 }

@@ -28,7 +28,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
 import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
-import { MainLeaguesComponent } from './components/main-leagues/main-leagues.component';
+import { EditUserComponent } from './components/main-login/adminboard/edit-user/edit-user.component';
+import { MainHorseracegameComponent } from './components/main-horseracegame/main-horseracegame.component';
+import { MatchDetailsComponent } from './components/main-schedule/match-details/match-details.component';
+import { BettingWindowComponent } from './components/betting/betting-window/betting-window.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatCardModule} from '@angular/material/card';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
+import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
+import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
+import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -57,7 +69,15 @@ export function tokenGetter() {
     ConfirmboxComponent,
     ChangepasswordComponent,
     AdminboardComponent,
-    MainLeaguesComponent,
+    EditUserComponent,
+    MainHorseracegameComponent,
+    MatchDetailsComponent,
+    BettingWindowComponent,
+    UserbetsComponent,
+    PlayersOnTeamComponent,
+    PlayersToTeamComponent,
+    NewPlayerComponent,
+    ChangePlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +92,12 @@ export function tokenGetter() {
         disallowedRoutes: []
       } 
     }),
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    MatSliderModule,
+    MatCardModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

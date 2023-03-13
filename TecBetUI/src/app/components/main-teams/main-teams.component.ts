@@ -1,8 +1,9 @@
-import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
 import { TeamsService } from 'src/app/services/teams.service';
 import { interval, Subscription, switchMap } from 'rxjs';
+import { cwd } from 'process';
 
 @Component({
   selector: 'app-main-teams',
@@ -14,6 +15,8 @@ export class MainTeamsComponent implements OnDestroy {
   teams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription;
+  storedCredentialsString: any;
+  role: any;
 
 //ngOnDestroy is when you route out of a component it triggers, and inside it I unsubscribe to everything, so it doesnt keep running while on another component.
 
@@ -24,24 +27,9 @@ export class MainTeamsComponent implements OnDestroy {
     constructor(private teamsService: TeamsService, private router: Router, 
       private el: ElementRef, private renderer: Renderer2) {
 
-        //Basically this is the checker, to prevent users from trying to navigate to this url without being an admin it checks the localstorage for role credentials
-        //If you dont have admin you'll be redirected to the homepage
+        //This is used to hide and show various buttons that only admins should have access to, but the page itself is viewable by everyone now.
 
-        let storedCredentials;
-
-        let storedCredentialsString = localStorage.getItem("credentials");
-        if (storedCredentialsString)
-        {
-        storedCredentials = JSON.parse(storedCredentialsString);
-
-        let role = storedCredentials.role;
-
-        if (role === 'Admin') {
-          this.router.navigate(['/teams']);
-          } else {
-            this.router.navigate(['/']);
-          }  
-        }
+        this.getCredentials();
 
         //The getall method that repeats itself every 1.5 seconds, to dynamically update the view with repeated API calls. 
         //It calls the getAllTeams method, and fills out the "teams" variable with all the entities from the SQL database
@@ -54,7 +42,7 @@ export class MainTeamsComponent implements OnDestroy {
         //switchMap() is an operator in the RxJS library that can be used to transform an Observable into a new Observable. 
         //It's commonly used when you have an Observable that emits a value and you need to make another asynchronous call that depends on that value
 
-        this.updateSubscription = interval(1500).pipe(
+        this.updateSubscription = interval(3000).pipe(
           switchMap(() => this.teamsService.getAllTeams())
         )
         .subscribe({
@@ -65,25 +53,42 @@ export class MainTeamsComponent implements OnDestroy {
                 availability: team.isAvailable ? 'No' : 'Yes'
               }
             });
+            // console.log(this.teams);
             if (teams)
             {
               this.toggleOverflowDiv();
               this.Hideloader();
             }
             this.teamsService.errorMessage.subscribe(error => {
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
               this.errorMessage = error;
-                           
-              if (this.errorMessage === '')
+              if (teams.length > 0)
               {
-                this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
+                this.errorMessage = "";
               }
             });
+          },
+          error: (response) => {
+            console.log(response);
           }
-        });   
+        }); 
+        
+
+        window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
     }
 
     //Simple delete, it gets parsed the string and it deletes the correspondant team. After I do another getall, to update my view.
+
+    getCredentials() {
+      let storedCredentials;
+
+      this.storedCredentialsString = localStorage.getItem("credentials");
+      if (this.storedCredentialsString)
+      {
+      storedCredentials = JSON.parse(this.storedCredentialsString);
+
+      this.role = storedCredentials.role;
+      }
+    }
   
     deleteTeam(id: string) {
       this.teamsService.deleteTeam(id)
@@ -113,11 +118,14 @@ export class MainTeamsComponent implements OnDestroy {
               // Setting display of spinner element to none
               this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
               this.renderer.setStyle(this.el.nativeElement.querySelector('#teamcontainer'), 'display', 'block');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
     }
   
     GoAddTeam() {
       this.router.navigateByUrl('/teams/add')
+    }
+
+    GoEditTeam(id: string) {
+      this.router.navigateByUrl('/teams/edit/' + id)
     }
 
     //Functions to check if a certain table is overflowing, and if it is display a div.

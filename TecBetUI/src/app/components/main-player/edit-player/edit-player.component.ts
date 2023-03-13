@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { MapType } from '@angular/compiler';
+import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from 'src/app/models/player.model';
+import { playerTeam } from 'src/app/models/playerTeam.model';
 import { Team } from 'src/app/models/teams.model';
 import { PlayersService } from 'src/app/services/players.service';
 import { TeamsService } from 'src/app/services/teams.service';
@@ -13,19 +15,22 @@ import { TeamsService } from 'src/app/services/teams.service';
 export class EditPlayerComponent {
 
   teams: Team[] = [];
-  team: Team = {
+  selectedTeamArray: Team[] = [];
+  selectedTeam: Team = {
     id: '',
     name: '',
     isAvailable: true,
     matches: [],
-    availability:''
+    availability:'',
+    players:[],
+    score: 0,
+    result: 0
   }
   playerDetails: Player = {
     id: '',
     name: '',
     age: 0,
-    teamId: '',
-    team: this.team
+    teams: []
   }
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }
@@ -34,37 +39,46 @@ export class EditPlayerComponent {
     this.route.paramMap.subscribe({
       next: (params) => {
         const id = params.get('id');
-
         if(id){
-          this.playerService.getPlayer(id)
-          .subscribe({
-            next: (response) => {
-              this.playerDetails = response;
-            }
-          })
+          this.getPlayer(id)
         }
-      }
-    })
-    this.teamsService.getAllTeams()
-    .subscribe({
-      next: (teams) => {
-        console.log(teams);
-        this.teams = teams
-      },
-      error: (response) => {
-        console.log(response);
       }
     })
   }
 
-  updatePlayer(){
-    this.playerDetails.teamId = this.playerDetails.team.id
-    this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
-    .subscribe({
-      next: (response) => {
-        this.router.navigate(['players'])
+  getPlayer(id: string){
+    this.playerService.getPlayer(id)
+    .subscribe(
+      (response) => {
+        this.playerDetails = response;
+        console.log(this.playerDetails)
+        this.getAllTeams();
       }
-    })
+    )
+  }
+
+  getAllTeams(){
+    this.teamsService.getAllTeams()
+    .subscribe((teams) => {
+        this.teams = teams;
+        console.log(teams)
+        this.filterTeams();
+      }
+    )
+  }
+
+  filterTeams(){
+    this.playerDetails.teams.forEach(element => {
+      const team = this.teams.find(t => t.id == element.teamId);
+      console.log(team);
+      if(team !== undefined){
+        this.selectedTeamArray.push(team);
+        this.teams.splice(this.teams.indexOf(team),1)
+      }
+    });
+    if(this.playerDetails.teams.length > 0){
+      this.playerDetails.teams = []
+    }
   }
 
   deletePlayer(id: string){
@@ -72,6 +86,42 @@ export class EditPlayerComponent {
     .subscribe({
       next: (response) => {
         this.router.navigate(['players'])
+      }
+    })
+  }
+
+  removeFromSelectedTeamArray(team: Team){
+    this.teams.push(team);
+    this.selectedTeamArray.splice(this.selectedTeamArray.indexOf(team),1)
+    console.log(this.selectedTeamArray)
+  }
+
+  addTeam(){
+    if(this.selectedTeamArray.includes(this.selectedTeam) == true) return
+    this.selectedTeamArray.push(this.selectedTeam)
+    this.teams.splice(this.teams.indexOf(this.selectedTeam),1)
+    console.log(this.selectedTeamArray)
+  }
+
+  updatePlayer(){
+    this.selectedTeamArray.forEach(element => {
+      const addPlayerTeam: playerTeam = {
+        id: '',
+        playerId: this.playerDetails.id,
+        teamId: element.id
+      }
+      if(this.playerDetails.teams != null){
+        this.playerDetails.teams.push(addPlayerTeam)
+      }
+      else{
+        this.playerDetails.teams = [addPlayerTeam]
+      }
+    });
+    this.playerService.updatePlayer(this.playerDetails.id, this.playerDetails)
+    .subscribe({
+      next: (response) => {
+        console.log(response)
+        this.router.navigate(['players/'])
       }
     })
   }

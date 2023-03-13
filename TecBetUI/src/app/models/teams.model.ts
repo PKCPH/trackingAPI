@@ -1,4 +1,5 @@
 import { Match } from "./matches.model";
+import { playerTeam } from "./playerTeam.model";
 
 export interface Team {
     id: string;
@@ -6,5 +7,8 @@ export interface Team {
     isAvailable: boolean;
     matches: Match[];
     availability: string;
+    score: number;
+    result: number;
+    players: playerTeam[];
 }
 

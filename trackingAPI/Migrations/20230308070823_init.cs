@@ -68,7 +68,40 @@ namespace trackingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
                 name: "Matches",
+========
+                name: "Bets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoginId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Team = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    BetResult = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    BetState = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bets_Logins_LoginId",
+                        column: x => x.LoginId,
+                        principalTable: "Logins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bets_Matches_MatchId",
+                        column: x => x.MatchId,
+                        principalTable: "Matches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MatchTeams",
+>>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -140,6 +173,7 @@ namespace trackingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
             migrationBuilder.CreateTable(
                 name: "MatchTeams",
                 columns: table => new
@@ -177,6 +211,22 @@ namespace trackingAPI.Migrations
                 name: "IX_LeagueTeams_TeamId",
                 table: "LeagueTeams",
                 column: "TeamId");
+========
+            migrationBuilder.InsertData(
+                table: "Logins",
+                columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
+                values: new object[] { new Guid("d3e4e1f2-7fd3-4037-9bb9-490350cf157e"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bets_LoginId",
+                table: "Bets",
+                column: "LoginId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bets_MatchId",
+                table: "Bets",
+                column: "MatchId");
+>>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logins_UserName",
@@ -214,16 +264,23 @@ namespace trackingAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
                 name: "LeagueTeams");
 
             migrationBuilder.DropTable(
                 name: "Logins");
+========
+                name: "Bets");
+>>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
 
             migrationBuilder.DropTable(
                 name: "MatchTeams");
 
             migrationBuilder.DropTable(
                 name: "PlayerTeams");
+
+            migrationBuilder.DropTable(
+                name: "Logins");
 
             migrationBuilder.DropTable(
                 name: "Matches");

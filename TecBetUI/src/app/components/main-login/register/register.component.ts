@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, of, tap, throwError } from 'rxjs';
@@ -13,7 +13,7 @@ import { LoginService } from 'src/app/services/login.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
 
   
   addLoginRequest: LoginModel = {
@@ -39,6 +39,11 @@ export class RegisterComponent {
       password: ['', [Validators.minLength(6), Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]
     });
+  }
+
+  ngOnDestroy(): void {
+    const event = new CustomEvent('userLoggedIn');
+    window.dispatchEvent(event);
   }
   
   registerUser() {
@@ -89,8 +94,8 @@ export class RegisterComponent {
               this.loginService.updateCredentials(this.addLoginRequest);  
 
               let storedCredentials = {
-                username: this.addLoginRequest.userName,
-                role: this.addLoginRequest.role
+                userName: this.addLoginRequest.userName,
+                role: this.addLoginRequest.role,
               };
     
               localStorage.setItem("credentials", JSON.stringify(storedCredentials));

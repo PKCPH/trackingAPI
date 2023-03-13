@@ -21,7 +21,7 @@ public class MatchController : ControllerBase
     //action method, does as a response of the http request, to get a list of Issue
     //attribute to make it handle httpGet
     [HttpGet]
-    public async Task<IEnumerable<Gamematch>> Get()
+    public async Task<IEnumerable<GameMatch>> Get()
         //get a list of Issue
         => await _context.Matches.ToListAsync();
 
@@ -29,7 +29,7 @@ public class MatchController : ControllerBase
     //so the action responds only to this id in the url
     //ProducesResponseType specifies which kind of status code the return can return
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Gamematch), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GameMatch), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -57,7 +57,7 @@ public class MatchController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid id, Gamematch match)
+    public async Task<IActionResult> Update(Guid id, GameMatch match)
     {
         //if the id of the url and the id in the body does not match, then return
         if (id != match.Id) return BadRequest();
@@ -85,8 +85,8 @@ public class MatchController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("/api/matches")]
-    public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
+    [HttpGet("/api/Matches")]
+    public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
     {
         var matches = _context.Matches
             .Include(mt => mt.ParticipatingTeams)
@@ -99,6 +99,7 @@ public class MatchController : ControllerBase
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
                     result= pt.Result,
+                    score = pt.TeamScore
                 }).ToList()
             })
             .ToList();
@@ -106,16 +107,44 @@ public class MatchController : ControllerBase
         return Ok(matches);
     }
 
-    
-/*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+    [HttpGet("/api/MatchDetails/{id}")]
+    public async Task<ActionResult<IList<GameMatch>>> GetMatchDetails(Guid id)
     {
-        var matches = _context.Matches
-            .Include(mt => mt.ParticipatingTeams)
-            .ThenInclude(t => t.Team)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToList();
+        var match = await _context.Matches
+               .Include(mt => mt.ParticipatingTeams)
+               .ThenInclude(t => t.Team)
+               .Where(m => m.Id == id)
+               .Select(m => new {
+                   Id = m.Id,
+                   dateOfMatch = m.DateOfMatch,
+                   matchState = m.MatchState,
+                   participatingTeams = m.ParticipatingTeams.Select(pt => new {
+                       Id = pt.Team.Id,
+                       name = pt.Team.Name,
+                       result = pt.Result,
+                       score = pt.TeamScore
+                   }).ToList()
+               })
+               .FirstOrDefaultAsync();
 
-        return Ok(matches);
-    }*/
+        if (match == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(match);
+    }
+
+
+    /*    public ActionResult<IList<GameMatch>> GetAllMatches(int pageNumber = 1, int pageSize = 10)
+        {
+            var matches = _context.Matches
+                .Include(mt => mt.ParticipatingTeams)
+                .ThenInclude(t => t.Team)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return Ok(matches);
+        }*/
 }

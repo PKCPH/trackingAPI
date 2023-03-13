@@ -19,7 +19,10 @@ export class EditTeamComponent {
     name: '',
     isAvailable: true,
     matches: [],
-    availability: ''
+    availability: '',
+    score: 0,
+    result: 0,
+    players: []
   };
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {
@@ -72,4 +75,5 @@ this.teamDetails = response;
           console.log(key, control.errors);
   }
 }
-}}}}
+}}}
+}

@@ -20,13 +20,19 @@ public class Gamematch
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public ICollection<MatchTeam> ParticipatingTeams { get; set; }
-    public MatchState MatchState { get; set; }
+    public ICollection<MatchTeam>? ParticipatingTeams { get; set; }
+    public MatchState MatchState { get; set; } //0 MatchNotStarted, 1 MatchInPlay, 2 MatchFinished
     public DateTime DateOfMatch { get; set; }
 
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
     public Guid? LeagueId { get; set; }
+    public ICollection<Bet> Bets { get; set; }
+
+    public GameMatch()
+    {
+        Bets = new List<Bet>();
+    }
 }
 
 public enum MatchState

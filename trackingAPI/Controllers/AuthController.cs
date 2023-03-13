@@ -5,6 +5,7 @@ using trackingAPI.Data;
 using trackingAPI.Helpers;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -53,6 +54,13 @@ public class AuthController : ControllerBase
             RefreshToken = refreshToken
         });
     }
+
+    //action method, does as a response of the http request, to get a list of Issue
+    //attribute to make it handle httpGet
+    [HttpGet, Authorize(Roles = "Admin")]
+    public async Task<IEnumerable<Login>> Get()
+        //get a list of Issue
+        => await _context.Logins.ToListAsync();
 
     [HttpPost, Route("register")]
     public async Task<IActionResult> Create(Login login)

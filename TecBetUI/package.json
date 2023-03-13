@@ -11,10 +11,12 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^15.1.5",
+    "@angular/cdk": "^15.2.1",
     "@angular/common": "^15.1.5",
     "@angular/compiler": "^15.1.5",
     "@angular/core": "^15.1.5",
     "@angular/forms": "^15.1.5",
+    "@angular/material": "^15.2.1",
     "@angular/platform-browser": "^15.1.5",
     "@angular/platform-browser-dynamic": "^15.1.5",
     "@angular/router": "^15.1.5",
@@ -23,6 +25,7 @@
     "@popperjs/core": "^2.11.6",
     "@syncfusion/ej2-angular-splitbuttons": "^20.4.50",
     "bootstrap": "^5.2.3",
+    "jsonwebtoken": "^9.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.5.0",
     "zone.js": "~0.12.0"
@@ -33,12 +36,15 @@
     "@angular/compiler-cli": "^15.1.5",
     "@angular/localize": "^15.1.5",
     "@types/jasmine": "~4.3.0",
+    "@types/jest": "^29.4.0",
+    "@types/jsonwebtoken": "^9.0.1",
+    "@types/node": "^18.14.6",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.5"
   }
 }

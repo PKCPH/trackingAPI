@@ -2,6 +2,7 @@
 using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.Helpers;
 
 namespace trackingAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace trackingAPI.Controllers
     public class PlayerController : Controller
     {
         private readonly DatabaseContext databaseContext;
+        private readonly IPlayerService playerService;
 
-        public PlayerController(DatabaseContext databaseContext)
+        public PlayerController(DatabaseContext databaseContext, IPlayerService playerService)
         {
             this.databaseContext = databaseContext;
+            this.playerService = playerService;
         }
 
         //Read All
@@ -21,31 +24,21 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetAllPlayers()
         {
             var players = await databaseContext.Players.ToListAsync();
-            var teams = await databaseContext.Teams.ToListAsync();
-            //Goes through the list of teams and matches each player with the team they play on
-            //foreach (var player in players)
-            //{
-            //    foreach (var team in teams)
-            //    {
-            //        if (team.Id == player.TeamId)
-            //        {
-            //            player.Team = team;
-            //            //break not neccesary, but it should change O from n to n/2
-            //            break;
-            //        }
-            //    }
-            //}
-            return Ok(players);
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+
+            var playerList = playerService.ReadAllPlayers(players, playerTeams);
+
+            return Ok(playerList);
         }
 
         //Create
         [HttpPost]
         public async Task<IActionResult> AddPlayer([FromBody] Player playerRequest)
         {
-            playerRequest.Id = Guid.NewGuid();
-            await this.databaseContext.Players.AddAsync(playerRequest);
-            await this.databaseContext.SaveChangesAsync();
-
+            if (playerRequest != null) 
+            {
+                await playerService.CreatePlayer(playerRequest);
+            }
             return Ok(playerRequest);
         }
 
@@ -55,12 +48,11 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> GetPlayer([FromRoute] Guid id)
         {
             //gets the player by looking up the player table for ID matches
-            var player = await databaseContext.Players.FirstOrDefaultAsync(x => x.Id == id);
+            var player = await databaseContext.Players.FindAsync(id);
             if (player == null ) { return NotFound(); }
             //gets the team by looking up the team table for ID matches to the players teamID property
-            //var team = await databaseContext.Teams.FirstOrDefaultAsync(x => x.Id == player.TeamId);
-            //if (team == null) { return NotFound(); }
-            //player.Team = team;
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+            player = playerService.AssignTeamsToPlayer(player, playerTeams);
             return Ok(player);
         }
 
@@ -69,14 +61,13 @@ namespace trackingAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, Player updatePlayerRequest)
         {
-            var player = await this.databaseContext.Players.FindAsync(id);
-            if (player == null) { return NotFound(); }
-            player.Name = updatePlayerRequest.Name;
-            player.Age = updatePlayerRequest.Age;
-            //player.TeamId = updatePlayerRequest.TeamId;
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
 
-            await this.databaseContext.SaveChangesAsync();
-            return Ok(player);
+            await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
+
+            await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
+
+            return Ok(updatePlayerRequest);
         }
 
         //Delete
@@ -85,9 +76,14 @@ namespace trackingAPI.Controllers
         public async Task<IActionResult> DeletePlayer([FromRoute] Guid id)
         {
             var player = await this.databaseContext.Players.FindAsync(id);
-            if (player == null) { return NotFound(); }
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
 
-            this.databaseContext.Players.Remove(player);
+            //removes the player from the player Table
+            if (player != null)
+            {
+                this.databaseContext.Players.Remove(player);
+            }
+
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
         }

@@ -20,15 +20,16 @@ public class DatabaseContext : DbContext
     public DbSet<LeagueTeam> LeagueTeams { get; set; }
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<PlayerTeam> PlayerTeams { get; set; }
-    
+    public DbSet<Bet> Bets { get; set; }    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        //modelBuilder.Entity<Login>().HasData(new Login
-        //{
-        //    UserName = "admin",
-        //    Password = "123456",
-        //    Role = "Admin"
-        //});
+        modelBuilder.Entity<Login>().HasData(new Login
+        {
+            UserName = "admin",
+            Password = "123456",
+            Role = "Admin"
+        });
 
         modelBuilder.Entity<Login>()
              .Property(t => t.Role)
@@ -36,7 +37,13 @@ public class DatabaseContext : DbContext
 
         modelBuilder.Entity<Login>().HasIndex(u => u.UserName).IsUnique();
 
-        /// Default values
+        //Default value for IsAvailable = true
+        modelBuilder.Entity<Bet>()
+    .Property(b => b.BetResult)
+    .HasDefaultValue(BetResult.Undetermined);
+        modelBuilder.Entity<Bet>()
+    .Property(b => b.BetState)
+    .HasDefaultValue(BetState.InProgress);
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);

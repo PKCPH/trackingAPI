@@ -16,8 +16,10 @@ namespace trackingAPI.Models
         public string? RefreshToken { get; set; }
         public DateTime RefreshTokenExpiryTime { get; set; }
         public string? Role { get; set; }
+        public ICollection<Bet> Bets { get; set; }
         public Login()
         {
+            Bets = new List<Bet>();
             Email = "";
             Balance = 1000;
             Id = Guid.NewGuid();

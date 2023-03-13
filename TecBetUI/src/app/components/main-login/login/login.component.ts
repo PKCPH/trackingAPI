@@ -6,23 +6,21 @@ import { AuthenticatedResponse } from 'src/app/models/AuthenticatedResponse';
 import { NgForm } from '@angular/forms';
 import { AuthguardService } from 'src/app/services/authguard.service';
 import { LoginService } from 'src/app/services/login.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   invalidLogin: boolean = false;
   invalidConn: boolean = false;
   credentials: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
 
   constructor(private router: Router, private http: HttpClient, private authguard: AuthguardService, private loginService: LoginService,
-    private el: ElementRef, private renderer: Renderer2) { }
-  
-  ngOnInit(): void {
-    
-  }
+    private el: ElementRef, private renderer: Renderer2, public activeModal: NgbActiveModal, private location: Location) { }
 
   login = ( form: NgForm) => {
     if (form.valid) {
@@ -37,7 +35,7 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("jwt", token); 
           localStorage.setItem("refreshToken", refreshToken);
           this.invalidLogin = false; 
-          this.router.navigate(["/"]);
+          
 
           this.authguard.getUser(this.credentials.userName)
           .subscribe({
@@ -46,12 +44,21 @@ export class LoginComponent implements OnInit {
           this.loginService.updateCredentials(this.credentials); 
 
           let storedCredentials = {
-            username: this.credentials.userName,
-            role: this.credentials.role
+            userName: this.credentials.userName,
+            role: this.credentials.role,
           };
 
           localStorage.setItem("credentials", JSON.stringify(storedCredentials));
+
+          const event = new CustomEvent('userLoggedIn');
+          window.dispatchEvent(event);
+          
+          if(this.router.url.includes('404'))
+          {
+            this.location.back();
+          }
           this.hideLoader();
+          this.activeModal.close();
           }
         });  
         },
@@ -70,6 +77,10 @@ export class LoginComponent implements OnInit {
         }
       })
     }
+  }
+
+  close() {
+    this.activeModal.close();
   }
 
   showLoader() {
