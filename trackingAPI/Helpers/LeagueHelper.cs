@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -38,9 +39,10 @@ public class LeagueHelper
             Gamematch gamematch = new()
             {
                 ParticipatingTeams = new List<MatchTeam>(),
-                DateOfMatch = leagueDateTime
+                DateOfMatch = leagueDateTime,
+                IsDrawAllowed = false
             };
-            leagueDateTime = leagueDateTime.AddSeconds(30);
+            leagueDateTime = leagueDateTime.AddMinutes(3);
             var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
             var twoRandomAvailableTeams = availableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
 
@@ -71,10 +73,11 @@ public class LeagueHelper
                 Gamematch gamematch = new()
                 {
                     ParticipatingTeams = new List<MatchTeam>(),
-                    DateOfMatch = leagueDateTime
+                    DateOfMatch = leagueDateTime,
+                    IsDrawAllowed = false
                 };
 
-                leagueDateTime = leagueDateTime.AddSeconds(30);
+                leagueDateTime = leagueDateTime.AddMinutes(3);
                 MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = roundsNumber };
                 MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = roundsNumber };
                 maxTeamCount1--;

@@ -7,11 +7,14 @@ namespace trackingAPI.Helpers;
 
 public class TeamPicker
 {
-    
+
     //Read list of teams and choose two random team to be put in ParticipatingTeams.
     public Gamematch CreateMatch(DatabaseContext _context)
     {
-        Gamematch gameMatch = new(_context);
+        Gamematch gameMatch = new(_context)
+        {
+            IsDrawAllowed = true
+        };
         Random rnd = new Random();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
