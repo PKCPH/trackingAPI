@@ -46,8 +46,15 @@ namespace trackingAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
+                    Goals = table.Column<int>(type: "int", nullable: false),
+                    Assists = table.Column<int>(type: "int", nullable: false),
+                    Yellow = table.Column<int>(type: "int", nullable: false),
+                    Red = table.Column<int>(type: "int", nullable: false),
+                    SpG = table.Column<int>(type: "int", nullable: false),
+                    PSPercent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Motm = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -68,48 +75,14 @@ namespace trackingAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
                 name: "Matches",
-========
-                name: "Bets",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Team = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false),
-                    BetResult = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    BetState = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bets_Logins_LoginId",
-                        column: x => x.LoginId,
-                        principalTable: "Logins",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Bets_Matches_MatchId",
-                        column: x => x.MatchId,
-                        principalTable: "Matches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MatchTeams",
->>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MatchState = table.Column<int>(type: "int", nullable: false),
                     DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsLeagueGame = table.Column<bool>(type: "bit", nullable: false)
+                    IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false),
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,9 +100,7 @@ namespace trackingAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LeaguesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    InTournament = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
-                    TeamSeed = table.Column<int>(type: "int", nullable: true)
+                    TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,7 +144,35 @@ namespace trackingAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
+            migrationBuilder.CreateTable(
+                name: "Bets",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MatchId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LoginId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Team = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    BetResult = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    BetState = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bets_Logins_LoginId",
+                        column: x => x.LoginId,
+                        principalTable: "Logins",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Bets_Matches_MatchId",
+                        column: x => x.MatchId,
+                        principalTable: "Matches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateTable(
                 name: "MatchTeams",
                 columns: table => new
@@ -202,20 +201,10 @@ namespace trackingAPI.Migrations
                         principalColumn: "Id");
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_LeagueTeams_LeaguesId",
-                table: "LeagueTeams",
-                column: "LeaguesId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeagueTeams_TeamId",
-                table: "LeagueTeams",
-                column: "TeamId");
-========
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("d3e4e1f2-7fd3-4037-9bb9-490350cf157e"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("3e8e34c3-f595-4a10-9e4c-b8d1782400aa"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
@@ -226,7 +215,16 @@ namespace trackingAPI.Migrations
                 name: "IX_Bets_MatchId",
                 table: "Bets",
                 column: "MatchId");
->>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeagueTeams_LeaguesId",
+                table: "LeagueTeams",
+                column: "LeaguesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LeagueTeams_TeamId",
+                table: "LeagueTeams",
+                column: "TeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Logins_UserName",
@@ -264,14 +262,10 @@ namespace trackingAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:trackingAPI/Migrations/20230310105723_init.cs
-                name: "LeagueTeams");
+                name: "Bets");
 
             migrationBuilder.DropTable(
-                name: "Logins");
-========
-                name: "Bets");
->>>>>>>> master:trackingAPI/Migrations/20230308070823_init.cs
+                name: "LeagueTeams");
 
             migrationBuilder.DropTable(
                 name: "MatchTeams");

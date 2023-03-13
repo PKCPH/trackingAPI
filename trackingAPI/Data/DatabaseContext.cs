@@ -20,7 +20,7 @@ public class DatabaseContext : DbContext
     public DbSet<LeagueTeam> LeagueTeams { get; set; }
     public DbSet<MatchTeam> MatchTeams { get; set; }
     public DbSet<PlayerTeam> PlayerTeams { get; set; }
-    public DbSet<Bet> Bets { get; set; }    
+    public DbSet<Bet> Bets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -15,6 +15,7 @@ public class Gamematch
     }
     public Gamematch()
     {
+        Bets = new List<Bet>();
     }
 
     [Key]
@@ -29,10 +30,7 @@ public class Gamematch
     public Guid? LeagueId { get; set; }
     public ICollection<Bet> Bets { get; set; }
 
-    public GameMatch()
-    {
-        Bets = new List<Bet>();
-    }
+    
 }
 
 public enum MatchState

@@ -14,7 +14,7 @@ namespace trackingAPI.Helpers
         }
 
         // Service method to update user balances based on match results
-        public async Task UpdateBalancesOnMatchFinish(GameMatch match)
+        public async Task UpdateBalancesOnMatchFinish(Gamematch match)
         {
             using (var scope = _services.CreateScope())
             {
@@ -56,7 +56,7 @@ namespace trackingAPI.Helpers
             }
         }
 
-        public string DetermineWinningTeam(GameMatch match)
+        public string DetermineWinningTeam(Gamematch match)
         {
             var winningTeamName = "";
 
