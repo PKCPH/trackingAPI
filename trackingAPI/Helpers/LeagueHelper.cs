@@ -94,7 +94,7 @@ public class LeagueHelper
     {
         Random rnd = new Random();
 
-        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(4);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(2);
 
         foreach (var team in availableTeams)
         {

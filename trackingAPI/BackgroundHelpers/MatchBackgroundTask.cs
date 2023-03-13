@@ -98,14 +98,25 @@ public class MatchBackgroundTask
             gameMatch.MatchState = MatchState.Finished;
             //await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
 
-            //updating teams to is available
-            foreach (var item in gameMatch.ParticipatingTeams)
+            if (gameMatch.LeagueId == null)
             {
-                item.Team.IsAvailable = true;
-                _context.Entry(item.Team).State = EntityState.Modified;
+                //updating teams to is available
+                foreach (var item in gameMatch.ParticipatingTeams)
+                {
+                    item.Team.IsAvailable = true;
+                    _context.Entry(item.Team).State = EntityState.Modified;
+                }
+                // detach the gameMatch instance to avoid conflicts with the context
+                _context.Entry(gameMatch).State = EntityState.Detached;
+
             }
-            // detach the gameMatch instance to avoid conflicts with the context
-            _context.Entry(gameMatch).State = EntityState.Detached;
+            else
+            {
+                var team = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team;
+
+                team.IsAvailable = true;
+                _context.Entry(team).State = EntityState.Modified;
+            }
 
             // attach the updated gameMatch instance to the context and save changes
             _context.Matches.Update(gameMatch);
