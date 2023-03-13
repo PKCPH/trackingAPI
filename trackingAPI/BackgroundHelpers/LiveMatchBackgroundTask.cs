@@ -73,11 +73,16 @@ public class LiveMatchBackgroundTask
             nextRound--;
             if (nextRound == 0)
             {
+
                 var league = _context.Leagues.Where(x => x.Id == gameMatch.LeagueId).First();
                 league.LeagueState = LeagueState.Finished;
                 _context.Entry(league).State = EntityState.Modified;
                 _context.SaveChanges();
 
+                var winner = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
+                winner.IsAvailable = true;
+                _context.Entry(winner).State = EntityState.Modified;
+                _context.SaveChanges();
                 return Task.CompletedTask;
             }
 

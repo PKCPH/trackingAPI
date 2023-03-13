@@ -116,6 +116,7 @@ public class MatchBackgroundTask
 
                 team.IsAvailable = true;
                 _context.Entry(team).State = EntityState.Modified;
+
             }
 
             // attach the updated gameMatch instance to the context and save changes
