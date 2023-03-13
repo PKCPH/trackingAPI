@@ -44,7 +44,7 @@ public class LeagueHelper
             };
             leagueDateTime = leagueDateTime.AddMinutes(3);
             var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
-            var twoRandomAvailableTeams = availableTeams.OrderBy(x => rnd.Next()).Take(2).ToList();
+            var twoRandomAvailableTeams = availableTeams.OrderBy(x => rnd.Next()).Take(LeagueConfiguration.AmountOfTeams).ToList();
 
             var teamA = twoRandomAvailableTeams.First();
             var teamB = twoRandomAvailableTeams.Last();

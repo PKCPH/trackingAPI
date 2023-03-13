@@ -1,8 +1,10 @@
 ﻿namespace trackingAPI.Configurations
 {
-    public class LeagueConfiguration
+    public static class LeagueConfiguration
     {
         //How long interval between matches should be set
-        public DateTime IntervalBetweenMatches => IntervalBetweenMatches.AddSeconds(550);
+        public static DateTime IntervalBetweenMatches => IntervalBetweenMatches.AddSeconds(550);
+
+        public static int AmountOfTeams = 8;
     }
 }
