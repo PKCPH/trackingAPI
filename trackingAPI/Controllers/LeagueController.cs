@@ -29,16 +29,6 @@ public class LeagueController : ControllerBase
         return league == null ? NotFound() : Ok(league);
     }
 
-    //[HttpPost("{CreateOneLeagueAuto}")]
-    //[ProducesResponseType(StatusCodes.Status201Created)]
-    //public async Task<IActionResult> CreateAutoPick(League league)
-    //{
-    //    LeagueHelper leagueSeedingLogic = new LeagueHelper();
-    //    await _context.Leagues.AddAsync(leagueSeedingLogic.CreateRounds(league, _context));
-    //    await _context.SaveChangesAsync();
-    //    return Ok(_context.Leagues);
-    //}
-
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create(League league)
