@@ -85,7 +85,7 @@ public class MatchBackgroundTask
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
         LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
-        //BetsHandler betsHandler = new(_services);
+        BetsHandler betsHandler = new(_services);
         CancellationToken stoppingToken;
 
         using (var scope = _services.CreateScope())
@@ -105,7 +105,7 @@ public class MatchBackgroundTask
 
             gameMatch.MatchState = MatchState.Finished;
             UpdateFinishedMatchInDatabase(gameMatch);
-            //await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
+            await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
 
             if (gameMatch.LeagueId == null)
             {
