@@ -4,18 +4,94 @@
         <div class="row">
             <div class="col-4">          
                 <form #form="ngForm" (ngSubmit)="addPlayer()">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="addPlayerRequest.name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="age" name="age" [(ngModel)]="addPlayerRequest.age">
-                    </div>
-                    <div class="mb-3">
-                    </div>
-                    <button type="submit" class="btn btn-success mt-1">Add Player</button>
-                    <button type="button" class="btn btn-primary mt-1" (click)="GoBack()">Go Back</button>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="addPlayerRequest.name">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="age" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="age" name="age" [(ngModel)]="addPlayerRequest.age">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="overall" class="form-label">Overall</label>
+                                        <input type="number" class="form-control" id="overall" name="overall" [(ngModel)]="addPlayerRequest.overall">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="potential" class="form-label">Potential</label>
+                                        <input type="number" class="form-control" id="potential" name="potential" [(ngModel)]="addPlayerRequest.potential">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="pace" class="form-label">Pace</label>
+                                        <input type="number" class="form-control" id="pace" name="pace" [(ngModel)]="addPlayerRequest.pace">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="shooting" class="form-label">Shooting</label>
+                                        <input type="number" class="form-control" id="shooting" name="shooting" [(ngModel)]="addPlayerRequest.shooting">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="passing" class="form-label">Passing</label>
+                                        <input type="number" class="form-control" id="passing" name="passing" [(ngModel)]="addPlayerRequest.passing">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="dribbling" class="form-label">Dribbling</label>
+                                        <input type="number" class="form-control" id="dribbling" name="dribbling" [(ngModel)]="addPlayerRequest.dribbling">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="defense" class="form-label">Defense</label>
+                                        <input type="number" class="form-control" id="defense" name="defense" [(ngModel)]="addPlayerRequest.defense">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3">
+                                        <label for="physical" class="form-label">Physical</label>
+                                        <input type="number" class="form-control" id="physical" name="physical" [(ngModel)]="addPlayerRequest.physical">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="submit" class="btn btn-success mt-1">Add Player</button>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary mt-1" (click)="GoBack()">Go Back</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </form>
             </div>
             <div class="col-4">
