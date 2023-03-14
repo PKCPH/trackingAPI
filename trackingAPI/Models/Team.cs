@@ -11,6 +11,7 @@ public class Team
     {
         this.Matches = new HashSet<MatchTeam>();
         this.Players = new HashSet<PlayerTeam>();
+        this.Leagues = new HashSet<LeagueTeam>();
     }
 
     [Key]
@@ -21,10 +22,7 @@ public class Team
 
     [DefaultValue("true")]
     public bool? IsAvailable { get; set; }
-    public ICollection<MatchTeam> Matches { get; set;}
+    public ICollection<MatchTeam> Matches { get; set; }
     public ICollection<PlayerTeam> Players { get; set; }
-
-    //[ForeignKey("Player")]
-    //public Guid PlayerId { get; set; }
-    //public Team Player { get; set; }//loooool
+    public ICollection<LeagueTeam> Leagues { get; set; }
 }
