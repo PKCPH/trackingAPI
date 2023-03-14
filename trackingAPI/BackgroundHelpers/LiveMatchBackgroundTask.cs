@@ -53,6 +53,8 @@ public class LiveMatchBackgroundTask
         //if draw and draw in not allowed then play overtime
         if (teamA.TeamScore == teamB.TeamScore && !gameMatch.IsDrawAllowed) PlayOvertime(gameMatch);
 
+        //match is done here, move out of this method
+
         using (var scope = _services.CreateScope())
         {
             var _context =

@@ -154,4 +154,58 @@ public class MatchBackgroundTask
             _context.SaveChanges();
         }
     }
+
+    //replace instead of in match and bye team matches post finished
+    private Task UpdateFinishedMatchInDatabase(Gamematch gamematch)
+    {
+        //match is done here, move out of this method
+
+        var teamA = gamematch.ParticipatingTeams.First();
+        var teamB = gamematch.ParticipatingTeams.Last();
+
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+
+            if (teamA.TeamScore > teamB.TeamScore) { teamA.Result = Result.Winner; teamB.Result = Result.Loser; }
+            if (teamA.TeamScore < teamB.TeamScore) { teamA.Result = Result.Loser; teamB.Result = Result.Winner; }
+            if (teamA.TeamScore == teamB.TeamScore && gamematch.IsDrawAllowed) { teamA.Result = Result.Draw; teamB.Result = Result.Draw; }
+
+            _context.Entry(teamA).State = EntityState.Modified;
+            _context.Entry(teamB).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            if (gamematch.LeagueId == null) return Task.CompletedTask;
+
+            var nextRound = gamematch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
+            nextRound--;
+            if (nextRound == 0)
+            {
+
+                var league = _context.Leagues.Where(x => x.Id == gamematch.LeagueId).First();
+                league.LeagueState = LeagueState.Finished;
+                _context.Entry(league).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                var winner = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
+                winner.IsAvailable = true;
+                _context.Entry(winner).State = EntityState.Modified;
+                _context.SaveChanges();
+                return Task.CompletedTask;
+            }
+
+            //takes lowest int of Seeds
+            var winnerSeed = Math.Min(Convert.ToByte(teamA.Seed), Convert.ToByte(teamB.Seed));
+            var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).First();
+            //adding winning team
+            nextMatchTeam.Team = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
+            //updating to sql
+            _context.Entry(nextMatchTeam.Team).State = EntityState.Modified;
+            _context.SaveChanges();
+
+            return Task.CompletedTask;
+        }
+    }
 }
