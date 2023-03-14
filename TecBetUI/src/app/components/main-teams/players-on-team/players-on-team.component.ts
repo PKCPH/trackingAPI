@@ -136,6 +136,7 @@ export class PlayersOnTeamComponent {
   }
 
   teamScoreCalculator(){
+    this.teamRating = 0
     this.players.forEach(player => {
       this.teamRating += player.overall
     });
