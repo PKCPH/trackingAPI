@@ -33,8 +33,8 @@ public class LeagueController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create(League league)
     {
-        LeagueHelper leagueSeedingLogic = new LeagueHelper();
-        await _context.Leagues.AddAsync(leagueSeedingLogic.CreateRounds(league, _context));
+        LeagueHelper leagueHelper = new LeagueHelper();
+        await _context.Leagues.AddAsync(leagueHelper.CreateRounds(league, _context));
         await _context.SaveChangesAsync();
         return Ok(_context.Leagues);
     }

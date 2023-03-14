@@ -10,8 +10,7 @@ public class LeagueHelper
 {
     public League CreateRounds(League league, DatabaseContext _context)
     {
-        var leagueWithTeams = GetListOfEightTeams(league, _context);
-        league.Teams = leagueWithTeams.Teams.ToList();
+        if (league.Teams.Count == 0) league.Teams = GetListOfTeams(league, _context).Teams.ToList();
 
         league.LeagueState = LeagueState.NotStarted;
         var teams = league.Teams.Select(x => x.Team).ToList();
@@ -100,7 +99,7 @@ public class LeagueHelper
         return gamematches;
     }
 
-    public League GetListOfEightTeams(League league, DatabaseContext _context)
+    public League GetListOfTeams(League league, DatabaseContext _context)
     {
         Random rnd = new Random();
 
