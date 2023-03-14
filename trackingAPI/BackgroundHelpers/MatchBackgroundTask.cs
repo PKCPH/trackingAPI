@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Controllers;
 using trackingAPI.Data;
@@ -34,7 +35,6 @@ public class MatchBackgroundTask
     public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
-        //var matches = GetListOfScheduledGameMatchesByDateTime();
         //while any matches has passed the datetime.now
         while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
         {
@@ -94,36 +94,17 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
             //If match has a BYE team
-            if(gameMatch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
+            if (gameMatch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
             {
-                var team = gameMatch.ParticipatingTeams.Where(x => x.Team.Name != "BYE").First();
-                var teamBye = gameMatch.ParticipatingTeams.Where(x => x.Team.Name == "BYE").First();
-                team.Result = Result.Winner;
-                teamBye.Result = Result.Loser;
-                gameMatch.MatchState = MatchState.Finished;
-                _context.Entry(team).State = EntityState.Modified;
-                _context.Entry(teamBye).State = EntityState.Modified;
-                _context.Entry(teamBye.Team).State = EntityState.Deleted;
-                _context.Matches.Update(gameMatch);
-                await _context.SaveChangesAsync();
-
-                //redundant! put from executelivematch out here in playgamematch
-                var nextRound = gameMatch.ParticipatingTeams.Where(x => x.Id == team.Id).First().Round;
-                nextRound--;
-
-                //takes lowest int of Seeds
-                var winnerSeed = Math.Min(Convert.ToByte(team.Seed), Convert.ToByte(teamBye.Seed));
-                var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).First();
-                //adding winning team
-                nextMatchTeam.Team = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
-                //updating to sql
-                _context.Entry(nextMatchTeam.Team).State = EntityState.Modified;
-                _context.SaveChanges();
-                return;
+                ExecuteByeMatch(gameMatch, _context);
+            }
+            else
+            {
+                await liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
             }
 
-            await liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
             gameMatch.MatchState = MatchState.Finished;
+            UpdateFinishedMatchInDatabase(gameMatch);
             //await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
 
             if (gameMatch.LeagueId == null)
@@ -138,13 +119,11 @@ public class MatchBackgroundTask
                 _context.Entry(gameMatch).State = EntityState.Detached;
 
             }
-            else
+            else if (gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team != null)
             {
                 var team = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team;
-
                 team.IsAvailable = true;
                 _context.Entry(team).State = EntityState.Modified;
-
             }
 
             // attach the updated gameMatch instance to the context and save changes
@@ -154,15 +133,25 @@ public class MatchBackgroundTask
             _context.SaveChanges();
         }
     }
+    private Task ExecuteByeMatch(Gamematch gamematch, DatabaseContext _context)
+    {
+        var team = gamematch.ParticipatingTeams.Where(x => x.Team.Name != "BYE").First();
+        var teamBye = gamematch.ParticipatingTeams.Where(x => x.Team.Name == "BYE").First();
+        team.Result = Result.Winner;
+        teamBye.Result = Result.Loser;
+        _context.Entry(team).State = EntityState.Modified;
+        _context.Entry(teamBye).State = EntityState.Modified;
+        _context.Entry(teamBye.Team).State = EntityState.Deleted;
+        _context.Matches.Update(gamematch);
+        _context.SaveChanges();
+        return Task.CompletedTask;
+    }
 
     //replace instead of in match and bye team matches post finished
     private Task UpdateFinishedMatchInDatabase(Gamematch gamematch)
     {
-        //match is done here, move out of this method
-
         var teamA = gamematch.ParticipatingTeams.First();
         var teamB = gamematch.ParticipatingTeams.Last();
-
         using (var scope = _services.CreateScope())
         {
             var _context =
@@ -183,14 +172,11 @@ public class MatchBackgroundTask
             nextRound--;
             if (nextRound == 0)
             {
-
                 var league = _context.Leagues.Where(x => x.Id == gamematch.LeagueId).First();
-                league.LeagueState = LeagueState.Finished;
-                _context.Entry(league).State = EntityState.Modified;
-                _context.SaveChanges();
-
                 var winner = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
+                league.LeagueState = LeagueState.Finished;
                 winner.IsAvailable = true;
+                _context.Entry(league).State = EntityState.Modified;
                 _context.Entry(winner).State = EntityState.Modified;
                 _context.SaveChanges();
                 return Task.CompletedTask;

@@ -27,7 +27,7 @@ public class LeagueHelper
 
     private List<Gamematch> CreateGamematchRounds(int rounds, int byes, List<Team> teams, DateTime leagueDateTime)
     {
-        /////////////////FIRST ROUNDS////////////////////
+        //Creating first round
         List<Gamematch> gamematches = new List<Gamematch>();
         Random rnd = new();
         var maxTeamCount = teams.Count + byes;
@@ -73,7 +73,7 @@ public class LeagueHelper
             gamematches.Add(gamematch);
         }
         rounds--;
-        ////////////////////////OTher rounds
+        //Creating rest of the rounds
         while (rounds > 0)
         {
             var maxTeamCount1 = maxTeamCount;
@@ -104,7 +104,7 @@ public class LeagueHelper
     {
         Random rnd = new Random();
 
-        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(13);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(LeagueConfiguration.AmountOfTeams);
 
         foreach (var team in availableTeams)
         {
