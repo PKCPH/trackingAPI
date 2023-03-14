@@ -5,6 +5,9 @@
         </div>
         <div class="d-flex justify-content-between">
             <table class="col-6">
+                <input class="m-3" type="text"
+                [(ngModel)]="model.searchStringOffTeam">
+                <button class="btn btn-primary m-3" (click)="searchPlayers(false)">Search</button>
                 <thead>
                     <tr>
                         <th>Players not on the team</th>
@@ -12,13 +15,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of playersNotOnTeam">
+                    <tr *ngFor="let player of filteredPlayersNotOnTeam">
                         <td>{{player.name}}</td>
                         <td><button class="btn-danger btn" (click)="addPlayerToTeam(player.id)">Add player to team</button></td>
                     </tr>
                 </tbody>
             </table>
             <table class="col-6 right">
+                <input class="m-3" type="text"
+                [(ngModel)]="model.searchStringOnTeam">
+                <button class="btn btn-primary m-3" (click)="searchPlayers(true)">Search</button>
+                <thead>
                 <thead>
                     <tr>
                         <th></th>
@@ -26,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of playersOnTeam">
+                    <tr *ngFor="let player of filteredPlayersOnTeam">
                         <td><button class="btn-danger btn" (click)="removePlayerFromTeam(player.id)">Remove player from team</button></td>
                         <td>{{player.name}}</td>
                     </tr>

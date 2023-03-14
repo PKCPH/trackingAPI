@@ -14,14 +14,18 @@ import { playerTeam } from 'src/app/models/playerTeam.model';
 export class PlayersToTeamComponent {
   /*contains player on the team*/
   playersOnTeam: Player[] = [];
+  filteredPlayersOnTeam: Player[] = [];
   /*contains player not on the team*/
   playersNotOnTeam: Player[] = [];
+  filteredPlayersNotOnTeam: Player[] = [];
   /*contains playerteams that have been removed from the team*/
   playersTeamsRemovedFromTeam: playerTeam[] = [];
   /*contains playerteams that have been added to the team*/
   playersTeamsAddedToTeam: playerTeam[] = [];
 
-  test: number = 0;
+  model = {searchStringOffTeam: "",
+  searchStringOnTeam: ""
+  }
   id: string = '';
   selectedTeam: Team = {
     id: '',
@@ -66,6 +70,8 @@ export class PlayersToTeamComponent {
           else if(element.teams.find(t => t.teamId == id)){ this.playersOnTeam.push(element) }
           else{ this.playersNotOnTeam.push(element) }
         });
+        this.filteredPlayersNotOnTeam = this.playersNotOnTeam
+        this.filteredPlayersOnTeam = this.playersOnTeam
         console.log(this.playersOnTeam)
         console.log(this.playersNotOnTeam)
       }
@@ -97,7 +103,6 @@ export class PlayersToTeamComponent {
         }
       }
       else{
-        this.test = 31100
         const playerTeamm: playerTeam = {
           id: '00000000-0000-0000-0000-000000000000',
           playerId: player.id,
@@ -106,6 +111,7 @@ export class PlayersToTeamComponent {
         console.log(playerTeamm)
         this.playersTeamsAddedToTeam.push(playerTeamm)
       }
+      this.searchPlayers(true)
     }
   }
 
@@ -120,6 +126,7 @@ export class PlayersToTeamComponent {
       else{
         this.playersTeamsAddedToTeam.splice(this.playersTeamsAddedToTeam.findIndex(p => p.playerId == player.id),1)
       }
+      this.searchPlayers(false)
     }
   }
 
@@ -131,5 +138,14 @@ export class PlayersToTeamComponent {
         this.router.navigate(['/teams/players/' + this.id])
       }
     })
+  }
+
+  searchPlayers(onTeam: boolean){
+    if(onTeam){
+      this.filteredPlayersOnTeam = this.playersOnTeam.filter(p => p.name.includes(this.model.searchStringOnTeam))
+    }
+    else{
+      this.filteredPlayersNotOnTeam = this.playersNotOnTeam.filter(p => p.name.includes(this.model.searchStringOffTeam))
+    }
   }
 }
