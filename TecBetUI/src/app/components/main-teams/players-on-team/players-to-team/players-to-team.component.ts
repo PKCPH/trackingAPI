@@ -131,6 +131,17 @@ export class PlayersToTeamComponent {
   }
 
   saveChanges(){
+    this.teamsService.getTeam(this.id)
+    .subscribe({
+      next:(team) => {
+        var rating: number = 0
+        this.playersOnTeam.forEach(player => {
+          rating += player.overall
+        });
+        rating = rating/this.playersOnTeam.length
+        team.rating = Number(rating.toPrecision(4))
+      }
+    })
     var playerTeams: playerTeam[][] = [this.playersTeamsRemovedFromTeam, this.playersTeamsAddedToTeam];
     this.teamsService.changePlayers(playerTeams)
     .subscribe({
