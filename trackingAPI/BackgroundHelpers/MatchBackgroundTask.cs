@@ -93,6 +93,34 @@ public class MatchBackgroundTask
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
+            //If match has a BYE team
+            if(gameMatch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
+            {
+                var team = gameMatch.ParticipatingTeams.Where(x => x.Team.Name != "BYE").First();
+                var teamBye = gameMatch.ParticipatingTeams.Where(x => x.Team.Name == "BYE").First();
+                team.Result = Result.Winner;
+                teamBye.Result = Result.Loser;
+                gameMatch.MatchState = MatchState.Finished;
+                _context.Entry(team).State = EntityState.Modified;
+                _context.Entry(teamBye).State = EntityState.Modified;
+                _context.Entry(teamBye.Team).State = EntityState.Deleted;
+                _context.Matches.Update(gameMatch);
+                await _context.SaveChangesAsync();
+
+                //redundant! put from executelivematch out here in playgamematch
+                var nextRound = gameMatch.ParticipatingTeams.Where(x => x.Id == team.Id).First().Round;
+                nextRound--;
+
+                //takes lowest int of Seeds
+                var winnerSeed = Math.Min(Convert.ToByte(team.Seed), Convert.ToByte(teamBye.Seed));
+                var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).First();
+                //adding winning team
+                nextMatchTeam.Team = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
+                //updating to sql
+                _context.Entry(nextMatchTeam.Team).State = EntityState.Modified;
+                _context.SaveChanges();
+                return;
+            }
 
             await liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
             gameMatch.MatchState = MatchState.Finished;
