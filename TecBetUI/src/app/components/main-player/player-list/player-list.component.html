@@ -20,7 +20,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let player of players">
+                    <tr>
+                        <td><input type="text" [(ngModel)]="model.name"></td>
+                        <td></td>
+                        <td><input type="number" [(ngModel)]="model.overall"></td>
+                        <td><input type="number" [(ngModel)]="model.potential"></td>
+                        <td><input type="number" [(ngModel)]="model.pace"></td>
+                        <td><input type="number" [(ngModel)]="model.shooting"></td>
+                        <td><input type="number" [(ngModel)]="model.passing"></td>
+                        <td><input type="number" [(ngModel)]="model.dribbling"></td>
+                        <td><input type="number" [(ngModel)]="model.defense"></td>
+                        <td><input type="number" [(ngModel)]="model.physical"></td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                    </tr>
+                    <tr *ngFor="let player of searchedPlayers">
                         <td> {{player.name}}</td>
                         <td> {{player.age}}</td>
                         <td> {{player.overall}}</td>

@@ -16,10 +16,23 @@ import { TeamsService } from 'src/app/services/teams.service';
 export class PlayersOnTeamComponent {
   
   players: Player[] = [];
+  searchedPlayers: Player[] = [];
   id: string = '';
   updateSubscription: Subscription;
   credentials: LoginModel = this.app.credentials
-  filterString=""
+  teamRating: number = 0
+
+  model = {name: "",
+  age: 0,
+  overall: 0,
+  potential: 0,
+  pace: 0,
+  shooting: 0,
+  passing: 0,
+  dribbling: 0,
+  defense: 0,
+  physical: 0,
+  }
   
   selectedTeam: Team = {
     id: '',
@@ -44,6 +57,8 @@ export class PlayersOnTeamComponent {
       next: (players) => {
         console.log(players);
         this.players = players
+        this.searchPlayers()
+        this.teamScoreCalculator()
       },
       error: (response) => {
         console.log(response);
@@ -69,6 +84,8 @@ export class PlayersOnTeamComponent {
             next: (players) => {
               console.log(players);
               this.players = players
+              this.searchPlayers()
+              this.teamScoreCalculator()
             },
             error: (response) => {
               console.log(response);
@@ -96,9 +113,34 @@ export class PlayersOnTeamComponent {
       }
     })
     this.players.splice(this.players.findIndex(p => p.id == id),1)
+    this.searchPlayers()
+    this.teamScoreCalculator()
   }
 
   isUserAuthenticated = (): boolean => {
     return this.app.isUserAuthenticated()
+  }
+
+  searchPlayers(){
+    this.searchedPlayers = this.players.filter(p => 
+      p.name.includes(this.model.name) &&
+      p.overall >= this.model.overall &&
+      p.potential >= this.model.potential &&
+      p.pace >= this.model.pace &&
+      p.shooting >= this.model.pace &&
+      p.passing >= this.model.passing &&
+      p.dribbling >= this.model.dribbling &&
+      p.defense >= this.model.defense &&
+      p.physical >= this.model.physical
+    )
+  }
+
+  teamScoreCalculator(){
+    this.teamRating = 0
+    this.players.forEach(player => {
+      this.teamRating += player.overall
+    });
+    this.teamRating = this.teamRating/this.players.length
+    this.teamRating = Number(this.teamRating.toPrecision(4))
   }
 }
