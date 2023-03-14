@@ -21,7 +21,7 @@ public class MatchController : ControllerBase
     //action method, does as a response of the http request, to get a list of Issue
     //attribute to make it handle httpGet
     [HttpGet]
-    public async Task<IEnumerable<GameMatch>> Get()
+    public async Task<IEnumerable<Gamematch>> Get()
         //get a list of Issue
         => await _context.Matches.ToListAsync();
 
@@ -29,7 +29,7 @@ public class MatchController : ControllerBase
     //so the action responds only to this id in the url
     //ProducesResponseType specifies which kind of status code the return can return
     [HttpGet("{id}")]
-    [ProducesResponseType(typeof(GameMatch), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(Gamematch), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
@@ -57,7 +57,7 @@ public class MatchController : ControllerBase
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid id, GameMatch match)
+    public async Task<IActionResult> Update(Guid id, Gamematch match)
     {
         //if the id of the url and the id in the body does not match, then return
         if (id != match.Id) return BadRequest();
@@ -86,7 +86,7 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("/api/Matches")]
-    public async Task<ActionResult<IList<GameMatch>>> GetAllMatchesAsync()
+    public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
         var matches = _context.Matches
             .Include(mt => mt.ParticipatingTeams)
@@ -108,7 +108,7 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("/api/MatchDetails/{id}")]
-    public async Task<ActionResult<IList<GameMatch>>> GetMatchDetails(Guid id)
+    public async Task<ActionResult<IList<Gamematch>>> GetMatchDetails(Guid id)
     {
         var match = await _context.Matches
                .Include(mt => mt.ParticipatingTeams)

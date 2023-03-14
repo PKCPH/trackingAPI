@@ -12,7 +12,7 @@ namespace trackingAPI.Models
 
         public Guid MatchId { get; set; }
 
-        public GameMatch? Match { get; set; } //Navigation object
+        public Gamematch? Match { get; set; } //Navigation object
 
         [ForeignKey("Login")]
         public Guid LoginId { get; set; }
@@ -28,7 +28,7 @@ namespace trackingAPI.Models
 
         public Bet()
         {
-            Match = new GameMatch();
+            Match = new Gamematch();
         }
     }
 
