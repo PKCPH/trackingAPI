@@ -34,7 +34,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 5400)
+        while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -54,7 +54,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 1800)
+        while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -103,7 +103,7 @@ public class LiveMatchBackgroundTask
                     teamA.TeamScore++;
                     _context.Entry(teamA).State = EntityState.Modified;
                 }
-                Thread.Sleep(60000);
+                Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalInSeconds);
 
                 chance = rnd.Next(1, 100);
                 if (chance > 45)
@@ -112,7 +112,7 @@ public class LiveMatchBackgroundTask
                     teamB.TeamScore++;
                     _context.Entry(teamB).State = EntityState.Modified;
                 }
-                Thread.Sleep(60000);
+                Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalInSeconds);
                 rounds++;
             }
         }
