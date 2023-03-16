@@ -30,6 +30,7 @@ public class Gamematch
     public Guid? LeagueId { get; set; }
     public ICollection<Bet> Bets { get; set; }
 
+    public DateTime TimeStampForPausedMatch { get; set; }
     
 }
 
