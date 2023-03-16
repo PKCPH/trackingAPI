@@ -28,13 +28,17 @@ public class Gamematch
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
     public Guid? LeagueId { get; set; }
-    public ICollection<Bet> Bets { get; set; }
-
-    public DateTime TimeStampForPausedMatch { get; set; }
+    public ICollection<Bet> Bets { get; set; } 
+    public PlayingState PlayingState { get; set; }
+    public int? PlayingStateTimeStamp { get; set; }
     
 }
 
 public enum MatchState
 {
     NotStarted, Playing, Finished
+}
+public enum PlayingState
+{
+    FullTime, OverTime, PenaltyShootOut, NotPlaying
 }

@@ -17,6 +17,7 @@ public class LiveMatchBackgroundTask
     {
         _services = services;
     }
+    
 
     public Task ExecuteLiveMatch(Gamematch gameMatch)
     {
@@ -33,6 +34,7 @@ public class LiveMatchBackgroundTask
 
         Stopwatch timer = new Stopwatch();
         timer.Start();
+        
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
@@ -49,6 +51,7 @@ public class LiveMatchBackgroundTask
         if (teamA.TeamScore == teamB.TeamScore && !gameMatch.IsDrawAllowed) PlayOvertime(gameMatch);
         return Task.CompletedTask;
     }
+
     public Gamematch PlayOvertime(Gamematch gamematch)
     {
         Stopwatch timer = new Stopwatch();
@@ -150,4 +153,3 @@ public class LiveMatchBackgroundTask
         return gameMatch;
     }
 }
-
