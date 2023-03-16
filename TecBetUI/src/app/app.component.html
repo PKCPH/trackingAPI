@@ -43,7 +43,7 @@
       </ul>
       <ul class="dropDownBox" *ngIf="showDropdown">
         <li class="dropDownItems" *ngFor="let item of items" (click)="onItemClick(item.text)">
-          <a class="dropDownItem" *ngIf="item.text === 'Log Out'" (click)="logOut()"><mat-icon style="margin: auto; padding-right: 25px;">exit_to_app</mat-icon><span style="padding-right: 25px">{{item.text}}</span></a>
+          <a class="dropDownItem" *ngIf="item.text === 'Log Out'" (click)="logOut()"><mat-icon style="margin: auto; padding-right: 30px;">exit_to_app</mat-icon><span style="padding-right: 25px">{{item.text}}</span></a>
           <a class="dropDownItem" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]"><mat-icon style="margin: auto; padding-right: 30px;">dashboard</mat-icon><span style="padding-right: 5px;">{{item.text}}</span></a>
           <a class="dropDownItem" *ngIf="item.text === 'My Bets'" [routerLink]="['/dashboard', credentials.userName, 'mybets']"><mat-icon style="margin: auto; padding-right: 30px;">attach_money</mat-icon><span style="padding-right: 28px">{{item.text}}</span></a>
         </li>

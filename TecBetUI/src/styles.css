@@ -75,6 +75,10 @@ form {
     background-size: cover;
 }
 
+.section4 {
+    height: 100vh;
+}
+
 .section3 {
     padding-top: 120px;
     background-image: url("https://png.pngtree.com/background/20210711/original/pngtree-league-of-legends-city-tournament-e-sports-competition-background-picture-image_1143124.jpg");
@@ -125,5 +129,13 @@ form {
     border-radius: 60px;
     background-color: rgba(45, 0, 45, 1)
 }
+
+/* PAGINATOR STYLINGS */
+
+/* Removing any tooltip popups from paginator icons */
+mat-tooltip-component {
+    display: none !important;
+  }
+
 
 /* MEDIA QUERIES */

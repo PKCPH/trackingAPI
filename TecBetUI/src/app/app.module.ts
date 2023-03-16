@@ -39,6 +39,8 @@ import { PlayersToTeamComponent } from './components/main-teams/players-on-team/
 import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 import {MatIconModule} from '@angular/material/icon';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule } from '@angular/material/table';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -93,7 +95,9 @@ export function tokenGetter() {
     NgbModule,
     BrowserAnimationsModule,
     MatSliderModule,
-    MatIconModule
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
