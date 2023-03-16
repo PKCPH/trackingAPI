@@ -43,9 +43,11 @@ export class PlayersOnTeamComponent {
     players:[],
     score: 0,
     result: 0,
+    rating: 0
   }
 
   ngOnDestroy() {
+    this.teamScoreCalculator()
     this.updateSubscription.unsubscribe();
   }
   
@@ -140,7 +142,17 @@ export class PlayersOnTeamComponent {
     this.players.forEach(player => {
       this.teamRating += player.overall
     });
-    this.teamRating = this.teamRating/this.players.length
+    if(this.players.length > 0){
+      this.teamRating = this.teamRating/this.players.length
+    } else {
+      this.teamRating = 0
+    }
     this.teamRating = Number(this.teamRating.toPrecision(4))
+    this.selectedTeam.rating = this.teamRating
+    this.teamService.updateTeam(this.selectedTeam.id, this.selectedTeam)
+    .subscribe({
+      next: (team) => {
+      }
+    })
   }
 }

@@ -36,6 +36,7 @@ export class PlayersToTeamComponent {
     players:[],
     score: 0,
     result: 0,
+    rating: 0
   }
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }
   

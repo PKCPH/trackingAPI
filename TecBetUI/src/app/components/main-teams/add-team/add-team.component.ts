@@ -19,7 +19,8 @@ export class AddTeamComponent {
     availability: '',
     players: [],
     score: 0,
-    result: 0
+    result: 0,
+    rating: 0
   };
   
   teamForm: FormGroup;

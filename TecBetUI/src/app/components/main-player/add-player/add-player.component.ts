@@ -22,7 +22,8 @@ export class AddPlayerComponent {
     availability:'',
     players:[],
     score: 0,
-    result: 0
+    result: 0,
+    rating: 0
   }
   addPlayerRequest: Player = {
     id: '',
@@ -62,13 +63,40 @@ export class AddPlayerComponent {
   }
 
   addPlayer(){
-    this.selectedTeamArray.forEach(element => {
+    this.selectedTeamArray.forEach(team => {
       const addPlayerTeam: playerTeam = {
         id: '',
         playerId: '',
-        teamId: element.id
+        teamId: team.id
       }
       this.addPlayerRequest.teams.push(addPlayerTeam)
+
+      this.teamsService.getTeam(team.id)
+      .subscribe({
+        next: (team) => {
+          team.rating = team.rating * team.players.length
+          team.rating = team.rating + this.addPlayerRequest.overall
+          team.rating = team.rating / (team.players.length + 1)
+          team.rating = Number(team.rating.toPrecision(4))
+          this.teamsService.updateTeam(team.id, team)
+          .subscribe({
+            next: (response) => {
+            }
+          })
+        }
+      })
+    });
+
+    this.teams.forEach(team => {
+      if(team.players.some(p => p.playerId == this.addPlayerRequest.id)){
+        team.rating = team.rating * (team.players.length - 1)
+        this.teamsService.updateTeam(team.id, team)
+        .subscribe({
+          next: (response) => {
+            console.log(team.rating)
+          }
+        })
+      }
     });
 
     console.log(this.addPlayerRequest)
