@@ -57,6 +57,11 @@ export class MainTeamsComponent implements OnDestroy {
             if (teams)
             {
               this.toggleOverflowDiv();
+              this.teams.forEach(team => {
+                if(team.players.length == 0 && team.rating != 0){
+                  team.rating = 0
+                }
+              });
               this.Hideloader();
             }
             this.teamsService.errorMessage.subscribe(error => {

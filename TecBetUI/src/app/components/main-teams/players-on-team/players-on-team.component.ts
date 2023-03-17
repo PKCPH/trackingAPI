@@ -22,16 +22,17 @@ export class PlayersOnTeamComponent {
   credentials: LoginModel = this.app.credentials
   teamRating: number = 0
 
-  model = {name: "",
-  age: 0,
-  overall: 0,
-  potential: 0,
-  pace: 0,
-  shooting: 0,
-  passing: 0,
-  dribbling: 0,
-  defense: 0,
-  physical: 0,
+  model = {
+    name: "",
+    age: 0,
+    overall: 0,
+    potential: 0,
+    pace: 0,
+    shooting: 0,
+    passing: 0,
+    dribbling: 0,
+    defense: 0,
+    physical: 0,
   }
   
   selectedTeam: Team = {
@@ -43,9 +44,11 @@ export class PlayersOnTeamComponent {
     players:[],
     score: 0,
     result: 0,
+    rating: 0
   }
 
   ngOnDestroy() {
+    this.teamScoreCalculator()
     this.updateSubscription.unsubscribe();
   }
   
@@ -123,7 +126,7 @@ export class PlayersOnTeamComponent {
 
   searchPlayers(){
     this.searchedPlayers = this.players.filter(p => 
-      p.name.includes(this.model.name) &&
+      p.name.toLowerCase().includes(this.model.name.toLocaleLowerCase()) &&
       p.overall >= this.model.overall &&
       p.potential >= this.model.potential &&
       p.pace >= this.model.pace &&
@@ -140,7 +143,17 @@ export class PlayersOnTeamComponent {
     this.players.forEach(player => {
       this.teamRating += player.overall
     });
-    this.teamRating = this.teamRating/this.players.length
+    if(this.players.length > 0){
+      this.teamRating = this.teamRating/this.players.length
+    } else {
+      this.teamRating = 0
+    }
     this.teamRating = Number(this.teamRating.toPrecision(4))
+    this.selectedTeam.rating = this.teamRating
+    this.teamService.updateTeam(this.selectedTeam.id, this.selectedTeam)
+    .subscribe({
+      next: (team) => {
+      }
+    })
   }
 }

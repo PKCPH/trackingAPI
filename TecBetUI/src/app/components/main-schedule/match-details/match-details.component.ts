@@ -30,7 +30,8 @@ export class MatchDetailsComponent implements OnDestroy {
     availability: '',
     score: 0,
     result: 0,
-    players:[]
+    players:[],
+    rating: 0
   };
   
 
