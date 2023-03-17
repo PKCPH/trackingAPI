@@ -50,6 +50,7 @@ public class MatchBackgroundTask
                     _context.Entry(firstGameMatch).State = EntityState.Modified;
                     _context.SaveChanges();
                 }
+                //PlayGameMatch(firstGameMatch);
                 //new thread is created and started per livematch
                 Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
                 thread.Start();
@@ -103,7 +104,7 @@ public class MatchBackgroundTask
         }
     }
 
-    public async Task PlayGameMatch(Gamematch gameMatch)
+    public async Task PlayGameMatch(Gamematch gamematch)
     {
         Random random = new Random();
         List<MatchTeam> matchTeams = new List<MatchTeam>();
@@ -117,40 +118,41 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
             //If match has a BYE team
-            if (gameMatch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
+            if (gamematch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
             {
-                ExecuteByeMatch(gameMatch, _context);
+                ExecuteByeMatch(gamematch, _context);
             }
             else
             {
-                await liveMatchBackgroundTask.ExecuteLiveMatch(gameMatch);
+                await liveMatchBackgroundTask.ExecuteLiveMatch(ref gamematch);
             }
 
-            gameMatch.MatchState = MatchState.Finished;
-            UpdateFinishedMatchInDatabase(gameMatch);
-            await betsHandler.UpdateBalancesOnMatchFinish(gameMatch);
+            gamematch.MatchState = MatchState.Finished;
+            gamematch.PlayingState = PlayingState.Finished;
+            UpdateFinishedMatchInDatabase(gamematch);
+            await betsHandler.UpdateBalancesOnMatchFinish(gamematch);
 
-            if (gameMatch.LeagueId == null)
+            if (gamematch.LeagueId == null)
             {
                 //updating teams to is available
-                foreach (var item in gameMatch.ParticipatingTeams)
+                foreach (var item in gamematch.ParticipatingTeams)
                 {
                     item.Team.IsAvailable = true;
                     _context.Entry(item.Team).State = EntityState.Modified;
                 }
                 // detach the gameMatch instance to avoid conflicts with the context
-                _context.Entry(gameMatch).State = EntityState.Detached;
+                _context.Entry(gamematch).State = EntityState.Detached;
 
             }
-            else if (gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team != null)
+            else if (gamematch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team != null)
             {
-                var team = gameMatch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team;
+                var team = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team;
                 team.IsAvailable = true;
                 _context.Entry(team).State = EntityState.Modified;
             }
 
             // attach the updated gameMatch instance to the context and save changes
-            _context.Matches.Update(gameMatch);
+            _context.Matches.Update(gamematch);
             await _context.SaveChangesAsync();
 
             _context.SaveChanges();

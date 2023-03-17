@@ -17,40 +17,74 @@ public class LiveMatchBackgroundTask
     {
         _services = services;
     }
-    
 
-    public Task ExecuteLiveMatch(Gamematch gameMatch)
+
+    public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            gameMatch.MatchState = MatchState.Playing;
-
-            _context.Entry(gameMatch).State = EntityState.Modified;
+            gamematch.MatchState = MatchState.Playing;
+            gamematch.PlayingState = PlayingState.FirstHalf;
+            _context.Entry(gamematch).State = EntityState.Modified;
             _context.SaveChanges();
         }
+        PlayGameHalf(gamematch);
 
+        UpdatePlayingState(gamematch, PlayingState.HalfTimePause);
+        Console.WriteLine("HalfTimeBreak;");
+        Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
+        
+        UpdatePlayingState(gamematch, PlayingState.SecondHalf);
+        PlayGameHalf(gamematch);
+
+        ////if not draw or draw is allowed then return
+        if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
+            || gamematch.IsDrawAllowed) return Task.CompletedTask;
+        UpdatePlayingState(gamematch, PlayingState.OverTime);
+        PlayOvertime(gamematch);
+
+        if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
+        UpdatePlayingState(gamematch, PlayingState.PenaltyShootOut);
+        Console.WriteLine($"Match Penalty shootout: {gamematch.Id}");
+        PlayPenaltyShootout(gamematch);
+
+        return Task.CompletedTask;
+    }
+
+    public Task UpdatePlayingState(Gamematch gamematch, PlayingState playingState)
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            gamematch.PlayingState = playingState;
+            _context.Entry(gamematch).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+        return Task.CompletedTask;
+    }
+
+    public Gamematch PlayGameHalf(Gamematch gamematch)
+    {
         Stopwatch timer = new Stopwatch();
         timer.Start();
-        
+
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
-            string fromTimer = result.ToString("mm':'ss"); 
-            Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
-            IsGoalScoredChance(gameMatch);
+            string fromTimer = result.ToString("mm':'ss");
+            Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.PlayingState}");
+            IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }
         timer.Stop();
 
-        var teamA = gameMatch.ParticipatingTeams.First();
-        var teamB = gameMatch.ParticipatingTeams.Last();
-        //if draw and draw in not allowed then play overtime
-        if (teamA.TeamScore == teamB.TeamScore && !gameMatch.IsDrawAllowed) PlayOvertime(gameMatch);
-        return Task.CompletedTask;
+        return gamematch;
     }
 
     public Gamematch PlayOvertime(Gamematch gamematch)
@@ -65,19 +99,12 @@ public class LiveMatchBackgroundTask
 
             IsGoalScoredChance(gamematch);
             Console.WriteLine($"Match overtime: {gamematch.Id} Time: {fromTimer}");
-
             Console.WriteLine();
-
             Thread.Sleep(1000);
         }
         timer.Stop();
 
-        if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return gamematch;
-
-        Console.WriteLine($"Match Penalty shootout: {gamematch.Id}");
-        PlayPenaltyShootout(gamematch);
-
-
+        
         return gamematch;
     }
 
@@ -86,41 +113,39 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         Random rnd = new Random();
         var rounds = 0;
-
-        var teamA = gamematch.ParticipatingTeams.First();
         var teamAPKScore = 0;
-        var teamB = gamematch.ParticipatingTeams.Last();
         var teamBPKScore = 0;
 
-        using (var scope = _services.CreateScope())
+
+        while (teamAPKScore == teamBPKScore || rounds < 4)
         {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-
-            while (teamAPKScore == teamBPKScore || rounds < 4)
-            {
-                int chance = rnd.Next(1, 100);
-                if (chance > 45)
-                {
-                    teamAPKScore++;
-                    teamA.TeamScore++;
-                    _context.Entry(teamA).State = EntityState.Modified;
-                }
-                Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalInSeconds);
-
-                chance = rnd.Next(1, 100);
-                if (chance > 45)
-                {
-                    teamBPKScore++;
-                    teamB.TeamScore++;
-                    _context.Entry(teamB).State = EntityState.Modified;
-                }
-                Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalInSeconds);
-                rounds++;
-            }
+            PenaltyKick(ref teamAPKScore, gamematch.ParticipatingTeams.First(), rnd);
+            Console.WriteLine($"PK SCORE: {gamematch.ParticipatingTeams.First().Team.Name} - {teamAPKScore} VS {gamematch.ParticipatingTeams.Last().Team.Name} - {teamBPKScore}");
+            PenaltyKick(ref teamBPKScore, gamematch.ParticipatingTeams.Last(), rnd);
+            Console.WriteLine($"PK SCORE: {gamematch.ParticipatingTeams.First().Team.Name} - {teamAPKScore} VS {gamematch.ParticipatingTeams.Last().Team.Name} - {teamBPKScore}");
+            rounds++;
         }
         return gamematch;
+    }
+
+    public Task PenaltyKick(ref int teamPKScore, MatchTeam team, Random rnd)
+    {
+        Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalMilliInSeconds);
+        int chance = rnd.Next(1, 100);
+        if (chance > 45)
+        {
+            teamPKScore++;
+
+            using (var scope = _services.CreateScope())
+            {
+                var _context =
+                    scope.ServiceProvider
+                        .GetRequiredService<DatabaseContext>();
+                team.TeamScore++;
+                _context.Entry(team).State = EntityState.Modified;
+            }
+        }
+        return Task.CompletedTask;
     }
 
     public Gamematch IsGoalScoredChance(Gamematch gameMatch)
