@@ -104,6 +104,16 @@ export class NewPlayerComponent {
           })
         }
       })
+
+      if(team.players.some(p => p.playerId == this.addPlayerRequest.id)){
+        team.rating = team.rating * (team.players.length - 1)
+        this.teamsService.updateTeam(team.id, team)
+        .subscribe({
+          next: (response) => {
+            console.log(team.rating)
+          }
+        })
+      }
     });
 
     console.log(this.addPlayerRequest)

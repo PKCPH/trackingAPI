@@ -157,7 +157,7 @@ export class PlayersToTeamComponent {
       this.filteredPlayersOnTeam = this.playersOnTeam.filter(p => p.name.includes(this.model.searchStringOnTeam))
     }
     else{
-      this.filteredPlayersNotOnTeam = this.playersNotOnTeam.filter(p => p.name.includes(this.model.searchStringOffTeam))
+      this.filteredPlayersNotOnTeam = this.playersNotOnTeam.filter(p => p.name.toLowerCase().includes(this.model.searchStringOffTeam.toLowerCase()))
     }
   }
 }

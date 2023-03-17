@@ -151,7 +151,10 @@ export class ChangePlayerComponent {
 
     this.teams.forEach(team => {
       if(team.players.some(p => p.playerId == this.playerDetails.id)){
-        team.rating = team.rating * (team.players.length - 1)
+        team.rating = team.rating * team.players.length
+        team.rating = team.rating - this.playerDetails.overall
+        team.rating = team.rating / (team.players.length - 1)
+        team.rating = Number(team.rating.toPrecision(4))
         this.teamsService.updateTeam(team.id, team)
         .subscribe({
           next: (response) => {

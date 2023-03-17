@@ -85,9 +85,7 @@ export class AddPlayerComponent {
           })
         }
       })
-    });
 
-    this.teams.forEach(team => {
       if(team.players.some(p => p.playerId == this.addPlayerRequest.id)){
         team.rating = team.rating * (team.players.length - 1)
         this.teamsService.updateTeam(team.id, team)
