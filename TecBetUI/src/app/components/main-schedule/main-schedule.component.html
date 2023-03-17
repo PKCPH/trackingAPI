@@ -41,7 +41,7 @@
             </ng-container>
         </table>  
 
-        <mat-paginator id="paginator" [length]="games.length" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
+        <mat-paginator id="paginator" [length]="finishedGames.length" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
 
         <table class="table tabletext" *ngIf="games && games.length > 0" id="archivedMatches">
             <thead>

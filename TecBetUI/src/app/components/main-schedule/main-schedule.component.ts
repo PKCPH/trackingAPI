@@ -12,6 +12,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class MainScheduleComponent implements OnDestroy {
   games: Match[] = [];
+  finishedGames: Match[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription;
 
@@ -62,20 +63,20 @@ export class MainScheduleComponent implements OnDestroy {
 
     fetchFin() {    
       this.matchesService.getFinishedMatches().subscribe({
-        next: (games) => {
-          this.games = games.map(game => {
+        next: (finishedGames) => {
+          this.finishedGames = finishedGames.map(finishedGame => {
             return {
-              ...game,
+              ...finishedGame,
             }
           });
-          // console.log(this.games);
-          if (games)
+          // console.log(this.finishedGames);
+          if (finishedGames)
           {
             this.Hideloader();
           }
           this.matchesService.errorMessage.subscribe(error => {
             this.errorMessage = error;
-            if (games.length > 0)
+            if (finishedGames.length > 0)
             {
               this.errorMessage = "";
             }
@@ -105,13 +106,18 @@ export class MainScheduleComponent implements OnDestroy {
       this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
       this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
       this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'block'); 
+
       this.updateSubscription.unsubscribe();
 
       this.fetchFin();
 
+      if(this.games)
+      {
       this.updateSubscription = interval(2500).subscribe(() => {
         this.fetchFin();
       });
+    }
+
     }
 
     
@@ -121,14 +127,21 @@ export class MainScheduleComponent implements OnDestroy {
       this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
       this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
       this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'none'); 
+
       this.updateSubscription.unsubscribe();
 
       this.fetch();
 
+      if(this.games)
+      {
       this.updateSubscription = interval(2500).subscribe(() => {
         this.fetch();
       });
     }
+
+    }
+
+    //Detects pagechange and updates the data. Get pagedGames is for the pagination, where it slices the data for display, it keeps track of pageindex to know where to pick up from.
 
     onPageChange(event: any) {
       this.pageIndex = event.pageIndex;
@@ -138,7 +151,7 @@ export class MainScheduleComponent implements OnDestroy {
     get pagedGames() {
       const startIndex = this.pageIndex * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.games.slice(startIndex, endIndex);
+      return this.finishedGames.slice(startIndex, endIndex);
     }
 
 }
