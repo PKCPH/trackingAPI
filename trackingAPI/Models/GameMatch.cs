@@ -30,8 +30,6 @@ public class Gamematch
     public Guid? LeagueId { get; set; }
     public ICollection<Bet> Bets { get; set; } 
     public PlayingState PlayingState { get; set; }
-    public int? PlayingStateTimeStamp { get; set; }
-    
 }
 
 public enum MatchState
@@ -40,5 +38,5 @@ public enum MatchState
 }
 public enum PlayingState
 {
-    FullTime, OverTime, PenaltyShootOut, NotPlaying
+    NotPlaying, FirstHalf, HalfTimePause, SecondHalf, OverTime, PenaltyShootOut, Finished
 }
