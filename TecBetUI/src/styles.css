@@ -1,3 +1,5 @@
+@import '@angular/cdk/a11y-prebuilt.css';
+
 /* You can add global styles to this file, and also import other style files */
 * {
     margin: 0;
@@ -135,6 +137,15 @@ form {
 /* Removing any tooltip popups from paginator icons */
 mat-tooltip-component {
     display: none !important;
+  }
+
+
+  /* MAT SORT STYLINGS */
+  
+  .mat-sort-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 
 

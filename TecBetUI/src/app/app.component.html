@@ -35,7 +35,7 @@
         <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span class="username">{{ credentials.userName | titlecase }}</span><img src="images/dropdownarrow.png"></button>
         </li>
         <li>
-          <p *ngIf="isUserAuthenticated() && !isRegisterPage()" class="balance">Balance: <span *ngIf="!credentials.balance"><img src="images/coin.gif"></span><span *ngIf="credentials.balance || credentials.balance == 0" class="balanceTxt">{{ credentials.balance}}$</span></p>
+          <p *ngIf="isUserAuthenticated() && !isRegisterPage()" class="balance">Balance: <span *ngIf="!credentials.balance && credentials.balance != 0"><img src="images/coin.gif"></span><span *ngIf="credentials.balance || credentials.balance == 0" class="balanceTxt">{{ credentials.balance}}$</span></p>
         </li>
 
         <li *ngIf="!isUserAuthenticated()"><a class="nav-text" (click)="openLogin()">Login</a></li>

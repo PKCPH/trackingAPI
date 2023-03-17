@@ -4,7 +4,6 @@ import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
 import { interval, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-main-schedule',
@@ -16,14 +15,10 @@ export class MainScheduleComponent implements OnDestroy {
   finishedGames: Match[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription;
-  sortedGames: Match[] = [];
-  sortedFinGames: Match[] = [];
 
   // Paginator configurations
   pageIndex = 0;
   pageSize = 8;
-
-  @ViewChild(MatSort, {static: true}) sort: MatSort | any;
 
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
@@ -50,9 +45,7 @@ export class MainScheduleComponent implements OnDestroy {
           // console.log(this.games);
           if (games)
           {
-            this.sortedGames = this.games.slice();
             this.Hideloader();
-            this.sortData(this.sort);
           }
           this.matchesService.errorMessage.subscribe(error => {
             this.errorMessage = error;
@@ -79,9 +72,7 @@ export class MainScheduleComponent implements OnDestroy {
           // console.log(this.finishedGames);
           if (finishedGames)
           {
-            this.sortedFinGames = this.finishedGames.slice();
             this.Hideloader();
-            this.sortDataTest(this.sort);
           }
           this.matchesService.errorMessage.subscribe(error => {
             this.errorMessage = error;
@@ -150,44 +141,6 @@ export class MainScheduleComponent implements OnDestroy {
 
     }
 
-      //This functions take the sorted teams and updates them
-
-  updateSortedGames() {
-    const sortColumn = this.sort.active;
-    const sortDirection = this.sort.direction;
-    this.sortedGames = this.games.slice().sort((a, b) => {
-      const isAsc = sortDirection === 'asc';
-      switch (sortColumn) {
-        case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  updateSortedFinGames() {
-    const sortColumn = this.sort.active;
-    const sortDirection = this.sort.direction;
-    this.sortedFinGames = this.finishedGames.slice().sort((a, b) => {
-      const isAsc = sortDirection === 'asc';
-      switch (sortColumn) {
-        case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  //This functions saves the sort event, to dynamically update the sorted teams, whenever it gets re-fetched
-
-  sortData(event: any) {
-    this.sort = event; // Store sort state for dynamic data update
-    this.updateSortedGames();
-  }
-
-  sortDataTest(event: any) {
-    this.sort = event;
-    this.updateSortedFinGames
-  }
-
     //Detects pagechange and updates the data. Get pagedGames is for the pagination, where it slices the data for display, it keeps track of pageindex to know where to pick up from.
 
     onPageChange(event: any) {
@@ -198,11 +151,7 @@ export class MainScheduleComponent implements OnDestroy {
     get pagedGames() {
       const startIndex = this.pageIndex * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.sortedFinGames.slice(startIndex, endIndex);
+      return this.finishedGames.slice(startIndex, endIndex);
     }
 
-}
-
-function compare(a: Date | string, b: Date | string, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

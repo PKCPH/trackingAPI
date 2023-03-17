@@ -25,7 +25,7 @@
             </thead>
 
             <ng-container *ngFor="let user of users" >
-            <tr class="tablerow" *ngIf="user.userName != adminUsername && user.userName != 'admin'">      
+            <tr class="tablerow" *ngIf="user.userName === adminUsername || user.userName != 'admin'">      
                 <td>{{ user.id }}</td>
                 <td>{{ user.userName }}</td>
                 <td>{{ user.role }}</td>

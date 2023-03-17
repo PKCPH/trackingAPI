@@ -1,8 +1,9 @@
-import { Component, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Team } from 'src/app/models/teams.model';
 import { TeamsService } from 'src/app/services/teams.service';
 import { interval, Subscription, switchMap } from 'rxjs';
+import { Sort, MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-main-teams',
@@ -13,9 +14,14 @@ export class MainTeamsComponent implements OnDestroy {
 
   teams: Team[] = [];
   errorMessage: string = "";
-  updateSubscription: Subscription;
+  updateSubscription: Subscription | any;
   storedCredentialsString: any;
   role: any;
+  sortedTeams: Team[] = [];
+
+  //ViewChield is used to fetch a components html element object
+
+  @ViewChild(MatSort, {static: true}) sort: MatSort | any;
 
   //ngOnDestroy is when you route out of a component it triggers, and inside it I unsubscribe to everything, so it doesnt keep running while on another component.
 
@@ -30,7 +36,7 @@ export class MainTeamsComponent implements OnDestroy {
 
     this.getCredentials();
 
-    this.fetch()
+    this.fetch();
 
     this.updateSubscription = interval(2500).subscribe(() => {
       this.fetch();
@@ -38,6 +44,7 @@ export class MainTeamsComponent implements OnDestroy {
 
     window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
   }
+
 
   fetch() {
     this.teamsService.getAllTeams()
@@ -49,10 +56,12 @@ export class MainTeamsComponent implements OnDestroy {
               availability: team.isAvailable ? 'No' : 'Yes'
             }
           });
-          // console.log(this.teams);
+          console.log(this.teams);
           if (teams) {
+            this.sortedTeams = this.teams.slice();
             this.toggleOverflowDiv();
             this.Hideloader();
+            this.sortData(this.sort);
           }
           this.teamsService.errorMessage.subscribe(error => {
             this.errorMessage = error;
@@ -122,6 +131,26 @@ export class MainTeamsComponent implements OnDestroy {
     }
   }
 
+  //This functions take the sorted teams and updates them
+
+  updateSortedTeams() {
+    const sortColumn = this.sort.active;
+    const sortDirection = this.sort.direction;
+    this.sortedTeams = this.teams.slice().sort((a, b) => {
+      const isAsc = sortDirection === 'asc';
+      switch (sortColumn) {
+        case 'name': return compare(a.name, b.name, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
+  //This functions saves the sort event, to dynamically update the sorted teams, whenever it gets re-fetched
+
+  sortData(event: any) {
+    this.sort = event; // Store sort state for dynamic data update
+    this.updateSortedTeams();
+  }
   
   //Simple delete, it gets parsed the string and it deletes the correspondant team. After I do another getall, to update my view.
 
@@ -177,4 +206,10 @@ export class MainTeamsComponent implements OnDestroy {
     }
   }
 
+}
+
+//Compare function that simply sorts
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

@@ -41,6 +41,7 @@ import { ChangePlayerComponent } from './components/main-teams/players-on-team/c
 import {MatIconModule} from '@angular/material/icon';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -97,7 +98,8 @@ export function tokenGetter() {
     MatSliderModule,
     MatIconModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

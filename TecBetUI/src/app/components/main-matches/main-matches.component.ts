@@ -39,6 +39,7 @@ export class MainMatchesComponent implements OnDestroy {
       this.matches = matches.map(match => {
         return {
           ...match,
+          id: match.id.substring(0, 18),
         }
       });
       // console.log(this.matches);
