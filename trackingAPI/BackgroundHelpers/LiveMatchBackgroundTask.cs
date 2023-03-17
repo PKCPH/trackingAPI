@@ -39,7 +39,8 @@ public class LiveMatchBackgroundTask
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
-            string fromTimer = result.ToString("mm':'ss");
+            string fromTimer = result.ToString("mm':'ss"); 
+            Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
             IsGoalScoredChance(gameMatch);
             Thread.Sleep(1000);
         }

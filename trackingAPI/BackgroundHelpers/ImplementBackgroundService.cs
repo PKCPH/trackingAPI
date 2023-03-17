@@ -31,22 +31,8 @@ public class ImplementBackgroundService : BackgroundService
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            unfinishedMatches = _context.Matches.Where(x => x.MatchState == MatchState.Playing);
-
-
             MatchBackgroundTask matchBackgroundTask = new(_services);
-
-            ////run through matches that wasn't finished since last time we close the program
-            ////var unfinishedMatches = _context.Matches.Where(x => x.MatchState == MatchState.Playing);
-
-            //foreach (var unfinishedMatch in this.unfinishedMatches)
-            //{
-            //    unfinishedMatch.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == unfinishedMatch.Id)
-            //        .Where(x => x.Team != null).Include(x => x.Team).ToList();
-            //    await matchBackgroundTask.PlayGameMatch(unfinishedMatch);
-            //    Console.WriteLine($"foreach test {unfinishedMatch.ParticipatingTeams.First().Team.Name} vs. " +
-            //        $"{unfinishedMatch.ParticipatingTeams.Last().Team.Name}");
-            //}
+            matchBackgroundTask.RestartUnfinishedMatches();
 
             Task task;
             do

@@ -72,12 +72,35 @@ public class MatchBackgroundTask
 
             foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted).ToList())
             {
-                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id).Where(x => x.Team != null).Include(x => x.Team).ToList();
+                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
+                    .Where(x => x.Team != null).Include(x => x.Team).ToList();
                 gameMatches.Add(match);
             }
         }
         var gameMatchesSortByOrder = gameMatches.OrderBy(x => x.DateOfMatch);
         return gameMatchesSortByOrder;
+    }
+
+    public async Task RestartUnfinishedMatches()
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+
+            foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.Playing).ToList())
+            {
+                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
+                    .Where(x => x.Team != null).Include(x => x.Team).ToList();
+                match.MatchState = MatchState.NotStarted;
+                match.ParticipatingTeams.First().TeamScore = 0;
+                match.ParticipatingTeams.Last().TeamScore = 0;
+                match.PlayingState = PlayingState.NotPlaying;
+                _context.Entry(match).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+        }
     }
 
     public async Task PlayGameMatch(Gamematch gameMatch)
