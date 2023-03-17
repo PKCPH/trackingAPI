@@ -21,47 +21,38 @@ public class LiveMatchBackgroundTask
 
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
-        using (var scope = _services.CreateScope())
-        {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-            gamematch.MatchState = MatchState.Playing;
-            gamematch.PlayingState = PlayingState.FirstHalf;
-            _context.Entry(gamematch).State = EntityState.Modified;
-            _context.SaveChanges();
-        }
+        UpdatePlayingState(gamematch, MatchState.FirstHalf);
         PlayGameHalf(gamematch);
 
-        UpdatePlayingState(gamematch, PlayingState.HalfTimePause);
+        UpdatePlayingState(gamematch, MatchState.HalfTimePause);
         Console.WriteLine("HalfTimeBreak;");
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
         
-        UpdatePlayingState(gamematch, PlayingState.SecondHalf);
+        UpdatePlayingState(gamematch, MatchState.SecondHalf);
         PlayGameHalf(gamematch);
 
         ////if not draw or draw is allowed then return
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
             || gamematch.IsDrawAllowed) return Task.CompletedTask;
-        UpdatePlayingState(gamematch, PlayingState.OverTime);
+        UpdatePlayingState(gamematch, MatchState.OverTime);
         PlayOvertime(gamematch);
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
-        UpdatePlayingState(gamematch, PlayingState.PenaltyShootOut);
+        UpdatePlayingState(gamematch, MatchState.PenaltyShootOut);
         Console.WriteLine($"Match Penalty shootout: {gamematch.Id}");
         PlayPenaltyShootout(gamematch);
 
         return Task.CompletedTask;
     }
 
-    public Task UpdatePlayingState(Gamematch gamematch, PlayingState playingState)
+    public Task UpdatePlayingState(Gamematch gamematch, MatchState matchState)
     {
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            gamematch.PlayingState = playingState;
+            gamematch.MatchState = matchState;
             _context.Entry(gamematch).State = EntityState.Modified;
             _context.SaveChanges();
         }
@@ -78,7 +69,7 @@ public class LiveMatchBackgroundTask
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
-            Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.PlayingState}");
+            Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.MatchState}");
             IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }

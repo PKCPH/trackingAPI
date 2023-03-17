@@ -29,14 +29,9 @@ public class Gamematch
     public bool IsDrawAllowed { get; set; }
     public Guid? LeagueId { get; set; }
     public ICollection<Bet> Bets { get; set; } 
-    public PlayingState PlayingState { get; set; }
 }
 
 public enum MatchState
 {
-    NotStarted, Playing, Finished
-}
-public enum PlayingState
-{
-    NotPlaying, FirstHalf, HalfTimePause, SecondHalf, OverTime, PenaltyShootOut, Finished
+    NotStarted, FirstHalf, HalfTimePause, SecondHalf, OverTime, PenaltyShootOut, Finished
 }

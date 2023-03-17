@@ -90,14 +90,13 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.Playing).ToList())
+            foreach (var match in _context.Matches.Where(x => x.MatchState != MatchState.NotStarted || x.MatchState != MatchState.Finished).ToList())
             {
                 match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
                     .Where(x => x.Team != null).Include(x => x.Team).ToList();
                 match.MatchState = MatchState.NotStarted;
                 match.ParticipatingTeams.First().TeamScore = 0;
                 match.ParticipatingTeams.Last().TeamScore = 0;
-                match.PlayingState = PlayingState.NotPlaying;
                 _context.Entry(match).State = EntityState.Modified;
                 _context.SaveChanges();
             }
@@ -128,7 +127,6 @@ public class MatchBackgroundTask
             }
 
             gamematch.MatchState = MatchState.Finished;
-            gamematch.PlayingState = PlayingState.Finished;
             UpdateFinishedMatchInDatabase(gamematch);
             await betsHandler.UpdateBalancesOnMatchFinish(gamematch);
 
