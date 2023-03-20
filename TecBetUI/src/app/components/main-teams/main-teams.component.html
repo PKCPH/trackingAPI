@@ -19,19 +19,17 @@
 
         <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'Admin'">Create a Team</button>
 
-        <table class="table tabletext" *ngIf="teams && teams.length > 0">
+        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="teams && teams.length > 0">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Rating</th>
+                    <th mat-sort-header="name" class="test">Name</th>
                     <th>In a Match?</th>
                     <th> </th>
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let teams of teams">  
+            <tr class="tablerow" *ngFor="let teams of sortedTeams">  
                 <td>{{ teams.name }}</td>
-                <td>{{ teams.rating }}</td>
                 <td>{{ teams.availability }}</td>
                 <td><a><button class="btn btn-success mt-3" (click)="GoEditTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Edit</button></a>
                     <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>

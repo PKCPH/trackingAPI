@@ -65,6 +65,7 @@ export class UserbetsComponent implements OnDestroy {
                         return {
                           ...bets,
                           matchId: bets.matchId.substring(0, 8),
+                          participatingTeams: bets.participatingTeams.map(team => ({...team, name: team.name.substring(0, 10)})),
                         }
                       });
                       // console.log(this.bets);

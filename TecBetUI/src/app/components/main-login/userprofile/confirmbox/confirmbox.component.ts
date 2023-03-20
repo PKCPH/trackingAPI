@@ -15,6 +15,11 @@ export class ConfirmboxComponent {
 
 	constructor(public modal: NgbActiveModal, private authService: AuthguardService, private router: Router) { 
 
+    this.getCredentials();
+
+  }
+
+  getCredentials() {
     let storedCredentials;
 
     let storedCredentialsString = localStorage.getItem("credentials");

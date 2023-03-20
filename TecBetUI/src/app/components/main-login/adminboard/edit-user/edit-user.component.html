@@ -11,8 +11,17 @@
             <label for="name" class="form-label my-2">Username:</label>
             <input type="text" class="form-control readonly" id="name" formControlName="name" readonly [(ngModel)] = "Userdetails.userName"/>
 
-            <label for="balance" class="form-label my-2">Balance:</label>
-            <input type="number" class="form-control" id="balance" formControlName="balance" [(ngModel)] = "Userdetails.balance"/>
+            <label for="balance" class="form-label">Balance</label>
+            <input type="number" class="form-control" id="balance" formControlName="balance" />
+            <div class="validBox" *ngIf="submitted && loginForm.get('balance')?.invalid">
+                <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['required']">
+                  Balance is required.
+                </div>
+                <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['min']">
+                  Balance needs to be set to at least '100'
+                </div>
+              </div>
+
         <div *ngIf="adminUsername == 'admin'">
           <label for="role" class="form-label my-2">Role:</label>     
           <select class="form-control" id="role" formControlName="role" [(ngModel)]= "Userdetails.role">

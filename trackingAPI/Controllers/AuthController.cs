@@ -117,4 +117,38 @@ public class AuthController : ControllerBase
 
         return NoContent();
     }
+
+
+    [HttpGet, Route("reset")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> ResetMatchesAndTeams()
+    {
+        //finding the issue
+        var matches = await _context.Matches.ToListAsync();
+
+        if (matches == null || !matches.Any())
+        {
+            //if no entities found, return a 404 Not Found response
+            return NotFound();
+        }
+
+        //otherwise remove the issue and save changes in DB
+        _context.Matches.RemoveRange(matches);
+
+        var teams = await _context.Teams.ToListAsync();
+
+        if (teams == null || !teams.Any())
+        {
+            return NotFound();
+        }
+
+        foreach (var team in teams)
+        {
+            team.IsAvailable = true;
+        }
+
+        await _context.SaveChangesAsync();
+        return NoContent();
+    }
 }

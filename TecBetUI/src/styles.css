@@ -1,12 +1,14 @@
+@import '@angular/cdk/a11y-prebuilt.css';
+
 /* You can add global styles to this file, and also import other style files */
 * {
- margin: 0;
- padding: 0;
- border: 0;
- outline: 0;
- box-sizing: border-box;
- list-style: none;
- text-decoration: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
 }
 
 body {
@@ -22,21 +24,22 @@ h1 {
 html {
     scroll-behavior: smooth
 }
-   
+
 ::-webkit-scrollbar {
-    width: 3px; 
+    width: 3px;
 }
-   
+
 ::-webkit-scrollbar-track {
-     background: rgba(0,0,0,1);
+    background: rgba(0, 0, 0, 1);
 }
+
 ::-webkit-scrollbar-thumb {
-     background: rgba(255,255,255,0.4);
+    background: rgba(255, 255, 255, 0.4);
 }
 
 form {
-  margin: auto;
-  width: 30%;
+    margin: auto;
+    width: 30%;
 }
 
 .tablediv {
@@ -44,9 +47,9 @@ form {
 }
 
 .divs {
- background-color: rgba(0, 0, 0, 0.6);
- text-align: center;
- transition: all 400ms ease;
+    background-color: rgba(0, 0, 0, 0.6);
+    text-align: center;
+    transition: all 400ms ease;
 }
 
 .errorMsg {
@@ -55,23 +58,27 @@ form {
 
 @keyframes blinker {
     50% {
-      opacity: 0;
+        opacity: 0;
     }
-  }
+}
 
 .section1 {
- padding-top: 120px;
- background-image: url("https://img.freepik.com/free-vector/gradient-football-field-background_23-2149013230.jpg?w=1380&t=st=1674046652~exp=1674047252~hmac=f7cd29a06058eda83d904826b68cf66223ad166281ba6e2d64c0807e34c2fa6c");
- height: 100vh;
- background-repeat: repeat;
- background-size: cover;
+    padding-top: 120px;
+    background-image: url("https://img.freepik.com/free-vector/gradient-football-field-background_23-2149013230.jpg?w=1380&t=st=1674046652~exp=1674047252~hmac=f7cd29a06058eda83d904826b68cf66223ad166281ba6e2d64c0807e34c2fa6c");
+    height: 100vh;
+    background-repeat: repeat;
+    background-size: cover;
 }
 
 .section2 {
- height: 100vh;
- background-image: url('images/wallpaper2.jpg');
- background-repeat: no-repeat;
- background-size: cover;
+    height: 100vh;
+    background-image: url('images/wallpaper2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section4 {
+    height: 100vh;
 }
 
 .section3 {
@@ -80,9 +87,9 @@ form {
     height: 100vh;
     background-repeat: repeat;
     background-size: cover;
-   }
+}
 
-   #loading {
+#loading {
     background-image: url('src/images/spinner.gif');
     background-repeat: no-repeat;
     background-position: center;
@@ -92,33 +99,54 @@ form {
     z-index: 1;
     width: 500px;
     height: 500px;
-   }
+}
 
-   .tabletext {
+.tabletext {
     color: white;
-   }
+}
 
-   /* MODAL STYLINGS (HAS TO BE IN GLOBAL CSS FILE) */
+/* MODAL STYLINGS (HAS TO BE IN GLOBAL CSS FILE) */
 
-   .modal-login .modal-content{
-    background-color: rgba(0,0,0,0);
+.modal-login .modal-content {
+    background-color: rgba(0, 0, 0, 0);
     border: none;
     width: auto;
-   }
+}
 
-   .modal-bet .modal-content{
-    background-color: rgba(45,0,45,1);
+.modal-login {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-bet .modal-content {
+    background-color: rgba(45, 0, 45, 1);
     border-radius: 10px;
-   }
+}
 
-   .modal-rounded .modal-content {
+.modal-rounded .modal-content {
     border-radius: 10px;
-    background-color: rgba(45,0,45,1)
-    }
+    background-color: rgba(45, 0, 45, 1)
+}
 
-    .modal-confirmpass .modal-content {
-        border-radius: 60px;
-        background-color: rgba(45,0,45,1)
-     }
+.modal-confirmpass .modal-content {
+    border-radius: 60px;
+    background-color: rgba(45, 0, 45, 1)
+}
+
+/* PAGINATOR STYLINGS */
+
+/* Removing any tooltip popups from paginator icons */
+mat-tooltip-component {
+    display: none !important;
+  }
+
+
+  /* MAT SORT STYLINGS */
+  
+  .mat-sort-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
 
 /* MEDIA QUERIES */
