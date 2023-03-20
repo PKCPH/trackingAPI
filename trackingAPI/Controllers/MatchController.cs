@@ -109,7 +109,7 @@ public class MatchController : ControllerBase
     }
 
     [HttpGet("/api/MatchesFin")]
-    public async Task<ActionResult<IList<GameMatch>>> GetAllFinishedMatchesAsync()
+    public async Task<ActionResult<IList<Gamematch>>> GetAllFinishedMatchesAsync()
     {
         var matches = _context.Matches
             .Where(mt => mt.MatchState == MatchState.Finished)
