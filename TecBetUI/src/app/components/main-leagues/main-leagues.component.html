@@ -1,0 +1,28 @@
+
+<div class="section1">
+
+<div class="container my-5 divs">
+<h1> </h1>
+
+<table class="table" *ngIf="leagues">
+    <thead>
+        <tr>
+            <th>League</th>
+            <th>Sport</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let league of leagues">
+            <td>{{ league.id }}</td>
+            <td>{{ league.name }}</td>
+            <td>{{ league.sport }}</td>
+
+        </tr>
+    </tbody>
+</table>  
+<p *ngIf="!leagues">No Leagues Found..</p>
+
+</div>
+
+</div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230314131710_TeamRating")]
+    partial class TeamRating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,11 +169,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-                            Id = new Guid("1cc0064f-fcf8-4c99-a2ea-9c7235d3172a"),
-=======
                             Id = new Guid("c403083d-ce29-44e0-b919-ca951567565f"),
->>>>>>> master
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -222,8 +220,6 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-<<<<<<< HEAD
-=======
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
@@ -233,7 +229,6 @@ namespace trackingAPI.Migrations
                     b.Property<int>("Dribbling")
                         .HasColumnType("int");
 
->>>>>>> master
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

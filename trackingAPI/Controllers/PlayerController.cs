@@ -2,6 +2,7 @@
 using trackingAPI.Data;
 using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.Helpers;
 
 namespace trackingAPI.Controllers
 {
@@ -10,10 +11,12 @@ namespace trackingAPI.Controllers
     public class PlayerController : Controller
     {
         private readonly DatabaseContext databaseContext;
+        private readonly IPlayerService playerService;
 
-        public PlayerController(DatabaseContext databaseContext)
+        public PlayerController(DatabaseContext databaseContext, IPlayerService playerService)
         {
             this.databaseContext = databaseContext;
+            this.playerService = playerService;
         }
 
         //Read All
@@ -22,30 +25,20 @@ namespace trackingAPI.Controllers
         {
             var players = await databaseContext.Players.ToListAsync();
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
-            //Goes through the list of teams and matches each player with the team they play on
-            foreach (var playerTeam in playerTeams)
-            {
-                int index = players.FindIndex(p => p.Id == playerTeam.PlayerId);
-                players[index].Teams.Add(playerTeam);
-            }
-            return Ok(players);
+
+            var playerList = playerService.ReadAllPlayers(players, playerTeams);
+
+            return Ok(playerList);
         }
 
         //Create
         [HttpPost]
         public async Task<IActionResult> AddPlayer([FromBody] Player playerRequest)
         {
-            playerRequest.Id = Guid.NewGuid();
-            foreach (var playerTeam in playerRequest.Teams)
+            if (playerRequest != null) 
             {
-                playerTeam.Id = Guid.NewGuid();
-                playerTeam.PlayerId = playerRequest.Id;
-                await this.databaseContext.PlayerTeams.AddAsync(playerTeam);
+                await playerService.CreatePlayer(playerRequest);
             }
-            playerRequest.Teams.Clear();
-            await this.databaseContext.Players.AddAsync(playerRequest);
-            await this.databaseContext.SaveChangesAsync();
-
             return Ok(playerRequest);
         }
 
@@ -59,13 +52,7 @@ namespace trackingAPI.Controllers
             if (player == null ) { return NotFound(); }
             //gets the team by looking up the team table for ID matches to the players teamID property
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
-            foreach ( var playerTeam in playerTeams)
-            {
-                if (player.Id == playerTeam.PlayerId)
-                {
-                    player.Teams.Add(playerTeam);
-                }
-            }
+            player = playerService.AssignTeamsToPlayer(player, playerTeams);
             return Ok(player);
         }
 
@@ -74,33 +61,28 @@ namespace trackingAPI.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, Player updatePlayerRequest)
         {
-            var player = await this.databaseContext.Players.FindAsync(id);
             var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
-            if (player == null) { return NotFound(); }
-            player.Name = updatePlayerRequest.Name;
-            player.age = updatePlayerRequest.age;
+            var player = await databaseContext.Players.FindAsync(id);
+            if(player == null ) { return NotFound(); }
 
-            foreach ( var playerTeam in playerTeams)
-            {
-                if (playerTeam.PlayerId == updatePlayerRequest.Id)
-                {
-                    if(updatePlayerRequest.Teams.ToList().Exists(t => t.TeamId == playerTeam.TeamId) == false)
-                    {
-                        this.databaseContext.PlayerTeams.Remove(playerTeam);
-                    }
-                }
-            }
+            await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
 
-            foreach (var team in updatePlayerRequest.Teams)
-            {
-                if (playerTeams.Exists(p => p.PlayerId == team.PlayerId && p.TeamId == team.TeamId) == false)
-                {
-                    team.Id = Guid.NewGuid();
-                    await this.databaseContext.PlayerTeams.AddAsync(team);
-                }
-            }
+            await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
+            
+            player.Id = updatePlayerRequest.Id;
+            player.Name= updatePlayerRequest.Name;
+            player.Age = updatePlayerRequest.Age;
+            player.Overall = updatePlayerRequest.Overall;
+            player.Potential = updatePlayerRequest.Potential;
+            player.Pace = updatePlayerRequest.Pace;
+            player.Shooting = updatePlayerRequest.Shooting;
+            player.Passing = updatePlayerRequest.Passing;
+            player.Dribbling = updatePlayerRequest.Dribbling;
+            player.Defense = updatePlayerRequest.Defense;
+            player.Physical = updatePlayerRequest.Physical;
 
-            await this.databaseContext.SaveChangesAsync();
+            await databaseContext.SaveChangesAsync();
+
             return Ok(player);
         }
 
@@ -117,9 +99,6 @@ namespace trackingAPI.Controllers
             {
                 this.databaseContext.Players.Remove(player);
             }
-
-            //removes all playerteams with the playerId from the playerTeam Table
-            playerTeams.RemoveAll(p => p.PlayerId == id);
 
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);

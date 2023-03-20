@@ -19,9 +19,24 @@ public class TeamController : ControllerBase
     //action method, does as a response of the http request, to get a list of Issue
     //attribute to make it handle httpGet!
     [HttpGet]
-    public async Task<IEnumerable<Team>> Get()
+    public async Task<IActionResult> Get()
+    {
         //get a list of Issue
-        => await _context.Teams.ToListAsync();
+        var teams = await _context.Teams.ToListAsync();
+        var playerTeams = await _context.PlayerTeams.ToListAsync();
+        foreach (var team in teams)
+        {
+            foreach (var playerTeam in playerTeams)
+            {
+                if (playerTeam.TeamId == team.Id)
+                {
+                    team.Players.Add(playerTeam);
+                }
+            }
+        }
+        //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
+        return Ok(teams);
+    }
 
     //handles the http request with the id at the end of the url: f.x. api/issue/*Id-Number*
     //so the action responds only to this id in the url

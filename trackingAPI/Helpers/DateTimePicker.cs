@@ -16,7 +16,7 @@ namespace trackingAPI.Helpers
 
             var rnd = new Random();
             var date = DateTime.Now; //.today when not testing
-            DateTime dateTime = DateTime.UtcNow;
+            DateTime dateTime = DateTime.Now;
 
             //Timespan of the random scheduled time 
             var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
@@ -26,7 +26,9 @@ namespace trackingAPI.Helpers
             var pickedDateTime = date + timeOfDayHours;
 
             //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
-            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(DaysAddedThanNow) : pickedDateTime;
+            return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(0) : pickedDateTime;
+
+            //cmon git bro
         }
     }
 }

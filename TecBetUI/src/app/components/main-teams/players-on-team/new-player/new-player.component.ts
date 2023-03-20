@@ -24,12 +24,21 @@ export class NewPlayerComponent {
     players:[],
     score: 0,
     result: 0,
+    rating: 0
   }
   addPlayerRequest: Player = {
     id: '',
     name: '',
     age: 0,
-    teams:[]
+    teams:[],
+    overall: 0,
+    potential: 0,
+    pace: 0,
+    shooting: 0,
+    passing: 0,
+    dribbling: 0,
+    defense: 0,
+    physical: 0,
   }
   
   constructor(private playerService: PlayersService, private teamsService: TeamsService, private router: Router, private route: ActivatedRoute){ }
@@ -74,15 +83,39 @@ export class NewPlayerComponent {
   }
   
   addPlayer(){
-    this.selectedTeamArray.forEach(element => {
+    this.selectedTeamArray.forEach(team => {
       const addPlayerTeam: playerTeam = {
         id: '',
         playerId: '',
-        teamId: element.id
+        teamId: team.id
       }
       this.addPlayerRequest.teams.push(addPlayerTeam)
+      this.teamsService.getTeam(team.id)
+      .subscribe({
+        next: (team) => {
+          team.rating = team.rating * team.players.length
+          team.rating = team.rating + this.addPlayerRequest.overall
+          team.rating = team.rating / (team.players.length + 1)
+          team.rating = Number(team.rating.toPrecision(4))
+          this.teamsService.updateTeam(team.id, team)
+          .subscribe({
+            next: (response) => {
+            }
+          })
+        }
+      })
+
+      if(team.players.some(p => p.playerId == this.addPlayerRequest.id)){
+        team.rating = team.rating * (team.players.length - 1)
+        this.teamsService.updateTeam(team.id, team)
+        .subscribe({
+          next: (response) => {
+            console.log(team.rating)
+          }
+        })
+      }
     });
-  
+
     console.log(this.addPlayerRequest)
     this.playerService.addPlayer(this.addPlayerRequest)
     .subscribe({

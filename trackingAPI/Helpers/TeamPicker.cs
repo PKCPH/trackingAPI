@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -6,10 +7,14 @@ namespace trackingAPI.Helpers;
 
 public class TeamPicker
 {
+
     //Read list of teams and choose two random team to be put in ParticipatingTeams.
-    public GameMatch CreateMatch(DatabaseContext _context)
+    public Gamematch CreateMatch(DatabaseContext _context)
     {
-        GameMatch gameMatch = new(_context);
+        Gamematch gameMatch = new(_context)
+        {
+            IsDrawAllowed = true
+        };
         Random rnd = new Random();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
