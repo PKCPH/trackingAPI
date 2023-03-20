@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using trackingAPI.BackgroundHelpers;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -39,10 +40,13 @@ namespace trackingAPI.Helpers
                     var user = await _context.Logins.FindAsync(bet.LoginId);
                     if (user != null)
                     {
-                        user.Balance += bet.Amount * 2;
+                        /*commented out since the line below automatially does the same math
+                        user.Balance += bet.Amount * 2;*/
+                        user.Balance += Convert.ToInt32(bet.Amount * (1 / LiveMatchBackgroundTask.WinChance(match.ParticipatingTeams.First().Team, match.ParticipatingTeams.Last().Team)));
                         bet.BetResult = BetResult.Win;
                         bet.BetState = BetState.Finished;
-                        /* user.Balance += bet.Amount * match.GetOddsForTeam(bet.Team);*/
+
+
                     }
                 }
 

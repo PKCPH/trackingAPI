@@ -122,10 +122,10 @@ public class LiveMatchBackgroundTask
     public Gamematch IsGoalScoredChance(Gamematch gameMatch)
     {
         Random rnd = new Random();
-        var ballPossessionTeam = rnd.Next(100);
+        var ballPossessionTeam = rnd.Next(10000)/100;
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam < 50) GoalToTeamA = true;
+        if (ballPossessionTeam > WinChance(gameMatch.ParticipatingTeams.First().Team,gameMatch.ParticipatingTeams.Last().Team)*100) GoalToTeamA = true;
         if (chanceOfGoal > 1) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
@@ -148,6 +148,13 @@ public class LiveMatchBackgroundTask
             _context.SaveChanges();
         }
         return gameMatch;
+    }
+
+    //Calculates the advantage that Team A has over Team B using a modified version of Dr. Elos chess rating equations
+    public decimal WinChance(Team teamA, Team teamB)
+    {
+        decimal winChance = (decimal)(1 / (1 + Math.Pow(10, Convert.ToDouble(teamA.Rating - teamB.Rating) / 20)));
+        return winChance;
     }
 }
 
