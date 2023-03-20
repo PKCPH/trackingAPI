@@ -44,7 +44,7 @@ namespace trackingAPI.Helpers
                         user.Balance += bet.Amount * 2;*/
                         var userEarning = bet.Amount * (1 / LiveMatchBackgroundTask.WinChance(match.ParticipatingTeams.First().Team, match.ParticipatingTeams.Last().Team));
 
-                        //how much the house takes from the users profit as a decimal number
+                        //how many percent the house takes from the users profit, as a decimal number
                         double houseTake = 0;
 
                         userEarning -= (userEarning - bet.Amount) * houseTake;
