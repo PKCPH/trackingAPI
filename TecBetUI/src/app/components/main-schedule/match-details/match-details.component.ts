@@ -14,13 +14,7 @@ import { BettingWindowComponent } from '../../betting/betting-window/betting-win
 })
 export class MatchDetailsComponent implements OnDestroy {
 
-  matchDetails: Match = {
-    id: '',
-    matchState: 0,
-    dateOfMatch: new Date(),
-    participatingTeams: [],
-    state: ''
-  };
+  matchDetails: Match | any;
 
   drawRequest: Team = {
     id: '',

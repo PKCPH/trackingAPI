@@ -32,6 +32,7 @@ export class MainScheduleComponent implements OnDestroy {
     constructor(private matchesService: MatchesService, 
       private el: ElementRef, private renderer: Renderer2, private router: Router) {
 
+        this.fetchFin();
         this.fetch();
 
         this.updateSubscription = interval(2500).subscribe(() => {
@@ -40,6 +41,10 @@ export class MainScheduleComponent implements OnDestroy {
     }
 
     fetch() {    
+      this.matchesService.errorMessage.subscribe(error => {
+        this.errorMessage = error;
+      });
+
       this.matchesService.getSchedule().subscribe({
         next: (games) => {
           this.games = games.map(game => {
@@ -47,20 +52,17 @@ export class MainScheduleComponent implements OnDestroy {
               ...game,
             }
           });
-          // console.log(this.games);
+          console.log(this.games);
           if (games)
           {
             this.sortedGames = this.games.slice();
             this.Hideloader();
             this.sortData(this.sort);
           }
-          this.matchesService.errorMessage.subscribe(error => {
-            this.errorMessage = error;
-            if (games.length > 0)
-            {
-              this.errorMessage = "";
-            }
-          });
+          if (games.length > 0)
+          {
+            this.errorMessage = "";
+          }
         },
         error: (response) => {
           console.log(response);
@@ -76,7 +78,7 @@ export class MainScheduleComponent implements OnDestroy {
               ...finishedGame,
             }
           });
-          // console.log(this.finishedGames);
+          console.log(this.finishedGames);
           if (finishedGames)
           {
             this.sortedFinGames = this.finishedGames.slice();
@@ -110,44 +112,38 @@ export class MainScheduleComponent implements OnDestroy {
     }
 
     showArchivedMatches() {
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'table'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'block'); 
-
       this.updateSubscription.unsubscribe();
+
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
 
       this.fetchFin();
 
-      if(this.games)
-      {
       this.updateSubscription = interval(2500).subscribe(() => {
         this.fetchFin();
       });
-    }
-
+      
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none'); 
     }
 
     
     showActiveMatches() {
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'table'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'none'); 
-
       this.updateSubscription.unsubscribe();
+      
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'none'); 
 
       this.fetch();
 
-      if(this.games)
-      {
       this.updateSubscription = interval(2500).subscribe(() => {
         this.fetch();
       });
-    }
 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'block'); 
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none'); 
     }
 
       //This functions take the sorted teams and updates them
@@ -159,6 +155,7 @@ export class MainScheduleComponent implements OnDestroy {
       const isAsc = sortDirection === 'asc';
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
+        case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
         default: return 0;
       }
     });
@@ -171,6 +168,7 @@ export class MainScheduleComponent implements OnDestroy {
       const isAsc = sortDirection === 'asc';
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
+        case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
         default: return 0;
       }
     });

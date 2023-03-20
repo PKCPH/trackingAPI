@@ -7,8 +7,8 @@ import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@ang
 })
 export class HomeComponent implements AfterViewInit {
 
-  rndInt = Math.floor(Math.random() * 5) + 1;
-  // rndInt = 1;
+  // rndInt = Math.floor(Math.random() * 5) + 1;
+  rndInt = 2;
   videoSrc = `assets/montage${this.rndInt}.mp4`;
   
   constructor(private el: ElementRef, private renderer: Renderer2) { }
@@ -19,16 +19,16 @@ export class HomeComponent implements AfterViewInit {
     const video = document.querySelector('video');
 
     if (video && this.rndInt === 4) {
-      const mediaQuery = window.matchMedia("(max-height: 968px)").matches;
+      const mediaQuery = window.matchMedia("(max-height: 950px)").matches;
       video.style.left = mediaQuery ? "3.2%" : "1.5%";
-      video.style.width = mediaQuery ? "1800px" : "1865px";
+      video.style.width = mediaQuery ? "93%" : "97.4%";
     }
 
     if (video && this.rndInt === 5) {
-      const mediaQuery = window.matchMedia("(max-height: 968px)").matches;
+      const mediaQuery = window.matchMedia("(max-height: 950px)").matches;
       video.style.top = mediaQuery ? "-6%" : "-6%";
       video.style.left = mediaQuery ? "4.6%" : "2.5%";
-      video.style.width = mediaQuery ? "1765px" : "1825px";
+      video.style.width = mediaQuery ? "91%" : "95.2%";
     }
 
   }
@@ -39,19 +39,19 @@ restartVideo() {
     const video = document.querySelector('video');
 
     if (video && this.rndInt === 4) {
-      const mediaQuery = window.matchMedia("(max-height: 968px)").matches;
+      const mediaQuery = window.matchMedia("(max-height: 950px)").matches;
       video.style.left = mediaQuery ? "3.2%" : "1.5%";
-      video.style.width = mediaQuery ? "1800px" : "1865px";
+      video.style.width = mediaQuery ? "93%" : "97.4%";
       video.src = this.videoSrc;
       video.currentTime = 0;
       video.play();
     }
 
     else if (video && this.rndInt === 5) {
-      const mediaQuery = window.matchMedia("(max-height: 968px)").matches;
+      const mediaQuery = window.matchMedia("(max-height: 950px)").matches;
       video.style.top = mediaQuery ? "-6%" : "-6%";
       video.style.left = mediaQuery ? "4.6%" : "2.5%";
-      video.style.width = mediaQuery ? "1765px" : "1825px";
+      video.style.width = mediaQuery ? "91%" : "95.2%";
       video.src = this.videoSrc;
       video.currentTime = 0;
       video.play();

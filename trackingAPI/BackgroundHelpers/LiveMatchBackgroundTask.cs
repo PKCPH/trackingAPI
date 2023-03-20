@@ -34,10 +34,11 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 5400)
+        while (timer.Elapsed.TotalSeconds < 60)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
+            Console.WriteLine($"Match: {gameMatch.Id} Time: {fromTimer}");
             IsGoalScoredChance(gameMatch);
             Thread.Sleep(1000);
         }
@@ -54,7 +55,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 1800)
+        while (timer.Elapsed.TotalSeconds < 60)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -103,7 +104,7 @@ public class LiveMatchBackgroundTask
                     teamA.TeamScore++;
                     _context.Entry(teamA).State = EntityState.Modified;
                 }
-                Thread.Sleep(60000);
+                Thread.Sleep(6000);
 
                 chance = rnd.Next(1, 100);
                 if (chance > 45)
@@ -112,7 +113,7 @@ public class LiveMatchBackgroundTask
                     teamB.TeamScore++;
                     _context.Entry(teamB).State = EntityState.Modified;
                 }
-                Thread.Sleep(60000);
+                Thread.Sleep(6000);
                 rounds++;
             }
         }

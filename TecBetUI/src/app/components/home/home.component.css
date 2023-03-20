@@ -4,10 +4,6 @@
     z-index: 1;
   }
 
-  .videodiv {
-  
-  }
-
   .divs {
     position: absolute;
     top: 35%;
@@ -25,24 +21,32 @@
 
   .video {
     pointer-events: none; 
-    width: 1720px; 
+    width: 89.8%;
     position: absolute;
     top: 0%;
     left: 5%;
     z-index: -1;
   }
 
-  @media screen and (max-width: 1800px) {
-    img {
-      width: 300px;
-      height: 250px;
+.divs h1 {
+  font-size: 80px;
+}
+
+  @media screen and (max-width: 1000px) {
+    .divs h1 {
+      font-size: 50px;
+    }
+    .video {
+      top: 20%;
+      left: 0%;
+      width: 100%;
     }
   }
 
-  @media screen and (max-height: 968px) {
+  @media screen and (max-height: 945px) {
     .video {
       left: 6.8%;
-      width: 1665px;
+      width: 85.8%;
     }
   }
 

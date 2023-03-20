@@ -56,7 +56,6 @@ public class MatchController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid id, Gamematch match)
     {
         //if the id of the url and the id in the body does not match, then return
