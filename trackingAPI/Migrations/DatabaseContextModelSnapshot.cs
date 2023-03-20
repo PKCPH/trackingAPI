@@ -167,7 +167,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c403083d-ce29-44e0-b919-ca951567565f"),
+                            Id = new Guid("bde74eda-899e-44e0-a39e-2d9342c49254"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -289,8 +289,8 @@ namespace trackingAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<decimal?>("Rating")
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 

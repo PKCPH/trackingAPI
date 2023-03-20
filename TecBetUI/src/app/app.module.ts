@@ -16,7 +16,7 @@ import { EditMatchComponent } from './components/main-matches/edit-match/edit-ma
 import { MainScheduleComponent } from './components/main-schedule/main-schedule.component';
 import { LoginComponent } from './components/main-login/login/login.component';
 import { JwtModule } from "@auth0/angular-jwt";
-import { CustomersComponent } from './components/customers/customers.component';
+import { BlankComponent } from './components/blank/blank.component';
 import { AuthguardService } from './services/authguard.service';
 import { RegisterComponent } from './components/main-login/register/register.component';
 import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
@@ -42,6 +42,10 @@ import { UserbetsComponent } from './components/main-login/userprofile/userbets/
 import { PlayersToTeamComponent } from './components/main-teams/players-on-team/players-to-team/players-to-team.component';
 import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -60,7 +64,7 @@ export function tokenGetter() {
     EditMatchComponent,
     MainScheduleComponent,
     LoginComponent,
-    CustomersComponent,
+    BlankComponent,
     RegisterComponent,
     PlayerListComponent,
     AddPlayerComponent,
@@ -78,7 +82,7 @@ export function tokenGetter() {
     PlayersOnTeamComponent,
     PlayersToTeamComponent,
     NewPlayerComponent,
-    ChangePlayerComponent
+    ChangePlayerComponent,
   ],
   imports: [
     BrowserModule,
@@ -96,9 +100,10 @@ export function tokenGetter() {
     NgbModule,
     BrowserAnimationsModule,
     MatSliderModule,
-    MatCardModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

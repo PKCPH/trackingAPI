@@ -1,29 +1,22 @@
-<div class="section1" id="section1">
+<div class="section4" id="section4">
+    <div class="videobackdrop">
 
-    <div class="container divs my-2 py-5 d-1" style="--b:.2em;--d:40px;--c:lightpink;background: rgba(0,0,0,0.6)"><h1 style="color: white; font-size: 80px;">BetHaven</h1>
-    <p class="my-4">LOW RISK LOW REWARD</p>
-    <p>Check out the different sports we have below.</p> 
+        <!-- To autplay a video like a gif, you need to specify a few things, otherwise it will not play on first site visit
+             important notes is that it has to be muted to be able to autoplay, oncanplay="this.play()" and onloadedmetadata="this.muted = true" are important solutions to get this fixed.  -->
+
+    <div class="videodiv" id="videodiv">
+        <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video" onloadedmetadata="this.muted = true">
+            <source [src]="videoSrc" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
-    <div class="sportsGallery" id="gallery">
-        <div class="box">
-            <h2>Soccer</h2>
-            <img src="https://storage.googleapis.com/pod_public/1300/119074.jpg">
-        </div>
-        <div class="box">
-            <h2>Basketball</h2>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Carter_vs_Gasol%2C_Lakers_vs_Magic.jpg/640px-Carter_vs_Gasol%2C_Lakers_vs_Magic.jpg">
-        </div>
-        <div class="box">
-            <h2>Baseball</h2>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Mookie_Betts_hitting_the_ball_%2836478781664%29.jpg/640px-Mookie_Betts_hitting_the_ball_%2836478781664%29.jpg">
-        </div>
-        <div class="box">
-            <h2>Esports</h2>
-            <img src="https://cdn.sanity.io/images/zoz4y99f/production/63fe73d90694450859da70fe142d72e445a0a9cc-1600x900.jpg?w=1600&auto=format">
-        </div>  
-</div>
+    <div class="container divs py-4"><h1 style="color: white; font-size: 80px;">BetHaven</h1>
+    <p class="my-4">LOW RISK LOW REWARD</p>
+    <p></p>
+    </div>
 
+</div>
 </div>
 
    
