@@ -153,7 +153,7 @@ public class LiveMatchBackgroundTask
     //Calculates the advantage that Team A has over Team B using a modified version of Dr. Elos chess rating equations
     public static double WinChance(Team teamA, Team teamB)
     {
-        double winChance = (double)(1 / (1 + Math.Pow(10, Convert.ToDouble(teamA.Rating - teamB.Rating) / 20)));
+        double winChance = (double)(1 / (1 + Math.Pow(10, Convert.ToDouble(teamB.Rating - teamA.Rating) / 20)));
         return winChance;
     }
 }
