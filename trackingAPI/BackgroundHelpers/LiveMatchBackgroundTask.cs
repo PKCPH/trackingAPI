@@ -22,25 +22,25 @@ public class LiveMatchBackgroundTask
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
         UpdatePlayingState(gamematch, MatchState.FirstHalf);
-        PlayGameHalf(gamematch);
+        PlayGameHalf(ref gamematch);
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
-        Console.WriteLine("HalfTimeBreak;");
+        Console.WriteLine("HalfTimeBreak");
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
         
         UpdatePlayingState(gamematch, MatchState.SecondHalf);
-        PlayGameHalf(gamematch);
+        PlayGameHalf(ref gamematch);
 
         ////if not draw or draw is allowed then return
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
             || gamematch.IsDrawAllowed) return Task.CompletedTask;
         UpdatePlayingState(gamematch, MatchState.OverTime);
-        PlayOvertime(gamematch);
+        PlayOvertime(ref gamematch);
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
         UpdatePlayingState(gamematch, MatchState.PenaltyShootOut);
         Console.WriteLine($"Match Penalty shootout: {gamematch.Id}");
-        PlayPenaltyShootout(gamematch);
+        PlayPenaltyShootout(ref gamematch);
 
         return Task.CompletedTask;
     }
@@ -59,7 +59,7 @@ public class LiveMatchBackgroundTask
         return Task.CompletedTask;
     }
 
-    public Gamematch PlayGameHalf(Gamematch gamematch)
+    public Gamematch PlayGameHalf(ref Gamematch gamematch)
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
@@ -78,7 +78,7 @@ public class LiveMatchBackgroundTask
         return gamematch;
     }
 
-    public Gamematch PlayOvertime(Gamematch gamematch)
+    public Gamematch PlayOvertime(ref Gamematch gamematch)
     {
         Stopwatch timer = new Stopwatch();
         timer.Start();
@@ -99,7 +99,7 @@ public class LiveMatchBackgroundTask
         return gamematch;
     }
 
-    public Gamematch PlayPenaltyShootout(Gamematch gamematch)
+    public Gamematch PlayPenaltyShootout(ref Gamematch gamematch)
     {
         Stopwatch timer = new Stopwatch();
         Random rnd = new Random();

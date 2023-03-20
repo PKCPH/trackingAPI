@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230316110119_newProperties")]
-    partial class newProperties
+    [Migration("20230320090734_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,12 +78,6 @@ namespace trackingAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MatchState")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayingState")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayingStateTimeStamp")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -175,7 +169,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("314ae1e2-264f-4862-9da7-edbd389cd91e"),
+                            Id = new Guid("ba109052-8e14-4432-bb45-5e1bafb1cc78"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",

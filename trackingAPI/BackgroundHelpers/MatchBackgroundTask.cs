@@ -90,7 +90,7 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            foreach (var match in _context.Matches.Where(x => x.MatchState != MatchState.NotStarted || x.MatchState != MatchState.Finished).ToList())
+            foreach (var match in _context.Matches.Where(x => x.MatchState != MatchState.Finished && x.MatchState != MatchState.NotStarted).ToList())
             {
                 match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
                     .Where(x => x.Team != null).Include(x => x.Team).ToList();

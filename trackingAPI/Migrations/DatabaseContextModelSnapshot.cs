@@ -78,9 +78,6 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlayingState")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("LeagueId");
@@ -170,7 +167,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7844f74d-ce7a-44e1-8da1-5427d3f12a32"),
+                            Id = new Guid("ba109052-8e14-4432-bb45-5e1bafb1cc78"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",

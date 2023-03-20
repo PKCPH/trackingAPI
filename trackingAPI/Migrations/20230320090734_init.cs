@@ -83,8 +83,7 @@ namespace trackingAPI.Migrations
                     MatchState = table.Column<int>(type: "int", nullable: false),
                     DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false),
-                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TimeStampForPausedMatch = table.Column<int>(type: "int", nullable: true)
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,7 +205,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("1844cd12-150c-4f1e-be96-e9b0eeb9f457"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("ba109052-8e14-4432-bb45-5e1bafb1cc78"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
