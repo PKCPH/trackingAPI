@@ -50,5 +50,8 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<MatchTeam>()
             .Property(gm => gm.Result)
             .HasDefaultValue(Result.Undetermined);
+        modelBuilder.Entity<Team>()
+            .Property(t => t.Rating)
+            .HasColumnType("decimal(18, 4)");
     }
 }

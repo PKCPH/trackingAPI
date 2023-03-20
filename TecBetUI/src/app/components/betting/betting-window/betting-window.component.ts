@@ -16,49 +16,50 @@ export class BettingWindowComponent {
 
   match: Match | any;
   team: Team | any;
-  user: LoginModel = {userName:'', password:'', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: ''};
+  user: LoginModel = { userName: '', password: '', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: '' };
   errorMsg: string = '';
-  amount: number = 0;
-
+  amount: number = 100;
   max = 100;
-  min = 0;
+  min = 100;
   showTicks = false;
   step = 100;
   thumbLabel = false;
-  value = 0;
+  storedCredentials: any;
 
   constructor(
     public activeModal: NgbActiveModal,
     private betService: BetService,
     private authService: AuthguardService
   ) {
+    this.getCredentials();
 
-    let storedCredentials;
+    this.fetch();
+  }
 
+  getCredentials() {
+    this.storedCredentials;
     let storedCredentialsString = localStorage.getItem("credentials");
-    if (storedCredentialsString)
-    {
-    storedCredentials = JSON.parse(storedCredentialsString);
+    if (storedCredentialsString) {
+      this.storedCredentials = JSON.parse(storedCredentialsString);
     }
-    
-        const userName = storedCredentials.userName
-        if (userName) {
-          //Call API
-this.authService.getUser(userName)
-.subscribe({
-  next: (response) => {
-this.user.id = response.id
-this.user.balance = response.balance,
-this.user.userName = response.userName,
-this.user.role = response.role
-// this.max = response.balance,
+  }
 
-// console.log(this.user);
-// console.log(this.max, this.min);
+  fetch() {
+    const userName = this.storedCredentials.userName
+    if (userName) {
+      //Call API
+      this.authService.getUser(userName)
+        .subscribe({
+          next: (response) => {
+            this.user.id = response.id
+            this.user.balance = response.balance,
+              this.user.userName = response.userName
+          }
+        });
+    }
   }
-});
-        }
-  }
+
+  //Redefines the bet model with the parsed data from matchdetails component, with those and amount value taken from the slider/input field, the bet gets POST'd into our database through our WebAPI
 
   onSubmit() {
     if (this.amount > 0) {
@@ -75,20 +76,13 @@ this.user.role = response.role
         participatingTeams: []
       };
 
-      console.log("Team: " + this.team.name);
-      console.log("Amount: " + this.amount);
-      console.log("Match ID: " + this.match.id);
+      //Debugging purposes
+      // console.log("Team: " + this.team.name);
+      // console.log("Amount: " + this.amount);
+      // console.log("Match ID: " + this.match.id);
 
       this.betService.placeBet(bet).subscribe(
         (bet: Bet) => {
-          // Update match details component with bet information
-          // ...
-          let storedCredentials = {
-            userName: this.user.userName,
-            role: this.user.role,
-          };
-
-          localStorage.setItem("credentials", JSON.stringify(storedCredentials));
           this.activeModal.close();
         },
         (error: any) => {

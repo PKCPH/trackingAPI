@@ -21,54 +21,46 @@ export class MainMatchesComponent implements OnDestroy {
   }
   
     constructor(private matchesService: MatchesService, private router: Router, 
-      private location: Location, 
       private el: ElementRef, private renderer: Renderer2) {
 
-        let storedCredentials;
+        this.getCredentials(); 
 
-        let storedCredentialsString = localStorage.getItem("credentials");
-        if (storedCredentialsString)
-        {
-        storedCredentials = JSON.parse(storedCredentialsString);
+        this.fetch();
+        
+        this.updateSubscription = interval(2500).subscribe(() => {
+          this.fetch();
+        });
+        
+    }
 
-        let role = storedCredentials.role;
-
-        if (role === 'Admin') {
-          this.router.navigate(['/matches']);
-          } else {
-            this.router.navigate(['/']);
-          }  
+    fetch() {  
+   this.matchesService.getAllMatches().subscribe({
+    next: (matches) => {
+      this.matches = matches.map(match => {
+        return {
+          ...match,
+          id: match.id.substring(0, 18),
         }
-  
-        this.updateSubscription = interval(1500).pipe(
-          switchMap(() => this.matchesService.getAllMatches())
-        )
-        .subscribe({
-          next: (matches) => {
-            this.matches = matches.map(match => {
-              return {
-                ...match,
-              }
-            });
-            // console.log(this.matches);
-            if (matches)
-            {
-              this.Hideloader();
-            }
-            this.matchesService.errorMessage.subscribe(error => {
-              this.errorMessage = error;
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
+      });
+      // console.log(this.matches);
+      if (matches)
+      {
+        this.Hideloader();
+      }
+      this.matchesService.errorMessage.subscribe(error => {
+        this.errorMessage = error;
+        this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
 
-              if (this.errorMessage === '')
-              {
-                this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
-              }
-            });
-          },
-          error: (response) => {
-            console.log(response);
-          }
-        });    
+        if (this.errorMessage === '')
+        {
+          this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
+        }
+      });
+    },
+    error: (response) => {
+      console.log(response);
+    }
+  });  
     }
   
     deleteMatch(id: string) {
@@ -92,6 +84,30 @@ export class MainMatchesComponent implements OnDestroy {
         }
       });
     } 
+
+    //Function that checks if user has the admin role or not, basically a rolechecker. Sends you back to index if you aren't admin.
+    
+    getCredentials() {
+      let storedCredentials;
+
+      let storedCredentialsString = localStorage.getItem("credentials");
+      if (storedCredentialsString)
+      {
+      storedCredentials = JSON.parse(storedCredentialsString);
+
+      let role = storedCredentials.role;
+
+      if (role === 'Admin') {
+        this.router.navigate(['/matches']);
+        } else {
+          this.router.navigate(['/']);
+        }  
+      }
+      else if(!storedCredentialsString)
+      {
+      this.router.navigate(['/']);
+    }
+    }
   
     Hideloader() {
               // Setting display of spinner

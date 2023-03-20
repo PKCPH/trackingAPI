@@ -30,8 +30,6 @@ export class AppComponent {
   constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService, 
     private authService: AuthguardService, private modalService: NgbModal)
   {
-    this.startIdleTimer();
-
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
 
     this.loginService.currentCredentials.subscribe(credentials => {
@@ -43,6 +41,7 @@ export class AppComponent {
     //This will listen for events. userLoggedIn is a custom event made from the login component. When it detects that user has logged in, it'll trigger the updateUserInfo function
 
     window.addEventListener('userLoggedIn', this.updateUserInfo.bind(this));
+    window.addEventListener('userLoggedIn', this.startIdleTimer.bind(this));
     
     this.router.events.subscribe(event => {
       if (event.constructor.name === "NavigationStart") {
@@ -144,6 +143,7 @@ return false;
 
   //Timer that starts when you trigger the dropdown menu, after 5 seconds it'll automatically close itself.
   startTimer() {
+    console.log(this.idleTimer)
     this.timer = setTimeout(() => {
       this.showDropdown = false;
     }, 3000); // 3 seconds
@@ -170,6 +170,7 @@ return false;
 
   resetIdleTimer() {
     clearTimeout(this.idleTimer);
+    this.startIdleTimer();
   }
 
   onItemClick(item: string) {
@@ -187,7 +188,7 @@ return false;
       text: 'Dashboard',
     },
     {
-      text: 'My Bets'
+      text: 'My Bets',
     },
     {
       text: 'Log Out',

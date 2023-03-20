@@ -36,6 +36,7 @@ export class PlayersToTeamComponent {
     players:[],
     score: 0,
     result: 0,
+    rating: 0
   }
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private playerService: PlayersService, private router: Router){ }
   
@@ -131,6 +132,17 @@ export class PlayersToTeamComponent {
   }
 
   saveChanges(){
+    this.teamsService.getTeam(this.id)
+    .subscribe({
+      next:(team) => {
+        var rating: number = 0
+        this.playersOnTeam.forEach(player => {
+          rating += player.overall
+        });
+        rating = rating/this.playersOnTeam.length
+        team.rating = Number(rating.toPrecision(4))
+      }
+    })
     var playerTeams: playerTeam[][] = [this.playersTeamsRemovedFromTeam, this.playersTeamsAddedToTeam];
     this.teamsService.changePlayers(playerTeams)
     .subscribe({
@@ -145,7 +157,7 @@ export class PlayersToTeamComponent {
       this.filteredPlayersOnTeam = this.playersOnTeam.filter(p => p.name.includes(this.model.searchStringOnTeam))
     }
     else{
-      this.filteredPlayersNotOnTeam = this.playersNotOnTeam.filter(p => p.name.includes(this.model.searchStringOffTeam))
+      this.filteredPlayersNotOnTeam = this.playersNotOnTeam.filter(p => p.name.toLowerCase().includes(this.model.searchStringOffTeam.toLowerCase()))
     }
   }
 }

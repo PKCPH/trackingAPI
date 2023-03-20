@@ -11,6 +11,8 @@ import * as serviceVariables from './serviceVariables'
 export class MatchesService {
   isLoading: boolean = false;
 
+  ////// For code clarification look in teams.serviec.ts //////
+
   constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
 
    private errorSubject = new BehaviorSubject<string>("");
@@ -36,6 +38,22 @@ export class MatchesService {
   getSchedule(): Observable<Match[]> {
     this.isLoading = true;
     return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/Matches')
+      .pipe(
+        tap(schedule => {
+          this.errorSubject.next('');
+        }),
+        catchError(error => {
+          console.error(error);
+          this.errorSubject.next(this.customErrorHandlerService.handleError(error));
+          this.isLoading = false;
+          return of([]);
+        })
+      );
+  }
+
+  getFinishedMatches(): Observable<Match[]> {
+    this.isLoading = true;
+    return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/MatchesFin')
       .pipe(
         tap(schedule => {
           this.errorSubject.next('');

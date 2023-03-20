@@ -23,16 +23,20 @@ export class AddMatchComponent {
 
   teams: Team[] = [];
   errorMessage: string = "";
-  
-    constructor(private teamsService: TeamsService, private matchesService: MatchesService,
-      private router: Router, private location: Location, 
-      private el: ElementRef, private renderer: Renderer2) {
-  
-        this.teamsService.errorMessage.subscribe(error => {
-          this.errorMessage = error;
-        })
-  
-      this.teamsService.getAllTeams()
+
+  constructor(private teamsService: TeamsService, private matchesService: MatchesService,
+    private router: Router, private location: Location,
+    private el: ElementRef, private renderer: Renderer2) {
+
+    this.fetch();
+
+  }
+
+  fetch() {
+    // this.teamsService.errorMessage.subscribe(error => {
+    //   this.errorMessage = error;
+    // })
+    this.teamsService.getAllTeams()
       .subscribe({
         next: (teams) => {
           this.teams = teams.map(team => {
@@ -41,34 +45,32 @@ export class AddMatchComponent {
               availability: team.isAvailable ? 'No' : 'Yes'
             };
           });
-          if (teams)
-          {
+          if (teams) {
             this.Hideloader();
-          }  
+          }
           // Debugging
           // console.log(this.teams);
         },
         error: (response) => {
           console.log(response);
         }
-      });       
-    }
-  
-    Hideloader() {
-              // Setting display of spinner
-              // element to none
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#availableteamcontainer'), 'display', 'block');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
-    }
+      });
+  }
 
-    createMatch()
-    {
-      this.matchesService.addMatch(this.addMatchRequest)
+  Hideloader() {
+    // Setting display of spinner
+    // element to none
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#availableteamcontainer'), 'display', 'block');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
+  }
+
+  createMatch() {
+    this.matchesService.addMatch(this.addMatchRequest)
       .subscribe({
         next: (members) => {
           this.router.navigate(['matches']);
         }
       });
-    }
+  }
 }

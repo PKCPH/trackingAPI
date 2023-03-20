@@ -8,6 +8,7 @@
                 <tr>
                     <th>MatchID</th>
                     <th>Matchup</th>
+                    <th>Score</th>
                     <th>Bet on</th>
                     <th>Amount</th>
                     <th>Result</th>
@@ -19,6 +20,7 @@
             <tr class="tablerow"> 
                 <td>{{ bet.matchId }}</td>
                 <td>{{ bet.participatingTeams[0].name}} vs {{ bet.participatingTeams[1].name}}</td>
+                <td>{{ bet.participatingTeams[0].score}} - {{ bet.participatingTeams[1].score}}</td>
                 <td>{{ bet.team | titlecase }}</td>
                 <td>{{ bet.amount }}$</td>
                 <td *ngIf="bet.betResult == '0'">Undetermined</td>

@@ -10,5 +10,6 @@ export interface Team {
     score: number;
     result: number;
     players: playerTeam[];
+    rating: number;
 }
 

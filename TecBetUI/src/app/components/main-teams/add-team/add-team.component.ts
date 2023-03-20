@@ -19,47 +19,51 @@ export class AddTeamComponent {
     availability: '',
     players: [],
     score: 0,
-    result: 0
+    result: 0,
+    rating: 0
   };
-  
-  teamForm: FormGroup;
+
+  teamForm: FormGroup | any;
   submitted = false;
-  
+
   constructor(private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {
+
+    this.buildValidator();
+    
+  }
+
+  buildValidator() {
     this.teamForm = this.formBuilder.group({
       name: ['', [Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]
     });
   }
-  
+
   addTeam() {
     this.submitted = true;
-    if (this.teamForm.valid)
-    {
-      if (this.addTeamRequest)
-      {
-  this.addTeamRequest = {
-  ...this.addTeamRequest,
-  name: this.teamForm.get('name')?.value
-  };
-  }
-  
-    this.teamsService.addTeam(this.addTeamRequest)
-    .subscribe({
-      next: (members) => {
-        this.router.navigate(['teams']);
+    if (this.teamForm.valid) {
+      if (this.addTeamRequest) {
+        this.addTeamRequest = {
+          ...this.addTeamRequest,
+          name: this.teamForm.get('name')?.value
+        };
       }
-    });
-  } else
-  {
-    for (const key in this.teamForm.controls) {
-      if (this.teamForm.controls.hasOwnProperty(key)) {
-        const control = this.teamForm.get(key);
-        if (control && control.invalid) {
-          console.log(key, control.errors);
+
+      this.teamsService.addTeam(this.addTeamRequest)
+        .subscribe({
+          next: (members) => {
+            this.router.navigate(['teams']);
+          }
+        });
+    } else {
+      for (const key in this.teamForm.controls) {
+        if (this.teamForm.controls.hasOwnProperty(key)) {
+          const control = this.teamForm.get(key);
+          if (control && control.invalid) {
+            console.log(key, control.errors);
+          }
         }
       }
     }
-  }
   }
 }

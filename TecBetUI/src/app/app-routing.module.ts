@@ -10,7 +10,7 @@ import { EditTeamComponent } from './components/main-teams/edit-team/edit-team.c
 import { MainTeamsComponent } from './components/main-teams/main-teams.component';
 import { LoginComponent } from './components/main-login/login/login.component';
 import { AuthguardService } from './services/authguard.service';
-import { CustomersComponent } from './components/customers/customers.component';
+import { BlankComponent } from './components/blank/blank.component';
 import { RegisterComponent } from './components/main-login/register/register.component';
 import { PlayerListComponent } from './components/main-player/player-list/player-list.component';
 import { AddPlayerComponent } from './components/main-player/add-player/add-player.component';
@@ -127,7 +127,7 @@ const routes: Routes = [
   },
   {
     path: '404',
-    component: CustomersComponent
+    component: BlankComponent
   }
 ];
 

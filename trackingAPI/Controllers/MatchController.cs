@@ -89,6 +89,7 @@ public class MatchController : ControllerBase
     public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
         var matches = _context.Matches
+            .Where(mt => mt.MatchState != MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
             .Select(match => new {
@@ -106,6 +107,30 @@ public class MatchController : ControllerBase
 
         return Ok(matches);
     }
+
+    [HttpGet("/api/MatchesFin")]
+    public async Task<ActionResult<IList<Gamematch>>> GetAllFinishedMatchesAsync()
+    {
+        var matches = _context.Matches
+            .Where(mt => mt.MatchState == MatchState.Finished)
+            .Include(mt => mt.ParticipatingTeams)
+            .ThenInclude(t => t.Team)
+            .Select(match => new {
+                Id = match.Id,
+                dateOfMatch = match.DateOfMatch,
+                matchState = match.MatchState,
+                participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                    Id = pt.Team.Id,
+                    name = pt.Team.Name,
+                    result = pt.Result,
+                    score = pt.TeamScore
+                }).ToList()
+            })
+            .ToList();
+
+        return Ok(matches);
+    }
+
 
     [HttpGet("/api/MatchDetails/{id}")]
     public async Task<ActionResult<IList<Gamematch>>> GetMatchDetails(Guid id)

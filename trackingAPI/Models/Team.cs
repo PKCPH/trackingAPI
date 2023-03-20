@@ -19,6 +19,7 @@ public class Team
     public Guid Id { get; set; }
     
     public string? Name { get; set; }
+    public decimal? Rating { get; set; }
 
     [DefaultValue("true")]
     public bool? IsAvailable { get; set; }
