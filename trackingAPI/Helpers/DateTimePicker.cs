@@ -12,8 +12,8 @@ public static class DateTimePicker
     {
 
         var rnd = new Random();
-        var date = DateTime.Today; //.today when not testing
         DateTime dateTime = GetCopenhagenTimeFromWeb();
+        var date = dateTime.Date; //.today when not testing
 
         //Timespan of the random scheduled time 
         var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
