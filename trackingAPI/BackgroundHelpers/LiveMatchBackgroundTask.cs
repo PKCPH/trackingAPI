@@ -21,26 +21,20 @@ public class LiveMatchBackgroundTask
 
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
-        UpdatePlayingState(gamematch, MatchState.FirstHalf);
-        PlayGameHalf(ref gamematch);
+        PlayGameHalf(gamematch, MatchState.FirstHalf);
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
-        Console.WriteLine("HalfTimeBreak");
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
         
-        UpdatePlayingState(gamematch, MatchState.SecondHalf);
-        PlayGameHalf(ref gamematch);
+        PlayGameHalf(gamematch, MatchState.SecondHalf);
 
         ////if not draw or draw is allowed then return
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
             || gamematch.IsDrawAllowed) return Task.CompletedTask;
-        UpdatePlayingState(gamematch, MatchState.OverTime);
-        PlayOvertime(ref gamematch);
+        PlayOvertime(gamematch, MatchState.OverTime);
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
-        UpdatePlayingState(gamematch, MatchState.PenaltyShootOut);
-        Console.WriteLine($"Match Penalty shootout: {gamematch.Id}");
-        PlayPenaltyShootout(ref gamematch);
+        PlayPenaltyShootout(gamematch, MatchState.PenaltyShootOut);
 
         return Task.CompletedTask;
     }
@@ -59,11 +53,11 @@ public class LiveMatchBackgroundTask
         return Task.CompletedTask;
     }
 
-    public Gamematch PlayGameHalf(ref Gamematch gamematch)
+    public Gamematch PlayGameHalf(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
+        UpdatePlayingState(gamematch, matchState);
         timer.Start();
-
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
@@ -78,9 +72,10 @@ public class LiveMatchBackgroundTask
         return gamematch;
     }
 
-    public Gamematch PlayOvertime(ref Gamematch gamematch)
+    public Gamematch PlayOvertime(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
+        UpdatePlayingState(gamematch, matchState);
         timer.Start();
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
@@ -94,12 +89,10 @@ public class LiveMatchBackgroundTask
             Thread.Sleep(1000);
         }
         timer.Stop();
-
-        
         return gamematch;
     }
 
-    public Gamematch PlayPenaltyShootout(ref Gamematch gamematch)
+    public Gamematch PlayPenaltyShootout(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
         Random rnd = new Random();
@@ -107,14 +100,16 @@ public class LiveMatchBackgroundTask
         var teamAPKScore = 0;
         var teamBPKScore = 0;
 
-
+        UpdatePlayingState(gamematch, matchState);
         while (teamAPKScore == teamBPKScore || rounds < 4)
         {
             PenaltyKick(ref teamAPKScore, gamematch.ParticipatingTeams.First(), rnd);
             Console.WriteLine($"PK SCORE: {gamematch.ParticipatingTeams.First().Team.Name} - {teamAPKScore} VS {gamematch.ParticipatingTeams.Last().Team.Name} - {teamBPKScore}");
+            Thread.Sleep(1000);
             PenaltyKick(ref teamBPKScore, gamematch.ParticipatingTeams.Last(), rnd);
             Console.WriteLine($"PK SCORE: {gamematch.ParticipatingTeams.First().Team.Name} - {teamAPKScore} VS {gamematch.ParticipatingTeams.Last().Team.Name} - {teamBPKScore}");
             rounds++;
+            Thread.Sleep(1000);
         }
         return gamematch;
     }
