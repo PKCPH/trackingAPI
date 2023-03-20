@@ -34,6 +34,7 @@ public class ImplementBackgroundService : BackgroundService
 
                 matches = _context.Matches.ToList();
             }
+            Console.WriteLine("TIME : " + DateTime.Now.ToString());
             //if any matches has not finished then play matches!
             //else create new matches
             if (!matches.All(x => x.MatchState == MatchState.Finished))

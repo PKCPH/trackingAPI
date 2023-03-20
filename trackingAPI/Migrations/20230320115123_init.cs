@@ -68,6 +68,7 @@ namespace trackingAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rating = table.Column<decimal>(type: "decimal(18,4)", nullable: true),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: true, defaultValue: true)
                 },
                 constraints: table =>
@@ -205,7 +206,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("ba109052-8e14-4432-bb45-5e1bafb1cc78"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("b2b33045-2415-4031-83c0-ed5967b8b146"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
