@@ -81,7 +81,7 @@ export class MainScheduleComponent implements OnDestroy {
           {
             this.sortedFinGames = this.finishedGames.slice();
             this.Hideloader();
-            this.sortDataTest(this.sort);
+            this.sortData(this.sort);
           }
           this.matchesService.errorMessage.subscribe(error => {
             this.errorMessage = error;
@@ -181,11 +181,7 @@ export class MainScheduleComponent implements OnDestroy {
   sortData(event: any) {
     this.sort = event; // Store sort state for dynamic data update
     this.updateSortedGames();
-  }
-
-  sortDataTest(event: any) {
-    this.sort = event;
-    this.updateSortedFinGames
+    this.updateSortedFinGames();
   }
 
     //Detects pagechange and updates the data. Get pagedGames is for the pagination, where it slices the data for display, it keeps track of pageindex to know where to pick up from.

@@ -43,7 +43,7 @@
 
         <mat-paginator id="paginator" [length]="finishedGames.length" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
 
-        <table matSort (matSortChange)="sortDataTest($event)" class="table tabletext" *ngIf="games && games.length > 0" id="archivedMatches">
+        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="games && games.length > 0" id="archivedMatches">
             <thead>
                 <tr>
                     <th mat-sort-header="dateOfMatch" class="test">Match Date</th>

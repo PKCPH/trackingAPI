@@ -5,7 +5,7 @@
              important notes is that it has to be muted to be able to autoplay, oncanplay="this.play()" and onloadedmetadata="this.muted = true" are important solutions to get this fixed.  -->
 
     <div class="videodiv" id="videodiv">
-        <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" style="pointer-events: none; width: 1720px; overflow: hidden;" onloadedmetadata="this.muted = true">
+        <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video" onloadedmetadata="this.muted = true">
             <source [src]="videoSrc" type="video/mp4">
             Your browser does not support the video tag.
         </video>
