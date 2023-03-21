@@ -9,7 +9,6 @@ public class ImplementBackgroundService : BackgroundService
     private readonly IServiceProvider _services;
     //parameter is how often the Timer ticks (set to once every second)
     private readonly PeriodicTimer _timer = new(BackgroundTaskConfiguration.TimerTickTimeSpan);
-    private IQueryable<Gamematch> unfinishedMatches;
 
     public ImplementBackgroundService(IServiceProvider services)
     {

@@ -17,8 +17,6 @@ public class LiveMatchBackgroundTask
     {
         _services = services;
     }
-
-
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
         PlayGameHalf(gamematch, MatchState.FirstHalf);
