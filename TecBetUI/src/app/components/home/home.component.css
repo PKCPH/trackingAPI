@@ -28,6 +28,13 @@
     z-index: -1;
   }
 
+  .subtitle {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      color: lightblue;
+      align-items: center;
+  }
+
 .divs h1 {
   font-size: 80px;
 }

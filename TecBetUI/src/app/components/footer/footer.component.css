@@ -1,11 +1,25 @@
-.footer {
-        background-image: url('https://wallpaperset.com/w/full/6/6/5/120003.jpg');
-        height: 400px;
-        background-size: 700px;
-        background-position: 580px;
-        background-repeat: no-repeat;
+.footer-section {
+width: 70%;
 }
 
  div {
     padding: 40px;
+ }
+
+ .copyright {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: rgba(50, 50, 50, 1);
+        display: flex;
+        justify-content: space-between;
+ }
+
+ a:link { text-decoration: none; }
+
+ .link {
+        color: lightblue;
+ }
+
+ .tos {
+        color: rgba(50, 50, 50, 1);
+        text-decoration: none;
  }

@@ -49,7 +49,6 @@ a:hover {
  border-top: none;
  border-bottom: none;
  border-radius: 50px/90px;
- color: red;
 }
 
 .menu a {
@@ -81,13 +80,6 @@ a:hover {
 .rightsidenav a:hover, span:hover {
     color: red;
     transition: all 400ms ease;
-}
-
-p {
-    margin-top: 10px;
-    font-size: 1.5rem;
-    color: lightblue;
-    align-items: center;
 }
 
 .username {
@@ -160,7 +152,7 @@ p {
     font-size: 15px;
     position: absolute;
     right: 17.8%;
-    top: 45%;
+    top: 60%;
 }
 
 .balance img {

@@ -47,6 +47,7 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FooterComponent } from './components/footer/footer.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -85,6 +86,7 @@ export function tokenGetter() {
     NewPlayerComponent,
     ChangePlayerComponent,
     FooterComponent,
+    ContactComponent,
   ],
   imports: [
     BrowserModule,
