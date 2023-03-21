@@ -20,10 +20,13 @@ public static class DateTimePicker
         //when the match starts the earliest on a given day
         var timeOfDayHours = TimeSpan.FromHours(StartHourOfScheduledTimeSpan);
         timeOfDayHours += TimeSpan.FromMinutes(minutes);
+        //testing
+        timeOfDayHours += dateTime.TimeOfDay;
+
         var pickedDateTime = date + timeOfDayHours;
 
         //if pickedDateTime is before datetime return it with +1 day else return its normal datetime
-        return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(1) : pickedDateTime;
+        return (pickedDateTime < dateTime) ? pickedDateTime.AddDays(0) : pickedDateTime;
     }
 
     //Api call for Copenhagen Time

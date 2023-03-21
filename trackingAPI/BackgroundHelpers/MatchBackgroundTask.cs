@@ -35,30 +35,41 @@ public class MatchBackgroundTask
     public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
-        //while any matches has passed the datetime.now
-        while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
+
+        foreach (var item in GetListOfScheduledGameMatchesByDateTime().Where(x => x.DateOfMatch < now).OrderBy(x => x.DateOfMatch))
         {
-            var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
-            // while now has past the schedule time of the match  
-            if (now > firstGameMatch.DateOfMatch)
-            {
-                using (var scope = _services.CreateScope())
-                {
-                    var _context =
-                        scope.ServiceProvider
-                            .GetRequiredService<DatabaseContext>();
-                    _context.Entry(firstGameMatch).State = EntityState.Modified;
-                    _context.SaveChanges();
-                }
-                //PlayGameMatch(firstGameMatch);
-                //new thread is created and started per livematch
-                Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
-                thread.Start();
-                Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
-                Thread.Sleep(100);
-            }
+            if (item.ParticipatingTeams.Any().Equals(null)) continue;
+            Thread thread = new Thread(() => { PlayGameMatch(item); });
+            thread.Start();
+            Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {item.Id} is started");
+            Thread.Sleep(100);
         }
         return Task.CompletedTask;
+        ////while any matches has passed the datetime.now
+        //while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
+        //{
+        //    var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
+            
+        //    // while now has past the schedule time of the match  
+        //    if (now > firstGameMatch.DateOfMatch && firstGameMatch.ParticipatingTeams.Any().Equals(null)) return Task.CompletedTask;
+        //    {
+        //        //using (var scope = _services.CreateScope())
+        //        //{
+        //        //    var _context =
+        //        //        scope.ServiceProvider
+        //        //            .GetRequiredService<DatabaseContext>();
+        //        //    _context.Entry(firstGameMatch).State = EntityState.Modified;
+        //        //    _context.SaveChanges();
+        //        //}
+        //        //PlayGameMatch(firstGameMatch);
+        //        //new thread is created and started per livematch
+        //        Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
+        //        thread.Start();
+        //        Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
+        //        Thread.Sleep(100);
+        //    }
+        //}
+        //return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<Gamematch> GetListOfScheduledGameMatchesByDateTime()
@@ -94,9 +105,9 @@ public class MatchBackgroundTask
             {
                 match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
                     .Where(x => x.Team != null).Include(x => x.Team).ToList();
-                match.MatchState = MatchState.NotStarted;
                 match.ParticipatingTeams.First().TeamScore = 0;
                 match.ParticipatingTeams.Last().TeamScore = 0;
+                match.MatchState = MatchState.NotStarted;
                 _context.Entry(match).State = EntityState.Modified;
                 _context.SaveChanges();
             }
