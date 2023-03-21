@@ -35,8 +35,7 @@ public class MatchBackgroundTask
     public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
-
-        foreach (var item in GetListOfScheduledGameMatchesByDateTime().Where(x => x.DateOfMatch < now).OrderBy(x => x.DateOfMatch))
+        foreach (var item in GetListOfScheduledGameMatchesByDateTime().Where(x => x.DateOfMatch < now))
         {
             if (item.ParticipatingTeams.Any().Equals(null)) continue;
             Thread thread = new Thread(() => { PlayGameMatch(item); });
@@ -45,31 +44,6 @@ public class MatchBackgroundTask
             Thread.Sleep(100);
         }
         return Task.CompletedTask;
-        ////while any matches has passed the datetime.now
-        //while (GetListOfScheduledGameMatchesByDateTime().Any(x => x.DateOfMatch < now))
-        //{
-        //    var firstGameMatch = GetListOfScheduledGameMatchesByDateTime().OrderBy(x => x.DateOfMatch).First();
-            
-        //    // while now has past the schedule time of the match  
-        //    if (now > firstGameMatch.DateOfMatch && firstGameMatch.ParticipatingTeams.Any().Equals(null)) return Task.CompletedTask;
-        //    {
-        //        //using (var scope = _services.CreateScope())
-        //        //{
-        //        //    var _context =
-        //        //        scope.ServiceProvider
-        //        //            .GetRequiredService<DatabaseContext>();
-        //        //    _context.Entry(firstGameMatch).State = EntityState.Modified;
-        //        //    _context.SaveChanges();
-        //        //}
-        //        //PlayGameMatch(firstGameMatch);
-        //        //new thread is created and started per livematch
-        //        Thread thread = new Thread(() => { PlayGameMatch(firstGameMatch); });
-        //        thread.Start();
-        //        Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {firstGameMatch.Id} is started");
-        //        Thread.Sleep(100);
-        //    }
-        //}
-        //return Task.CompletedTask;
     }
 
     public IOrderedEnumerable<Gamematch> GetListOfScheduledGameMatchesByDateTime()
@@ -121,26 +95,19 @@ public class MatchBackgroundTask
         LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
         BetsHandler betsHandler = new(_services);
         CancellationToken stoppingToken;
+        //If match has a BYE team
+        if (gamematch.ParticipatingTeams.Any(x => x.Team.Name == "BYE")) { ExecuteByeMatch(gamematch); }
+        else { await liveMatchBackgroundTask.ExecuteLiveMatch(ref gamematch); }
+
+        gamematch.MatchState = MatchState.Finished;
+        UpdateFinishedMatchInDatabase(gamematch);
+        await betsHandler.UpdateBalancesOnMatchFinish(gamematch);
 
         using (var scope = _services.CreateScope())
         {
             var _context =
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
-            //If match has a BYE team
-            if (gamematch.ParticipatingTeams.Any(x => x.Team.Name == "BYE"))
-            {
-                ExecuteByeMatch(gamematch, _context);
-            }
-            else
-            {
-                await liveMatchBackgroundTask.ExecuteLiveMatch(ref gamematch);
-            }
-
-            gamematch.MatchState = MatchState.Finished;
-            UpdateFinishedMatchInDatabase(gamematch);
-            await betsHandler.UpdateBalancesOnMatchFinish(gamematch);
-
             if (gamematch.LeagueId == null)
             {
                 //updating teams to is available
@@ -151,7 +118,6 @@ public class MatchBackgroundTask
                 }
                 // detach the gameMatch instance to avoid conflicts with the context
                 _context.Entry(gamematch).State = EntityState.Detached;
-
             }
             else if (gamematch.ParticipatingTeams.Where(x => x.Result == Result.Loser).First().Team != null)
             {
@@ -163,21 +129,27 @@ public class MatchBackgroundTask
             // attach the updated gameMatch instance to the context and save changes
             _context.Matches.Update(gamematch);
             await _context.SaveChangesAsync();
-
             _context.SaveChanges();
         }
     }
-    private Task ExecuteByeMatch(Gamematch gamematch, DatabaseContext _context)
+    //Deletes BYE team and set opponent to winner, match will not be simulated
+    private Task ExecuteByeMatch(Gamematch gamematch)
     {
-        var team = gamematch.ParticipatingTeams.Where(x => x.Team.Name != "BYE").First();
-        var teamBye = gamematch.ParticipatingTeams.Where(x => x.Team.Name == "BYE").First();
-        team.Result = Result.Winner;
-        teamBye.Result = Result.Loser;
-        _context.Entry(team).State = EntityState.Modified;
-        _context.Entry(teamBye).State = EntityState.Modified;
-        _context.Entry(teamBye.Team).State = EntityState.Deleted;
-        _context.Matches.Update(gamematch);
-        _context.SaveChanges();
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            var team = gamematch.ParticipatingTeams.Where(x => x.Team.Name != "BYE").First();
+            var teamBye = gamematch.ParticipatingTeams.Where(x => x.Team.Name == "BYE").First();
+            team.Result = Result.Winner;
+            teamBye.Result = Result.Loser;
+            _context.Entry(team).State = EntityState.Modified;
+            _context.Entry(teamBye).State = EntityState.Modified;
+            _context.Entry(teamBye.Team).State = EntityState.Deleted;
+            _context.Matches.Update(gamematch);
+            _context.SaveChanges();
+        }
         return Task.CompletedTask;
     }
 
