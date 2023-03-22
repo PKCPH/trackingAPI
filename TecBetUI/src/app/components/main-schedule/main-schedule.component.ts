@@ -5,6 +5,7 @@ import { Match } from 'src/app/models/matches.model';
 import { interval, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Team } from 'src/app/models/teams.model';
 
 @Component({
   selector: 'app-main-schedule',
@@ -48,8 +49,24 @@ export class MainScheduleComponent implements OnDestroy {
       this.matchesService.getSchedule().subscribe({
         next: (games) => {
           this.games = games.map(game => {
+
+            let participatingTeams = game.participatingTeams;
+            let gameState = game.matchState;
+
+            if (participatingTeams == null) {
+              participatingTeams = [{ name: 'BYE', id: '',
+              isAvailable: true,
+              matches: [],
+              availability: '',
+              players: [],
+              score: 0,
+              result: 0,
+              rating: 0 }];
+            }
+
             return {
               ...game,
+              participatingTeams
             }
           });
           console.log(this.games);

@@ -87,6 +87,14 @@ public class MatchController : ControllerBase
     [HttpGet("/api/Matches")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
+
+        var matchesCheck = _context.Matches;
+
+        if (matchesCheck == null)
+        {
+            return NotFound();
+        }
+
         var matches = _context.Matches
             .Where(mt => mt.MatchState != MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
@@ -95,12 +103,13 @@ public class MatchController : ControllerBase
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
-                participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? new
+                {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
-                    result= pt.Result,
+                    result = pt.Result,
                     score = pt.TeamScore
-                }).ToList()
+                } : null).ToList()
             })
             .ToList();
 
@@ -134,6 +143,13 @@ public class MatchController : ControllerBase
     [HttpGet("/api/MatchDetails/{id}")]
     public async Task<ActionResult<IList<Gamematch>>> GetMatchDetails(Guid id)
     {
+        var matchCheck = _context.Matches;
+
+        if (matchCheck == null)
+        {
+            return NotFound();
+        }
+
         var match = await _context.Matches
                .Include(mt => mt.ParticipatingTeams)
                .ThenInclude(t => t.Team)
@@ -150,11 +166,6 @@ public class MatchController : ControllerBase
                    }).ToList()
                })
                .FirstOrDefaultAsync();
-
-        if (match == null)
-        {
-            return NotFound();
-        }
 
         return Ok(match);
     }
