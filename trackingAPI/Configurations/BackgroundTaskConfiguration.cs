@@ -23,7 +23,7 @@ public static class BackgroundTaskConfiguration
     public static bool IsEnabled { get; set; } = true;
 
     //The timespan in hours of the random scheduled time of a match //use x*60 for hours.
-    public static int ScheduledTimeSpanInMinutes { get; set; } = 4;
+    public static int ScheduledTimeSpanInMinutes { get; set; } = 20;
 
     //Determine the earliest time of the day for the ScheduledTimeSpanInHours
     public static int StartHourOfScheduledTimeSpan { get; set; } = 0;
@@ -33,7 +33,7 @@ public static class BackgroundTaskConfiguration
     public static DateTime DateTimeStartingPoint { get; set; } = DateTime.Now;
 
     //How often the backgroundtask is checking for changes.
-    public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(10);
+    public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(60);
 
     //public static DateTime CustomLocalTime { get; set; } = DateTime.UtcNow;
 

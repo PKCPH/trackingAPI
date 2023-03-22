@@ -101,10 +101,9 @@ public class LeagueHelper
 
     public League GetListOfTeams(League league, DatabaseContext _context)
     {
-        Random rnd = new Random();
-
-        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList().Take(LeagueConfiguration.AmountOfTeams);
-
+        //Random rnd = new Random();
+        //var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).OrderBy(x => Guid.NewGuid()).Take(8);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).Take(LeagueConfiguration.AmountOfTeams);
         foreach (var team in availableTeams)
         {
             LeagueTeam leagueTeamA = new LeagueTeam { Team = team };
