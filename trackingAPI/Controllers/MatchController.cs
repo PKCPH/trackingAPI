@@ -88,22 +88,29 @@ public class MatchController : ControllerBase
     [HttpGet("/api/Matches")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
-        var matches = _context.Matches
-            .Where(mt => mt.MatchState != MatchState.Finished)
-            .Include(mt => mt.ParticipatingTeams)
-            .ThenInclude(t => t.Team)
-            .Select(match => new {
-                Id = match.Id,
-                dateOfMatch = match.DateOfMatch,
-                matchState = match.MatchState,
-                participatingTeams = match.ParticipatingTeams.Select(pt => new {
-                    Id = pt.Team.Id,
-                    name = pt.Team.Name,
-                    result= pt.Result,
-                    score = pt.TeamScore
-                }).ToList()
-            })
-            .ToList();
+
+        var matches = _context.Matches;
+        if (matches == null)
+        {
+            return NotFound();
+        }
+
+        var finishedMatches = matches
+         .Where(mt => mt.MatchState == MatchState.Finished)
+         .Include(mt => mt.ParticipatingTeams)
+         .ThenInclude(t => t.Team)
+         .Select(match => new {
+             Id = match.Id,
+             dateOfMatch = match.DateOfMatch,
+             matchState = match.MatchState,
+             participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                 Id = pt.Team.Id,
+                 name = pt.Team.Name ?? "TBA",
+                 result = pt.Result,
+                 score = pt.TeamScore
+             }).ToList()
+         })
+         .ToList();
 
         return Ok(matches);
     }
