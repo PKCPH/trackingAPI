@@ -14,13 +14,7 @@ export class EditMatchComponent {
   matchForm: FormGroup | any;
   submitted = false;
 
-  matchDetails: Match = {
-    id: '',
-    matchState: 0,
-    dateOfMatch: new Date(),
-    participatingTeams: [],
-    state: ''
-  };
+  matchDetails: Match | any;
 
   constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router, private formBuilder: FormBuilder) {
 

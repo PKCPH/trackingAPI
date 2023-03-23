@@ -15,19 +15,21 @@
         <button class="btn btn-warning" id="activeMatchesButton" (click)="showActiveMatches()">Show Active Matches</button>
 
         <!-- <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddMatch()" id="addbutton">Create a Match</button> -->
-        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="games && games.length > 0" id="activeMatches">
+        <div id="activeMatches">
+        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="games && games.length > 0">
             <thead>
                 <tr>
-                    <th mat-sort-header="dateOfMatch" class="test">Match Date</th>
-                    <th>Teams</th>
+                    <th mat-sort-header="dateOfMatch">Match Date</th>
+                    <th mat-sort-header="name">Teams</th>
                     <th>Score</th>
                     <th>State</th>
                     <th> </th>
                 </tr>
             </thead>
             <ng-container *ngFor="let games of sortedGames" >
-            <tr class="tablerow" *ngIf="games.matchState != 2" (click)="GoMatchDetails(games.id)"> 
+            <tr class="tablerow"  (click)="GoMatchDetails(games.id)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
+
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
 
                 <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
@@ -40,37 +42,35 @@
                 </tr> 
             </ng-container>
         </table>  
+    </div>
 
         <mat-paginator id="paginator" [length]="finishedGames.length" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
 
-        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="games && games.length > 0" id="archivedMatches">
+        <div id="archivedMatches">
+        <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="finishedGames && finishedGames.length > 0">
             <thead>
                 <tr>
                     <th mat-sort-header="dateOfMatch" class="test">Match Date</th>
-                    <th>Teams</th>
+                    <th mat-sort-header="name">Teams</th>
                     <th>Score</th>
                     <th>State</th>
                     <th> </th>
                 </tr>
             </thead>
-            <ng-container *ngFor="let games of pagedGames" >
-                <tr class="tablerow" *ngIf="games.matchState == 2"> 
-                    <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
-                    <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
+            <ng-container *ngFor="let finGames of pagedGames" >
+                <tr class="tablerow" *ngIf="finGames.matchState == 2"> 
+                    <td>{{ finGames.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
+                    <td>{{ finGames.participatingTeams[0].name}} vs {{finGames.participatingTeams[1].name}}</td>
     
-                    <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
+                    <td>{{finGames.participatingTeams[0].score}} - {{finGames.participatingTeams[1].score}}</td>
         
-                    <td *ngIf="games.matchState == 2">Finished</td>
+                    <td *ngIf="finGames.matchState == 2">Finished</td>
                     <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
                     </tr> 
                 </ng-container>
         </table>  
+    </div>
 
-
-
-
-
-    
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
