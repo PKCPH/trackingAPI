@@ -136,3 +136,11 @@ a:hover {
 span:hover {
     color: darkred;
 }
+
+
+@media screen and (max-width: 1100px) {
+  img {
+    width: 240px;
+    height: 190px;
+  }
+}

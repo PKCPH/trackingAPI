@@ -23,11 +23,16 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            if (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
+            var n = 5;
+
+            for (int i = 0; i <= n; i++)
             {
-                TeamPicker teamPicker = new();
-                await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
-                await _context.SaveChangesAsync();
+                if (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
+                {
+                    TeamPicker teamPicker = new();
+                    await _context.Matches.AddAsync(teamPicker.CreateMatch(_context));
+                    await _context.SaveChangesAsync();
+                }
             }
         }
     }

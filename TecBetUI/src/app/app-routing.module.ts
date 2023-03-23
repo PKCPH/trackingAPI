@@ -25,6 +25,7 @@ import { PlayersToTeamComponent } from './components/main-teams/players-on-team/
 import { NewPlayerComponent } from './components/main-teams/players-on-team/new-player/new-player.component';
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -112,6 +113,10 @@ const routes: Routes = [
     path: 'animalrace',
     component: MainHorseracegameComponent,
     canActivate: [AuthguardService]
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
   },
   {
     path: 'teams/players/:id/add',

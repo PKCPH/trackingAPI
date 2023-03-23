@@ -105,6 +105,16 @@ form {
     color: white;
 }
 
+.footer {
+    background-image: url('images/footer2.jpg');
+    height: 550px;
+    background-repeat: no-repeat;
+    background-color: #000;
+    box-shadow: 0 0 5px 10px #000;
+    display: flex;
+    justify-content: center;
+}
+
 /* MODAL STYLINGS (HAS TO BE IN GLOBAL CSS FILE) */
 
 .modal-login .modal-content {
@@ -148,5 +158,11 @@ mat-tooltip-component {
     justify-content: center;
   }
 
+  /* MAT ICON STYLINGS */
+
+  .mat-icon {
+    vertical-align: middle;
+    margin-top: -4px;
+  }
 
 /* MEDIA QUERIES */

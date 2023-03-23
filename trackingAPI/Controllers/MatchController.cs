@@ -56,7 +56,6 @@ public class MatchController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Update(Guid id, Gamematch match)
     {
         //if the id of the url and the id in the body does not match, then return
@@ -88,29 +87,37 @@ public class MatchController : ControllerBase
     [HttpGet("/api/Matches")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
+        var matchesCheck = _context.Matches;
 
-        var matches = _context.Matches;
-        if (matches == null)
+        if (matchesCheck == null)
         {
             return NotFound();
         }
 
-        var finishedMatches = matches
-         .Where(mt => mt.MatchState == MatchState.Finished)
-         .Include(mt => mt.ParticipatingTeams)
-         .ThenInclude(t => t.Team)
-         .Select(match => new {
-             Id = match.Id,
-             dateOfMatch = match.DateOfMatch,
-             matchState = match.MatchState,
-             participatingTeams = match.ParticipatingTeams.Select(pt => new {
-                 Id = pt.Team.Id,
-                 name = pt.Team.Name ?? "TBA",
-                 result = pt.Result,
-                 score = pt.TeamScore
-             }).ToList()
-         })
-         .ToList();
+        var matches = _context.Matches
+            .Where(mt => mt.MatchState != MatchState.Finished)
+            .Include(mt => mt.ParticipatingTeams)
+            .ThenInclude(t => t.Team)
+            .Select(match => new {
+                Id = match.Id,
+                dateOfMatch = match.DateOfMatch,
+                matchState = match.MatchState,
+
+                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+                {
+                    Id = pt.Team.Id,
+                    name = pt.Team.Name,
+                    result = pt.Result,
+                    score = pt.TeamScore,
+                    round = pt.Round,
+                } : (object)new
+                {
+                    round = pt.Round,
+                }).ToList()
+            })
+            .ToList();
+
+
 
         return Ok(matches);
     }
@@ -118,6 +125,13 @@ public class MatchController : ControllerBase
     [HttpGet("/api/MatchesFin")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllFinishedMatchesAsync()
     {
+        var matchesCheck = _context.Matches;
+
+        if (matchesCheck == null)
+        {
+            return NotFound();
+        }
+
         var matches = _context.Matches
             .Where(mt => mt.MatchState == MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
@@ -126,11 +140,17 @@ public class MatchController : ControllerBase
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
-                participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+                {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
                     result = pt.Result,
-                    score = pt.TeamScore
+                    score = pt.TeamScore,
+                    round = pt.Round,
+                } : (object)new
+                {
+                    name = "TBD",
+                    round = pt.Round,
                 }).ToList()
             })
             .ToList();
@@ -142,6 +162,13 @@ public class MatchController : ControllerBase
     [HttpGet("/api/MatchDetails/{id}")]
     public async Task<ActionResult<IList<Gamematch>>> GetMatchDetails(Guid id)
     {
+        var matchCheck = _context.Matches;
+
+        if (matchCheck == null)
+        {
+            return NotFound();
+        }
+
         var match = await _context.Matches
                .Include(mt => mt.ParticipatingTeams)
                .ThenInclude(t => t.Team)
@@ -158,11 +185,6 @@ public class MatchController : ControllerBase
                    }).ToList()
                })
                .FirstOrDefaultAsync();
-
-        if (match == null)
-        {
-            return NotFound();
-        }
 
         return Ok(match);
     }

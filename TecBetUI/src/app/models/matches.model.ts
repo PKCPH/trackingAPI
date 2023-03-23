@@ -6,4 +6,5 @@ export interface Match {
     dateOfMatch: Date;
     participatingTeams: Team[];
     state: string;
+    displayId: string;
 }

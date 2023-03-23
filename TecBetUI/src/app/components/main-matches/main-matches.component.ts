@@ -15,56 +15,54 @@ export class MainMatchesComponent implements OnDestroy {
   matches: Match[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription;
-  
+
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
   }
-  
-    constructor(private matchesService: MatchesService, private router: Router, 
-      private el: ElementRef, private renderer: Renderer2) {
 
-        this.getCredentials(); 
+  constructor(private matchesService: MatchesService, private router: Router,
+    private el: ElementRef, private renderer: Renderer2) {
 
-        this.fetch();
-        
-        this.updateSubscription = interval(2500).subscribe(() => {
-          this.fetch();
+    this.getCredentials();
+
+    this.fetch();
+
+    this.updateSubscription = interval(2500).subscribe(() => {
+      this.fetch();
+    });
+
+  }
+
+  fetch() {
+
+    this.matchesService.errorMessage.subscribe(error => {
+      this.errorMessage = error;
+    });
+
+    this.matchesService.getAllMatches().subscribe({
+      next: (matches) => {
+        this.matches = matches.map(match => {
+          return {
+            ...match,
+            displayId: match.id.substring(0, 18),
+          }
         });
-        
-    }
-
-    fetch() {  
-   this.matchesService.getAllMatches().subscribe({
-    next: (matches) => {
-      this.matches = matches.map(match => {
-        return {
-          ...match,
-          id: match.id.substring(0, 18),
+        // console.log(this.matches);
+        if (matches) {
+          this.Hideloader();
         }
-      });
-      // console.log(this.matches);
-      if (matches)
-      {
-        this.Hideloader();
-      }
-      this.matchesService.errorMessage.subscribe(error => {
-        this.errorMessage = error;
-        this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
-
-        if (this.errorMessage === '')
-        {
+        if (this.errorMessage === '') {
           this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'inline-block');
         }
-      });
-    },
-    error: (response) => {
-      console.log(response);
-    }
-  });  
-    }
-  
-    deleteMatch(id: string) {
-      this.matchesService.deleteMatch(id)
+        else {
+          this.renderer.setStyle(this.el.nativeElement.querySelector('#addbutton'), 'display', 'none');
+        }
+      }
+    });
+  }
+
+  deleteMatch(id: string) {
+    this.matchesService.deleteMatch(id)
       .subscribe({
         next: (response) => {
           this.matchesService.getAllMatches()
@@ -83,40 +81,38 @@ export class MainMatchesComponent implements OnDestroy {
             });
         }
       });
-    } 
+  }
 
-    //Function that checks if user has the admin role or not, basically a rolechecker. Sends you back to index if you aren't admin.
-    
-    getCredentials() {
-      let storedCredentials;
+  //Function that checks if user has the admin role or not, basically a rolechecker. Sends you back to index if you aren't admin.
 
-      let storedCredentialsString = localStorage.getItem("credentials");
-      if (storedCredentialsString)
-      {
+  getCredentials() {
+    let storedCredentials;
+
+    let storedCredentialsString = localStorage.getItem("credentials");
+    if (storedCredentialsString) {
       storedCredentials = JSON.parse(storedCredentialsString);
 
       let role = storedCredentials.role;
 
       if (role === 'Admin') {
         this.router.navigate(['/matches']);
-        } else {
-          this.router.navigate(['/']);
-        }  
+      } else {
+        this.router.navigate(['/']);
       }
-      else if(!storedCredentialsString)
-      {
+    }
+    else if (!storedCredentialsString) {
       this.router.navigate(['/']);
     }
-    }
-  
-    Hideloader() {
-              // Setting display of spinner
-              // element to none
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#matchcontainer'), 'display', 'block');
-    }
-  
-    GoAddMatch() {
-      this.router.navigateByUrl('/matches/add');
-    }
+  }
+
+  Hideloader() {
+    // Setting display of spinner
+    // element to none
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#matchcontainer'), 'display', 'block');
+  }
+
+  GoAddMatch() {
+    this.router.navigateByUrl('/matches/add');
+  }
 }
