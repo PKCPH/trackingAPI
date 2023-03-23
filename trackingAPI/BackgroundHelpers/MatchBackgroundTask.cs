@@ -37,7 +37,7 @@ public class MatchBackgroundTask
         DateTime now = DateTime.Now;
         foreach (var item in GetListOfScheduledGameMatchesByDateTime().Where(x => x.DateOfMatch < now))
         {
-            if (item.ParticipatingTeams.Any().Equals(null)) continue;
+            if (item.ParticipatingTeams.Count != 2) continue;
             Thread thread = new Thread(() => { PlayGameMatch(item); });
             thread.Start();
             Console.WriteLine($"*********THREAD #{thread.ManagedThreadId} for MATCH {item.Id} is started");
