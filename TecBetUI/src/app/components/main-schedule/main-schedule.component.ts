@@ -5,7 +5,6 @@ import { Match } from 'src/app/models/matches.model';
 import { interval, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Team } from 'src/app/models/teams.model';
 
 @Component({
   selector: 'app-main-schedule',
@@ -16,9 +15,10 @@ export class MainScheduleComponent implements OnDestroy {
   games: Match[] = [];
   finishedGames: Match[] = [];
   errorMessage: string = "";
-  updateSubscription: Subscription;
+  updateSubscription: Subscription | any;
   sortedGames: Match[] = [];
   sortedFinGames: Match[] = [];
+  byeCheese: boolean = false;
 
   // Paginator configurations
   pageIndex = 0;
@@ -51,25 +51,15 @@ export class MainScheduleComponent implements OnDestroy {
           this.games = games.map(game => {
 
             let participatingTeams = game.participatingTeams;
-            let gameState = game.matchState;
 
-            if (participatingTeams == null) {
-              participatingTeams = [{ name: 'BYE', id: '',
-              isAvailable: true,
-              matches: [],
-              availability: '',
-              players: [],
-              score: 0,
-              result: 0,
-              rating: 0 }];
-            }
+            // this.compareRounds(participatingTeams);
+            this.nullCheck(participatingTeams);
 
             return {
               ...game,
-              participatingTeams
+              participatingTeams: participatingTeams,
             }
           });
-          console.log(this.games);
           if (games)
           {
             this.sortedGames = this.games.slice();
@@ -78,24 +68,47 @@ export class MainScheduleComponent implements OnDestroy {
           }
           if (games.length > 0)
           {
+            console.log("wtf");
             this.errorMessage = "";
           }
         },
-        error: (response) => {
-          console.log(response);
-        }
       });   
+    }
+
+    nullCheck(participatingTeams: any) { 
+      for (let i = 0; i < participatingTeams.length; i++) {
+        if (participatingTeams[i].name == null) {
+          participatingTeams[i] = {
+            name: this.byeCheese ? 'BYE' : 'TBD',
+            id: '00000000-0000-0000-0000-000000000000',
+            isAvailable: true,
+            matches: [],
+            availability: '',
+            players: [],
+            score: 0,
+            result: 0,
+            rating: 0,
+            round: participatingTeams.round,
+          };
+        }
+      }
     }
 
     fetchFin() {    
       this.matchesService.getFinishedMatches().subscribe({
         next: (finishedGames) => {
+          console.log(this.finishedGames);
           this.finishedGames = finishedGames.map(finishedGame => {
+
+            let participatingTeams = finishedGame.participatingTeams;
+
+            this.nullCheck(participatingTeams);
+
             return {
               ...finishedGame,
+              participatingTeams: participatingTeams,
             }
           });
-          console.log(this.finishedGames);
           if (finishedGames)
           {
             this.sortedFinGames = this.finishedGames.slice();
@@ -129,6 +142,9 @@ export class MainScheduleComponent implements OnDestroy {
     }
 
     showArchivedMatches() {
+
+      this.byeCheese = true;
+
       this.updateSubscription.unsubscribe();
 
       this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
@@ -147,6 +163,9 @@ export class MainScheduleComponent implements OnDestroy {
 
     
     showActiveMatches() {
+
+      this.byeCheese = false;
+
       this.updateSubscription.unsubscribe();
       
       this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 

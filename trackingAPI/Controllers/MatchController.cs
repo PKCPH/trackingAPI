@@ -87,7 +87,6 @@ public class MatchController : ControllerBase
     [HttpGet("/api/Matches")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllMatchesAsync()
     {
-
         var matchesCheck = _context.Matches;
 
         if (matchesCheck == null)
@@ -103,15 +102,22 @@ public class MatchController : ControllerBase
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
-                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? new
+
+                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
                     result = pt.Result,
-                    score = pt.TeamScore
-                } : null).ToList()
+                    score = pt.TeamScore,
+                    round = pt.Round,
+                } : (object)new
+                {
+                    round = pt.Round,
+                }).ToList()
             })
             .ToList();
+
+
 
         return Ok(matches);
     }
@@ -119,6 +125,13 @@ public class MatchController : ControllerBase
     [HttpGet("/api/MatchesFin")]
     public async Task<ActionResult<IList<Gamematch>>> GetAllFinishedMatchesAsync()
     {
+        var matchesCheck = _context.Matches;
+
+        if (matchesCheck == null)
+        {
+            return NotFound();
+        }
+
         var matches = _context.Matches
             .Where(mt => mt.MatchState == MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
@@ -127,11 +140,17 @@ public class MatchController : ControllerBase
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
-                participatingTeams = match.ParticipatingTeams.Select(pt => new {
+                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+                {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
                     result = pt.Result,
-                    score = pt.TeamScore
+                    score = pt.TeamScore,
+                    round = pt.Round,
+                } : (object)new
+                {
+                    name = "TBD",
+                    round = pt.Round,
                 }).ToList()
             })
             .ToList();

@@ -27,7 +27,7 @@
                 </tr>
             </thead>
             <ng-container *ngFor="let games of sortedGames" >
-            <tr class="tablerow" *ngIf="games.matchState != 2" (click)="GoMatchDetails(games.id)"> 
+            <tr class="tablerow"  (click)="GoMatchDetails(games.id)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 
                 <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
