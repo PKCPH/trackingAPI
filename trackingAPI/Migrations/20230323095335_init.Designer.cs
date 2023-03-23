@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230322071614_init")]
+    [Migration("20230323095335_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -169,7 +169,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c38fd87e-e9f6-40f3-81a2-afc33380385e"),
+                            Id = new Guid("da57dd4b-2476-407a-917b-e226e0d6f334"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
