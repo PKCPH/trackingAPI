@@ -40,7 +40,7 @@ public class LeagueHelper
                 DateOfMatch = leagueDateTime,
                 IsDrawAllowed = false
             };
-            leagueDateTime = leagueDateTime.AddMinutes(2);
+            leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
             var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
             MatchTeam matchTeamA;
             MatchTeam matchTeamB;
@@ -86,7 +86,7 @@ public class LeagueHelper
                     IsDrawAllowed = false
                 };
 
-                leagueDateTime = leagueDateTime.AddMinutes(3);
+                leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
                 MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = rounds };
                 MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = rounds };
                 maxTeamCount1--;
@@ -102,7 +102,6 @@ public class LeagueHelper
     public League GetListOfTeams(League league, DatabaseContext _context)
     {
         //Random rnd = new Random();
-        //var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).OrderBy(x => Guid.NewGuid()).Take(8);
         var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).Take(LeagueConfiguration.AmountOfTeams);
         foreach (var team in availableTeams)
         {
