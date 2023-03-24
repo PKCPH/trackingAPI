@@ -30,8 +30,7 @@ public class Gamematch
     public Guid? LeagueId { get; set; }
     public League league { get; set; }
     public ICollection<Bet> Bets { get; set; }
-
-    
+    public string? RoundTerm { get; set; }
 }
 
 public enum MatchState
