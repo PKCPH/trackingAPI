@@ -7,4 +7,5 @@ export interface Match {
     participatingTeams: Team[];
     state: string;
     displayId: string;
+    league: string;
 }

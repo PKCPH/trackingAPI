@@ -19,7 +19,8 @@ export class AddMatchComponent {
     dateOfMatch: new Date(),
     participatingTeams: [],
     state: '',
-    displayId: ''
+    displayId: '',
+    league: '',
   };
 
   teams: Team[] = [];
