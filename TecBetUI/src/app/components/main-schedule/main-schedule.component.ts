@@ -58,6 +58,7 @@ export class MainScheduleComponent implements OnDestroy {
             return {
               ...game,
               participatingTeams: participatingTeams,
+              league: game.league ?? "Friendly Match",
             }
           });
           if (games)
@@ -106,6 +107,7 @@ export class MainScheduleComponent implements OnDestroy {
             return {
               ...finishedGame,
               participatingTeams: participatingTeams,
+              league: finishedGame.league ?? "Friendly Match",
             }
           });
           if (finishedGames)
@@ -125,9 +127,15 @@ export class MainScheduleComponent implements OnDestroy {
       });   
     }
 
-    GoMatchDetails(id: string)
+    GoMatchDetails(id: string, participatingTeams: Team[])
     {
-      this.router.navigateByUrl("details/" + id);
+    if(participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD')
+    {
+     if(participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE')
+     {
+     this.router.navigateByUrl("details/" + id);
+     }
+    }
     }
 
     Hideloader() {
@@ -188,6 +196,7 @@ export class MainScheduleComponent implements OnDestroy {
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
         case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
+        case 'league': return compare(a.league, b.league, isAsc);
         default: return 0;
       }
     });
@@ -201,6 +210,7 @@ export class MainScheduleComponent implements OnDestroy {
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
         case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
+        case 'league': return compare(a.league, b.league, isAsc);
         default: return 0;
       }
     });

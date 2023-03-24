@@ -7,8 +7,8 @@ import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@ang
 })
 export class HomeComponent implements AfterViewInit {
 
-  // rndInt = Math.floor(Math.random() * 5) + 1;
-  rndInt = 2;
+  rndInt = Math.floor(Math.random() * 5) + 1;
+  // rndInt = 2;
   videoSrc = `assets/montage${this.rndInt}.mp4`;
   
   constructor(private el: ElementRef, private renderer: Renderer2) { }

@@ -138,10 +138,12 @@ public class MatchController : ControllerBase
             .Where(mt => mt.MatchState == MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
+                        .Include(l => l.league)
             .Select(match => new {
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
+                league = match.league.Name,
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,

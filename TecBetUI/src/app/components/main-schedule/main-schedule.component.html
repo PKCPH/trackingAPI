@@ -22,13 +22,13 @@
                     <th mat-sort-header="dateOfMatch">Match Date</th>
                     <th mat-sort-header="name">Teams</th>
                     <th>Score</th>
-                    <th>League</th>
+                    <th mat-sort-header="league">League</th>
                     <th>State</th>
                     <th> </th>
                 </tr>
             </thead>
             <ng-container *ngFor="let games of sortedGames" >
-            <tr class="tablerow"  (click)="GoMatchDetails(games.id)"> 
+            <tr class="tablerow"  (click)="GoMatchDetails(games.id, games.participatingTeams)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 
                 <td *ngIf="games.participatingTeams[0].name == 'BYE'">{{ games.participatingTeams[1].name}} got a BYE</td>
@@ -38,10 +38,10 @@
 
                 <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
 
-                <td *ngIf="games.league != null && games.participatingTeams[0].round == null && games.participatingTeams[1].round != null ">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
-                <td *ngIf="games.league != null && games.participatingTeams[1].round == null && games.participatingTeams[0].round != null ">{{games.league}} - Round: {{games.participatingTeams[0].round}}</td>
-                <td *ngIf="games.league != null && games.participatingTeams[0].round != null && games.participatingTeams[1].round != null">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
-                <td *ngIf="games.league == null">Friendly match</td>
+                <td *ngIf="games.participatingTeams[0].round == null && games.participatingTeams[1].round != null ">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
+                <td *ngIf="games.participatingTeams[1].round == null && games.participatingTeams[0].round != null ">{{games.league}} - Round: {{games.participatingTeams[0].round}}</td>
+                <td *ngIf="games.participatingTeams[0].round != null && games.participatingTeams[1].round != null">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
+                <td *ngIf="games.league == 'Friendly Match'">{{games.league}}</td>
     
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">First Half</td>
@@ -66,6 +66,7 @@
                     <th mat-sort-header="dateOfMatch" class="test">Match Date</th>
                     <th mat-sort-header="name">Teams</th>
                     <th>Score</th>
+                    <th mat-sort-header="league">League</th>
                     <th>State</th>
                     <th> </th>
                 </tr>
@@ -76,7 +77,12 @@
                     <td>{{ finGames.participatingTeams[0].name}} vs {{finGames.participatingTeams[1].name}}</td>
     
                     <td>{{finGames.participatingTeams[0].score}} - {{finGames.participatingTeams[1].score}}</td>
-        
+
+                    <td *ngIf="finGames.participatingTeams[0].round == null && finGames.participatingTeams[1].round != null ">{{finGames.league}} - Round: {{finGames.participatingTeams[1].round}}</td>
+                    <td *ngIf="finGames.participatingTeams[1].round == null && finGames.participatingTeams[0].round != null ">{{finGames.league}} - Round: {{finGames.participatingTeams[0].round}}</td>
+                    <td *ngIf="finGames.participatingTeams[0].round != null && finGames.participatingTeams[1].round != null">{{finGames.league}} - Round: {{finGames.participatingTeams[1].round}}</td>
+                    <td *ngIf="finGames.league == 'Friendly Match'">{{finGames.league}}</td>
+
                     <td *ngIf="finGames.matchState == 6">Finished</td>
                     <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
                     </tr> 
