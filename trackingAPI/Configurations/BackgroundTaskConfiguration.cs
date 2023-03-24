@@ -14,7 +14,7 @@ public static class BackgroundTaskConfiguration
     //using DateTime.Now for testing, but use DateTime.Today when not testing
 
     //How often the backgroundtask is checking for changes.
-    public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(60);
+    public static TimeSpan TimerTickTimeSpan { get; set; } = TimeSpan.FromSeconds(20);
 
 
 

@@ -36,5 +36,5 @@ public class Gamematch
 
 public enum MatchState
 {
-    NotStarted, Playing, Finished
+    NotStarted, FirstHalf, HalfTimePause, SecondHalf, OverTime, PenaltyShootOut, Finished
 }

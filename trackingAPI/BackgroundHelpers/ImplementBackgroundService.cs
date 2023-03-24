@@ -1,10 +1,5 @@
-﻿using System.Net;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using trackingAPI.Configurations;
-using trackingAPI.Controllers;
+﻿using trackingAPI.Configurations;
 using trackingAPI.Data;
-using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 namespace trackingAPI.BackgroundHelpers;
@@ -23,31 +18,35 @@ public class ImplementBackgroundService : BackgroundService
     //Task running when IHostedService starts
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using (var scope = _services.CreateScope())
-        {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-            Task task;
-            do
-            {
-                MatchBackgroundTask matchBackgroundTask = new(_services);
-                //if any matches has not finished then play matches!
-                //else create new matches
-                if (!_context.Matches.All(x => x.MatchState == MatchState.Finished))
-                {
-                    task = matchBackgroundTask.FindAndPlayMatches();
-                }
-                if (_context.Matches.All(x => x.MatchState == MatchState.Finished))
-                {
-                    task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
-                }
+        MatchBackgroundTask matchBackgroundTask = new(_services);
+        matchBackgroundTask.RestartUnfinishedMatches();
 
-                await Task.Delay(1000);
-                Console.WriteLine("ExecuteAsync loop in complete");
-            } while (await _timer.WaitForNextTickAsync(stoppingToken)
-                && !stoppingToken.IsCancellationRequested);
-        }
+        do
+        {
+            List<Gamematch> matches = new();
+            Task task;
+            using (var scope = _services.CreateScope())
+            {
+                var _context =
+                    scope.ServiceProvider
+                        .GetRequiredService<DatabaseContext>();
+
+                matches = _context.Matches.ToList();
+            }
+            Console.WriteLine("TIME : " + DateTime.Now.ToString());
+            //if any matches has not finished then play matches!
+            //else create new matches
+            if (matches.Where(x => x.MatchState == MatchState.NotStarted).Where(x => x.DateOfMatch < DateTime.Now).Count() > 0)
+            {
+                task = matchBackgroundTask.FindAndPlayMatches();
+            }
+            if (matches.All(x => x.MatchState == MatchState.Finished))
+            {
+                task = matchBackgroundTask.CreateNewMatchesOfAvailableTeams();
+            }
+            Console.WriteLine("ExecuteAsync loop in complete");
+        } while (await _timer.WaitForNextTickAsync(stoppingToken)
+            && !stoppingToken.IsCancellationRequested);
     }
 
 }
