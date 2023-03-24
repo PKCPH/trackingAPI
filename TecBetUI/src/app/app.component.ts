@@ -118,11 +118,14 @@ return false;
   //Clears localstorage and credential role
 
   logOut = () => {
+    if(this.credentials)
+    {
+      this.router.navigateByUrl("/");
+    }
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
     localStorage.removeItem("refreshToken");
     this.credentials.role = "";
-    this.router.navigateByUrl("/");
     this.updateSubscription.unsubscribe();
     this.userAuthenticated = false;
   }
