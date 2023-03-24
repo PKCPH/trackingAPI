@@ -86,7 +86,7 @@ public class LeagueHelper
                     IsDrawAllowed = false
                 };
 
-                leagueDateTime = leagueDateTime.AddMinutes(3);
+                leagueDateTime = leagueDateTime.AddMinutes(0.75);
                 MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = rounds };
                 MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = rounds };
                 maxTeamCount1--;

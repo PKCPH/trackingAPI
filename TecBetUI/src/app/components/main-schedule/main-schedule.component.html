@@ -22,6 +22,7 @@
                     <th mat-sort-header="dateOfMatch">Match Date</th>
                     <th mat-sort-header="name">Teams</th>
                     <th>Score</th>
+                    <th>League</th>
                     <th>State</th>
                     <th> </th>
                 </tr>
@@ -30,9 +31,15 @@
             <tr class="tablerow"  (click)="GoMatchDetails(games.id)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 
-                <td>{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
+                <td *ngIf="games.participatingTeams[0].name == 'BYE'">{{ games.participatingTeams[1].name}} got a BYE</td>
+                <td *ngIf="games.participatingTeams[1].name == 'BYE'">{{ games.participatingTeams[0].name}} got a BYE</td>
+                <td *ngIf="games.participatingTeams[1].name != 'BYE' && games.participatingTeams[0].name != 'BYE' && games.participatingTeams[1].name != 'TBD' || games.participatingTeams[0].name != 'TBD' ">{{ games.participatingTeams[0].name}} vs {{games.participatingTeams[1].name}}</td>
+                <td *ngIf="games.participatingTeams[1].name == 'TBD' && games.participatingTeams[0].name == 'TBD' ">TBD</td>
 
                 <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
+
+                <td>{{games.league}}</td>
+                <td *ngIf="games.league == null">No league</td>
     
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">Playing</td>

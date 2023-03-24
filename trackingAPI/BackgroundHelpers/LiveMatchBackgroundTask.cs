@@ -34,7 +34,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 60)
+        while (timer.Elapsed.TotalSeconds < 20)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -55,7 +55,7 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         timer.Start();
 
-        while (timer.Elapsed.TotalSeconds < 60)
+        while (timer.Elapsed.TotalSeconds < 10)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
@@ -98,22 +98,22 @@ public class LiveMatchBackgroundTask
             while (teamAPKScore == teamBPKScore || rounds < 4)
             {
                 int chance = rnd.Next(1, 100);
-                if (chance > 45)
+                if (chance > 95)
                 {
                     teamAPKScore++;
                     teamA.TeamScore++;
                     _context.Entry(teamA).State = EntityState.Modified;
                 }
-                Thread.Sleep(6000);
+                Thread.Sleep(1000);
 
                 chance = rnd.Next(1, 100);
-                if (chance > 45)
+                if (chance > 95)
                 {
                     teamBPKScore++;
                     teamB.TeamScore++;
                     _context.Entry(teamB).State = EntityState.Modified;
                 }
-                Thread.Sleep(6000);
+                Thread.Sleep(1000);
                 rounds++;
             }
         }
@@ -127,7 +127,7 @@ public class LiveMatchBackgroundTask
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
         if (ballPossessionTeam < 50) GoalToTeamA = true;
-        if (chanceOfGoal > 1) return gameMatch;
+        if (chanceOfGoal > 0) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
         using (var scope = _services.CreateScope())
