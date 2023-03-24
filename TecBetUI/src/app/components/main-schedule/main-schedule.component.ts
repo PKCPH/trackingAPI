@@ -5,6 +5,7 @@ import { Match } from 'src/app/models/matches.model';
 import { interval, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { Team } from 'src/app/models/teams.model';
 
 @Component({
   selector: 'app-main-schedule',
@@ -52,7 +53,6 @@ export class MainScheduleComponent implements OnDestroy {
 
             let participatingTeams = game.participatingTeams;
 
-            // this.compareRounds(participatingTeams);
             this.nullCheck(participatingTeams);
 
             return {
@@ -60,6 +60,7 @@ export class MainScheduleComponent implements OnDestroy {
               participatingTeams: participatingTeams,
             }
           });
+          console.log(this.games);
           if (games)
           {
             this.sortedGames = this.games.slice();
@@ -68,7 +69,6 @@ export class MainScheduleComponent implements OnDestroy {
           }
           if (games.length > 0)
           {
-            console.log("wtf");
             this.errorMessage = "";
           }
         },
@@ -123,9 +123,6 @@ export class MainScheduleComponent implements OnDestroy {
             }
           });
         },
-        error: (response) => {
-          console.log(response);
-        }
       });   
     }
 

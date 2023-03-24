@@ -28,7 +28,9 @@ public class Gamematch
     [DefaultValue(true)]
     public bool IsDrawAllowed { get; set; }
     public Guid? LeagueId { get; set; }
-    public ICollection<Bet> Bets { get; set; } 
+    public League league { get; set; }
+    public ICollection<Bet> Bets { get; set; }
+    public string? RoundTerm { get; set; }
 }
 
 public enum MatchState

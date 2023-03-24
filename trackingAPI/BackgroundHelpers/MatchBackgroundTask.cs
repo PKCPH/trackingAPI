@@ -181,9 +181,9 @@ public class MatchBackgroundTask
 
             var nextRound = gamematch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
             nextRound--;
+            var league = _context.Leagues.Where(x => x.Id == gamematch.LeagueId).First();
             if (nextRound == 0)
             {
-                var league = _context.Leagues.Where(x => x.Id == gamematch.LeagueId).First();
                 var winner = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
                 league.LeagueState = LeagueState.Finished;
                 winner.IsAvailable = true;
@@ -195,7 +195,7 @@ public class MatchBackgroundTask
 
             //takes lowest int of Seeds
             var winnerSeed = Math.Min(Convert.ToByte(teamA.Seed), Convert.ToByte(teamB.Seed));
-            var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).First();
+            var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).Where(x => x.Match.LeagueId == league.Id).First();
             //adding winning team
             nextMatchTeam.Team = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
             //updating to sql

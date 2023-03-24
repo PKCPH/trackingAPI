@@ -31,6 +31,7 @@ public class LeagueHelper
         Random rnd = new();
         var maxTeamCount = teams.Count + byes;
         var teamLoopCount = maxTeamCount / 2;
+        var roundTerm = GetRoundTerm(rounds);
 
         for (int i = 1; i <= teamLoopCount; i++)
         {
@@ -38,7 +39,9 @@ public class LeagueHelper
             {
                 ParticipatingTeams = new List<MatchTeam>(),
                 DateOfMatch = leagueDateTime,
-                IsDrawAllowed = false
+                IsDrawAllowed = false,
+                RoundTerm= roundTerm,
+
             };
             leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
             var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
@@ -77,13 +80,15 @@ public class LeagueHelper
         {
             var maxTeamCount1 = maxTeamCount;
             maxTeamCount /= 2;
+            roundTerm = GetRoundTerm(rounds);
             for (int i = 1; i <= maxTeamCount; i++)
             {
                 Gamematch gamematch = new()
                 {
                     ParticipatingTeams = new List<MatchTeam>(),
                     DateOfMatch = leagueDateTime,
-                    IsDrawAllowed = false
+                    IsDrawAllowed = false,
+                    RoundTerm = roundTerm,
                 };
 
                 leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
@@ -97,6 +102,22 @@ public class LeagueHelper
             rounds--;
         }
         return gamematches;
+    }
+
+    public string GetRoundTerm(int round)
+    {
+        if (round == 1) return "Grand Finale";
+        else if (round == 2) return "Semi-Finale";
+        else if (round == 3) return "Quarter-Finale";
+        else
+        {
+            var output = 4;
+            for (var i = 4; i <= round; i++)
+            {
+                output *= 2;
+            }
+            return $"1/{output} Finale";
+        }
     }
 
     public League GetListOfTeams(League league, DatabaseContext _context)
