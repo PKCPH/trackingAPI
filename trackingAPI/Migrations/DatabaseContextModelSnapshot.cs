@@ -78,6 +78,9 @@ namespace trackingAPI.Migrations
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
 
+                    b.Property<string>("RoundTerm")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LeagueId");
@@ -167,7 +170,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da57dd4b-2476-407a-917b-e226e0d6f334"),
+                            Id = new Guid("6a7c06df-6eae-438e-8d7b-8adf6a0c82a1"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -316,9 +319,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
                 {
-                    b.HasOne("trackingAPI.Models.League", null)
+                    b.HasOne("trackingAPI.Models.League", "league")
                         .WithMany("Gamematches")
                         .HasForeignKey("LeagueId");
+
+                    b.Navigation("league");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>

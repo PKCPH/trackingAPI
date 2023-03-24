@@ -104,6 +104,7 @@ public class MatchController : ControllerBase
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
                 league = match.league.Name,
+                roundTerm = match.RoundTerm,
 
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
@@ -144,6 +145,7 @@ public class MatchController : ControllerBase
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
                 league = match.league.Name,
+                roundTerm = match.RoundTerm,
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,

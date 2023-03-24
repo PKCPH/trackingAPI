@@ -21,6 +21,7 @@ export class AddMatchComponent {
     state: '',
     displayId: '',
     league: '',
+    roundTerm: '',
   };
 
   teams: Team[] = [];

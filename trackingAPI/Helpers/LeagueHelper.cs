@@ -116,7 +116,7 @@ public class LeagueHelper
             {
                 output *= 2;
             }
-            return $"1/{output} Finale";
+            return $"Round of {output}";
         }
     }
 

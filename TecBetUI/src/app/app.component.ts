@@ -7,7 +7,6 @@ import { Subscription, interval, switchMap } from 'rxjs';
 import { AuthguardService } from './services/authguard.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './components/main-login/login/login.component';
-import * as jwt from 'jsonwebtoken';
 
 @Component({
   selector: 'app-root',
@@ -45,7 +44,10 @@ export class AppComponent {
     
     this.router.events.subscribe(event => {
       if (event.constructor.name === "NavigationStart") {
-        this.resetIdleTimer()
+        if(this.credentials.userName !== '')
+        {
+        this.resetIdleTimer();
+      }
       }
     })
     
@@ -93,13 +95,7 @@ export class AppComponent {
 return false;
   }
 
-  isTestingPage = (): boolean => {
-    if (this.router.url.includes('/horserace')) 
-  {  
-     return true; 
-  }
-return false;
-  }
+
 
   //Checks for token 
 
@@ -118,10 +114,7 @@ return false;
   //Clears localstorage and credential role
 
   logOut = () => {
-    if(this.credentials)
-    {
       this.router.navigateByUrl("/");
-    }
     localStorage.removeItem("jwt");
     localStorage.removeItem("credentials");
     localStorage.removeItem("refreshToken");
