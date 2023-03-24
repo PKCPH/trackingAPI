@@ -153,4 +153,39 @@ public class LeagueHelper
         }
         return rounds;
     }
+
+    public static Dictionary<Team, double> TournamentWinChances(params Team[] teams)
+    {
+        //How harshly the algorithm judges a team based on their rating. the lower the value the harsher the judgement. Any values below 0 gives faulty answers
+        double sensisivity = 20;
+        Dictionary<Team, double> result = new Dictionary<Team, double>();
+
+        int n = teams.Length;
+        double[] ratings = new double[n];
+        for (int i = 0; i < n; i++)
+        {
+            ratings[i] = (double)teams[i].Rating;
+        }
+
+        double[] expectedScores = new double[n];
+        double sum = 0;
+        for (int i = 0; i < n; i++)
+        {
+            expectedScores[i] = Math.Pow(10, ratings[i] / sensisivity);
+            sum += expectedScores[i];
+        }
+
+        double[] winChances = new double[n];
+        for (int i = 0; i < n; i++)
+        {
+            winChances[i] = expectedScores[i] / sum;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            result.Add(teams[i], winChances[i]);
+        }
+
+        return result;
+    }
 }
