@@ -60,7 +60,6 @@ export class MainScheduleComponent implements OnDestroy {
               participatingTeams: participatingTeams,
             }
           });
-          console.log(this.games);
           if (games)
           {
             this.sortedGames = this.games.slice();
@@ -88,7 +87,7 @@ export class MainScheduleComponent implements OnDestroy {
             score: 0,
             result: 0,
             rating: 0,
-            round: participatingTeams.round,
+            round: participatingTeams[i].round,
           };
         }
       }
@@ -97,7 +96,7 @@ export class MainScheduleComponent implements OnDestroy {
     fetchFin() {    
       this.matchesService.getFinishedMatches().subscribe({
         next: (finishedGames) => {
-          console.log(this.finishedGames);
+          // console.log(this.finishedGames);
           this.finishedGames = finishedGames.map(finishedGame => {
 
             let participatingTeams = finishedGame.participatingTeams;

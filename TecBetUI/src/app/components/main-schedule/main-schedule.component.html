@@ -38,8 +38,10 @@
 
                 <td>{{games.participatingTeams[0].score}} - {{games.participatingTeams[1].score}}</td>
 
-                <td *ngIf="games.league != null">{{games.league}}</td>
-                <td *ngIf="games.league == null">No league</td>
+                <td *ngIf="games.league != null && games.participatingTeams[0].round == null && games.participatingTeams[1].round != null ">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
+                <td *ngIf="games.league != null && games.participatingTeams[1].round == null && games.participatingTeams[0].round != null ">{{games.league}} - Round: {{games.participatingTeams[0].round}}</td>
+                <td *ngIf="games.league != null && games.participatingTeams[0].round != null && games.participatingTeams[1].round != null">{{games.league}} - Round: {{games.participatingTeams[1].round}}</td>
+                <td *ngIf="games.league == null">Friendly match</td>
     
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">First Half</td>

@@ -29,9 +29,13 @@
                 <td>{{ matches.displayId }}</td>
                 <td>{{ matches.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                 <!-- <td>{{ matches.teamAScore}} - {{ matches.teamBScore}} </td> -->
+
                 <td *ngIf="matches.matchState == 0">Not Started Yet</td>
-                <td *ngIf="matches.matchState == 1">Playing</td>
-                <td *ngIf="matches.matchState == 2">Finished</td>
+                <td *ngIf="matches.matchState == 1">First Half</td>
+                <td *ngIf="matches.matchState == 2">Half Time Pause</td>
+                <td *ngIf="matches.matchState == 3">Second Half</td>
+                <td *ngIf="matches.matchState == 4">OverTime</td>
+                <td *ngIf="matches.matchState == 5">Penalty Shootout</td>
                 <td><a [routerLink]="['/matches', 'edit', matches.id]"><button class="btn btn-success mt-3">Edit</button></a>
                     <a><button class="btn btn-danger mt-3" (click)="deleteMatch(matches.id)">Delete</button></a></td>
             </tr> 
