@@ -43,7 +43,7 @@ export class MatchesService {
           this.errorSubject.next('');
         }),
         catchError(error => {
-          console.error(error);
+          // console.error(error);
           this.errorSubject.next(this.customErrorHandlerService.handleError(error));
           this.isLoading = false;
           return of([]);

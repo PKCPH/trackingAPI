@@ -47,6 +47,11 @@ export class MainTeamsComponent implements OnDestroy {
 
 
   fetch() {
+
+    this.teamsService.errorMessage.subscribe(error => {
+      this.errorMessage = error;
+    });
+
     this.teamsService.getAllTeams()
       .subscribe({
         next: (teams) => {
@@ -63,15 +68,9 @@ export class MainTeamsComponent implements OnDestroy {
             this.Hideloader();
             this.sortData(this.sort);
           }
-          this.teamsService.errorMessage.subscribe(error => {
-            this.errorMessage = error;
-            if (teams.length > 0) {
-              this.errorMessage = "";
-            }
-          });
-        },
-        error: (response) => {
-          console.log(response);
+          if (teams.length > 0) {
+            this.errorMessage = "";
+          }
         }
       });
       }
