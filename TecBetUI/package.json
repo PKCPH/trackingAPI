@@ -24,11 +24,14 @@
     "@fortawesome/angular-fontawesome": "^0.12.1",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@microsoft/signalr": "^7.0.4",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
     "@popperjs/core": "^2.11.6",
     "@syncfusion/ej2-angular-splitbuttons": "^20.4.50",
     "bootstrap": "^5.2.3",
+    "chart.js": "^4.2.1",
     "jsonwebtoken": "^9.0.0",
+    "ng2-charts": "^4.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.5.0",
     "zone.js": "~0.12.0"
@@ -43,12 +46,19 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.14.6",
     "angular-cli-ghpages": "^1.0.5",
+    "clean-webpack-plugin": "4.0.0",
+    "css-loader": "6.7.3",
+    "html-webpack-plugin": "5.5.0",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
-    "typescript": "^4.9.5"
+    "mini-css-extract-plugin": "2.7.5",
+    "ts-loader": "9.4.2",
+    "typescript": "4.9.5",
+    "webpack": "5.76.3",
+    "webpack-cli": "5.0.1"
   }
 }

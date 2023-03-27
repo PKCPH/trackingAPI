@@ -1,6 +1,7 @@
-using System.ComponentModel;
+ using System.ComponentModel;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using trackingAPI.BackgroundHelpers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
+using trackingAPI.Helpers.SignalRHelpers;
+using trackingAPI.Hubs;
 
 namespace trackingAPI;
 
@@ -45,11 +48,27 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddSignalR();
+        builder.Services.AddSingleton<TimerManager>();
+
+        // builder.Services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
         //JWT Token service
         builder.Services.AddTransient<ITokenService, TokenService>();
 
         //For anuglar app to consume the api (also with app.UseCors())
-        builder.Services.AddCors();
+        //builder.Services.AddCors();
+
+        builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials());
+});
+
+
 
         //setting sqlserver connection in appssetting.json
         builder.Services.AddDbContext<DatabaseContext>(
@@ -68,7 +87,12 @@ public class Program
 
         var app = builder.Build();
         //allowing the angular app to talk to the API
-        app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+        //app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+        app.UseCors("CorsPolicy");
+
+        app.MapControllers();
+        app.MapHub<ChartHub>("/chart");
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

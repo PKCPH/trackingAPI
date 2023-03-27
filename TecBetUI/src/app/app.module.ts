@@ -48,6 +48,9 @@ import {MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ChatComponent } from './components/testcomponent/chat/chat.component';
+import { NgChartsModule } from 'ng2-charts';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -87,6 +90,7 @@ export function tokenGetter() {
     ChangePlayerComponent,
     FooterComponent,
     ContactComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +111,9 @@ export function tokenGetter() {
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    FontAwesomeModule,
+    NgChartsModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]
