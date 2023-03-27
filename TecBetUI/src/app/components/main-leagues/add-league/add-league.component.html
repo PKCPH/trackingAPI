@@ -1,0 +1,22 @@
+<div class="container my-5">
+<h1 class="mb-3">Add new League</h1>
+
+<div class="row">
+    <div class="col-6">
+        <form #form="ngForm" (ngSubmit)="addLeague()">
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input type="text" class="form-control" id="name"
+              name="name" [(ngModel)] = "addLeagueRequest.name">
+            </div>
+            <div class="mb-3">
+                <label for="startdate" class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" id="startDate"
+                name="startDate" [(ngModel)] = "addLeagueRequest.startDate">
+            </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
+
+</div>

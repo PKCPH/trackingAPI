@@ -1,0 +1,24 @@
+<div class="container my-5">
+    <h1 class="mb-3">Leagues</h1>
+
+    <table class="table" *ngIf="leagues && leagues.length > 0">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Starting Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let league of leagues">
+                <td>{{ league.id }}</td>
+                <td>{{ league.name }}</td>
+                <td>{{ league.startDate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <p *ngIf="!leagues || leagues.length <= 0">No Leagues Found</p>
+</div>
