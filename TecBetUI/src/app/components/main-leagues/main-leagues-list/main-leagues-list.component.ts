@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
 
@@ -7,43 +7,66 @@ import { LeaguesService } from 'src/app/services/leagues.service';
   templateUrl: './main-leagues-list.component.html',
   styleUrls: ['./main-leagues-list.component.css']
 })
-export class MainLeaguesListComponent implements OnInit {
+export class MainLeaguesListComponent {
 
   @ViewChild('myTable') myTable: ElementRef | any;
 
-  leagues: Leagues[] = [
-    // {
-    //   id: '9a9a57f2-5b8e-4de6-90b6-1ce076382dea',
-    //   name: 'Star League',
-    //   leagueState: 'NotStarted',
-    //   startDate: new Date()
-    // },
-    // {
-    //   id: '9a9a57n2-5b8e-4de6-90b6-1ce076382dea',
-    //   name: 'Esport League',
-    //   leagueState: 'NotStarted',
-    //   startDate: new Date()
-    // },
-    // {
-    //   id: '9a9a57a2-5b8e-4de6-90b6-1ce076382dea',
-    //   name: 'National League',
-    //   leagueState: 'NotStarted',
-    //   startDate: new Date()
-    // },
-  ];
-  constructor(private leaguesService: LeaguesService) { }
+  leagues: Leagues[] = [];
 
-  ngOnInit(): void {
-    this.leaguesService.getAllLeagues()
-    .subscribe({
+  constructor(private leaguesService: LeaguesService) { 
+
+this.fetch();
+
+  }
+
+  fetch() {    
+    // this.leaguesService.errorMessage.subscribe(error => {
+    //   this.errorMessage = error;
+    // });
+
+    this.leaguesService.getAllLeagues().subscribe({
       next: (leagues) => {
-        this.leagues = leagues;
-        console.log(this.leagues);
+        this.leagues = leagues.map(league => {
+
+          let matches = league.match;
+
+          // console.log(matches);
+
+          // this.nullCheck(matches);
+
+          return {
+            ...league,
+            match: matches
+          }
+        });
+        if (leagues)
+        {
+          // this.sortedGames = this.games.slice();
+          // this.Hideloader();
+          // this.sortData(this.sort);
+        }
+        if (leagues.length > 0)
+        {
+          // this.errorMessage = "";
+        }
       },
-      error: (response) => {
-        console.log(response)
+    });   
+  }
+
+  nullCheck(matches: any) { 
+    for (let i = 0; i < matches.length; i++) {
+
+      for (let k = 0; k < matches[i].participatingTeams.length; k++)
+      {
+        if (matches[i].participatingTeams[k] == null) {
+          matches[i].participatingTeams[k] = {
+            name: 'TBD',
+            id: '00000000-0000-0000-0000-000000000000',
+          };
+        }
+        console.log(matches[i].participatingTeams[k].name);
       }
-    })
+  }
   }
 
   toggleTable(leagueName: string) {
