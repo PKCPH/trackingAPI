@@ -8,6 +8,9 @@ using Microsoft.IdentityModel.Tokens;
 using trackingAPI.BackgroundHelpers;
 using trackingAPI.Data;
 using trackingAPI.Helpers;
+using Microsoft.AspNetCore.ResponseCompression;
+using trackingAPI.Hubs;
+
 
 namespace trackingAPI;
 
@@ -18,6 +21,13 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
+        //SignalR (this is making sure that the webserver can process octet stream and adding compressions)
+        builder.Services.AddResponseCompression(opts =>
+        {
+            opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                new[] { "application/octet-stream" });
+        });
+        
         // Add services to the container.
 
         builder.Services.AddAuthentication(opt =>
