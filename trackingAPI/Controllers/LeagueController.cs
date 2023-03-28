@@ -61,4 +61,46 @@ public class LeagueController : ControllerBase
         await _context.SaveChangesAsync();
         return NoContent();
     }
+
+    [HttpGet("/api/Leagues")]
+    public async Task<ActionResult<IList<League>>> GetLeagues()
+    {
+        /*return await _context.Bets.Include(mt => mt.Match).ThenInclude(t => t.ParticipatingTeams).ThenInclude(t => t.Team).Where(b => b.LoginId == userId).ToListAsync();*/
+
+        var leagues = _context.Leagues
+              .Include(mt => mt.Gamematches)
+              .ThenInclude(t => t.ParticipatingTeams)
+              .Select(m => new {
+                  Id = m.Id,
+                  StartDate = m.StartDate,
+                  LeagueState = m.LeagueState,
+                  Name = m.Name,
+                  Match = m.Gamematches.Select(gm => new {
+                      Id = gm.Id,
+                      dateOfMatch = gm.DateOfMatch,
+                      matchState = gm.MatchState,
+                      roundTerm = gm.RoundTerm,
+                      participatingTeams = gm.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+                      {
+                          Id = pt.Team.Id,
+                          name = pt.Team.Name,
+                          result = pt.Result,
+                          score = pt.TeamScore,
+                          round = pt.Round,
+                      } : (object)new
+                      {
+                          round = pt.Round,
+                      }).ToList()
+                  }).ToList()
+              })
+              .ToList();
+
+        if (leagues == null)
+        {
+            return NotFound();
+        }
+
+
+        return Ok(leagues);
+    }
 }

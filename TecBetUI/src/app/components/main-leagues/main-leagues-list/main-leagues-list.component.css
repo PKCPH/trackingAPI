@@ -1,0 +1,24 @@
+
+
+  table {
+    border-collapse: separate;
+    width: 100%;
+    border-spacing: 0 3px;
+  }
+  
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: none;
+  }
+
+  .divs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .leagueName:hover {
+    cursor: pointer;
+  }
+

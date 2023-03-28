@@ -10,11 +10,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 })
 export class AddLeagueComponent implements OnInit {
 
-  addLeagueRequest: Leagues = {
-    id: '',
-    name: '',
-    startDate: ''
-  }
+  addLeagueRequest: Leagues | any;
+  
   constructor(private leagueService: LeaguesService, private router: Router){
   }
 

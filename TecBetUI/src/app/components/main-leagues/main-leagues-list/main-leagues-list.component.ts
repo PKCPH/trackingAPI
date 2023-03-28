@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
 
@@ -8,6 +8,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
   styleUrls: ['./main-leagues-list.component.css']
 })
 export class MainLeaguesListComponent implements OnInit {
+
+  @ViewChild('myTable') myTable: ElementRef | any;
 
   leagues: Leagues[] = [
     // {
@@ -36,10 +38,20 @@ export class MainLeaguesListComponent implements OnInit {
     .subscribe({
       next: (leagues) => {
         this.leagues = leagues;
+        console.log(this.leagues);
       },
       error: (response) => {
         console.log(response)
       }
     })
+  }
+
+  toggleTable(leagueName: string) {
+    const table = document.getElementById(leagueName) as HTMLElement;
+    if (table.style.display === 'none') {
+      table.style.display = 'block';
+    } else {
+      table.style.display = 'none';
+    }
   }
 }

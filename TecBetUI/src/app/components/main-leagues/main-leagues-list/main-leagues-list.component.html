@@ -1,24 +1,26 @@
-<div class="container my-5">
-    <h1 class="mb-3">Leagues</h1>
+<div class="section1 tablediv">
+<div class="container my-5 divs">
+    <h1 class="my-5">Leagues</h1>
 
-    <table class="table" *ngIf="leagues && leagues.length > 0">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Starting Date</th>
-            </tr>
-        </thead>
+    <ng-container *ngFor="let league of leagues" >
+    <table>
+        <tr>
+          <h2 class="leagueName" (click)="toggleTable(league.name)">{{league.name}}</h2>
+        </tr>
+        <tr>
+          <td>
+            <table [id]="league.name" style="width: 60%; margin: auto; display: none;" #myTable>
+                <tr *ngFor="let match of league.match">
+                    <td><span class="mx-5">{{match.dateOfMatch | date: 'HH:mm' }}</span>{{match.participatingTeams[0].name}} vs {{match.participatingTeams[1].name}}</td>
+                  </tr>
+            </table>
+          </td>
+        </tr>
 
-        <tbody>
-            <tr *ngFor="let league of leagues">
-                <td>{{ league.id }}</td>
-                <td>{{ league.name }}</td>
-                <td>{{ league.startDate }}</td>
-            </tr>
-        </tbody>
-    </table>
+      </table>
+    </ng-container>
 
 
     <p *ngIf="!leagues || leagues.length <= 0">No Leagues Found</p>
+</div>
 </div>
