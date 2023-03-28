@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainLeaguesComponent } from './main-leagues.component';
+import { AddLeagueComponent } from './add-league.component';
 
-describe('MainLeaguesComponent', () => {
-  let component: MainLeaguesComponent;
-  let fixture: ComponentFixture<MainLeaguesComponent>;
+describe('AddLeagueComponent', () => {
+  let component: AddLeagueComponent;
+  let fixture: ComponentFixture<AddLeagueComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainLeaguesComponent ]
+      declarations: [ AddLeagueComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainLeaguesComponent);
+    fixture = TestBed.createComponent(AddLeagueComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
