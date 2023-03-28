@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using trackingAPI.Controllers;
@@ -179,7 +180,8 @@ public class MatchBackgroundTask
 
             if (gamematch.LeagueId == null) return Task.CompletedTask;
 
-            var nextRound = gamematch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
+            var nextRound = gamematch.Round;
+            //var nextRound = gamematch.ParticipatingTeams.Where(x => x.Id == teamA.Id).First().Round;
             nextRound--;
             var league = _context.Leagues.Where(x => x.Id == gamematch.LeagueId).First();
             if (nextRound == 0)
@@ -195,7 +197,13 @@ public class MatchBackgroundTask
 
             //takes lowest int of Seeds
             var winnerSeed = Math.Min(Convert.ToByte(teamA.Seed), Convert.ToByte(teamB.Seed));
-            var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed).Where(x => x.Match.LeagueId == league.Id).First();
+            var seed = _context.MatchTeams.Where(x => x.Seed == winnerSeed);
+
+            var nextMatchTeam = _context.MatchTeams.Where(x => x.Match.Round == nextRound)
+                .Where(x => x.Seed == winnerSeed).Where(x => x.Match.LeagueId == league.Id).First();
+            //var nextMatchTeam = _context.MatchTeams.Where(x => x.Round == nextRound).Where(x => x.Seed == winnerSeed)
+            //.Where(x => x.Match.LeagueId == league.Id).First();
+            
             //adding winning team
             nextMatchTeam.Team = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;
             //updating to sql

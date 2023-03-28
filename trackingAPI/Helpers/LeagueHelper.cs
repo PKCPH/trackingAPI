@@ -40,7 +40,7 @@ public class LeagueHelper
                 ParticipatingTeams = new List<MatchTeam>(),
                 DateOfMatch = leagueDateTime,
                 IsDrawAllowed = false,
-                RoundTerm= roundTerm,
+                Round = rounds
 
             };
             leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
@@ -54,8 +54,8 @@ public class LeagueHelper
                 var teamA = availableTeams.OrderBy(x => rnd.Next()).Take(1).ToList().First();
                 teamA.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i, Round = rounds };
-                matchTeamB = new MatchTeam { Team = byeTeam, Seed = maxTeamCount, Round = rounds };
+                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
+                matchTeamB = new MatchTeam { Team = byeTeam, Seed = maxTeamCount };
                 byes--;
             }
             else
@@ -66,8 +66,8 @@ public class LeagueHelper
                 teamA.IsAvailable = false;
                 teamB.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i, Round = rounds };
-                matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount, Round = rounds };
+                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
+                matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
             }
             maxTeamCount--;
             gamematch.ParticipatingTeams.Add(matchTeamA);
@@ -88,12 +88,12 @@ public class LeagueHelper
                     ParticipatingTeams = new List<MatchTeam>(),
                     DateOfMatch = leagueDateTime,
                     IsDrawAllowed = false,
-                    RoundTerm = roundTerm,
+                    Round = rounds
                 };
 
                 leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
-                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = rounds };
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = rounds };
+                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
+                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1 };
                 maxTeamCount1--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
                 gamematch.ParticipatingTeams.Add(matchTeamB);

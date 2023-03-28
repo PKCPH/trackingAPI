@@ -84,7 +84,8 @@ namespace trackingAPI.Migrations
                     MatchState = table.Column<int>(type: "int", nullable: false),
                     DateOfMatch = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDrawAllowed = table.Column<bool>(type: "bit", nullable: false),
-                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Round = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -184,8 +185,7 @@ namespace trackingAPI.Migrations
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TeamScore = table.Column<int>(type: "int", nullable: false),
                     Result = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    Seed = table.Column<int>(type: "int", nullable: true),
-                    Round = table.Column<int>(type: "int", nullable: true)
+                    Seed = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -206,7 +206,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("da57dd4b-2476-407a-917b-e226e0d6f334"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("251ab9a2-4192-4189-8291-f3fa6be8daf2"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
