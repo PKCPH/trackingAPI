@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/trackingAPI/Migrations/20230327115147_AlexTest.cs
+/trackingAPI/Migrations/20230327115147_AlexTest.Designer.cs
