@@ -11,8 +11,9 @@ public class Gamematch
     public Gamematch(DatabaseContext databaseContext)
     {
         this.ParticipatingTeams = new HashSet<MatchTeam>();
-        
+        this.TimeLog = new HashSet<TimeLog>();
     }
+
     public Gamematch()
     {
         Bets = new List<Bet>();
@@ -31,6 +32,7 @@ public class Gamematch
     public League? league { get; set; }
     public ICollection<Bet> Bets { get; set; }
     public string? RoundTerm { get; set; }
+    public ICollection<TimeLog>? TimeLog { get; set; }
 }
 
 public enum MatchState

@@ -11,10 +11,14 @@ public class TeamPicker
     //Read list of teams and choose two random team to be put in ParticipatingTeams.
     public Gamematch CreateMatch(DatabaseContext _context)
     {
+
+
         Gamematch gameMatch = new(_context)
         {
-            IsDrawAllowed = true
+            IsDrawAllowed = true,
         };
+
+
         Random rnd = new Random();
 
         var AvailableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).ToList();
@@ -33,7 +37,18 @@ public class TeamPicker
             gameMatch.ParticipatingTeams.Add(matchTeamA);
             gameMatch.ParticipatingTeams.Add(matchTeamB);
 
+
             gameMatch.DateOfMatch = DateTimePicker.CreateRandomMatchTime();
+
+            TimeLog timeLog = new TimeLog
+            {
+                StartDateTime = gameMatch.DateOfMatch,
+                TimeStamp = TimeSpan.Zero,
+                Event = "",
+                Gamematch = gameMatch
+            };
+
+            gameMatch.TimeLog.Add(timeLog);
             Console.WriteLine($"MATCH CREATED: {matchTeamA.Team.Name} VS. {matchTeamB.Team.Name}");
         }
         else

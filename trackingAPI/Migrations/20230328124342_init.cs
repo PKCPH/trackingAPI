@@ -204,10 +204,30 @@ namespace trackingAPI.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TimeLogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TimeStamp = table.Column<TimeSpan>(type: "time", nullable: false),
+                    GamematchId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Event = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TimeLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TimeLogs_Matches_GamematchId",
+                        column: x => x.GamematchId,
+                        principalTable: "Matches",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("6a7c06df-6eae-438e-8d7b-8adf6a0c82a1"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("84155beb-1e7e-4440-a913-6b54eff8c12f"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
@@ -260,6 +280,11 @@ namespace trackingAPI.Migrations
                 name: "IX_PlayerTeams_TeamId",
                 table: "PlayerTeams",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeLogs_GamematchId",
+                table: "TimeLogs",
+                column: "GamematchId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -277,16 +302,19 @@ namespace trackingAPI.Migrations
                 name: "PlayerTeams");
 
             migrationBuilder.DropTable(
-                name: "Logins");
+                name: "TimeLogs");
 
             migrationBuilder.DropTable(
-                name: "Matches");
+                name: "Logins");
 
             migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Matches");
 
             migrationBuilder.DropTable(
                 name: "Leagues");

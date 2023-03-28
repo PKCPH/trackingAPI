@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230324095859_init")]
+    [Migration("20230328124342_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -172,7 +172,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6a7c06df-6eae-438e-8d7b-8adf6a0c82a1"),
+                            Id = new Guid("84155beb-1e7e-4440-a913-6b54eff8c12f"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -302,6 +302,32 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.TimeLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Event")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("GamematchId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("TimeStamp")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GamematchId");
+
+                    b.ToTable("TimeLogs");
+                });
+
             modelBuilder.Entity("trackingAPI.Models.Bet", b =>
                 {
                     b.HasOne("trackingAPI.Models.Login", null)
@@ -379,11 +405,22 @@ namespace trackingAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.TimeLog", b =>
+                {
+                    b.HasOne("trackingAPI.Models.Gamematch", "Gamematch")
+                        .WithMany("TimeLog")
+                        .HasForeignKey("GamematchId");
+
+                    b.Navigation("Gamematch");
+                });
+
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
                 {
                     b.Navigation("Bets");
 
                     b.Navigation("ParticipatingTeams");
+
+                    b.Navigation("TimeLog");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.League", b =>

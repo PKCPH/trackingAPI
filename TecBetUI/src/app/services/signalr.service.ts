@@ -42,7 +42,7 @@ export class SignalrService {
     }
     
     public addTransferChartDataListener = () => {
-      this.hubConnection.on('transferchartdata', (data: any) => {
+      this.hubConnection.on('asdasdasd', (data: any) => {
         this.data = data;
         console.log(data);
       });

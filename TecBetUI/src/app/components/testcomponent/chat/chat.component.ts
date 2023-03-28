@@ -23,6 +23,6 @@ export class ChatComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.signalRService.closeConnection();
+    // this.signalRService.closeConnection();
   }
 }

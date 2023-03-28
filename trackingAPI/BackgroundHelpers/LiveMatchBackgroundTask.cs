@@ -6,12 +6,15 @@ using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
+using trackingAPI.Logger;
 
 namespace trackingAPI.BackgroundHelpers;
 
 
 public class LiveMatchBackgroundTask
 {
+    Stopwatch timespanned = new Stopwatch();
+
     private readonly IServiceProvider _services;
     public LiveMatchBackgroundTask(IServiceProvider services)
     {
@@ -19,6 +22,7 @@ public class LiveMatchBackgroundTask
     }
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
+        timespanned.Start();
         PlayGameHalf(gamematch, MatchState.FirstHalf);
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
@@ -56,15 +60,17 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
         timer.Start();
+        TimeSpan result = TimeSpan.Zero;
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
-            TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
+            result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
             Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.MatchState}");
             IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }
+        GamematchLogger.TimeLogger(gamematch, result, gamematch.MatchState.ToString());
         timer.Stop();
 
         return gamematch;
@@ -73,12 +79,14 @@ public class LiveMatchBackgroundTask
     public Gamematch PlayOvertime(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
+
         UpdatePlayingState(gamematch, matchState);
         timer.Start();
+         TimeSpan result = TimeSpan.Zero;
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
         {
-            TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
+            result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
 
             IsGoalScoredChance(gamematch);
@@ -86,6 +94,7 @@ public class LiveMatchBackgroundTask
             Console.WriteLine();
             Thread.Sleep(1000);
         }
+        GamematchLogger.TimeLogger(gamematch, result, gamematch.MatchState.ToString());
         timer.Stop();
         return gamematch;
     }
