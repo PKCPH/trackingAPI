@@ -28,28 +28,28 @@ namespace trackingAPI.Models
         public string work_rate { get; set; }
         public string body_type { get; set; }
         public int real_face { get; set; }
-        public int release_clause_eur { get; set; }
-        public string player_tags { get; set; }
-        public string team_position { get; set; }
-        public int team_jersey_number { get; set; }
-        public string loaned_from { get; set; }
-        public DateTime joined { get; set; }
-        public int contract_valid_until { get; set; }
-        public string nation_position { get; set; }
-        public int nation_jersey_number { get; set; }
-        public int Pace { get; set; }
-        public int Shooting { get; set; }
-        public int Passing { get; set;}
-        public int Dribbling { get; set; }
-        public int Defense { get; set; }
-        public int Physical { get; set; }
-        public int gk_diving { get; set; }
-        public int gk_handling { get; set; }
-        public int gk_kicking { get; set; }
-        public int gk_reflexes { get; set; }
-        public int gk_speed { get; set; }
-        public int gk_positioning { get; set; }
-        public string player_traits { get; set; }
+        public int? release_clause_eur { get; set; }
+        public string? player_tags { get; set; }
+        public string? team_position { get; set; }
+        public int? team_jersey_number { get; set; }
+        public string? loaned_from { get; set; }
+        public DateTime? joined { get; set; }
+        public int? contract_valid_until { get; set; }
+        public string? nation_position { get; set; }
+        public int? nation_jersey_number { get; set; }
+        public int? Pace { get; set; }
+        public int? Shooting { get; set; }
+        public int? Passing { get; set;}
+        public int? Dribbling { get; set; }
+        public int? Defense { get; set; }
+        public int? Physical { get; set; }
+        public int? gk_diving { get; set; }
+        public int? gk_handling { get; set; }
+        public int? gk_kicking { get; set; }
+        public int? gk_reflexes { get; set; }
+        public int? gk_speed { get; set; }
+        public int? gk_positioning { get; set; }
+        public string? player_traits { get; set; }
         public int attacking_crossing { get; set; }
         public int attacking_finishing { get; set; }
         public int attacking_heading_accuracy { get; set; }
@@ -84,32 +84,31 @@ namespace trackingAPI.Models
         public int goalkeeping_kicking { get; set; }
         public int goalkeeping_positioning { get; set; }
         public int goalkeeping_reflexes { get; set; }
-        public string ls { get; set; }
-        public string st { get; set; }
-        public string rs { get; set; }
-        public string lw { get; set; }
-        public string lf { get; set; }
-        public string cf { get; set; }
-        public string rf { get; set; }
-        public string rw { get; set; }
-        public string lam { get; set; }
-        public string cam { get; set; }
-        public string ram { get; set; }
-        public string lm { get; set; }
-        public string lcm { get; set; }
-        public string cm { get; set; }
-        public string rcm { get; set; }
-        public string rm { get; set; }
-        public string lwb { get; set; }
-        public string ldm { get; set; }
-        public string cdm { get; set; }
-        public string rdm { get; set; }
-        public string rwb { get; set; }
-        public string lb { get; set; }
-        public string lcb { get; set; }
-        public string cb { get; set; }
-        public string rcb { get; set; }
-        public string rb { get; set; }
-        public string gk { get; set; }
+        public string? ls { get; set; }
+        public string? st { get; set; }
+        public string? rs { get; set; }
+        public string? lw { get; set; }
+        public string? lf { get; set; }
+        public string? cf { get; set; }
+        public string? rf { get; set; }
+        public string? rw { get; set; }
+        public string? lam { get; set; }
+        public string? cam { get; set; }
+        public string? ram { get; set; }
+        public string? lm { get; set; }
+        public string? lcm { get; set; }
+        public string? cm { get; set; }
+        public string? rcm { get; set; }
+        public string? rm { get; set; }
+        public string? lwb { get; set; }
+        public string? ldm { get; set; }
+        public string? cdm { get; set; }
+        public string? rdm { get; set; }
+        public string? rwb { get; set; }
+        public string? lb { get; set; }
+        public string? lcb { get; set; }
+        public string? cb { get; set; }
+        public string? rcb { get; set; }
+        public string? rb { get; set; }
     }
 }
