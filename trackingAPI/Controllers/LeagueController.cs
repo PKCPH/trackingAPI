@@ -68,6 +68,7 @@ public class LeagueController : ControllerBase
         /*return await _context.Bets.Include(mt => mt.Match).ThenInclude(t => t.ParticipatingTeams).ThenInclude(t => t.Team).Where(b => b.LoginId == userId).ToListAsync();*/
 
         var leagues = _context.Leagues
+              .Where(mt => mt.Gamematches.Any(t => t.MatchState != MatchState.Finished))
               .Include(mt => mt.Gamematches)
               .ThenInclude(t => t.ParticipatingTeams)
               .Select(m => new {
@@ -86,11 +87,7 @@ public class LeagueController : ControllerBase
                           name = pt.Team.Name,
                           result = pt.Result,
                           score = pt.TeamScore,
-                          round = pt.Round,
-                      } : (object)new
-                      {
-                          round = pt.Round,
-                      }).ToList()
+                      } : null).ToList()
                   }).ToList()
               })
               .ToList();

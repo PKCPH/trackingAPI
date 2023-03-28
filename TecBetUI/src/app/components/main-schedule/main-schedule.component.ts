@@ -83,12 +83,7 @@ export class MainScheduleComponent implements OnDestroy {
             id: '00000000-0000-0000-0000-000000000000',
             isAvailable: true,
             matches: [],
-            availability: '',
-            players: [],
-            score: 0,
-            result: 0,
-            rating: 0,
-            round: participatingTeams[i].round,
+            roundTerm: this.GetRoundTerm(participatingTeams[i].round),
           };
         }
       }
@@ -136,6 +131,22 @@ export class MainScheduleComponent implements OnDestroy {
      this.router.navigateByUrl("details/" + id);
      }
     }
+    }
+
+    GetRoundTerm(round: number)
+    {
+        if (round == 1) return "Grand Finale";
+        else if (round == 2) return "Semi-Finale";
+        else if (round == 3) return "Quarter-Finale";
+        else
+        {
+            var output = 4;
+            for (var i = 4; i <= round; i++)
+            {
+                output *= 2;
+            }
+            return `1/${output} Finale`;
+        }
     }
 
     Hideloader() {
