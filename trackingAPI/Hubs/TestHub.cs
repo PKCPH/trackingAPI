@@ -4,8 +4,19 @@ namespace trackingAPI.Hubs;
 
 public class TestHub : Hub
 {
-    public Task SendMessage(string user, string message)
+    public async Task AskServer(string message)
     {
-        return Clients.All.SendAsync("ReceiveMessage123", user, message);
+        string tempString;
+
+        if (message == "hey")
+        {
+            tempString = "message was 'hey'";
+        }
+        else
+        {
+            tempString = "message was something else";
+        }
+
+        await Clients.Clients(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
     }
 }

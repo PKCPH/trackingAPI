@@ -22,12 +22,17 @@ public class Program
         builder.Services.AddHostedService<ImplementBackgroundService>();
 
         //SignalR (this is making sure that the webserver can process octet stream and adding compressions)
-        builder.Services.AddResponseCompression(opts =>
+        //builder.Services.AddResponseCompression(opts =>
+        //{
+        //    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+        //        new[] { "application/octet-stream" });
+        //});
+        builder.Services.AddSignalR(opt =>
         {
-            opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
-                new[] { "application/octet-stream" });
+            opt.EnableDetailedErrors = true;
         });
-        
+
+
         // Add services to the container.
 
         builder.Services.AddAuthentication(opt =>
@@ -91,6 +96,12 @@ public class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseEndpoints(endpoint =>
+        {
+            endpoint.MapControllers();
+            endpoint.MapHub<TestHub>("/test");
+        });
 
         app.MapControllers();
 
