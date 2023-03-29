@@ -64,10 +64,10 @@ public class LiveMatchBackgroundTask
         {
             //testHub.RunLiveMatchFrontEnd(gamematch, 
             //    $"Updated Match {gamematch.ParticipatingTeams.First()} vs {gamematch.ParticipatingTeams.Last()}");
-            
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
             Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.MatchState}");
+            //testHub.MatchUpdated($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.MatchState}");
             IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }

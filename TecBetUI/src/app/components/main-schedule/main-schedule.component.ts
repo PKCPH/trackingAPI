@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
@@ -6,13 +6,14 @@ import { interval, Subscription } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Team } from 'src/app/models/teams.model';
+import { SignalrService } from 'src/app/services/signalr.service';
 
 @Component({
   selector: 'app-main-schedule',
   templateUrl: './main-schedule.component.html',
   styleUrls: ['./main-schedule.component.css']
 })
-export class MainScheduleComponent implements OnDestroy {
+export class MainScheduleComponent implements OnInit, OnDestroy {
   games: Match[] = [];
   finishedGames: Match[] = [];
   errorMessage: string = "";
@@ -25,161 +26,198 @@ export class MainScheduleComponent implements OnDestroy {
   pageIndex = 0;
   pageSize = 8;
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort | any;
+  @ViewChild(MatSort, { static: true }) sort: MatSort | any;
+
+  ngOnInit() {
+    this.signalrService.startConnection();
+
+    setTimeout(() => {
+      this.signalrService.askServerListener();
+      this.signalrService.askServer();
+      this.signalrService.matchUpdatedResponse();
+    }, 2000);
+  }
 
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
-  } 
-  
-    constructor(private matchesService: MatchesService, 
-      private el: ElementRef, private renderer: Renderer2, private router: Router) {
+  }
 
-        this.fetchFin();
-        this.fetch();
+  constructor(private matchesService: MatchesService,
+    private el: ElementRef, private renderer: Renderer2, private router: Router,
+    public signalrService: SignalrService) {
 
-        this.updateSubscription = interval(2500).subscribe(() => {
-          this.fetch();
+    this.fetchFin();
+    this.fetch();
+
+    this.updateSubscription = interval(2500).subscribe(() => {
+      this.fetch();
+    });
+  }
+
+  fetch() {
+    this.matchesService.errorMessage.subscribe(error => {
+      this.errorMessage = error;
+    });
+
+    this.matchesService.getSchedule().subscribe({
+      next: (games) => {
+        this.games = games.map(game => {
+
+          let participatingTeams = game.participatingTeams;
+
+          this.nullCheck(participatingTeams);
+
+          return {
+            ...game,
+            participatingTeams: participatingTeams,
+          }
         });
-    }
-
-    fetch() {    
-      this.matchesService.errorMessage.subscribe(error => {
-        this.errorMessage = error;
-      });
-
-      this.matchesService.getSchedule().subscribe({
-        next: (games) => {
-          this.games = games.map(game => {
-
-            let participatingTeams = game.participatingTeams;
-
-            this.nullCheck(participatingTeams);
-
-            return {
-              ...game,
-              participatingTeams: participatingTeams,
-            }
-          });
-          console.log(this.games);
-          if (games)
-          {
-            this.sortedGames = this.games.slice();
-            this.Hideloader();
-            this.sortData(this.sort);
-          }
-          if (games.length > 0)
-          {
-            this.errorMessage = "";
-          }
-        },
-      });   
-    }
-
-    nullCheck(participatingTeams: any) { 
-      for (let i = 0; i < participatingTeams.length; i++) {
-        if (participatingTeams[i].name == null) {
-          participatingTeams[i] = {
-            name: this.byeCheese ? 'BYE' : 'TBD',
-            id: '00000000-0000-0000-0000-000000000000',
-            isAvailable: true,
-            matches: [],
-            availability: '',
-            players: [],
-            score: 0,
-            result: 0,
-            rating: 0,
-            round: participatingTeams.round,
-          };
+        console.log(this.games);
+        if (games) {
+          this.sortedGames = this.games.slice();
+          this.Hideloader();
+          this.sortData(this.sort);
         }
+        if (games.length > 0) {
+          this.errorMessage = "";
+        }
+      },
+    });
+  }
+
+  fetchWithSignalR() {
+    this.matchesService.errorMessage.subscribe(error => {
+      this.errorMessage = error;
+    });
+
+    this.matchesService.getSchedule().subscribe({
+      next: (games) => {
+        this.games = games.map(game => {
+
+          let participatingTeams = game.participatingTeams;
+
+          this.nullCheck(participatingTeams);
+
+          return {
+            ...game,
+            participatingTeams: participatingTeams,
+          }
+        });
+        console.log(this.games);
+        if (games) {
+          this.sortedGames = this.games.slice();
+          this.Hideloader();
+          this.sortData(this.sort);
+        }
+        if (games.length > 0) {
+          this.errorMessage = "";
+        }
+      },
+    });
+  }
+
+  nullCheck(participatingTeams: any) {
+    for (let i = 0; i < participatingTeams.length; i++) {
+      if (participatingTeams[i].name == null) {
+        participatingTeams[i] = {
+          name: this.byeCheese ? 'BYE' : 'TBD',
+          id: '00000000-0000-0000-0000-000000000000',
+          isAvailable: true,
+          matches: [],
+          availability: '',
+          players: [],
+          score: 0,
+          result: 0,
+          rating: 0,
+          round: participatingTeams.round,
+        };
       }
     }
+  }
 
-    fetchFin() {    
-      this.matchesService.getFinishedMatches().subscribe({
-        next: (finishedGames) => {
-          console.log(this.finishedGames);
-          this.finishedGames = finishedGames.map(finishedGame => {
+  fetchFin() {
+    this.matchesService.getFinishedMatches().subscribe({
+      next: (finishedGames) => {
+        console.log(this.finishedGames);
+        this.finishedGames = finishedGames.map(finishedGame => {
 
-            let participatingTeams = finishedGame.participatingTeams;
+          let participatingTeams = finishedGame.participatingTeams;
 
-            this.nullCheck(participatingTeams);
+          this.nullCheck(participatingTeams);
 
-            return {
-              ...finishedGame,
-              participatingTeams: participatingTeams,
-            }
-          });
-          if (finishedGames)
-          {
-            this.sortedFinGames = this.finishedGames.slice();
-            this.Hideloader();
-            this.sortData(this.sort);
+          return {
+            ...finishedGame,
+            participatingTeams: participatingTeams,
           }
-          this.matchesService.errorMessage.subscribe(error => {
-            this.errorMessage = error;
-            if (finishedGames.length > 0)
-            {
-              this.errorMessage = "";
-            }
-          });
-        },
-      });   
-    }
+        });
+        if (finishedGames) {
+          this.sortedFinGames = this.finishedGames.slice();
+          this.Hideloader();
+          this.sortData(this.sort);
+        }
+        this.matchesService.errorMessage.subscribe(error => {
+          this.errorMessage = error;
+          if (finishedGames.length > 0) {
+            this.errorMessage = "";
+          }
+        });
+      },
+    });
+  }
 
-    GoMatchDetails(id: string)
-    {
-      this.router.navigateByUrl("details/" + id);
-    }
+  GoMatchDetails(id: string) {
+    this.router.navigateByUrl("details/" + id);
+  }
 
-    Hideloader() {
-              // Setting display of spinner
-              // element to none
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
-              this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block');
-    }
+  Hideloader() {
+    // Setting display of spinner
+    // element to none
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#schedulecontainer'), 'display', 'block');
+  }
 
-    showArchivedMatches() {
+  showArchivedMatches() {
 
-      this.byeCheese = true;
+    this.byeCheese = true;
 
-      this.updateSubscription.unsubscribe();
+    this.updateSubscription.unsubscribe();
 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block'); 
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'block');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'inline-block');
 
+    this.fetchFin();
+
+    this.updateSubscription = interval(2500).subscribe(() => {
       this.fetchFin();
+    });
 
-      this.updateSubscription = interval(2500).subscribe(() => {
-        this.fetchFin();
-      });
-      
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none'); 
-    }
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'block');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'none');
+  }
 
-    
-    showActiveMatches() {
 
-      this.byeCheese = false;
+  showActiveMatches() {
 
-      this.updateSubscription.unsubscribe();
-      
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'none'); 
+    this.byeCheese = false;
 
+    this.updateSubscription.unsubscribe();
+
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatchesButton'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatchesButton'), 'display', 'inline-block');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#paginator'), 'display', 'none');
+
+    this.fetch();
+
+    this.updateSubscription = interval(2500).subscribe(() => {
       this.fetch();
+    });
 
-      this.updateSubscription = interval(2500).subscribe(() => {
-        this.fetch();
-      });
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'block');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none');
+  }
 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#activeMatches'), 'display', 'block'); 
-      this.renderer.setStyle(this.el.nativeElement.querySelector('#archivedMatches'), 'display', 'none'); 
-    }
-
-      //This functions take the sorted teams and updates them
+  //This functions take the sorted teams and updates them
 
   updateSortedGames() {
     const sortColumn = this.sort.active;
@@ -215,18 +253,18 @@ export class MainScheduleComponent implements OnDestroy {
     this.updateSortedFinGames();
   }
 
-    //Detects pagechange and updates the data. Get pagedGames is for the pagination, where it slices the data for display, it keeps track of pageindex to know where to pick up from.
+  //Detects pagechange and updates the data. Get pagedGames is for the pagination, where it slices the data for display, it keeps track of pageindex to know where to pick up from.
 
-    onPageChange(event: any) {
-      this.pageIndex = event.pageIndex;
-      this.pageSize = event.pageSize;
-    }
+  onPageChange(event: any) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+  }
 
-    get pagedGames() {
-      const startIndex = this.pageIndex * this.pageSize;
-      const endIndex = startIndex + this.pageSize;
-      return this.sortedFinGames.slice(startIndex, endIndex);
-    }
+  get pagedGames() {
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.sortedFinGames.slice(startIndex, endIndex);
+  }
 
 }
 

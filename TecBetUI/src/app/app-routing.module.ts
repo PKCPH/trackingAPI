@@ -134,8 +134,9 @@ const routes: Routes = [
   {
     path: '404',
     component: BlankComponent
-  },{
-    path: 'test',
+  },
+  {
+    path: 'leagueShow',
     component: SignalRComponent
   }
 ];

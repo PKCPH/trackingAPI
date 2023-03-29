@@ -103,7 +103,7 @@ public class Program
         app.UseEndpoints(endpoint =>
         {
             endpoint.MapControllers();
-            endpoint.MapHub<TestHub>("/test");
+            endpoint.MapHub<TestHub>("/schedule");
         });
 
         app.MapControllers();

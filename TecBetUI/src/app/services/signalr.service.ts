@@ -1,3 +1,4 @@
+import { ThisReceiver } from "@angular/compiler";
 import { Injectable } from "@angular/core";
 import * as signalR from "@microsoft/signalr";
 
@@ -10,7 +11,8 @@ export class SignalrService {
 
     startConnection = () => {
         this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl('https://localhost:5001/test', {
+        .withAutomaticReconnect()
+        .withUrl('https://localhost:5001/schedule', {
             skipNegotiation: true,
             transport: signalR.HttpTransportType.WebSockets
         })
@@ -35,4 +37,22 @@ export class SignalrService {
             console.log(someText);
         })
     }
+
+    matchUpdatedResponse() {
+        this.hubConnection.on("matchUpdatedResponse", (someText: any) => {
+            console.log(someText);
+        })
+    }
+
+    // newWindowLoaded() {
+    //     this.hubConnection.on("NewWindowLoaded", (value: any) => {
+    //         var newCountSpan = document.getElementById("totalViewsCounter");
+    //         newCountSpan.innerText = value.toString();
+    //     })
+
+    // }
+
+    // newWindowLoadedOnClient(){
+    //     this.newWindowLoaded().send
+    // }
 }

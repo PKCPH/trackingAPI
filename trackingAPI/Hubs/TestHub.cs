@@ -6,6 +6,7 @@ namespace trackingAPI.Hubs;
 
 public class TestHub : Hub
 {
+    public static int TotalViews { get; set; } = 0;
     public async Task AskServer(string message)
     {
         string tempString;
@@ -23,19 +24,23 @@ public class TestHub : Hub
         await Clients.Client(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
     }
 
-    //public async Task RunLiveMatchFrontEnd(string message)
+    public async Task MatchUpdated(Gamematch gamematch)
+    {
+        await Clients.Client(this.Context.ConnectionId).SendAsync("matchUpdatedResponse", gamematch);
+    }
+
+    public async Task NewWindowLoaded()
+    {
+        TotalViews++;
+        //send update to all clients that total views have been updated
+        await Clients.All.SendAsync("updateTotalViews", TotalViews);
+    }
+
+    //public async Task<string> NewWindowLoaded(string name)
     //{
-
-    //    await Clients.Client(this.Context.ConnectionId).SendAsync(message, tempstring);
-    //}
-}
-
-public class TestHubHelper
-{
-    //get match info in this class and pass as string to testHub to return;
-
-    //public string GetMatchInRealTime(Guid gamematchId)
-    //{
-
+    //    TotalViews++;
+    //    //send update to all clients that total views have been updated
+    //    await Clients.All.SendAsync("updateTotalViews", TotalViews);
+    //    return $"total views from {name} - {TotalViews}";
     //}
 }

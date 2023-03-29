@@ -28,7 +28,7 @@ export class MatchDetailsComponent implements OnDestroy {
     rating: 0,
     round: 0
   };
-  
+
 
   updateSubscription: Subscription;
   id: any;
@@ -46,7 +46,7 @@ export class MatchDetailsComponent implements OnDestroy {
     this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
     });
-    
+
   }
 
   fetch() {
@@ -103,6 +103,7 @@ export class MatchDetailsComponent implements OnDestroy {
     modalRef.componentInstance.match = this.matchDetails;
     modalRef.componentInstance.team = this.drawRequest;
   }
+
 
 
 }
