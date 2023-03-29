@@ -23,8 +23,19 @@ public class TestHub : Hub
         await Clients.Client(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
     }
 
-    public async Task RunLiveMatchFrontEnd(Gamematch gamematch, string message)
+    public async Task RunLiveMatchFrontEnd(string message)
     {
-        await Clients.Client(this.Context.ConnectionId).SendAsync(message, gamematch);
+
+        await Clients.Client(this.Context.ConnectionId).SendAsync(message);
     }
+}
+
+public class TestHubHelper
+{
+    //get match info in this class and pass as string to testHub to return;
+
+    //public string GetMatchInRealTime(Guid gamematchId)
+    //{
+
+    //}
 }

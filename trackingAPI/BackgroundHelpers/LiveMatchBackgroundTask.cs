@@ -62,8 +62,8 @@ public class LiveMatchBackgroundTask
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
-            testHub.RunLiveMatchFrontEnd(gamematch, 
-                $"Updated Match {gamematch.ParticipatingTeams.First()} vs {gamematch.ParticipatingTeams.Last()}");
+            //testHub.RunLiveMatchFrontEnd(gamematch, 
+            //    $"Updated Match {gamematch.ParticipatingTeams.First()} vs {gamematch.ParticipatingTeams.Last()}");
             
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
