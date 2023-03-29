@@ -17,7 +17,6 @@ public class MatchTeam
     [DefaultValue(Result.Undetermined)]
     public Result Result { get; set; }
     public int? Seed { get; set; }
-    public int? Round { get; set; }
 }
 
 public enum Result
