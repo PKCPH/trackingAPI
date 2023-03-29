@@ -6,6 +6,8 @@ using trackingAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
+using trackingAPI.Hubs;
+using trackingAPI.Controllers;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -56,9 +58,13 @@ public class LiveMatchBackgroundTask
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
         timer.Start();
+        TestHub testHub= new TestHub();
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
+            testHub.RunLiveMatchFrontEnd(gamematch, 
+                $"Updated Match {gamematch.ParticipatingTeams.First()} vs {gamematch.ParticipatingTeams.Last()}");
+            
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
             string fromTimer = result.ToString("mm':'ss");
             Console.WriteLine($"Match: {gamematch.Id} Time: {fromTimer} PlayingState: {gamematch.MatchState}");
