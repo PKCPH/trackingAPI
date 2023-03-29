@@ -26,6 +26,7 @@ import { NewPlayerComponent } from './components/main-teams/players-on-team/new-
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { SignalRComponent } from './components/signal-r/signal-r.component';
 
 const routes: Routes = [
   {
@@ -133,6 +134,9 @@ const routes: Routes = [
   {
     path: '404',
     component: BlankComponent
+  },{
+    path: 'test',
+    component: SignalRComponent
   }
 ];
 

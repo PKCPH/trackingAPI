@@ -12,7 +12,7 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230323095335_init")]
+    [Migration("20230329061427_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace trackingAPI.Migrations
 
                     b.Property<int>("MatchState")
                         .HasColumnType("int");
+
+                    b.Property<string>("RoundTerm")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -169,7 +172,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("da57dd4b-2476-407a-917b-e226e0d6f334"),
+                            Id = new Guid("a8a468f4-c8f0-44fc-a460-f0c6fd7a7e49"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -318,9 +321,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
                 {
-                    b.HasOne("trackingAPI.Models.League", null)
+                    b.HasOne("trackingAPI.Models.League", "league")
                         .WithMany("Gamematches")
                         .HasForeignKey("LeagueId");
+
+                    b.Navigation("league");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>

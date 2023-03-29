@@ -17,6 +17,7 @@ public class TestHub : Hub
             tempString = "message was something else";
         }
 
+        //await Clients.Client(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
         await Clients.Client(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
     }
 }
