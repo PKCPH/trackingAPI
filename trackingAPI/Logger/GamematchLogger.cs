@@ -4,7 +4,7 @@ namespace trackingAPI.Logger
 {
     public class GamematchLogger
     {
-        public static Task TimeLogger(Gamematch gameMatch, TimeSpan timeStamp, string _event)
+        public Task TimeLogger(ref Gamematch gameMatch, TimeSpan timeStamp, string _event)
         {
             TimeLog timeLog = new TimeLog
             {

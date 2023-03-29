@@ -9,8 +9,8 @@
 
 
         /////////////////FOR TESTING////////////////////
-        public static int GamematchLengthInSeconds { get; set; } = 20;
-        public static int HalfTimeBreakLengthInMilliSeconds { get; set; } = 2000;
+        public static int GamematchLengthInSeconds { get; set; } = 90;
+        public static int HalfTimeBreakLengthInMilliSeconds { get; set; } = 5000;
         public static int OvertimeLengthInSeconds { get; set; } = 10;
         public static int PenaltyShootoutTimeIntervalMilliInSeconds { get; set; } = 2000;
 

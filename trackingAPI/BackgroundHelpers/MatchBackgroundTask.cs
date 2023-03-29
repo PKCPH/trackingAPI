@@ -23,7 +23,7 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            var n = 1;
+            var n = 0;
 
             for (int i = 0; i <= n; i++)
             {

@@ -8,7 +8,7 @@ namespace trackingAPI.Models
 
         public TimeLog()
         {
-            Gamematch = new Gamematch();
+            this.Gamematch = new Gamematch();
         }
 
         [Key]

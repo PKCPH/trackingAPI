@@ -11,7 +11,7 @@ public class Gamematch
     public Gamematch(DatabaseContext databaseContext)
     {
         this.ParticipatingTeams = new HashSet<MatchTeam>();
-        this.TimeLog = new HashSet<TimeLog>();
+        this.TimeLog = new List<TimeLog>();
     }
 
     public Gamematch()

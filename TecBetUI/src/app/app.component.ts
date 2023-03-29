@@ -95,8 +95,6 @@ export class AppComponent {
 return false;
   }
 
-
-
   //Checks for token 
 
   isUserAuthenticated = (): boolean => {

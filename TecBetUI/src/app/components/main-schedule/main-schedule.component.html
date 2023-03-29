@@ -24,10 +24,11 @@
                     <th>Score</th>
                     <th mat-sort-header="league">League</th>
                     <th>State</th>
+                    <th>Duration</th>
                     <th> </th>
                 </tr>
             </thead>
-            <ng-container *ngFor="let games of sortedGames" >
+            <ng-container *ngFor="let games of games" >
             <tr class="tablerow"  (click)="GoMatchDetails(games.id, games.participatingTeams)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 
@@ -47,6 +48,8 @@
                 <td *ngIf="games.matchState == 3">Second Half</td>
                 <td *ngIf="games.matchState == 4">OverTime</td>
                 <td *ngIf="games.matchState == 5">Penalty Shootout</td>
+
+                <td>{{games.timeLogs[0].timeStamp}}</td>
                 
                 <!-- <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->

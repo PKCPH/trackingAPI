@@ -1,4 +1,5 @@
 import { Team } from "./teams.model";
+import { TimeLog } from "./timelog.model";
 
 export interface Match {
     id: string;
@@ -9,4 +10,6 @@ export interface Match {
     displayId: string;
     league: string;
     roundTerm: string;
+    duration: number;
+    timeLogs: TimeLog[];
 }

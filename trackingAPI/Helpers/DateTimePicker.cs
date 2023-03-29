@@ -16,10 +16,12 @@ public static class DateTimePicker
         var date = dateTime.Date; //.today when not testing
 
         //Timespan of the random scheduled time 
-        var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
+        
+        
+        //var minutes = rnd.Next(0, ScheduledTimeSpanInMinutes);
         //when the match starts the earliest on a given day
         var timeOfDayHours = TimeSpan.FromHours(StartHourOfScheduledTimeSpan);
-        timeOfDayHours += TimeSpan.FromMinutes(minutes);
+        timeOfDayHours += TimeSpan.FromMinutes(0.1);
         //testing
         timeOfDayHours += dateTime.TimeOfDay;
 

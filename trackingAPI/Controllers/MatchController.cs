@@ -99,12 +99,14 @@ public class MatchController : ControllerBase
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
             .Include(l => l.league)
+            .Include(t => t.TimeLog)
             .Select(match => new {
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
                 league = match.league.Name,
                 roundTerm = match.RoundTerm,
+                timeLogs = match.TimeLog,
 
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {

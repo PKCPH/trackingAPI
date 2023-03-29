@@ -19,17 +19,5 @@
     transform: rotate(-270deg);
 }
 
-.mat-header-cell {
-    position: relative;
-  }
-  
-  .mat-sort-header-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .mat-sort-header-button {
-    width: 100%;
-  }
+
   

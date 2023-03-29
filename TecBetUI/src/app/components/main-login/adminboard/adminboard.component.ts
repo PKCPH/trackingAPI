@@ -71,8 +71,6 @@ export class AdminboardComponent implements OnDestroy {
       let role = storedCredentials.role;
       this.adminUsername = storedCredentials.userName;
 
-      console.log(this.adminUsername);
-
       if (role === 'Admin') {
         this.router.navigate(['/adminboard']);
       } else {

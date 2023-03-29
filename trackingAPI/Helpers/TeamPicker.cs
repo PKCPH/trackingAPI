@@ -44,7 +44,7 @@ public class TeamPicker
             {
                 StartDateTime = gameMatch.DateOfMatch,
                 TimeStamp = TimeSpan.Zero,
-                Event = "",
+                Event = "Not Started",
                 Gamematch = gameMatch
             };
 

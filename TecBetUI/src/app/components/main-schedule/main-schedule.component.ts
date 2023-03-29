@@ -2,10 +2,11 @@ import { Component, ElementRef, Renderer2, OnDestroy, ViewChild } from '@angular
 import { Router } from '@angular/router';
 import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
-import { interval, Subscription } from 'rxjs';
+import { interval, Subscription, takeUntil } from 'rxjs';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Team } from 'src/app/models/teams.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-main-schedule',
@@ -20,6 +21,9 @@ export class MainScheduleComponent implements OnDestroy {
   sortedGames: Match[] = [];
   sortedFinGames: Match[] = [];
   byeCheese: boolean = false;
+  timerSubscription: Subscription | any;
+  timerStopSignal = new Subject<void>();
+  duration: number = 0;
 
   // Paginator configurations
   pageIndex = 0;
@@ -29,6 +33,7 @@ export class MainScheduleComponent implements OnDestroy {
 
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
+    this.stopTimer();
   } 
   
     constructor(private matchesService: MatchesService, 
@@ -52,8 +57,16 @@ export class MainScheduleComponent implements OnDestroy {
           this.games = games.map(game => {
 
             let participatingTeams = game.participatingTeams;
+            let timeLogs = game.timeLogs
 
             this.nullCheck(participatingTeams);
+
+            if(game.matchState != 0)
+            {
+            this.Timer(timeLogs[0]);
+          }
+
+            console.log(game);
 
             return {
               ...game,
@@ -91,6 +104,36 @@ export class MainScheduleComponent implements OnDestroy {
             round: participatingTeams[i].round,
           };
         }
+      }
+    }
+
+    stopTimer() {
+      this.timerStopSignal.next();
+      this.timerStopSignal.complete();
+    }
+
+    Timer(timeLogs: any) 
+    { 
+
+      const dateObj = new Date(`1970-01-01T${timeLogs.timeStamp}`);
+
+      console.log(dateObj);
+      // Get the current datetime
+      const unixTimestamp = dateObj.getTime();
+
+      console.log(unixTimestamp);
+      
+      // Start the timer if the match has started
+      if (!this.timerSubscription) {
+        console.log("hi");
+        this.timerSubscription = interval(1000)
+          // .pipe(takeUntil(this.timerStopSignal)) // timerStopSignal is an Observable that signals when to stop the timer
+          .subscribe(() => {
+
+            const newTimestamp = unixTimestamp + 1000;
+            timeLogs.timeStamp = newTimestamp;
+
+          });
       }
     }
 

@@ -14,43 +14,65 @@ namespace trackingAPI.BackgroundHelpers;
 public class LiveMatchBackgroundTask
 {
     Stopwatch timespanned = new Stopwatch();
+    TimeSpan timespan;
 
     private readonly IServiceProvider _services;
     public LiveMatchBackgroundTask(IServiceProvider services)
     {
         _services = services;
     }
+
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
+        GamematchLogger gamematchLogger = new();
         timespanned.Start();
+
         PlayGameHalf(gamematch, MatchState.FirstHalf);
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
+        timespanned.Stop();
+
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
-        
+        timespanned.Start();
+
         PlayGameHalf(gamematch, MatchState.SecondHalf);
 
         ////if not draw or draw is allowed then return
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
-            || gamematch.IsDrawAllowed) return Task.CompletedTask;
+            || gamematch.IsDrawAllowed)
+        {
+            timespanned.Stop();
+            timespan = TimeSpan.FromSeconds(timespanned.Elapsed.TotalSeconds);
+            gamematchLogger.TimeLogger(ref gamematch, timespan, MatchState.Finished.ToString());
+            return Task.CompletedTask;
+        }
         PlayOvertime(gamematch, MatchState.OverTime);
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
         PlayPenaltyShootout(gamematch, MatchState.PenaltyShootOut);
 
+        timespanned.Stop();
         return Task.CompletedTask;
     }
 
     public Task UpdatePlayingState(Gamematch gamematch, MatchState matchState)
     {
+        GamematchLogger gamematchLogger = new();
         using (var scope = _services.CreateScope())
         {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-            gamematch.MatchState = matchState;
-            _context.Entry(gamematch).State = EntityState.Modified;
-            _context.SaveChanges();
+            try
+            {
+                var _context =
+                    scope.ServiceProvider
+                        .GetRequiredService<DatabaseContext>();
+                gamematch.MatchState = matchState;
+                timespan = TimeSpan.FromSeconds(timespanned.Elapsed.TotalSeconds);
+                gamematchLogger.TimeLogger(ref gamematch, timespan, matchState.ToString());
+               /* _context.Entry(gamematch).State = EntityState.Modified;*/
+                _context.Matches.Update(gamematch);
+                _context.SaveChanges();
+            }
+            catch { }
         }
         return Task.CompletedTask;
     }
@@ -58,9 +80,9 @@ public class LiveMatchBackgroundTask
     public Gamematch PlayGameHalf(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
-        UpdatePlayingState(gamematch, matchState);
         timer.Start();
         TimeSpan result = TimeSpan.Zero;
+        UpdatePlayingState(gamematch, matchState);
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
@@ -70,7 +92,6 @@ public class LiveMatchBackgroundTask
             IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }
-        GamematchLogger.TimeLogger(gamematch, result, gamematch.MatchState.ToString());
         timer.Stop();
 
         return gamematch;
@@ -82,7 +103,7 @@ public class LiveMatchBackgroundTask
 
         UpdatePlayingState(gamematch, matchState);
         timer.Start();
-         TimeSpan result = TimeSpan.Zero;
+        TimeSpan result = TimeSpan.Zero;
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
         {
@@ -94,7 +115,6 @@ public class LiveMatchBackgroundTask
             Console.WriteLine();
             Thread.Sleep(1000);
         }
-        GamematchLogger.TimeLogger(gamematch, result, gamematch.MatchState.ToString());
         timer.Stop();
         return gamematch;
     }
@@ -144,10 +164,10 @@ public class LiveMatchBackgroundTask
     public Gamematch IsGoalScoredChance(Gamematch gameMatch)
     {
         Random rnd = new Random();
-        var ballPossessionTeam = rnd.Next(10000)/100;
+        var ballPossessionTeam = rnd.Next(10000) / 100;
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam > 100 - ParticipantSuperiority(Convert.ToDouble(gameMatch.ParticipatingTeams.First().Team.Rating),Convert.ToDouble(gameMatch.ParticipatingTeams.Last().Team.Rating))*100) GoalToTeamA = true;
+        if (ballPossessionTeam > 100 - ParticipantSuperiority(Convert.ToDouble(gameMatch.ParticipatingTeams.First().Team.Rating), Convert.ToDouble(gameMatch.ParticipatingTeams.Last().Team.Rating)) * 100) GoalToTeamA = true;
         if (chanceOfGoal > 1) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
