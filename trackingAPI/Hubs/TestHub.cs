@@ -23,11 +23,11 @@ public class TestHub : Hub
         await Clients.Client(this.Context.ConnectionId).SendAsync("askServerResponse", tempString);
     }
 
-    public async Task RunLiveMatchFrontEnd(string message)
-    {
+    //public async Task RunLiveMatchFrontEnd(string message)
+    //{
 
-        await Clients.Client(this.Context.ConnectionId).SendAsync(message);
-    }
+    //    await Clients.Client(this.Context.ConnectionId).SendAsync(message, tempstring);
+    //}
 }
 
 public class TestHubHelper
