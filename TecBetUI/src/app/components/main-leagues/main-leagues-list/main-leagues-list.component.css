@@ -18,7 +18,22 @@
     justify-content: center;
   }
 
-  .leagueName:hover {
+  fa-icon:hover {
     cursor: pointer;
+  }
+
+  .test {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 30px;
+    padding: 20px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  #icon {
+    size: 100px;
   }
 

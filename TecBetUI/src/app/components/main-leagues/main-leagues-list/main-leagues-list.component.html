@@ -4,12 +4,13 @@
 
     <ng-container *ngFor="let league of leagues" >
     <table>
-        <tr>
-          <h2 class="leagueName" (click)="toggleTable(league.name)">{{league.name}}</h2>
+        <tr class="test">
+          <div><h2 class="leagueName">{{league.name}}</h2></div>
+          <div style="display: flex; justify-content: center;"><p class="mx-2" style="margin: auto; color: rgba(150, 150, 150, 0.7)">Display matches ({{league.match.length}})</p><fa-icon style="margin: auto" [id]="league.id" (click)="toggleTable(league.name, league.id)" [icon]="arrow" animation="beat" size="lg"></fa-icon></div>
         </tr>
         <tr>
           <td>
-            <table [id]="league.name" style="width: 60%; margin: auto; display: none;" #myTable>
+            <table [id]="league.name" style="width: 60%; margin: auto; display: none;" #myTable class="leagueMatches">
                 <tr *ngFor="let match of league.match">
                     <td><span class="mx-5">{{match.dateOfMatch | date: 'HH:mm' }}</span>{{match.participatingTeams[0].name}} vs {{match.participatingTeams[1].name}}</td>
                   </tr>

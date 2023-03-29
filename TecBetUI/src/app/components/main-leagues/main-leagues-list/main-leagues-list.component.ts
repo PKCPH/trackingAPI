@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
+import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-leagues-list',
@@ -8,6 +10,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
   styleUrls: ['./main-leagues-list.component.css']
 })
 export class MainLeaguesListComponent {
+
+   arrow = faCircleChevronDown;
 
   @ViewChild('myTable') myTable: ElementRef | any;
 
@@ -31,8 +35,9 @@ this.fetch();
           let matches = league.match;
 
           // console.log(matches);
+          console.log(leagues);
 
-          // this.nullCheck(matches);
+          this.nullCheck(matches);
 
           return {
             ...league,
@@ -64,17 +69,20 @@ this.fetch();
             id: '00000000-0000-0000-0000-000000000000',
           };
         }
-        console.log(matches[i].participatingTeams[k].name);
+        // console.log(matches[i].participatingTeams[k].name);
       }
   }
   }
 
-  toggleTable(leagueName: string) {
+  toggleTable(leagueName: string, leagueId: string) {
     const table = document.getElementById(leagueName) as HTMLElement;
+    const icon = document.getElementById(leagueId) as HTMLElement;
     if (table.style.display === 'none') {
       table.style.display = 'block';
+      this.arrow = faCircleChevronUp;   
     } else {
       table.style.display = 'none';
+      this.arrow = faCircleChevronDown; 
     }
   }
 }
