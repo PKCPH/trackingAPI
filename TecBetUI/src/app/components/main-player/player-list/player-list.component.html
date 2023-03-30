@@ -7,48 +7,45 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Nationality</th>
                         <th>Age</th>
+                        <th>Height(cm)</th>
+                        <th>Weight(kg)</th>
                         <th>Overall</th>
-                        <th>Potential</th>
-                        <th>Pace</th>
-                        <th>Shooting</th>
-                        <th>Passing</th>
-                        <th>Dribbling%</th>
-                        <th>Defense</th>
-                        <th>Physical</th>
+                        <th>Player Positions</th>
+                        <th>Preferred Foot</th>
+                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                         <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><input type="text" [(ngModel)]="model.name"></td>
-                        <td></td>
+                        <td><input type="text" [(ngModel)]="model.nationality"></td>
+                        <td><input type="number" [(ngModel)]="model.age"></td>
+                        <td><input type="number" [(ngModel)]="model.height_cm"></td>
+                        <td><input type="number" [(ngModel)]="model.weight_kg"></td>
                         <td><input type="number" [(ngModel)]="model.overall"></td>
-                        <td><input type="number" [(ngModel)]="model.potential"></td>
-                        <td><input type="number" [(ngModel)]="model.pace"></td>
-                        <td><input type="number" [(ngModel)]="model.shooting"></td>
-                        <td><input type="number" [(ngModel)]="model.passing"></td>
-                        <td><input type="number" [(ngModel)]="model.dribbling"></td>
-                        <td><input type="number" [(ngModel)]="model.defense"></td>
-                        <td><input type="number" [(ngModel)]="model.physical"></td>
+                        <td><input type="text" [(ngModel)]="model.player_positions"></td>
+                        <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
                         <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
                     </tr>
                     <tr *ngFor="let player of searchedPlayers">
                         <td> {{player.name}}</td>
+                        <td> {{player.nationality}}</td>
                         <td> {{player.age}}</td>
+                        <td> {{player.height_cm}}</td>
+                        <td> {{player.weight_kg}}</td>
                         <td> {{player.overall}}</td>
-                        <td> {{player.potential}}</td>
-                        <td> {{player.pace}}</td>
-                        <td> {{player.shooting}}</td>
-                        <td> {{player.passing}}</td>
-                        <td> {{player.dribbling}}</td>
-                        <td> {{player.defense}}</td>
-                        <td> {{player.physical}}</td>
+                        <td> {{player.player_positions}}</td>
+                        <td> {{player.preferred_foot}}</td>
                         <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                             <a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a>
+                        </td>
+                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                             <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
                         </td>
-                        
                     </tr>
                 </tbody>
             </table>

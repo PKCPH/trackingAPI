@@ -34,4 +34,7 @@ export class PlayersService {
   deletePlayer(id:string):Observable<Player>{
     return this.http.delete<Player>(serviceVariables.baseApiUrl + '/api/Player/' + id);
   }
+  GetLimitedPlayers(rowSkip:number, numberOfRows: number): Observable<[number, Player[]]>{
+    return this.http.get<[number, Player[]]>(serviceVariables.baseApiUrl + '/api/Player/' + rowSkip + '-' + numberOfRows)
+  }
 }

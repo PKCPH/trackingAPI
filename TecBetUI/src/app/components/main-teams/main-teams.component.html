@@ -23,6 +23,7 @@
             <thead>
                 <tr>
                     <th mat-sort-header="name" class="test">Name</th>
+                    <th>Number Of players on the team</th>
                     <th>In a Match?</th>
                     <th> </th>
                 </tr>
@@ -30,6 +31,7 @@
 
             <tr class="tablerow" *ngFor="let teams of sortedTeams">  
                 <td>{{ teams.name }}</td>
+                <td>{{ teams.players.length}}</td>
                 <td>{{ teams.availability }}</td>
                 <td><a><button class="btn btn-success mt-3" (click)="GoEditTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Edit</button></a>
                     <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>

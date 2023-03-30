@@ -22,17 +22,17 @@ export class PlayersOnTeamComponent {
   credentials: LoginModel = this.app.credentials
   teamRating: number = 0
 
-  model = {
+  model: Player = {
+    id: "",
+    teams:[],
     name: "",
+    nationality: "",
     age: 0,
+    height_cm: 0,
+    weight_kg: 0,
     overall: 0,
-    potential: 0,
-    pace: 0,
-    shooting: 0,
-    passing: 0,
-    dribbling: 0,
-    defense: 0,
-    physical: 0,
+    player_positions: "",
+    preferred_foot: "",
   }
   
   selectedTeam: Team = {
@@ -128,14 +128,13 @@ export class PlayersOnTeamComponent {
   searchPlayers(){
     this.searchedPlayers = this.players.filter(p => 
       p.name.toLowerCase().includes(this.model.name.toLocaleLowerCase()) &&
+      p.nationality.toLowerCase().includes(this.model.nationality.toLocaleLowerCase()) &&
+      p.age >= this.model.age &&
+      p.height_cm >= this.model.height_cm &&
+      p.weight_kg >= this.model.weight_kg &&
       p.overall >= this.model.overall &&
-      p.potential >= this.model.potential &&
-      p.pace >= this.model.pace &&
-      p.shooting >= this.model.pace &&
-      p.passing >= this.model.passing &&
-      p.dribbling >= this.model.dribbling &&
-      p.defense >= this.model.defense &&
-      p.physical >= this.model.physical
+      p.player_positions.toLowerCase().includes(this.model.player_positions.toLocaleLowerCase()) &&
+      p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLocaleLowerCase())
     )
   }
 

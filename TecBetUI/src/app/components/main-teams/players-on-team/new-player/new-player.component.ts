@@ -28,18 +28,16 @@ export class NewPlayerComponent {
     round: 0
   }
   addPlayerRequest: Player = {
-    id: '',
-    name: '',
-    age: 0,
+    id: "",
     teams:[],
+    name: "",
+    nationality: "",
+    age: 0,
+    height_cm: 0,
+    weight_kg: 0,
     overall: 0,
-    potential: 0,
-    pace: 0,
-    shooting: 0,
-    passing: 0,
-    dribbling: 0,
-    defense: 0,
-    physical: 0,
+    player_positions: "",
+    preferred_foot: "",
   }
   
   constructor(private playerService: PlayersService, private teamsService: TeamsService, private router: Router, private route: ActivatedRoute){ }

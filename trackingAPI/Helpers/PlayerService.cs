@@ -17,7 +17,10 @@ namespace trackingAPI.Helpers
             foreach (var playerTeam in PlayerTeamList)
             {
                 int index = PlayerList.FindIndex(p => p.Id == playerTeam.PlayerId);
-                PlayerList[index].Teams.Add(playerTeam);
+                if (index >= 0)
+                {
+                    PlayerList[index].Teams.Add(playerTeam);
+                }
             }
             return PlayerList;
         }

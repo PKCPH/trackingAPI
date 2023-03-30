@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Player } from 'src/app/models/player.model';
 import { PlayersService } from 'src/app/services/players.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { LoginModel } from 'src/app/models/login.model';
 import { interval, Subscription, switchMap } from 'rxjs';
@@ -16,26 +16,29 @@ export class PlayerListComponent {
   searchedPlayers: Player[] = [];
   credentials: LoginModel = this.app.credentials
   updateSubscription: Subscription;
+  playerSkip: number = 0
+  numberOfPlayers: number = 50
 
-  model = {name: "",
-  age: 0,
-  overall: 0,
-  potential: 0,
-  pace: 0,
-  shooting: 0,
-  passing: 0,
-  dribbling: 0,
-  defense: 0,
-  physical: 0,
+  model: Player = {
+    id: "",
+    teams:[],
+    name: "",
+    nationality: "",
+    age: 0,
+    height_cm: 0,
+    weight_kg: 0,
+    overall: 0,
+    player_positions: "",
+    preferred_foot: "",
   }
   
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
   }
 
-  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent) {
+  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent,private route: ActivatedRoute) {
     this.updateSubscription = interval(3000).pipe(
-      switchMap(() => this.playersService.getAllPlayers())
+      switchMap(() => this.playersService.GetLimitedPlayers(this.playerSkip,this.numberOfPlayers))
     )
     .subscribe({
       next: (players) => {
@@ -51,15 +54,23 @@ export class PlayerListComponent {
 
 
   ngOnInit(): void {
-    this.playersService.getAllPlayers()
-    .subscribe({
-      next: (players) => {
-        console.log(players);
-        this.players = players
-        this.searchedPlayers = players
-      },
-      error: (response) => {
-        console.log(response);
+    this.route.paramMap.subscribe({
+      next: (params) => {
+        const pageNumber = params.get('pageNumber');
+        this.playerSkip = Number(pageNumber) * this.numberOfPlayers
+        if(pageNumber){
+          this.playersService.GetLimitedPlayers(this.playerSkip,this.numberOfPlayers)
+          .subscribe({
+            next: (players) => {
+              console.log(players);
+              this.players = players
+              this.searchedPlayers = players
+            },
+            error: (response) => {
+              console.log(response);
+            }
+          })
+        }
       }
     })
   }
@@ -85,15 +96,14 @@ export class PlayerListComponent {
 
   searchPlayers(){
     this.searchedPlayers = this.players.filter(p => 
-      p.name.includes(this.model.name) &&
+      p.name.toLowerCase().includes(this.model.name.toLocaleLowerCase()) &&
+      p.nationality.toLowerCase().includes(this.model.nationality.toLocaleLowerCase()) &&
+      p.age >= this.model.age &&
+      p.height_cm >= this.model.height_cm &&
+      p.weight_kg >= this.model.weight_kg &&
       p.overall >= this.model.overall &&
-      p.potential >= this.model.potential &&
-      p.pace >= this.model.pace &&
-      p.shooting >= this.model.pace &&
-      p.passing >= this.model.passing &&
-      p.dribbling >= this.model.dribbling &&
-      p.defense >= this.model.defense &&
-      p.physical >= this.model.physical
+      p.player_positions.toLowerCase().includes(this.model.player_positions.toLocaleLowerCase()) &&
+      p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLocaleLowerCase())
     )
   }
 }
