@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore;
-using trackingAPI.Configurations;
+﻿using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
 
@@ -36,7 +34,7 @@ public class LeagueHelper
         {
             Gamematch gamematch = new()
             {
-                ParticipatingTeams = new List<MatchTeam>(),
+                ParticipatingTeams = new List<GamematchTeam>(),
                 DateOfMatch = leagueDateTime,
                 IsDrawAllowed = false,
                 Round = rounds
@@ -44,8 +42,8 @@ public class LeagueHelper
             };
             leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
             var availableTeams = teams.Where(x => (bool)x.IsAvailable).ToList();
-            MatchTeam matchTeamA;
-            MatchTeam matchTeamB;
+            GamematchTeam matchTeamA;
+            GamematchTeam matchTeamB;
 
             if (byes > 0)
             {
@@ -53,8 +51,8 @@ public class LeagueHelper
                 var teamA = availableTeams.OrderBy(x => rnd.Next()).Take(1).ToList().First();
                 teamA.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
-                matchTeamB = new MatchTeam { Team = byeTeam, Seed = maxTeamCount };
+                matchTeamA = new GamematchTeam { Team = teamA, Seed = i };
+                matchTeamB = new GamematchTeam { Team = byeTeam, Seed = maxTeamCount };
                 byes--;
             }
             else
@@ -65,8 +63,8 @@ public class LeagueHelper
                 teamA.IsAvailable = false;
                 teamB.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
-                matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
+                matchTeamA = new GamematchTeam { Team = teamA, Seed = i };
+                matchTeamB = new GamematchTeam { Team = teamB, Seed = maxTeamCount };
             }
             maxTeamCount--;
             gamematch.ParticipatingTeams.Add(matchTeamA);
@@ -83,15 +81,15 @@ public class LeagueHelper
             {
                 Gamematch gamematch = new()
                 {
-                    ParticipatingTeams = new List<MatchTeam>(),
+                    ParticipatingTeams = new List<GamematchTeam>(),
                     DateOfMatch = leagueDateTime,
                     IsDrawAllowed = false,
                     Round = rounds
                 };
 
                 leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
-                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1 };
+                GamematchTeam matchTeamA = new GamematchTeam { Team = null, Seed = i };
+                GamematchTeam matchTeamB = new GamematchTeam { Team = null, Seed = maxTeamCount1 };
                 maxTeamCount1--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
                 gamematch.ParticipatingTeams.Add(matchTeamB);

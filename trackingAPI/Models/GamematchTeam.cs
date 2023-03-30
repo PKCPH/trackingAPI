@@ -5,12 +5,12 @@ using trackingAPI.Data;
 
 namespace trackingAPI.Models;
 
-public class MatchTeam
+public class GamematchTeam
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public Gamematch Match { get; set; }
+    public Gamematch Gamematch { get; set; }
     public Team? Team { get; set; }
     //public League? League { get; set; }
     public int TeamScore { get; set; }

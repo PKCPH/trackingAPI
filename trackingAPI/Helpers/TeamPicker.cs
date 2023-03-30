@@ -27,8 +27,8 @@ public class TeamPicker
             teamA.IsAvailable = false;
             teamB.IsAvailable = false;
 
-            MatchTeam matchTeamA = new MatchTeam { Team = teamA };
-            MatchTeam matchTeamB = new MatchTeam { Team = teamB };
+            GamematchTeam matchTeamA = new GamematchTeam { Team = teamA };
+            GamematchTeam matchTeamB = new GamematchTeam { Team = teamB };
 
             gameMatch.ParticipatingTeams.Add(matchTeamA);
             gameMatch.ParticipatingTeams.Add(matchTeamB);

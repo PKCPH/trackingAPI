@@ -9,10 +9,10 @@ using trackingAPI.Models;
 
 namespace trackingAPI.BackgroundHelpers;
 
-public class MatchBackgroundTask
+public class GamematchBackgroundTask
 {
     private readonly IServiceProvider _services;
-    public MatchBackgroundTask(IServiceProvider services)
+    public GamematchBackgroundTask(IServiceProvider services)
     {
         _services = services;
     }
@@ -64,7 +64,7 @@ public class MatchBackgroundTask
 
             foreach (var match in _context.Matches.Where(x => x.MatchState == MatchState.NotStarted).ToList())
             {
-                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
+                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Gamematch.Id == match.Id)
                     .Where(x => x.Team != null).Include(x => x.Team).ToList();
                 gameMatches.Add(match);
             }
@@ -81,14 +81,14 @@ public class MatchBackgroundTask
                 scope.ServiceProvider
                     .GetRequiredService<DatabaseContext>();
 
-            foreach (var match in _context.Matches.Where(x => x.MatchState != MatchState.Finished && x.MatchState != MatchState.NotStarted).ToList())
+            foreach (var gamematch in _context.Matches.Where(x => x.MatchState != MatchState.Finished && x.MatchState != MatchState.NotStarted).ToList())
             {
-                match.ParticipatingTeams = _context.MatchTeams.Where(x => x.Match.Id == match.Id)
+                gamematch.ParticipatingTeams = _context.MatchTeams.Where(x => x.Gamematch.Id == gamematch.Id)
                     .Where(x => x.Team != null).Include(x => x.Team).ToList();
-                match.ParticipatingTeams.First().TeamScore = 0;
-                match.ParticipatingTeams.Last().TeamScore = 0;
-                match.MatchState = MatchState.NotStarted;
-                _context.Entry(match).State = EntityState.Modified;
+                gamematch.ParticipatingTeams.First().TeamScore = 0;
+                gamematch.ParticipatingTeams.Last().TeamScore = 0;
+                gamematch.MatchState = MatchState.NotStarted;
+                _context.Entry(gamematch).State = EntityState.Modified;
                 _context.SaveChanges();
             }
         }
@@ -97,12 +97,11 @@ public class MatchBackgroundTask
     public async Task PlayGameMatch(Gamematch gamematch)
     {
         Random random = new Random();
-        List<MatchTeam> matchTeams = new List<MatchTeam>();
+        List<GamematchTeam> matchTeams = new List<GamematchTeam>();
         LiveMatchBackgroundTask liveMatchBackgroundTask = new(_services);
         BetsHandler betsHandler = new(_services);
-        CancellationToken stoppingToken;
         //If match has a BYE team
-        if (gamematch.ParticipatingTeams.Any(x => x.Team.Name == "BYE")) { ExecuteByeMatch(gamematch); }
+        if (gamematch.ParticipatingTeams.Any(x => x.Team?.Name == "BYE")) { await ExecuteByeMatch(gamematch); }
         else { await liveMatchBackgroundTask.ExecuteLiveMatch(ref gamematch); }
 
         gamematch.MatchState = MatchState.Finished;
@@ -131,11 +130,10 @@ public class MatchBackgroundTask
                 team.IsAvailable = true;
                 _context.Entry(team).State = EntityState.Modified;
             }
-
             // attach the updated gameMatch instance to the context and save changes
             _context.Matches.Update(gamematch);
             await _context.SaveChangesAsync();
-            _context.SaveChanges();
+            //_context.SaveChanges();
         }
     }
     //Deletes BYE team and set opponent to winner, match will not be simulated
@@ -197,8 +195,8 @@ public class MatchBackgroundTask
             //takes lowest int of Seeds
             var winnerSeed = Math.Min(Convert.ToByte(teamA.Seed), Convert.ToByte(teamB.Seed));
 
-            var nextMatchTeam = _context.MatchTeams.Where(x => x.Match.Round == nextRound)
-                .Where(x => x.Seed == winnerSeed).Where(x => x.Match.LeagueId == league.Id).First();
+            var nextMatchTeam = _context.MatchTeams.Where(x => x.Gamematch.Round == nextRound)
+                .Where(x => x.Seed == winnerSeed).Where(x => x.Gamematch.LeagueId == league.Id).First();
             
             //adding winning team
             nextMatchTeam.Team = gamematch.ParticipatingTeams.Where(x => x.Result == Result.Winner).First().Team;

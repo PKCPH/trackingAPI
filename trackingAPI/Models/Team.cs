@@ -9,7 +9,7 @@ public class Team
 
     public Team()
     {
-        this.Matches = new HashSet<MatchTeam>();
+        this.Matches = new HashSet<GamematchTeam>();
         this.Players = new HashSet<PlayerTeam>();
         this.Leagues = new HashSet<LeagueTeam>();
     }
@@ -23,7 +23,7 @@ public class Team
 
     [DefaultValue("true")]
     public bool? IsAvailable { get; set; }
-    public ICollection<MatchTeam> Matches { get; set; }
+    public ICollection<GamematchTeam> Matches { get; set; }
     public ICollection<PlayerTeam> Players { get; set; }
     public ICollection<LeagueTeam> Leagues { get; set; }
 }

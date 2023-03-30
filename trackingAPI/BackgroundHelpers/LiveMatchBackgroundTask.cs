@@ -112,7 +112,7 @@ public class LiveMatchBackgroundTask
         return gamematch;
     }
 
-    public Task PenaltyKick(ref int teamPKScore, MatchTeam team, Random rnd)
+    public Task PenaltyKick(ref int teamPKScore, GamematchTeam team, Random rnd)
     {
         Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalMilliInSeconds);
         int chance = rnd.Next(1, 100);

@@ -9,14 +9,14 @@ namespace trackingAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MatchController : ControllerBase
+public class GamematchController : ControllerBase
 {
     /// <summary>
     /// accessing the database at runtime
     /// </summary>
     private readonly DatabaseContext _context;
 
-    public MatchController(DatabaseContext context) => _context = context;
+    public GamematchController(DatabaseContext context) => _context = context;
 
     //action method, does as a response of the http request, to get a list of Issue
     //attribute to make it handle httpGet
@@ -34,9 +34,9 @@ public class MatchController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         //finding Issue with the id
-        var match = await _context.Matches.FindAsync(id);
+        var gamematch = await _context.Matches.FindAsync(id);
         //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
-        return match == null ? NotFound() : Ok(match);
+        return gamematch == null ? NotFound() : Ok(gamematch);
     }
 
     [HttpPost("CreateOneMatch")]
@@ -56,13 +56,13 @@ public class MatchController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Update(Guid id, Gamematch match)
+    public async Task<IActionResult> Update(Guid id, Gamematch gamematch)
     {
         //if the id of the url and the id in the body does not match, then return
-        if (id != match.Id) return BadRequest();
+        if (id != gamematch.Id) return BadRequest();
 
         //otherwise we update the issue, save changes and
-        _context.Entry(match).State = EntityState.Modified;
+        _context.Entry(gamematch).State = EntityState.Modified;
         await _context.SaveChangesAsync();
         return NoContent();
     }
@@ -99,13 +99,13 @@ public class MatchController : ControllerBase
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
             .Include(l => l.league)
-            .Select(match => new {
-                Id = match.Id,
-                dateOfMatch = match.DateOfMatch,
-                matchState = match.MatchState,
-                league = match.league.Name,
-                round = match.Round,
-                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+            .Select(gamematch => new {
+                Id = gamematch.Id,
+                dateOfMatch = gamematch.DateOfMatch,
+                matchState = gamematch.MatchState,
+                league = gamematch.league.Name,
+                round = gamematch.Round,
+                participatingTeams = gamematch.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
@@ -134,12 +134,12 @@ public class MatchController : ControllerBase
             .Where(mt => mt.MatchState == MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
-            .Select(match => new {
-                Id = match.Id,
-                dateOfMatch = match.DateOfMatch,
-                matchState = match.MatchState,
-                round = match.Round,
-                participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
+            .Select(gamematch => new {
+                Id = gamematch.Id,
+                dateOfMatch = gamematch.DateOfMatch,
+                matchState = gamematch.MatchState,
+                round = gamematch.Round,
+                participatingTeams = gamematch.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,
                     name = pt.Team.Name,
@@ -156,22 +156,22 @@ public class MatchController : ControllerBase
     [HttpGet("/api/MatchDetails/{id}")]
     public async Task<ActionResult<IList<Gamematch>>> GetMatchDetails(Guid id)
     {
-        var matchCheck = _context.Matches;
+        var gamematchCheck = _context.Matches;
 
-        if (matchCheck == null)
+        if (gamematchCheck == null)
         {
             return NotFound();
         }
 
-        var match = await _context.Matches
-               .Include(mt => mt.ParticipatingTeams)
+        var gamematch = await _context.Matches
+               .Include(gt => gt.ParticipatingTeams)
                .ThenInclude(t => t.Team)
-               .Where(m => m.Id == id)
-               .Select(m => new {
-                   Id = m.Id,
-                   dateOfMatch = m.DateOfMatch,
-                   matchState = m.MatchState,
-                   participatingTeams = m.ParticipatingTeams.Select(pt => new {
+               .Where(g => g.Id == id)
+               .Select(g => new {
+                   Id = g.Id,
+                   dateOfMatch = g.DateOfMatch,
+                   matchState = g.MatchState,
+                   participatingTeams = g.ParticipatingTeams.Select(pt => new {
                        Id = pt.Team.Id,
                        name = pt.Team.Name,
                        result = pt.Result,
@@ -180,7 +180,7 @@ public class MatchController : ControllerBase
                })
                .FirstOrDefaultAsync();
 
-        return Ok(match);
+        return Ok(gamematch);
     }
 
 

@@ -10,7 +10,7 @@ public class Gamematch
 {
     public Gamematch(DatabaseContext databaseContext)
     {
-        this.ParticipatingTeams = new HashSet<MatchTeam>();
+        this.ParticipatingTeams = new HashSet<GamematchTeam>();
         
     }
     public Gamematch()
@@ -21,7 +21,7 @@ public class Gamematch
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
-    public ICollection<MatchTeam>? ParticipatingTeams { get; set; }
+    public ICollection<GamematchTeam>? ParticipatingTeams { get; set; }
     public MatchState MatchState { get; set; } //0 MatchNotStarted, 1 MatchInPlay, 2 MatchFinished
     public DateTime DateOfMatch { get; set; }
 

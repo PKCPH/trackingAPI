@@ -18,7 +18,7 @@ public class DatabaseContext : DbContext
     public DbSet<Gamematch> Matches { get; set; }
 
     public DbSet<LeagueTeam> LeagueTeams { get; set; }
-    public DbSet<MatchTeam> MatchTeams { get; set; }
+    public DbSet<GamematchTeam> MatchTeams { get; set; }
     public DbSet<PlayerTeam> PlayerTeams { get; set; }
     public DbSet<Bet> Bets { get; set; }
 
@@ -47,7 +47,7 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);
-        modelBuilder.Entity<MatchTeam>()
+        modelBuilder.Entity<GamematchTeam>()
             .Property(gm => gm.Result)
             .HasDefaultValue(Result.Undetermined);
         modelBuilder.Entity<Team>()
