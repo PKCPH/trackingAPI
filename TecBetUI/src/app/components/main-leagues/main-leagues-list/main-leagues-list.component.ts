@@ -3,6 +3,7 @@ import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-leagues-list',
@@ -11,9 +12,14 @@ import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 })
 export class MainLeaguesListComponent {
 
-   arrow = faCircleChevronDown;
+  arrowDown = faCircleChevronDown;
+  arrowUp = faCircleChevronUp;
+  output: number = 0;
+  byeCheese: boolean = false;
 
-  @ViewChild('myTable') myTable: ElementRef | any;
+  iconStates: any = {};
+
+  // @ViewChild('myTable') myTable: ElementRef | any;
 
   leagues: Leagues[] = [];
 
@@ -38,6 +44,7 @@ this.fetch();
           console.log(leagues);
 
           this.nullCheck(matches);
+          this.GetRoundTerm(matches);
 
           return {
             ...league,
@@ -63,7 +70,14 @@ this.fetch();
 
       for (let k = 0; k < matches[i].participatingTeams.length; k++)
       {
-        if (matches[i].participatingTeams[k] == null) {
+        if (matches[i].participatingTeams[k] == null && matches[i].matchState == 6) {
+          matches[i].participatingTeams[k] = {
+            name: 'BYE',
+            id: '00000000-0000-0000-0000-000000000000',
+          };
+        }
+        else if (matches[i].participatingTeams[k] == null && matches[i].matchState != 6)
+        {
           matches[i].participatingTeams[k] = {
             name: 'TBD',
             id: '00000000-0000-0000-0000-000000000000',
@@ -74,15 +88,35 @@ this.fetch();
   }
   }
 
-  toggleTable(leagueName: string, leagueId: string) {
-    const table = document.getElementById(leagueName) as HTMLElement;
+  GetRoundTerm(matches: any)
+  {
+    for (let i = 0; i < matches.length; i++) {
+
+      if (matches[i].round == 1) matches[i].roundTerm = "Grand Finale";
+      else if (matches[i].round == 2) matches[i].roundTerm = "Semi-Finale";
+      else if (matches[i].round == 3) matches[i].roundTerm = "Quarter-Finale";
+      else
+      {
+        this.output = 2;
+          for (var k = 2; k <= matches[i].round; k++)
+          {
+              this.output *= 2;
+          }
+          matches[i].roundTerm = `Round of ${this.output}`;
+      }
+  }
+
+  }
+
+  toggleTable(startDate: string, leagueId: string) {
+    const table = document.getElementById(startDate) as HTMLElement;
     const icon = document.getElementById(leagueId) as HTMLElement;
     if (table.style.display === 'none') {
       table.style.display = 'block';
-      this.arrow = faCircleChevronUp;   
+      this.iconStates[leagueId] = 'down';
     } else {
       table.style.display = 'none';
-      this.arrow = faCircleChevronDown; 
+      this.iconStates[leagueId] = 'up';
     }
   }
 }

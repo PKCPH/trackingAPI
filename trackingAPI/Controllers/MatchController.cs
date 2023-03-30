@@ -103,8 +103,8 @@ public class MatchController : ControllerBase
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
-                league = match.league.Name,
                 round = match.Round,
+                league = match.league.Name,
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,
@@ -114,8 +114,6 @@ public class MatchController : ControllerBase
                 } : null).ToList()
             })
             .ToList();
-
-
 
         return Ok(matches);
     }
@@ -134,14 +132,13 @@ public class MatchController : ControllerBase
             .Where(mt => mt.MatchState == MatchState.Finished)
             .Include(mt => mt.ParticipatingTeams)
             .ThenInclude(t => t.Team)
-                        .Include(l => l.league)
+            .Include(l => l.league)
             .Select(match => new {
                 Id = match.Id,
                 dateOfMatch = match.DateOfMatch,
                 matchState = match.MatchState,
                 round = match.Round,
                 league = match.league.Name,
-                roundTerm = match.RoundTerm,
                 participatingTeams = match.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                 {
                     Id = pt.Team.Id,

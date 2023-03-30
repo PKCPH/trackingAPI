@@ -27,7 +27,7 @@
                     <th> </th>
                 </tr>
             </thead>
-            <ng-container *ngFor="let games of sortedGames" >
+            <ng-container *ngFor="let games of games" >
             <tr class="tablerow"  (click)="GoMatchDetails(games.id, games.participatingTeams)"> 
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 

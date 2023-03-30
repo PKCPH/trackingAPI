@@ -80,7 +80,7 @@ public class LeagueController : ControllerBase
                       Id = gm.Id,
                       dateOfMatch = gm.DateOfMatch,
                       matchState = gm.MatchState,
-                      roundTerm = gm.RoundTerm,
+                      round = gm.Round,
                       participatingTeams = gm.ParticipatingTeams.Select(pt => pt.Team != null ? (object)new
                       {
                           Id = pt.Team.Id,
