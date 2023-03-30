@@ -31,6 +31,7 @@ public class Gamematch
     public League league { get; set; }
     public ICollection<Bet> Bets { get; set; }
     public int? Round { get; set; }
+    public decimal Odds { get; set; }
 }
 
 public enum MatchState

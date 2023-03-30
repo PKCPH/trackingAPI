@@ -44,6 +44,9 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Bet>()
             .Property(b => b.BetState)
             .HasDefaultValue(BetState.InProgress);
+        modelBuilder.Entity<Bet>()
+            .Property(b => b.Odds)
+            .HasColumnType("decimal(18, 4)");
         modelBuilder.Entity<Team>()
             .Property(t => t.IsAvailable)
             .HasDefaultValue(true);
