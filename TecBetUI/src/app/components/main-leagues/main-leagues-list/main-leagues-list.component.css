@@ -1,76 +1,72 @@
-
 .divs {
   width: 50%;
   margin: auto;
 }
 
-  table {
-    border-collapse: separate;
-    width: 100%;
-    border-spacing: 0 5px;
-  }
-  
-  td {
-    text-align: left;
-  }
+table {
+  border-collapse: separate;
+  width: 100%;
+  border-spacing: 0 5px;
+}
 
-  .divs {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+td {
+  text-align: left;
+}
 
-  .test {
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 30px;
-    padding: 20px;
-    width: 100%;
-    margin: auto;
-    display: flex;
-    justify-content: space-between;
-    text-align: left;
-  }
+.divs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-  #icon {
-    size: 100px;
-  }
+.test {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 30px;
+  padding: 20px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
 
-  .arrowIcon:hover {
-    cursor: pointer;
-  }
+#icon {
+  size: 100px;
+}
 
-  .grid {
-    /* background-color: white; */
-    display: flex;
-    padding: 10px;
-    align-items:center;
-  }
+.arrowIcon:hover {
+  cursor: pointer;
+}
 
-  .grid:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-  }
+.grid {
+  /* background-color: white; */
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
 
-  .datecell {
-    /* background-color: red; */
-    flex: 0 0 15%;   
-    margin-left: 40px;                 
-  }
+.grid:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
 
-  .namecell {
-    /* background-color: blue; */
-    flex: 0 0 40%;                     
-  }
+.datecell {
+  /* background-color: red; */
+  flex: 0 0 15%;
+  margin-left: 40px;
+}
 
-  .cell {
-    /* background-color: yellow; */
-    flex: 0 0 15%; 
-    margin-right: 100px;  
-  }
+.namecell {
+  /* background-color: blue; */
+  flex: 0 0 40%;
+}
 
-  .goalcell {
-    /* background-color: purple; */
-    flex: 0 0 10%;   
-  }
+.cell {
+  /* background-color: yellow; */
+  flex: 0 0 15%;
+  margin-right: 100px;
+}
 
-
-
+.goalcell {
+  /* background-color: purple; */
+  flex: 0 0 10%;
+}

@@ -23,13 +23,13 @@ export class MainLeaguesListComponent {
 
   leagues: Leagues[] = [];
 
-  constructor(private leaguesService: LeaguesService) { 
+  constructor(private leaguesService: LeaguesService) {
 
-this.fetch();
+    this.fetch();
 
   }
 
-  fetch() {    
+  fetch() {
     // this.leaguesService.errorMessage.subscribe(error => {
     //   this.errorMessage = error;
     // });
@@ -51,33 +51,29 @@ this.fetch();
             match: matches
           }
         });
-        if (leagues)
-        {
+        if (leagues) {
           // this.sortedGames = this.games.slice();
           // this.Hideloader();
           // this.sortData(this.sort);
         }
-        if (leagues.length > 0)
-        {
+        if (leagues.length > 0) {
           // this.errorMessage = "";
         }
       },
-    });   
+    });
   }
 
-  nullCheck(matches: any) { 
+  nullCheck(matches: any) {
     for (let i = 0; i < matches.length; i++) {
 
-      for (let k = 0; k < matches[i].participatingTeams.length; k++)
-      {
+      for (let k = 0; k < matches[i].participatingTeams.length; k++) {
         if (matches[i].participatingTeams[k] == null && matches[i].matchState == 6) {
           matches[i].participatingTeams[k] = {
             name: 'BYE',
             id: '00000000-0000-0000-0000-000000000000',
           };
         }
-        else if (matches[i].participatingTeams[k] == null && matches[i].matchState != 6)
-        {
+        else if (matches[i].participatingTeams[k] == null && matches[i].matchState != 6) {
           matches[i].participatingTeams[k] = {
             name: 'TBD',
             id: '00000000-0000-0000-0000-000000000000',
@@ -85,26 +81,23 @@ this.fetch();
         }
         // console.log(matches[i].participatingTeams[k].name);
       }
-  }
+    }
   }
 
-  GetRoundTerm(matches: any)
-  {
+  GetRoundTerm(matches: any) {
     for (let i = 0; i < matches.length; i++) {
 
       if (matches[i].round == 1) matches[i].roundTerm = "Grand Finale";
       else if (matches[i].round == 2) matches[i].roundTerm = "Semi-Finale";
       else if (matches[i].round == 3) matches[i].roundTerm = "Quarter-Finale";
-      else
-      {
+      else {
         this.output = 2;
-          for (var k = 2; k <= matches[i].round; k++)
-          {
-              this.output *= 2;
-          }
-          matches[i].roundTerm = `Round of ${this.output}`;
+        for (var k = 2; k <= matches[i].round; k++) {
+          this.output *= 2;
+        }
+        matches[i].roundTerm = `Round of ${this.output}`;
       }
-  }
+    }
 
   }
 

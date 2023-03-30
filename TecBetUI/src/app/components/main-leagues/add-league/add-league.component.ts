@@ -11,19 +11,19 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 export class AddLeagueComponent implements OnInit {
 
   addLeagueRequest: Leagues | any;
-  
-  constructor(private leagueService: LeaguesService, private router: Router){
+
+  constructor(private leagueService: LeaguesService, private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
-  addLeague(){
+  addLeague() {
     this.leagueService.addLeague(this.addLeagueRequest)
-    .subscribe({
-      next: (league) => {
-        this.router.navigate(['leagues']);
-      }
-    });
+      .subscribe({
+        next: (league) => {
+          this.router.navigate(['leagues']);
+        }
+      });
   }
 }

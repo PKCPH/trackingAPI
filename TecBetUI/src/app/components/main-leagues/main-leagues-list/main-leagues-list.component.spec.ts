@@ -8,9 +8,9 @@ describe('MainLeaguesListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainLeaguesListComponent ]
+      declarations: [MainLeaguesListComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(MainLeaguesListComponent);
     component = fixture.componentInstance;

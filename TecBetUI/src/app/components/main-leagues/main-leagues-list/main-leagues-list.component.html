@@ -1,29 +1,50 @@
 <div class="section1 tablediv">
-<div class="my-5 divs">
+  <div class="my-5 divs">
     <h1 class="my-5">Leagues</h1>
 
-    <ng-container *ngFor="let league of leagues" >
-    <table>
+    <ng-container *ngFor="let league of leagues">
+      <table>
         <tr class="test">
-          <div><h2 class="leagueName">{{league.name}}</h2></div>
-          <div style="display: flex; justify-content: center;"><p class="mx-2" style="margin: auto; color: rgba(150, 150, 150, 0.7)">Display matches ({{league.match.length}})</p><fa-icon class="arrowIcon" style="margin: auto" [id]="league.id" (click)="toggleTable(league.startDate, league.id)" [icon]="iconStates[league.id] === 'down' ? arrowUp : arrowDown" animation="beat" size="lg"></fa-icon></div>
+          <div>
+            <h2 class="leagueName">{{league.name}}</h2>
+          </div>
+          <div style="display: flex; justify-content: center;">
+            <p class="mx-2" style="margin: auto; color: rgba(150, 150, 150, 0.7)">Display matches
+              ({{league.match.length}})</p><fa-icon class="arrowIcon" style="margin: auto" [id]="league.id"
+              (click)="toggleTable(league.startDate, league.id)"
+              [icon]="iconStates[league.id] === 'down' ? arrowUp : arrowDown" animation="beat" size="lg"></fa-icon>
+          </div>
         </tr>
         <tr>
           <td>
-            <table [id]="league.startDate" style="width: 100%; margin: auto; display: none; " #myTable class="leagueMatches">
-                <div class="grid" *ngFor="let match of league.match">
-         
-                      <div class="datecell" *ngIf="match.matchState != 6"><span>{{match.dateOfMatch | date: 'HH:mm' }}</span></div>
-                      <div class="datecell" *ngIf="match.matchState == 6"><span>Finished</span></div>
-                      <div class="namecell"><div>{{match.participatingTeams[0].name}}</div><div>{{match.participatingTeams[1].name}}</div></div>
-                      <div class="goalcell"><div *ngIf="match.participatingTeams[0].name != 'TBD' && match.participatingTeams[0].name != 'BYE' && match.participatingTeams[1].name != 'TBD' && match.participatingTeams[1].name != 'BYE'">{{match.participatingTeams[0].score}}</div>
-                                            <div *ngIf="match.participatingTeams[1].name == 'TBD' || match.participatingTeams[0].name == 'TBD' || match.participatingTeams[0].name == 'BYE' || match.participatingTeams[1].name == 'BYE'">-</div>
-                                            <div *ngIf="match.participatingTeams[1].name == 'TBD' || match.participatingTeams[0].name == 'TBD' || match.participatingTeams[0].name == 'BYE' || match.participatingTeams[1].name == 'BYE'">-</div>
-                                            <div *ngIf="match.participatingTeams[1].name != 'TBD' && match.participatingTeams[1].name != 'BYE'">{{match.participatingTeams[1].score}}</div></div>  
-                      <div class="cell"><span>{{match.roundTerm}}</span></div>
-                      <!-- <div>	<mat-icon>star_border</mat-icon></div> -->
-                   
+            <table [id]="league.startDate" style="width: 100%; margin: auto; display: none; " #myTable
+              class="leagueMatches">
+              <div class="grid" *ngFor="let match of league.match">
+
+                <div class="datecell" *ngIf="match.matchState != 6"><span>{{match.dateOfMatch | date: 'HH:mm' }}</span>
                 </div>
+                <div class="datecell" *ngIf="match.matchState == 6"><span>Finished</span></div>
+                <div class="namecell">
+                  <div>{{match.participatingTeams[0].name}}</div>
+                  <div>{{match.participatingTeams[1].name}}</div>
+                </div>
+                <div class="goalcell">
+                  <div
+                    *ngIf="match.participatingTeams[0].name != 'TBD' && match.participatingTeams[0].name != 'BYE' && match.participatingTeams[1].name != 'TBD' && match.participatingTeams[1].name != 'BYE'">
+                    {{match.participatingTeams[0].score}}</div>
+                  <div
+                    *ngIf="match.participatingTeams[1].name == 'TBD' || match.participatingTeams[0].name == 'TBD' || match.participatingTeams[0].name == 'BYE' || match.participatingTeams[1].name == 'BYE'">
+                    -</div>
+                  <div
+                    *ngIf="match.participatingTeams[1].name == 'TBD' || match.participatingTeams[0].name == 'TBD' || match.participatingTeams[0].name == 'BYE' || match.participatingTeams[1].name == 'BYE'">
+                    -</div>
+                  <div *ngIf="match.participatingTeams[1].name != 'TBD' && match.participatingTeams[1].name != 'BYE'">
+                    {{match.participatingTeams[1].score}}</div>
+                </div>
+                <div class="cell"><span>{{match.roundTerm}}</span></div>
+                <!-- <div>	<mat-icon>star_border</mat-icon></div> -->
+
+              </div>
             </table>
           </td>
         </tr>
@@ -33,5 +54,5 @@
 
 
     <p *ngIf="!leagues || leagues.length <= 0">No Leagues Found</p>
-</div>
+  </div>
 </div>

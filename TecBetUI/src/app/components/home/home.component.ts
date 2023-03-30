@@ -10,10 +10,10 @@ export class HomeComponent implements AfterViewInit {
   rndInt = Math.floor(Math.random() * 5) + 1;
   // rndInt = 2;
   videoSrc = `assets/montage${this.rndInt}.mp4`;
-  
+
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
-  
+
   ngAfterViewInit() {
 
     const video = document.querySelector('video');
@@ -33,7 +33,7 @@ export class HomeComponent implements AfterViewInit {
 
   }
 
-restartVideo() {
+  restartVideo() {
     this.rndInt = Math.floor(Math.random() * 5) + 1;
     this.videoSrc = `assets/montage${this.rndInt}.mp4`;
     const video = document.querySelector('video');
@@ -57,11 +57,10 @@ restartVideo() {
       video.play();
     }
 
-    else if (video)
-    {
-    video.src = this.videoSrc;
-    video.currentTime = 0;
-    video.play();
+    else if (video) {
+      video.src = this.videoSrc;
+      video.currentTime = 0;
+      video.play();
+    }
   }
-}
 }
