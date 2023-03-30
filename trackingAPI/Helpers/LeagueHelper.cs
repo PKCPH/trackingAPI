@@ -31,7 +31,6 @@ public class LeagueHelper
         Random rnd = new();
         var maxTeamCount = teams.Count + byes;
         var teamLoopCount = maxTeamCount / 2;
-        var roundTerm = GetRoundTerm(rounds);
 
         for (int i = 1; i <= teamLoopCount; i++)
         {
@@ -40,7 +39,7 @@ public class LeagueHelper
                 ParticipatingTeams = new List<MatchTeam>(),
                 DateOfMatch = leagueDateTime,
                 IsDrawAllowed = false,
-                RoundTerm= roundTerm,
+                Round = rounds
 
             };
             leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
@@ -54,8 +53,8 @@ public class LeagueHelper
                 var teamA = availableTeams.OrderBy(x => rnd.Next()).Take(1).ToList().First();
                 teamA.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i, Round = rounds };
-                matchTeamB = new MatchTeam { Team = byeTeam, Seed = maxTeamCount, Round = rounds };
+                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
+                matchTeamB = new MatchTeam { Team = byeTeam, Seed = maxTeamCount };
                 byes--;
             }
             else
@@ -66,8 +65,8 @@ public class LeagueHelper
                 teamA.IsAvailable = false;
                 teamB.IsAvailable = false;
 
-                matchTeamA = new MatchTeam { Team = teamA, Seed = i, Round = rounds };
-                matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount, Round = rounds };
+                matchTeamA = new MatchTeam { Team = teamA, Seed = i };
+                matchTeamB = new MatchTeam { Team = teamB, Seed = maxTeamCount };
             }
             maxTeamCount--;
             gamematch.ParticipatingTeams.Add(matchTeamA);
@@ -80,7 +79,6 @@ public class LeagueHelper
         {
             var maxTeamCount1 = maxTeamCount;
             maxTeamCount /= 2;
-            roundTerm = GetRoundTerm(rounds);
             for (int i = 1; i <= maxTeamCount; i++)
             {
                 Gamematch gamematch = new()
@@ -88,12 +86,12 @@ public class LeagueHelper
                     ParticipatingTeams = new List<MatchTeam>(),
                     DateOfMatch = leagueDateTime,
                     IsDrawAllowed = false,
-                    RoundTerm = roundTerm,
+                    Round = rounds
                 };
 
                 leagueDateTime = leagueDateTime.AddMinutes(LeagueConfiguration.IntervalBetweenMatchesIMinutes);
-                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i, Round = rounds };
-                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1, Round = rounds };
+                MatchTeam matchTeamA = new MatchTeam { Team = null, Seed = i };
+                MatchTeam matchTeamB = new MatchTeam { Team = null, Seed = maxTeamCount1 };
                 maxTeamCount1--;
                 gamematch.ParticipatingTeams.Add(matchTeamA);
                 gamematch.ParticipatingTeams.Add(matchTeamB);
@@ -102,22 +100,6 @@ public class LeagueHelper
             rounds--;
         }
         return gamematches;
-    }
-
-    public string GetRoundTerm(int round)
-    {
-        if (round == 1) return "Grand Finale";
-        else if (round == 2) return "Semi-Finale";
-        else if (round == 3) return "Quarter-Finale";
-        else
-        {
-            var output = 4;
-            for (var i = 4; i <= round; i++)
-            {
-                output *= 2;
-            }
-            return $"Round of {output}";
-        }
     }
 
     public League GetListOfTeams(League league, DatabaseContext _context)
