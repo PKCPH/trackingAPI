@@ -25,6 +25,7 @@ namespace trackingAPI.Models
         public BetResult BetResult { get; set; }
 
         public BetState BetState { get; set; }
+        public decimal Odds { get; set; }
 
         public Bet()
         {
@@ -39,6 +40,6 @@ namespace trackingAPI.Models
 
     public enum BetResult
     {
-        Undetermined, Loss, Win
+        Undetermined, Loss, Win, Cancelled
     }
 }
