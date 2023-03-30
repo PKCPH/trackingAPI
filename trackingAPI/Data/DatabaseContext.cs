@@ -56,5 +56,8 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Team>()
             .Property(t => t.Rating)
             .HasColumnType("decimal(18, 4)");
+        modelBuilder.Entity<Gamematch>()
+            .Property(g => g.Odds)
+            .HasColumnType("decimal(18, 4)");
     }
 }
