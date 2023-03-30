@@ -5,7 +5,7 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 import { HubConnectionBuilder} from '@microsoft/signalr';
 
 const connection = new HubConnectionBuilder()
-.withUrl('/schedule')
+.withUrl("/schedule")
 .build();
 
 @Component({
@@ -49,6 +49,6 @@ constructor(
   }
 
   ngOnDestroy(): void {
-    this.signalrService.hubConnection?.off("askServerResponse");
+    this.signalrService.hubConnection?.off("updateCounter");
   }
 }

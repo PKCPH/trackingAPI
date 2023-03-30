@@ -104,6 +104,7 @@ public class Program
         {
             endpoint.MapControllers();
             endpoint.MapHub<TestHub>("/schedule");
+            endpoint.MapHub<GamematchHub>("/Matches");
         });
 
         app.MapControllers();

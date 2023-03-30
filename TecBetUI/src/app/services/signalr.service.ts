@@ -12,7 +12,7 @@ export class SignalrService {
     startConnection = () => {
         this.hubConnection = new signalR.HubConnectionBuilder()
         .withAutomaticReconnect()
-        .withUrl('https://localhost:5001/schedule', {
+        .withUrl('https://localhost:5001/Matches', {
             skipNegotiation: true,
             transport: signalR.HttpTransportType.WebSockets
         })
@@ -21,11 +21,16 @@ export class SignalrService {
         this.hubConnection
         .start()
         .then(() => {
-            console.log('Hub Connection Started!');
+            console.log('Hub Connection Started! sgnalR');
         })
         .catch((err: any) => console.log('Error while starting connection: ' + err))
     }
 
+    // UpdateMatches = () => {
+    //     this.hubConnection.on('GET', (response) => {
+    //         this.data = response;
+    //     })
+    // }
 
     askServer() {
         this.hubConnection.invoke("askServer", "hey")
@@ -44,13 +49,15 @@ export class SignalrService {
         })
     }
 
-    // newWindowLoaded() {
-    //     this.hubConnection.on("NewWindowLoaded", (value: any) => {
-    //         var newCountSpan = document.getElementById("totalViewsCounter");
-    //         newCountSpan.innerText = value.toString();
-    //     })
+    newWindowLoaded() {
+        this.hubConnection.on("NewWindowLoaded", (value: any) => {
+            var newCountSpan = document.getElementById("totalViewsCounter");
+            if (newCountSpan) {
+                newCountSpan.innerText = value.toString();
+            }
+        })
+    }
 
-    // }
 
     // newWindowLoadedOnClient(){
     //     this.newWindowLoaded().send
