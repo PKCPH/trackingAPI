@@ -61,8 +61,8 @@ public class ImplementBackgroundService : BackgroundService
         double[] selectedOdds = new double[] {
         odds1, odds2
         };
-        var combinedOdds = oddsHandler.CalculateComboOdds(selectedOdds);
-        Console.WriteLine(combinedOdds);
+        var totalOdds = oddsHandler.CalculateComboOdds(selectedOdds);
+        Console.WriteLine(totalOdds);
         Console.WriteLine();
 
 
