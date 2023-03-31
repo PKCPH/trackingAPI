@@ -62,6 +62,7 @@ public class ImplementBackgroundService : BackgroundService
         odds1, odds2
         };
         var combinedOdds = oddsHandler.CalculateComboOdds(selectedOdds);
+        Console.WriteLine(combinedOdds);
         Console.WriteLine();
 
 

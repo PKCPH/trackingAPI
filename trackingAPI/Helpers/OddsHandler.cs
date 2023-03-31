@@ -41,15 +41,15 @@ namespace trackingAPI.Helpers
             return result;
         }
 
-        public double CalculateComboOdds(params double[] oddsList)
+        public float CalculateComboOdds(params double[] oddsList)
         {
-            double combinedOdds = 1;
+            float combinedOdds = 1;
 
-            foreach (var item in oddsList)
+            for (int i = 0; i < oddsList.Length; i++)
             {
-                combinedOdds *= item;
+                combinedOdds *= (float)oddsList[i];
             }
-            Math.Round(combinedOdds, 2, MidpointRounding.ToEven);
+            Math.Round(combinedOdds, 2);
             return combinedOdds;
         }
 
