@@ -20,18 +20,63 @@ public class ImplementBackgroundService : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         OddsHandler oddsHandler = new OddsHandler();
-        
-        using (var scope = _services.CreateScope())
+
+        List<Team> teams = new List<Team>();
+
+        var team1 = new Team
         {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
+            Id = Guid.NewGuid(),
+            Name = "Team1",
+            Rating = 1950,
+        };
+        var team2 = new Team
+        {
+            Id = Guid.NewGuid(),
+            Name = "Team2",
+            Rating = 1500,
+        };
+        var team3 = new Team
+        {
+            Id = Guid.NewGuid(),
+            Name = "Team3",
+            Rating = 1900,
+        };
+        var team4 = new Team
+        {
+            Id = Guid.NewGuid(),
+            Name = "Team3",
+            Rating = 1500,
+        };
 
-            var teams = _context.Teams.ToList();
-            var TeamsWinChances = oddsHandler.WinChancesAndOdds(teams.ElementAt(0), teams.ElementAt(1), teams.ElementAt(2), teams.ElementAt(3));
-            Console.WriteLine();
 
-        }
+        teams.Add(team1);
+        teams.Add(team2);
+        teams.Add(team3);
+        teams.Add(team4);
+
+        var TeamsWinChancesFirstMatch = oddsHandler.WinChancesAndOdds(teams.ElementAt(0), teams.ElementAt(1));
+        var TeamsWinChancesSecondMatch = oddsHandler.WinChancesAndOdds(teams.ElementAt(2), teams.ElementAt(3));
+        var odds1 = TeamsWinChancesFirstMatch.First().Value.Item2;
+        var odds2 = TeamsWinChancesSecondMatch.First().Value.Item2;
+        double[] selectedOdds = new double[] {
+        odds1, odds2
+        };
+        var combinedOdds = oddsHandler.CalculateComboOdds(selectedOdds);
+        Console.WriteLine();
+
+
+
+        //using (var scope = _services.CreateScope())
+        //{
+        //    var _context =
+        //        scope.ServiceProvider
+        //            .GetRequiredService<DatabaseContext>();
+
+        //    //var teams = _context.Teams.ToList();
+        //    var TeamsWinChances = oddsHandler.WinChancesAndOdds(teams.ElementAt(0), teams.ElementAt(1));
+        //    Console.WriteLine();
+
+        //}
         //MatchBackgroundTask matchBackgroundTask = new(_services);
         //matchBackgroundTask.RestartUnfinishedMatches();
 
