@@ -50,7 +50,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { MainLeaguesListComponent } from './components/main-leagues/main-leagues-list/main-leagues-list.component';
 import { AddLeagueComponent } from './components/main-leagues/add-league/add-league.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+//import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -113,7 +113,7 @@ export function tokenGetter() {
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
-    FontAwesomeModule
+    //FontAwesomeModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

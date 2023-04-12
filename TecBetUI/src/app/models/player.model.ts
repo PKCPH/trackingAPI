@@ -2,15 +2,13 @@ import { playerTeam } from "./playerTeam.model";
 
 export interface Player{
     id: string;
-    name: string;
-    age: number;
     teams: playerTeam[];
+    name: string;
+    nationality: string;
+    age: number;
+    height_cm: number;
+    weight_kg: number;
     overall: number;
-    potential: number;
-    pace: number;
-    shooting: number;
-    passing: number;
-    dribbling: number;
-    defense: number;
-    physical: number;
+    player_positions: string;
+    preferred_foot: string;
 }
