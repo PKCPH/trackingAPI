@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatchesService } from 'src/app/services/matches.service';
 import { Match } from 'src/app/models/matches.model';
 import { interval, Subscription } from 'rxjs';
-import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Team } from 'src/app/models/teams.model';
 
@@ -43,41 +42,43 @@ export class MainScheduleComponent implements OnDestroy {
     }
 
     fetch() {    
-      this.matchesService.errorMessage.subscribe(error => {
-        this.errorMessage = error;
-      });
-
       this.matchesService.getSchedule().subscribe({
         next: (games) => {
+          // console.log(this.games);
           this.games = games.map(game => {
 
             let participatingTeams = game.participatingTeams;
+
+            game.roundTerm = this.GetRoundTerm(game.round);
 
             this.nullCheck(participatingTeams);
 
             return {
               ...game,
               participatingTeams: participatingTeams,
+              league: game.league ?? "Friendly Match",
             }
           });
-          console.log(this.games);
           if (games)
           {
             this.sortedGames = this.games.slice();
             this.Hideloader();
             this.sortData(this.sort);
           }
-          if (games.length > 0)
-          {
-            this.errorMessage = "";
-          }
+          this.matchesService.errorMessage.subscribe(error => {
+            this.errorMessage = error;
+            if (games.length > 0)
+            {
+              this.errorMessage = "";
+            }
+          });
         },
       });   
     }
 
     nullCheck(participatingTeams: any) { 
       for (let i = 0; i < participatingTeams.length; i++) {
-        if (participatingTeams[i].name == null) {
+        if (participatingTeams[i] == null) {
           participatingTeams[i] = {
             name: this.byeCheese ? 'BYE' : 'TBD',
             id: '00000000-0000-0000-0000-000000000000',
@@ -88,11 +89,11 @@ export class MainScheduleComponent implements OnDestroy {
             score: 0,
             result: 0,
             rating: 0,
-            round: participatingTeams.round,
           };
         }
       }
     }
+
 
     fetchFin() {    
       this.matchesService.getFinishedMatches().subscribe({
@@ -101,12 +102,15 @@ export class MainScheduleComponent implements OnDestroy {
           this.finishedGames = finishedGames.map(finishedGame => {
 
             let participatingTeams = finishedGame.participatingTeams;
+            
+            finishedGame.roundTerm = this.GetRoundTerm(finishedGame.round);
 
             this.nullCheck(participatingTeams);
 
             return {
               ...finishedGame,
               participatingTeams: participatingTeams,
+              league: finishedGame.league ?? "Friendly Match",
             }
           });
           if (finishedGames)
@@ -126,9 +130,35 @@ export class MainScheduleComponent implements OnDestroy {
       });   
     }
 
-    GoMatchDetails(id: string)
+    GoMatchDetails(id: string, participatingTeams: Team[])
     {
-      this.router.navigateByUrl("details/" + id);
+    if(participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD')
+    {
+     if(participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE')
+     {
+     this.router.navigateByUrl("details/" + id);
+     }
+    }
+    }
+
+    GetRoundTerm(round: number | any)
+    {
+      if(round != null)
+      {
+        if (round == 1) return "Grand Finale";
+        else if (round == 2) return "Semi-Finale";
+        else if (round == 3) return "Quarter-Finale";
+        else
+        {
+            var output = 2;
+            for (var i = 2; i <= round; i++)
+            {
+                output *= 2;
+            }
+            return `Round of ${output}`;
+        }
+      }
+      return null;
     }
 
     Hideloader() {
@@ -189,6 +219,7 @@ export class MainScheduleComponent implements OnDestroy {
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
         case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
+        case 'league': return compare(a.league, b.league, isAsc);
         default: return 0;
       }
     });
@@ -202,6 +233,7 @@ export class MainScheduleComponent implements OnDestroy {
       switch (sortColumn) {
         case 'dateOfMatch': return compare(a.dateOfMatch, b.dateOfMatch, isAsc);
         case 'name': return compare(a.participatingTeams[0].name, b.participatingTeams[0].name, isAsc);
+        case 'league': return compare(a.league, b.league, isAsc);
         default: return 0;
       }
     });

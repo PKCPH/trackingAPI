@@ -14,18 +14,7 @@ export class EditTeamComponent {
   teamForm: FormGroup | any;
   submitted = false;
 
-  teamDetails: Team = {
-    id: '',
-    name: '',
-    isAvailable: true,
-    matches: [],
-    availability: '',
-    score: 0,
-    result: 0,
-    players: [],
-    rating: 0,
-    round: 0
-  };
+  teamDetails: Team | any;
 
   constructor(private route: ActivatedRoute, private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {
 

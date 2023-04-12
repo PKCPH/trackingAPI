@@ -28,7 +28,6 @@ export class ChangePlayerComponent {
     score: 0,
     result: 0,
     rating: 0,
-    round: 0
   }
   playerDetails: Player = {
     id: '',
