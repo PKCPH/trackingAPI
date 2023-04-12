@@ -1,5 +1,4 @@
 @import '@angular/cdk/a11y-prebuilt.css';
-
 /* You can add global styles to this file, and also import other style files */
 * {
     margin: 0;
@@ -151,7 +150,7 @@ mat-tooltip-component {
 
 
   /* MAT SORT STYLINGS */
-  
+
   .mat-sort-header-container {
     display: flex;
     flex-direction: row;

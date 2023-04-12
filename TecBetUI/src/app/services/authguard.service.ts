@@ -39,8 +39,9 @@ export class AuthguardService implements CanActivate  {
     if (!isRefreshSuccess) { 
       if (this.router.url === ('/'))
       {
-        this.router.navigateByUrl('/404')
+        this.router.navigateByUrl('/');
       } 
+      console.log(this.router.url);
       this.modalService.open(LoginComponent, {centered: true, windowClass: 'modal-login'});
     }
 
@@ -108,10 +109,6 @@ export class AuthguardService implements CanActivate  {
               return of([]);
             })
           );
-  }
-
-  resetMatchesAndTeams() {
-    console.log('a');
   }
 }
 

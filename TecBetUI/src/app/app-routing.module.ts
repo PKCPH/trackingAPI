@@ -26,6 +26,8 @@ import { NewPlayerComponent } from './components/main-teams/players-on-team/new-
 import { ChangePlayerComponent } from './components/main-teams/players-on-team/change-player/change-player.component';
 import { UserbetsComponent } from './components/main-login/userprofile/userbets/userbets.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { MainLeaguesListComponent } from './components/main-leagues/main-leagues-list/main-leagues-list.component';
+import { AddLeagueComponent } from './components/main-leagues/add-league/add-league.component';
 
 const routes: Routes = [
   {
@@ -133,6 +135,13 @@ const routes: Routes = [
   {
     path: '404',
     component: BlankComponent
+  },
+  {
+    path: 'leagues',
+    component: MainLeaguesListComponent
+  },{
+    path: 'leagues/add',
+    component: AddLeagueComponent
   }
 ];
 
