@@ -41,6 +41,7 @@ export class MainMatchesComponent implements OnDestroy {
 
     this.matchesService.getAllMatches().subscribe({
       next: (matches) => {
+        // console.log(matches)
         this.matches = matches.map(match => {
           return {
             ...match,

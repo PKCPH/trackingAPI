@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0 && !isTestingPage()">
+<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0">
   <div class="logo"><a href="#section4"><img src="images/logo.png"></a></div>
     <div class="container">
       <div class="leftsidenav">
@@ -7,13 +7,16 @@
             <a class="nav-text" routerLink="teams">Teams</a>
           </li>
           <li class="nav-item">
-            <a class="nav-text " routerLink="players">Players</a>
+            <a class="nav-text " routerLink="players/0">Players</a>
           </li>
           <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
             <a class="nav-text " routerLink="matches">Matches</a>
           </li>
           <li class="nav-item">
             <a class="nav-text " routerLink="schedule">Schedule</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-text " routerLink="leagues">Leagues</a>
           </li>
           <li class="nav-item">
             <a class="nav-text " href="#section2">Betting</a>
@@ -26,8 +29,6 @@
           </li>
         </ul> 
       </div>
-
-    
 
       <div class="rightsidenav">
       <ul class="navbar-nav">

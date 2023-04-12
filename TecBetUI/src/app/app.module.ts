@@ -48,6 +48,9 @@ import {MatTableModule } from '@angular/material/table';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { MainLeaguesListComponent } from './components/main-leagues/main-leagues-list/main-leagues-list.component';
+import { AddLeagueComponent } from './components/main-leagues/add-league/add-league.component';
+//import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 export function tokenGetter() { 
   return localStorage.getItem("jwt"); 
@@ -87,6 +90,8 @@ export function tokenGetter() {
     ChangePlayerComponent,
     FooterComponent,
     ContactComponent,
+    MainLeaguesListComponent,
+    AddLeagueComponent,
   ],
   imports: [
     BrowserModule,
@@ -107,7 +112,8 @@ export function tokenGetter() {
     MatIconModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    //FontAwesomeModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

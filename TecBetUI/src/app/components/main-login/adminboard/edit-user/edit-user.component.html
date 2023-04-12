@@ -1,47 +1,47 @@
 <div class="section1">
-    <!-- Need better solution here not sure whats going on -->
+  <!-- Need better solution here not sure whats going on -->
   <div class="container divs my-5 py-5">
     <form [formGroup]="loginForm" (ngSubmit)="updateUser()">
-        <div class="mb-3">
-            <h1 class="mb-5">Edit information for '{{Userdetails.userName}}'</h1>
+      <div class="mb-3">
+        <h1 class="mb-5">Edit information for '{{Userdetails.userName}}'</h1>
 
-            <label for="id" class="form-label mb-2">ID:</label>
-            <input type="text" class="form-control readonly" id="id" formControlName="id" readonly [(ngModel)] = "Userdetails.id"/>
+        <label for="id" class="form-label mb-2">ID:</label>
+        <input type="text" class="form-control readonly" id="id" formControlName="id" readonly
+          [(ngModel)]="Userdetails.id" />
 
-            <label for="name" class="form-label my-2">Username:</label>
-            <input type="text" class="form-control readonly" id="name" formControlName="name" readonly [(ngModel)] = "Userdetails.userName"/>
+        <label for="name" class="form-label my-2">Username:</label>
+        <input type="text" class="form-control readonly" id="name" formControlName="name" readonly
+          [(ngModel)]="Userdetails.userName" />
 
-            <label for="balance" class="form-label">Balance</label>
-            <input type="number" class="form-control" id="balance" formControlName="balance" />
-            <div class="validBox" *ngIf="submitted && loginForm.get('balance')?.invalid">
-                <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['required']">
-                  Balance is required.
-                </div>
-                <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['min']">
-                  Balance needs to be set to at least '100'
-                </div>
-              </div>
+        <label for="balance" class="form-label">Balance</label>
+        <input type="number" class="form-control" id="balance" formControlName="balance" />
+        <div class="validBox" *ngIf="submitted && loginForm.get('balance')?.invalid">
+          <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['required']">
+            Balance is required.
+          </div>
+          <div class="validationMsg my-2" *ngIf="loginForm.get('balance')?.errors?.['min']">
+            Balance needs to be set to at least '100'
+          </div>
+        </div>
 
         <div *ngIf="adminUsername == 'admin'">
-          <label for="role" class="form-label my-2">Role:</label>     
-          <select class="form-control" id="role" formControlName="role" [(ngModel)]= "Userdetails.role">
+          <label for="role" class="form-label my-2">Role:</label>
+          <select class="form-control" id="role" formControlName="role" [(ngModel)]="Userdetails.role">
             <option value="User">User</option>
             <option value="Admin">Admin</option>
           </select>
         </div>
 
-        </div>    
+      </div>
 
-        <button type="submit" class="btn btn-success mt-4">Confirm Changes</button>
-        <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+      <button type="submit" class="btn btn-success mt-4">Confirm Changes</button>
+      <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go
+          Back</button></a>
 
-      </form>
-      
-  <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
-    {{ errorMessage }}
+    </form>
+
+    <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
   </div>
-  </div>
-  </div>
-  
-  
-  
+</div>

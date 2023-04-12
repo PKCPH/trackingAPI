@@ -4,23 +4,24 @@
         <!-- To autplay a video like a gif, you need to specify a few things, otherwise it will not play on first site visit
              important notes is that it has to be muted to be able to autoplay, oncanplay="this.play()" and onloadedmetadata="this.muted = true" are important solutions to get this fixed.  -->
 
-    <div class="videodiv" id="videodiv">
-        <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video" onloadedmetadata="this.muted = true">
-            <source [src]="videoSrc" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <div class="videodiv" id="videodiv">
+            <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video"
+                onloadedmetadata="this.muted = true">
+                <source [src]="videoSrc" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="container divs py-4">
+            <h1>BetHaven</h1>
+            <p class="my-4 subtitle">LOW RISK LOW REWARD</p>
+            <p></p>
+        </div>
+
     </div>
-
-    <div class="container divs py-4"><h1>BetHaven</h1>
-    <p class="my-4 subtitle">LOW RISK LOW REWARD</p>
-    <p></p>
-    </div>
-
-</div>
 </div>
 
-   
-    
+
+
 <app-betting></app-betting>
 <app-footer></app-footer>
-

@@ -26,7 +26,6 @@ export class MatchDetailsComponent implements OnDestroy {
     result: 0,
     players:[],
     rating: 0,
-    round: 0
   };
   
 
@@ -53,8 +52,7 @@ export class MatchDetailsComponent implements OnDestroy {
     this.matchesService.getMatchDetails(this.id).subscribe({
       next: (response) => {
         this.matchDetails = response
-        // console.log(this.matchDetails);
-        // console.log(this.games);
+        console.log(this.matchDetails);
         if (this.matchDetails) {
           if (this.matchDetails.matchState == 2) {
             this.modalService.dismissAll(BettingWindowComponent);

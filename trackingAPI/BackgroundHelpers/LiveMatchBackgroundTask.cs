@@ -116,7 +116,7 @@ public class LiveMatchBackgroundTask
     {
         Thread.Sleep(LiveGamematchConfiguration.PenaltyShootoutTimeIntervalMilliInSeconds);
         int chance = rnd.Next(1, 100);
-        if (chance > 45)
+        if (chance > 95)
         {
             teamPKScore++;
 

@@ -1,19 +1,19 @@
 form {
-    width: 60%;
-    text-align: center;
-  }
-  
-  input {
-    width: 35%;
-    margin: 0 auto;
-  }
+  width: 60%;
+  text-align: center;
+}
 
-  select {
-    width: 14%;
-    margin: 0 auto;
-  }
+input {
+  width: 35%;
+  margin: 0 auto;
+}
 
-  .readonly {
+select {
+  width: 14%;
+  margin: 0 auto;
+}
+
+.readonly {
   background: red;
   font-weight: bold;
   font-size: 17px;
@@ -23,11 +23,11 @@ form {
 }
 
 .readonly:focus {
- border: none;
- outline-color: blue;
- outline-style: solid;
+  border: none;
+  outline-color: blue;
+  outline-style: solid;
 }
 
 .readonly:active {
- border: none;
+  border: none;
 }

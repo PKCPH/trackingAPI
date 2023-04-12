@@ -8,4 +8,6 @@ export interface Match {
     state: string;
     displayId: string;
     league: string;
+    roundTerm: string | any;
+    round: number;
 }

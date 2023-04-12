@@ -43,7 +43,7 @@ export class MatchesService {
           this.errorSubject.next('');
         }),
         catchError(error => {
-          // console.error(error);
+          console.error(error);
           this.errorSubject.next(this.customErrorHandlerService.handleError(error));
           this.isLoading = false;
           return of([]);
@@ -55,7 +55,7 @@ export class MatchesService {
     this.isLoading = true;
     return this.http.get<Match[]>(serviceVariables.baseApiUrl + '/api/MatchesFin')
       .pipe(
-        tap(schedule => {
+        tap(casduchasdpofjasdojfj => {
           this.errorSubject.next('');
         }),
         catchError(error => {

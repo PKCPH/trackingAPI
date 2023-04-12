@@ -1,0 +1,72 @@
+.divs {
+  width: 50%;
+  margin: auto;
+}
+
+table {
+  border-collapse: separate;
+  width: 100%;
+  border-spacing: 0 5px;
+}
+
+td {
+  text-align: left;
+}
+
+.divs {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.test {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 30px;
+  padding: 20px;
+  width: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+#icon {
+  size: 100px;
+}
+
+.arrowIcon:hover {
+  cursor: pointer;
+}
+
+.grid {
+  /* background-color: white; */
+  display: flex;
+  padding: 10px;
+  align-items: center;
+}
+
+.grid:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.datecell {
+  /* background-color: red; */
+  flex: 0 0 15%;
+  margin-left: 40px;
+}
+
+.namecell {
+  /* background-color: blue; */
+  flex: 0 0 40%;
+}
+
+.cell {
+  /* background-color: yellow; */
+  flex: 0 0 15%;
+  margin-right: 100px;
+}
+
+.goalcell {
+  /* background-color: purple; */
+  flex: 0 0 10%;
+}
