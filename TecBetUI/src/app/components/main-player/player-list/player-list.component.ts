@@ -14,10 +14,11 @@ import { interval, Subscription, switchMap } from 'rxjs';
 export class PlayerListComponent {
   players: Player[] = [];
   searchedPlayers: Player[] = [];
+  shownPlayers: Player[] = [];
   credentials: LoginModel = this.app.credentials
   updateSubscription: Subscription;
-  playerSkip: number = 0
-  numberOfPlayers: number = 50
+  iValue: number = 0
+  pageNumber: number = 0
 
   model = {
     id: "",
@@ -57,23 +58,16 @@ export class PlayerListComponent {
 
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe({
-      next: (params) => {
-        const pageNumber = params.get('pageNumber');
-        this.playerSkip = Number(pageNumber) * this.numberOfPlayers
-        if(pageNumber){
-          this.playersService.getAllPlayers()
-          .subscribe({
-            next: (players) => {
-              console.log(players);
-              this.players = players
-              this.searchedPlayers = players
-            },
-            error: (response) => {
-              console.log(response);
-            }
-          })
-        }
+    this.playersService.getAllPlayers()
+    .subscribe({
+      next: (players) => {
+        console.log(players);
+        this.players = players
+        this.searchedPlayers = players
+        this.loadPlayers(0)
+      },
+      error: (response) => {
+        console.log(response);
       }
     })
   }
@@ -97,6 +91,18 @@ export class PlayerListComponent {
     this.searchPlayers()
   }
 
+  loadPlayers(pageNumber: number){
+    this.shownPlayers = []
+    this.pageNumber = pageNumber
+    for(var i = pageNumber * 50; i < (pageNumber * 50) + 50; i++){
+      if(i == this.searchedPlayers.length){
+        break
+      }
+      this.iValue = i
+      this.shownPlayers.push(this.searchedPlayers[i])
+    }
+  }
+
   searchPlayers(){
     var older: boolean
     var taller: boolean
@@ -116,5 +122,6 @@ export class PlayerListComponent {
       p.player_positions.toLowerCase().includes(this.model.player_positions.toLowerCase()) &&
       p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLowerCase())
     )
-  }
+    this.loadPlayers(0)
+    }
 }

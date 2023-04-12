@@ -17,10 +17,12 @@ export class PlayersOnTeamComponent {
   
   players: Player[] = [];
   searchedPlayers: Player[] = [];
+  shownPlayers: Player[] = [];
   id: string = '';
   updateSubscription: Subscription;
   credentials: LoginModel = this.app.credentials
   teamRating: number = 0
+  pageNumber: number = 0
 
   model: Player = {
     id: "",
@@ -98,9 +100,11 @@ export class PlayersOnTeamComponent {
       }
     })
   }
+
   GoAddPlayers() {
     this.router.navigateByUrl('/teams/players/' + this.id + '/add')
   }
+
   NewPlayer(){
     this.router.navigateByUrl('/teams/players/' + this.id + '/new')
   }
@@ -135,6 +139,15 @@ export class PlayersOnTeamComponent {
       p.player_positions.toLowerCase().includes(this.model.player_positions.toLocaleLowerCase()) &&
       p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLocaleLowerCase())
     )
+  }
+
+  loadPlayers(){
+    for(var i = this.pageNumber * 50; i < (this.pageNumber * 50) + 50; i++){
+      if(i == this.searchedPlayers.length){
+        break
+      }
+      this.shownPlayers.push(this.searchedPlayers[i])
+    }
   }
 
   teamScoreCalculator(){
