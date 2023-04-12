@@ -19,14 +19,18 @@ export class PlayerListComponent {
   playerSkip: number = 0
   numberOfPlayers: number = 50
 
-  model: Player = {
+  model = {
     id: "",
     teams:[],
     name: "",
     nationality: "",
+    older: "Older",
     age: 0,
+    taller: "Taller",
     height_cm: 0,
+    heavier: "Heavier",
     weight_kg: 0,
+    better: "Better",
     overall: 0,
     player_positions: "",
     preferred_foot: "",
@@ -37,14 +41,13 @@ export class PlayerListComponent {
   }
 
   constructor(private playersService: PlayersService, private router: Router, private app: AppComponent,private route: ActivatedRoute) {
-    this.updateSubscription = interval(3000).pipe(
-      switchMap(() => this.playersService.GetLimitedPlayers(this.playerSkip,this.numberOfPlayers))
+    this.updateSubscription = interval(60000).pipe(
+      switchMap(() => this.playersService.getAllPlayers())
     )
     .subscribe({
       next: (players) => {
         console.log(players);
         this.players = players
-        this.searchPlayers()
       },
       error: (response) => {
         console.log(response);
@@ -59,7 +62,7 @@ export class PlayerListComponent {
         const pageNumber = params.get('pageNumber');
         this.playerSkip = Number(pageNumber) * this.numberOfPlayers
         if(pageNumber){
-          this.playersService.GetLimitedPlayers(this.playerSkip,this.numberOfPlayers)
+          this.playersService.getAllPlayers()
           .subscribe({
             next: (players) => {
               console.log(players);
@@ -95,15 +98,23 @@ export class PlayerListComponent {
   }
 
   searchPlayers(){
+    var older: boolean
+    var taller: boolean
+    var heavier: boolean
+    var better: boolean
+    if(this.model.older.toLowerCase() == "older".toLocaleLowerCase()) older = true
+    if(this.model.taller.toLowerCase() == "taller".toLocaleLowerCase()) taller = true
+    if(this.model.heavier.toLowerCase() == "heavier".toLocaleLowerCase()) heavier = true
+    if(this.model.better.toLowerCase() == "better".toLocaleLowerCase()) better = true
     this.searchedPlayers = this.players.filter(p => 
-      p.name.toLowerCase().includes(this.model.name.toLocaleLowerCase()) &&
-      p.nationality.toLowerCase().includes(this.model.nationality.toLocaleLowerCase()) &&
-      p.age >= this.model.age &&
-      p.height_cm >= this.model.height_cm &&
-      p.weight_kg >= this.model.weight_kg &&
-      p.overall >= this.model.overall &&
-      p.player_positions.toLowerCase().includes(this.model.player_positions.toLocaleLowerCase()) &&
-      p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLocaleLowerCase())
+      p.name.toLowerCase().includes(this.model.name.toLowerCase()) &&
+      p.nationality.toLowerCase().includes(this.model.nationality.toLowerCase()) &&
+      older ? p.age >= this.model.age : p.age <= this.model.age &&
+      taller ? p.height_cm >= this.model.height_cm : p.height_cm <= this.model.height_cm &&
+      heavier ? p.weight_kg >= this.model.weight_kg : p.weight_kg <= this.model.weight_kg &&
+      better ? p.overall >= this.model.overall : p.overall <= this.model.overall &&
+      p.player_positions.toLowerCase().includes(this.model.player_positions.toLowerCase()) &&
+      p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLowerCase())
     )
   }
 }

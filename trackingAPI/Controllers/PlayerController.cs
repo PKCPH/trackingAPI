@@ -103,50 +103,5 @@ namespace trackingAPI.Controllers
             await this.databaseContext.SaveChangesAsync();
             return Ok(player);
         }
-
-        //Read Limited rows
-        [HttpGet]
-        [Route("{rowSkip:int}-{numberOfRows:int}-{name}-{nationality}-{younger:bool}-{age:int}-{shorter:bool}-{height:int}-{lighter:bool}-{weight:int}-{worse:bool}-{overall:int}-{position}-{preferred_foot}")]
-        public async Task<IActionResult> GetLimitedPlayers(
-            [FromRoute] int rowSkip, 
-            [FromRoute] int numberOfRows, 
-            [FromRoute] string? name = "", 
-            [FromRoute] string nationality = "", 
-            [FromRoute] bool younger = false, 
-            [FromRoute] int age = 0, 
-            [FromRoute] bool shorter = false, 
-            [FromRoute] int height = 0, 
-            [FromRoute] bool lighter = false, 
-            [FromRoute] int weight = 0, 
-            [FromRoute] bool worse = false, 
-            [FromRoute] int overall = 0, 
-            [FromRoute] string position = "", 
-            [FromRoute] string preferred_foot = "")
-        {
-            var players = await databaseContext.Players.Skip(rowSkip).Take(numberOfRows).Where(p => 
-                p.Name.ToLower().Contains(name.ToLower()) && 
-                p.nationality.ToLower().Contains(nationality.ToLower()) && 
-                younger ? p.Age <= age : p.Age >= age && 
-                shorter ? p.height_cm <= height : p.height_cm >= height && 
-                lighter ? p.weight_kg <= weight : p.weight_kg >= weight && 
-                worse ? p.Overall <= overall : p.Overall >= overall && 
-                p.player_positions.ToLower().Contains(position.ToLower()) && 
-                p.preferred_foot.ToLower().Contains(preferred_foot.ToLower())
-            ).ToListAsync();
-
-            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
-            var totalPlayers = await databaseContext.Players.ToListAsync();
-
-            var playerList = playerService.ReadAllPlayers(players, playerTeams);
-            var playerCount = totalPlayers.Count();
-
-            List<object> Response = new List<object>
-            {
-                playerCount,
-                playerList
-            };
-
-            return Ok(Response);
-        }
     }
 }
