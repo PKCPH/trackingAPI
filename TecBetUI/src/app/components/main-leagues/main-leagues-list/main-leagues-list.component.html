@@ -8,18 +8,18 @@
           <div>
             <h2 class="leagueName">{{league.name}}</h2>
           </div>
-          <!-- <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center;">
             <p class="mx-2" style="margin: auto; color: rgba(150, 150, 150, 0.7)">Display matches
               ({{league.match.length}})</p><fa-icon class="arrowIcon" style="margin: auto" [id]="league.id"
               (click)="toggleTable(league.startDate, league.id)"
               [icon]="iconStates[league.id] === 'down' ? arrowUp : arrowDown" animation="beat" size="lg"></fa-icon>
-          </div>  -->
+          </div>
         </tr>
         <tr>
           <td>
             <table [id]="league.startDate" style="width: 100%; margin: auto; display: none; " #myTable
-              class="leagueMatches">
-              <div class="grid" *ngFor="let match of league.match">
+            class="leagueMatches">
+            <div class="grid" *ngFor="let match of league.match" (click)="GoMatchDetails(match.id, match.participatingTeams)">
 
                 <div class="datecell" *ngIf="match.matchState != 6"><span>{{match.dateOfMatch | date: 'HH:mm' }}</span>
                 </div>
@@ -48,6 +48,7 @@
             </table>
           </td>
         </tr>
+
 
       </table>
     </ng-container>

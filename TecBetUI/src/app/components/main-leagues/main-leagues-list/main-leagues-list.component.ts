@@ -1,9 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
-//import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
-//import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-//import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { Match } from 'src/app/models/matches.model';
+import { Team } from 'src/app/models/teams.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-leagues-list',
@@ -11,9 +14,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
   styleUrls: ['./main-leagues-list.component.css']
 })
 export class MainLeaguesListComponent {
-
-  //arrowDown = faCircleChevronDown;
-  //arrowUp = faCircleChevronUp;
+  arrowDown = faCircleChevronDown;
+  arrowUp = faCircleChevronUp;
   output: number = 0;
   byeCheese: boolean = false;
 
@@ -23,7 +25,7 @@ export class MainLeaguesListComponent {
 
   leagues: Leagues[] = [];
 
-  constructor(private leaguesService: LeaguesService) {
+  constructor(private leaguesService: LeaguesService, private router: Router) {
 
     this.fetch();
 
@@ -99,6 +101,17 @@ export class MainLeaguesListComponent {
       }
     }
 
+  }
+
+  GoMatchDetails(id: string, participatingTeams: Team[])
+  {
+  if(participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD')
+  {
+   if(participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE')
+   {
+   this.router.navigateByUrl("details/" + id);
+   }
+  }
   }
 
   toggleTable(startDate: string, leagueId: string) {

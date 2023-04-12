@@ -19,7 +19,7 @@
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">{{matchDetails.participatingTeams[1].name}} WON</h2>
         </div>
     </div>
-    <div class="divs" *ngIf="matchDetails.matchState != 2"><h2>Betting</h2>
+    <div class="divs" *ngIf="matchDetails.matchState != 6"><h2>Betting</h2>
         <p>______________________</p>
         <button class="btn btn-warning" (click)="onBetTeamA()">{{matchDetails.participatingTeams[0].name}} Wins</button>
         <button class="btn btn-warning" (click)="onBetTeamB()">{{matchDetails.participatingTeams[1].name}} Wins</button>
