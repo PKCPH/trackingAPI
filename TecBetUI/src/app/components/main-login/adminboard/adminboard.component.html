@@ -3,7 +3,7 @@
 
 <div class="section1 tablediv" id="section1">
 
-    <!-- spinnner element is 
+    <!-- spinnner element is
         defined with id loading -->
     <div id="loading"></div>
 
@@ -45,6 +45,12 @@
     <div class="divs" id="adminpanel">
         <h1>Admin Panel</h1>
         <p class="mb-4">______________________________</p>
+        <tr>
         <button class="btn btn-danger" (click)="openReset()">Delete all matches</button>
+        </tr>
+        <tr>
+        <button class="btn btn-danger" [routerLink]="['/leagues/add']">Create new league</button>
+
+        </tr>
     </div>
 </div>

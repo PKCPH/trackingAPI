@@ -1,4 +1,5 @@
-<div class="container my-5">
+<!-- <div class="section1 tablediv">
+    <div class="my-5 divs">
     <h1 class="mb-3">Add new League</h1>
 
     <div class="row">
@@ -19,3 +20,40 @@
     </div>
 
 </div>
+</div>
+-->
+
+<div class="section1">
+    <!-- Need better solution here not sure whats going on -->
+    <div class="container divs my-5 py-5">
+      <form [formGroup]="leagueForm" (ngSubmit)="addLeague()">
+        <div class="mb-3">
+          <h1 class="mb-5">Create new league</h1>
+          <div>
+
+              <label for="name" class="form-label">Name</label>
+              <!-- One way to bind data to model in Angular  -->
+              <input type="text" class="form-control" id="name" formControlName="name" />
+            </div>
+            <div>
+                <label for="startdate" class="form-label">Start Date</label>
+                <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate" />
+            </div>
+          <div class="validBox" *ngIf="submitted && leagueForm.get('name')?.invalid">
+            <div *ngIf="leagueForm.get('name')?.errors?.['required']">
+              Name is required.
+            </div>
+            <div *ngIf="leagueForm.get('name')?.errors?.['pattern']">
+              Name cannot contain numbers.
+            </div>
+          </div>
+        </div>
+
+      <button type="submit" class="btn btn-success mt-4">Create League</button>
+      <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go Back</button></a>
+
+      </form>
+    </div>
+</div>
+
+

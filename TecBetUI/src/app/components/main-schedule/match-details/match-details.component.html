@@ -12,9 +12,9 @@
             <p *ngIf="matchDetails.matchState == 1" style="color: greenyellow;">First Half</p>
             <h2 *ngIf="matchDetails.matchState == 2" style="color: darkred;">Half Time Break</h2>
             <p *ngIf="matchDetails.matchState == 3" style="color: lightgreen;">Second Half</p>
-            <p *ngIf="matchDetails.matchState == 4" style="color: green;">OVERTIME</p>
+            <p *ngIf="matchDetails.matchState == 4" style="color: green;">Overtime</p>
             <h2 *ngIf="matchDetails.matchState == 5" style="color: orangered;">Penalty Shootout</h2>
-            <h2 *ngIf="matchDetails.matchState == 6" style="color: red;">FINISHED!!!</h2>
+            <h2 *ngIf="matchDetails.matchState == 6" style="color: red;">Finished</h2>
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">{{matchDetails.participatingTeams[0].name}} WON</h2>
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">{{matchDetails.participatingTeams[1].name}} WON</h2>
         </div>
