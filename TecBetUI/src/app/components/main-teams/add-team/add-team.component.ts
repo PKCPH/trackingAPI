@@ -34,8 +34,7 @@ export class AddTeamComponent {
 
   buildValidator() {
     this.teamForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      startDate: ['', [Validators.required]]
+      name: ['', [Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]
     });
   }
