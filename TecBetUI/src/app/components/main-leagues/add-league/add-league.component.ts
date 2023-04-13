@@ -26,7 +26,8 @@ export class AddLeagueComponent implements OnInit {
   }
   buildValidator() {
     this.leagueForm = this.formBuilder.group({
-      name: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      startDate: ['', [Validators.required]]
     });
   }
 

@@ -29,12 +29,13 @@ export class AddTeamComponent {
   constructor(private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {
 
     this.buildValidator();
-    
+
   }
 
   buildValidator() {
     this.teamForm = this.formBuilder.group({
-      name: ['', [Validators.required]]
+      name: ['', [Validators.required]],
+      startDate: ['', [Validators.required]]
       // Validators.pattern("^[a-zA-Z]*$")]
     });
   }

@@ -46,6 +46,9 @@
             <div *ngIf="leagueForm.get('name')?.errors?.['pattern']">
               Name cannot contain numbers.
             </div>
+            <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
+                Start date must exists in the future.
+              </div>
           </div>
         </div>
 
