@@ -57,8 +57,6 @@ export class MatchDetailsComponent implements OnDestroy {
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
-
-      console.log(this.credentials)
     });
 
 
@@ -127,9 +125,6 @@ export class MatchDetailsComponent implements OnDestroy {
     if (this.storedCredentialsString) {
       storedCredentials = JSON.parse(this.storedCredentialsString);
       this.role = storedCredentials.role
-      if(this.role != ''){
-        //this.renderer.setStyle(this.el.nativeElement.querySelector('#showBetting'), 'display', 'block');
-      }
     }
 
   }
