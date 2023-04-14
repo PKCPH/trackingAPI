@@ -42,7 +42,7 @@
 
         <div>
           <label for="Teams" class="form-label">Teams</label>
-          <input type="text" placeholder="Search.." class="form-control" id="Teams" formControlName="teams">
+          <input type="text" placeholder="Search team.." class="form-control" id="Teams" formControlName="teams">
         </div>
         <div class="validBox" *ngIf="submitted && leagueForm.get('name')?.invalid">
           <div *ngIf="leagueForm.get('name')?.errors?.['required']">
