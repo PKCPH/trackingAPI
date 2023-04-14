@@ -51,6 +51,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { MainLeaguesListComponent } from './components/main-leagues/main-leagues-list/main-leagues-list.component';
 import { AddLeagueComponent } from './components/main-leagues/add-league/add-league.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CommonModule } from '@angular/common';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -91,7 +93,8 @@ export function tokenGetter() {
     FooterComponent,
     ContactComponent,
     MainLeaguesListComponent,
-    AddLeagueComponent,
+    AddLeagueComponent
+
   ],
   imports: [
     BrowserModule,
@@ -113,7 +116,9 @@ export function tokenGetter() {
     MatPaginatorModule,
     MatTableModule,
     MatSortModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    CommonModule,
+    NgSelectModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

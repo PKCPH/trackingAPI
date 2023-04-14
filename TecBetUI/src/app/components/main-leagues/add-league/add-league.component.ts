@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, NgModule, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Leagues } from 'src/app/models/leagues.model';
@@ -7,6 +7,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 import { TeamsService } from 'src/app/services/teams.service';
 import { interval, Subscription, switchMap } from 'rxjs';
 import { Sort, MatSort } from '@angular/material/sort';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -17,6 +19,9 @@ import { Sort, MatSort } from '@angular/material/sort';
 export class AddLeagueComponent implements OnInit {
 
   teams: Team[] = [];
+  searchedTeams: Team[] = [];
+  selectedTeams: Team[] = [];
+  shownTeams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription | any;
   storedCredentialsString: any;
@@ -26,7 +31,13 @@ export class AddLeagueComponent implements OnInit {
     id: '',
     name: '',
     startDate: '',
+    team: [],
     match: [],
+  }
+
+  teamModel = {
+    id: "",
+    name: ""
   }
 
   //ViewChield is used to fetch a components html element object
@@ -36,9 +47,14 @@ export class AddLeagueComponent implements OnInit {
   leagueForm: FormGroup | any;
   submitted = false;
 
-  constructor(private leagueService: LeaguesService, private router: Router,
-    private formBuilder: FormBuilder, private teamsService: TeamsService,
-    private el: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private leagueService: LeaguesService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private teamsService: TeamsService,
+    private el: ElementRef,
+    private renderer: Renderer2
+    ) {
     this.buildValidator();
   }
   buildValidator() {
@@ -49,6 +65,14 @@ export class AddLeagueComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.teamsService.getAllTeams()
+    .subscribe({
+      next: (teams) => {
+        console.log(teams);
+        this.teams = teams
+        this.searchedTeams = teams
+      }
+    })
   }
 
   addLeague() {
@@ -58,10 +82,12 @@ export class AddLeagueComponent implements OnInit {
         this.addLeagueRequest = {
           ...this.addLeagueRequest,
           name: this.leagueForm.get('name')?.value,
-          startDate: this.leagueForm.get('startDate')?.value
+          startDate: this.leagueForm.get('startDate')?.value,
+          team: this.leagueForm.get('selectedTeams')?.value
+
         };
       }
-
+      console.log(this.addLeagueRequest.team);
       this.leagueService.addLeague(this.addLeagueRequest)
         .subscribe({
           next: (members) => {
@@ -176,13 +202,6 @@ export class AddLeagueComponent implements OnInit {
     this.renderer.setStyle(this.el.nativeElement.querySelector('#teamcontainer'), 'display', 'block');
   }
 
-  GoAddTeam() {
-    this.router.navigateByUrl('/teams/add')
-  }
-
-  GoEditTeam(id: string) {
-    this.router.navigateByUrl('/teams/edit/' + id)
-  }
 
   //Functions to check if a certain table is overflowing, and if it is display a div.
 
@@ -198,8 +217,13 @@ export class AddLeagueComponent implements OnInit {
     }
   }
 
+  searchTeams(){
+    this.searchedTeams = this.teams.filter(p => p.name.toLowerCase().includes(this.teamModel.name.toLowerCase()))
+  }
+
 
 }
+
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);

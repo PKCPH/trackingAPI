@@ -30,9 +30,44 @@
       <div class="mb-3">
         <h1 class="mb-5">Create new league</h1>
         <div>
+          <div>
+            <label for="Teams" class="form-label">Teams</label>
+
+              <!--
+
+                <input type="text" placeholder="Search team.." class="form-control" id="teams" formControlName="teams">
+                <td><button (click)="searchTeams()" class="btn btn-secondary">Search</button></td>
+              -->
+
+
+            <!-- Using Items Input -->
+            <ng-select
+            class="form-control"
+            id="selectedTeams"
+            formControlName="selectedTeams"
+            [items]="teams"
+            bindLabel="name"
+            placeholder=""
+            appendTo="body"
+            [(ngModel)]="selectedTeams"
+            [multiple]="true">
+              <tr class="tablerow" *ngFor="let team of teams">
+                <td>
+                  <tr>
+                  {{ team.name }}
+                </tr>
+              </td>
+              </tr>
+
+
+              <!--<ng-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</ng-option>-->
+            </ng-select>
+
+
+          </div>
+
 
           <label for="name" class="form-label">Name</label>
-          <!-- One way to bind data to model in Angular  -->
           <input type="text" class="form-control" id="name" formControlName="name" />
         </div>
         <div>
@@ -40,10 +75,6 @@
           <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate" />
         </div>
 
-        <div>
-          <label for="Teams" class="form-label">Teams</label>
-          <input type="text" placeholder="Search team.." class="form-control" id="Teams" formControlName="teams">
-        </div>
         <div class="validBox" *ngIf="submitted && leagueForm.get('name')?.invalid">
           <div *ngIf="leagueForm.get('name')?.errors?.['required']">
             Name is required.
@@ -58,7 +89,8 @@
       </div>
       <button type="submit" class="btn btn-success mt-4">Create League</button>
       <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go
-          Back</button></a>
-    </form>
-  </div>
-</div>
+        Back</button></a>
+      </form>
+    </div>
+
+        </div>

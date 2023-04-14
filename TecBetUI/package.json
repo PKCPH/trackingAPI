@@ -25,6 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@ng-bootstrap/ng-bootstrap": "^14.0.1",
+    "@ng-select/ng-select": "^10.0.4",
     "@popperjs/core": "^2.11.6",
     "@syncfusion/ej2-angular-splitbuttons": "^20.4.50",
     "bootstrap": "^5.2.3",
