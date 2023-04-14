@@ -33,18 +33,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input type="text" [(ngModel)]="model.name"></td>
-                            <td><input type="text" [(ngModel)]="model.nationality"></td>
-                            <td><input type="number" [(ngModel)]="model.age"></td>
-                            <td><input type="number" [(ngModel)]="model.height_cm"></td>
-                            <td><input type="number" [(ngModel)]="model.weight_kg"></td>
-                            <td><input type="number" [(ngModel)]="model.overall"></td>
-                            <td><input type="text" [(ngModel)]="model.player_positions"></td>
-                            <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
-                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                        </tr>
-                        <tr *ngFor="let player of shownPlayers">
+                        <tr *ngFor="let player of players">
                             <td> {{player.name}}</td>
                             <td> {{player.nationality}}</td>
                             <td> {{player.age}}</td>
@@ -56,27 +45,6 @@
                             <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                                 <button type="button" class="btn btn-primary" (click)="ChangePlayer(player.id)">Change player</button>
                                 <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td *ngIf="pageNumber > 1">
-                                <button>{{pageNumber - 2}}</button>
-                            </td>
-                            <td *ngIf="pageNumber > 0">
-                                <button>{{pageNumber - 1}}</button>
-                            </td>
-                            <td>
-                                <button>{{pageNumber}}</button>
-                            </td>
-                            <td *ngIf="(pageNumber * 50) + 50 < searchedPlayers.length">
-                                <button>{{pageNumber + 1}}</button>
-                            </td>
-                            <td *ngIf="(pageNumber * 50) + 100 < searchedPlayers.length">
-                                <button>{{pageNumber + 2}}</button>
                             </td>
                         </tr>
                     </tbody>

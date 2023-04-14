@@ -2,8 +2,11 @@
     <div class="container my-2 divs py-5">
         <h1 class="mb-3">Players</h1>
         <h2>{{searchedPlayers.length}}</h2>
-        <h2>{{shownPlayers.length}}</h2>
-        <h2>{{iValue}}</h2>
+        <h2>better: {{betterStatus}} {{model.overall}}</h2>
+        <h2>taller: {{tallerStatus}} {{model.height_cm}}</h2>
+        <h2>older: {{olderStatus}} {{model.age}}</h2>
+        <h2>heavier: {{heavierStatus}} {{model.weight_kg}}</h2>
+        <h2>search: {{searchSuccessful}}</h2>
         <div>
             <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
             <div *ngIf="players && players.length > 0">
@@ -86,7 +89,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <table class="col-12">
+                <table class="position-relative top-90 start-50 translate-middle-x">
                     <tbody>
                         <tr>
                             <td *ngIf="pageNumber > 2">

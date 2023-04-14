@@ -81,7 +81,7 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: 'players/:pageNumber',
+    path: 'players',
     component: PlayerListComponent
   },
   {
