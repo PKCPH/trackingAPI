@@ -143,10 +143,22 @@ public class AuthController : ControllerBase
             return NotFound();
         }
 
+        _context.Teams.RemoveRange(teams.Where(x => x.Name == "BYE"));
+       
         foreach (var team in teams)
         {
             team.IsAvailable = true;
         }
+
+
+        var leagues = await _context.Leagues.ToListAsync();
+
+        if (leagues == null || !leagues.Any())
+        {
+            return NotFound();
+        }
+
+        _context.Leagues.RemoveRange(leagues);
 
         await _context.SaveChangesAsync();
         return NoContent();

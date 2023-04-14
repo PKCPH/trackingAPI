@@ -26,14 +26,14 @@ export class AppComponent {
   userAuthenticated = false;
   // isLoggedin = false;
 
-  constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService, 
+  constructor(private router: Router, private jwtHelper: JwtHelperService, private loginService: LoginService,
     private authService: AuthguardService, private modalService: NgbModal)
   {
     //Here loginservice is used to update the credentials everytime component is loaded (all the time cos navbar)
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
-    });  
+    });
 
     this.updateUserInfo();
 
@@ -41,7 +41,7 @@ export class AppComponent {
 
     window.addEventListener('userLoggedIn', this.updateUserInfo.bind(this));
     window.addEventListener('userLoggedIn', this.startIdleTimer.bind(this));
-    
+
     this.router.events.subscribe(event => {
       if (event.constructor.name === "NavigationStart") {
         if(this.credentials.userName !== '')
@@ -50,7 +50,7 @@ export class AppComponent {
       }
       }
     })
-    
+
   }
 
 //Login modal function
@@ -81,23 +81,23 @@ export class AppComponent {
         error: (response) => {
           console.log(response);
         }
-      }); 
+      });
     }
   }
 
   //Basic boolean function that checks if youre on a certain page
 
   isRegisterPage = (): boolean => {
-    if (this.router.url.includes('/register')) 
-  {  
-     return true; 
+    if (this.router.url.includes('/register'))
+  {
+     return true;
   }
 return false;
   }
 
 
 
-  //Checks for token 
+  //Checks for token
 
   isUserAuthenticated = (): boolean => {
     const token = localStorage.getItem("jwt");
@@ -152,7 +152,7 @@ return false;
     }, 900000); // 900 seconds
   }
 
- 
+
 //Dropdown menu toggler
   toggleDropdown() {
     this.resetTimer();
@@ -173,7 +173,7 @@ return false;
     // Handle the item click event here.
     // For example, you could emit an event or perform some action based on the clicked item.
     // console.log(`Item "${item}" clicked.`);
-    
+
     // Hide the dropdown box.
     this.showDropdown = false;
   }

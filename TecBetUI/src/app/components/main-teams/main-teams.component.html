@@ -2,13 +2,13 @@
 <!-- my-5 = Margin on Y axis 5 (up and down) -->
 
 <div class="section1 tablediv" id="tablediv">
-  
-    <!-- spinnner element is 
+
+    <!-- spinnner element is
         defined with id loading -->
         <div id="loading"></div>
-      
+
     <!-- data from API is displayed  -->
-    
+
     <div class="container my-2 divs py-5" id="teamcontainer">
         <h1 class="mb-3">Teams</h1>
 
@@ -17,7 +17,7 @@
             <img style="height: 25px; position: absolute; top: -35%; right: -20%;" src="/images/arrow.png">
           </div>
 
-        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'Admin' && !errorMessage">Create a Team</button>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'username' && !errorMessage">Create a Team</button>
 
         <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="teams && teams.length > 0">
             <thead>
@@ -29,16 +29,16 @@
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let teams of sortedTeams">  
+            <tr class="tablerow" *ngFor="let teams of sortedTeams">
                 <td>{{ teams.name }}</td>
                 <td>{{ teams.players.length}}</td>
                 <td>{{ teams.availability }}</td>
                 <td><a><button class="btn btn-success mt-3" (click)="GoEditTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Edit</button></a>
                     <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>
                     <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Delete</button></a></td>
-            </tr> 
-        </table>  
-    
+            </tr>
+        </table>
+
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>

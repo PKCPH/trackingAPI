@@ -125,4 +125,24 @@ export class MainLeaguesListComponent {
       this.iconStates[leagueId] = 'up';
     }
   }
+
+  getCredentials() {
+    let storedCredentials;
+
+    let storedCredentialsString = localStorage.getItem("credentials");
+    if (storedCredentialsString) {
+      storedCredentials = JSON.parse(storedCredentialsString);
+
+      let role = storedCredentials.role;
+
+      if (role === 'Admin') {
+        this.router.navigate(['/matches']);
+      } else {
+        this.router.navigate(['/']);
+      }
+    }
+    else if (!storedCredentialsString) {
+      this.router.navigate(['/']);
+    }
+  }
 }

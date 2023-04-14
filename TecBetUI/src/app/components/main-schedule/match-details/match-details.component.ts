@@ -1,9 +1,11 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, interval, switchMap } from 'rxjs';
+import { LoginModel } from 'src/app/models/login.model';
 import { Match } from 'src/app/models/matches.model';
 import { Team } from 'src/app/models/teams.model';
+import { LoginService } from 'src/app/services/login.service';
 import { MatchesService } from 'src/app/services/matches.service';
 import { BettingWindowComponent } from '../../betting/betting-window/betting-window.component';
 
@@ -15,7 +17,10 @@ import { BettingWindowComponent } from '../../betting/betting-window/betting-win
 export class MatchDetailsComponent implements OnDestroy {
 
   matchDetails: Match | any;
-
+  credentials: LoginModel | any;
+  storedCredentialsString: any;
+  role: any;
+  errorMessage: string = "";
   drawRequest: Team = {
     id: '',
     name: 'draw',
@@ -27,7 +32,7 @@ export class MatchDetailsComponent implements OnDestroy {
     players:[],
     rating: 0,
   };
-  
+
 
   updateSubscription: Subscription;
   id: any;
@@ -36,8 +41,12 @@ export class MatchDetailsComponent implements OnDestroy {
     this.updateSubscription.unsubscribe();
   }
 
-  constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router, private modalService: NgbModal) {
+  constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router,
+    private modalService: NgbModal, private loginService: LoginService,
+    private el: ElementRef, private renderer: Renderer2) {
 
+    this.getCredentials();
+    window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
     this.getId();
 
     this.fetch();
@@ -45,7 +54,15 @@ export class MatchDetailsComponent implements OnDestroy {
     this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
     });
-    
+
+    this.loginService.currentCredentials.subscribe(credentials => {
+      this.credentials = credentials;
+
+      console.log(this.credentials)
+    });
+
+
+
   }
 
   fetch() {
@@ -81,7 +98,7 @@ export class MatchDetailsComponent implements OnDestroy {
   }
 
   goBack() {
-    this.router.navigateByUrl("/schedule")
+    this.router.navigateByUrl("/leagues")
   }
 
   onBetTeamA() {
@@ -102,5 +119,19 @@ export class MatchDetailsComponent implements OnDestroy {
     modalRef.componentInstance.team = this.drawRequest;
   }
 
+  //Simple function to read credentials in localstorage, and then if the contents exist, parse the array with the help of JSON and then set my "role" variable to the value of the .role property in localstorage
+  getCredentials() {
+    let storedCredentials;
+
+    this.storedCredentialsString = localStorage.getItem("credentials");
+    if (this.storedCredentialsString) {
+      storedCredentials = JSON.parse(this.storedCredentialsString);
+      this.role = storedCredentials.role
+      if(this.role != ''){
+        //this.renderer.setStyle(this.el.nativeElement.querySelector('#showBetting'), 'display', 'block');
+      }
+    }
+
+  }
 
 }

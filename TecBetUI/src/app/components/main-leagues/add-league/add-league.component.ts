@@ -1,8 +1,13 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Leagues } from 'src/app/models/leagues.model';
+import { Team } from 'src/app/models/teams.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
+import { TeamsService } from 'src/app/services/teams.service';
+import { interval, Subscription, switchMap } from 'rxjs';
+import { Sort, MatSort } from '@angular/material/sort';
+
 
 @Component({
   selector: 'app-add-league',
@@ -11,18 +16,30 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 })
 export class AddLeagueComponent implements OnInit {
 
+  teams: Team[] = [];
+  errorMessage: string = "";
+  updateSubscription: Subscription | any;
+  storedCredentialsString: any;
+  role: any;
+  sortedTeams: Team[] = [];
   addLeagueRequest: Leagues = {
     id: '',
     name: '',
     startDate: '',
-    match: []
+    match: [],
   }
+
+  //ViewChield is used to fetch a components html element object
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort | any;
 
   leagueForm: FormGroup | any;
   submitted = false;
 
-  constructor(private leagueService: LeaguesService, private router: Router, private formBuilder: FormBuilder) {
-  this.buildValidator();
+  constructor(private leagueService: LeaguesService, private router: Router,
+    private formBuilder: FormBuilder, private teamsService: TeamsService,
+    private el: ElementRef, private renderer: Renderer2) {
+    this.buildValidator();
   }
   buildValidator() {
     this.leagueForm = this.formBuilder.group({
@@ -36,8 +53,8 @@ export class AddLeagueComponent implements OnInit {
 
   addLeague() {
     this.submitted = true;
-    if(this.leagueForm.valid){
-      if(this.addLeagueRequest){
+    if (this.leagueForm.valid) {
+      if (this.addLeagueRequest) {
         this.addLeagueRequest = {
           ...this.addLeagueRequest,
           name: this.leagueForm.get('name')?.value,
@@ -46,23 +63,144 @@ export class AddLeagueComponent implements OnInit {
       }
 
       this.leagueService.addLeague(this.addLeagueRequest)
-      .subscribe({
-        next: (members) => {
-          this.router.navigate(['leagues']);
-        },
-        error: (error) => {
-          console.log(error); // Log the error for debugging purposes
-        }
-      });
+        .subscribe({
+          next: (members) => {
+            this.router.navigate(['leagues']);
+          },
+          error: (error) => {
+            console.log(error); // Log the error for debugging purposes
+          }
+        });
     } else {
       for (const key in this.leagueForm.controls) {
-        if (this.leagueForm.controls.hasOwnProperty(key)){
+        if (this.leagueForm.controls.hasOwnProperty(key)) {
           const control = this.leagueForm.get(key);
-          if(control && control.invalid){
+          if (control && control.invalid) {
             console.log(key, control.errors);
           }
         }
       }
     }
   }
+
+  fetchTeams() {
+
+    this.teamsService.errorMessage.subscribe(error => {
+      this.errorMessage = error;
+    });
+
+    this.teamsService.getAllTeams()
+      .subscribe({
+        next: (teams) => {
+          this.teams = teams.map(team => {
+            return {
+              ...team,
+              availability: team.isAvailable ? 'No' : 'Yes'
+            }
+          });
+          console.log(this.teams);
+          if (teams) {
+            this.sortedTeams = this.teams.slice();
+            this.toggleOverflowDiv();
+            this.Hideloader();
+            this.sortData(this.sort);
+          }
+          if (teams.length > 0) {
+            this.errorMessage = "";
+          }
+        }
+      });
+  }
+
+  getCredentials() {
+    let storedCredentials;
+
+    this.storedCredentialsString = localStorage.getItem("credentials");
+    if (this.storedCredentialsString) {
+      storedCredentials = JSON.parse(this.storedCredentialsString);
+
+      this.role = storedCredentials.role;
+    }
+  }
+
+  //This functions take the sorted teams and updates them
+
+  updateSortedTeams() {
+    const sortColumn = this.sort.active;
+    const sortDirection = this.sort.direction;
+    this.sortedTeams = this.teams.slice().sort((a, b) => {
+      const isAsc = sortDirection === 'asc';
+      switch (sortColumn) {
+        case 'name': return compare(a.name, b.name, isAsc);
+        default: return 0;
+      }
+    });
+  }
+
+  //This functions saves the sort event, to dynamically update the sorted teams, whenever it gets re-fetched
+
+  sortData(event: any) {
+    this.sort = event; // Store sort state for dynamic data update
+    this.updateSortedTeams();
+  }
+
+  //Simple delete, it gets parsed the string and it deletes the correspondant team. After I do another getall, to update my view.
+
+  deleteTeam(id: string) {
+    this.teamsService.deleteTeam(id)
+      .subscribe({
+        next: (response) => {
+          this.teamsService.getAllTeams()
+            .subscribe({
+              next: (teams) => {
+                this.teams = teams.map(team => {
+                  return {
+                    ...team,
+                    availability: team.isAvailable ? 'No' : 'Yes'
+                  }
+                });
+              },
+              error: (response) => {
+                console.log(response);
+              }
+            });
+        }
+      });
+  }
+
+  //Hides loader, and shows relevant divs that should only appear after loading have finished.
+
+  Hideloader() {
+    // Setting display of spinner element to none
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#teamcontainer'), 'display', 'block');
+  }
+
+  GoAddTeam() {
+    this.router.navigateByUrl('/teams/add')
+  }
+
+  GoEditTeam(id: string) {
+    this.router.navigateByUrl('/teams/edit/' + id)
+  }
+
+  //Functions to check if a certain table is overflowing, and if it is display a div.
+
+  isTableOverflowing(): boolean {
+    return this.el.nativeElement.querySelector('#tablediv').scrollHeight > this.el.nativeElement.querySelector('#tablediv').clientHeight;
+  }
+
+  toggleOverflowDiv(): void {
+    if (this.isTableOverflowing()) {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'block');
+    } else {
+      this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
+    }
+  }
+
+
+}
+
+function compare(a: number | string, b: number | string, isAsc: boolean) {
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
