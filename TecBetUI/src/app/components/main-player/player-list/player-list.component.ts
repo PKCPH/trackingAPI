@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { Player } from 'src/app/models/player.model';
 import { PlayersService } from 'src/app/services/players.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,19 +12,22 @@ import { interval, Subscription, switchMap } from 'rxjs';
   styleUrls: ['./player-list.component.css']
 })
 export class PlayerListComponent {
-  players: Player[] = [];
-  searchedPlayers: Player[] = [];
-  shownPlayers: Player[] = [];
-  credentials: LoginModel = this.app.credentials
   updateSubscription: Subscription;
-  iValue: number = 0
-  pageNumber: number = 0
-  betterStatus: boolean = false
-  heavierStatus: boolean = false
-  tallerStatus: boolean = false
-  olderStatus: boolean = false
-  searchSuccessful: string = "nothing"
+  credentials: LoginModel = this.app.credentials
 
+  //list of all players in the database
+  players: Player[] = [];
+
+  //list of all players that matches the filter
+  searchedPlayers: Player[] = [];
+
+  //current page number starting from 0
+  pageNumber: number = 0
+
+  //number of players shown
+  numberOfPlayersShown: number = 50
+  
+  //stores the filter
   model = {
     id: "",
     teams:[],
@@ -42,11 +45,8 @@ export class PlayerListComponent {
     preferred_foot: "",
   }
   
-  ngOnDestroy() {
-    this.updateSubscription.unsubscribe();
-  }
-
-  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent,private route: ActivatedRoute) {
+  constructor(private playersService: PlayersService, private router: Router, private app: AppComponent,private route: ActivatedRoute, private renderer: Renderer2, private el: ElementRef) {
+    //Calls the database every minute for a fresh list of players in case players have been added/removed
     this.updateSubscription = interval(60000).pipe(
       switchMap(() => this.playersService.getAllPlayers())
     )
@@ -54,6 +54,7 @@ export class PlayerListComponent {
       next: (players) => {
         console.log(players);
         this.players = players
+        this.searchPlayers()
       },
       error: (response) => {
         console.log(response);
@@ -61,27 +62,33 @@ export class PlayerListComponent {
     })
   }
 
+  //removes the subscription created in the constructor
+  ngOnDestroy() {
+    this.updateSubscription.unsubscribe();
+  }
+
+
 
   ngOnInit(): void {
+    //calls the backend to get all players
     this.playersService.getAllPlayers()
     .subscribe({
       next: (players) => {
         console.log(players);
+        this.Hideloader();
         this.players = players
         this.searchedPlayers = players
-        this.loadPlayers(0)
       },
       error: (response) => {
         console.log(response);
       }
     })
   }
+
   GoAddPlayer() {
     this.router.navigateByUrl('/players/add')
   }
-  FilterPlayers(search: string){
 
-  }
   isUserAuthenticated = (): boolean => {
     return this.app.isUserAuthenticated()
   }
@@ -96,25 +103,11 @@ export class PlayerListComponent {
     this.searchPlayers()
   }
 
-  loadPlayers(pageNumber: number){
-    this.shownPlayers = []
-    this.pageNumber = pageNumber
-    for(var i = pageNumber * 50; i < (pageNumber * 50) + 50; i++){
-      if(i == this.searchedPlayers.length){
-        break
-      }
-      this.iValue = i
-      this.shownPlayers.push(this.searchedPlayers[i])
-    }
-  }
-
   searchPlayers(){
     var older: boolean = false
     var taller: boolean = false
     var heavier: boolean = false
     var better: boolean = false
-
-    this.searchedPlayers = this.players
 
     if(this.model.older.toLowerCase() == "older".toLocaleLowerCase()) older = true
     else older = false
@@ -128,29 +121,19 @@ export class PlayerListComponent {
     if(this.model.better.toLowerCase() == "better".toLocaleLowerCase()) better = true
     else better = false
 
-    this.betterStatus = better
-    this.heavierStatus = heavier
-    this.tallerStatus = taller
-    this.olderStatus = older
-    this.searchSuccessful = "nothing"
-
+    //applies the filter to the player list
     this.searchedPlayers = this.players.filter(p => p.name.toLowerCase().includes(this.model.name.toLowerCase()))
-    this.searchSuccessful = "name"
     this.searchedPlayers = this.searchedPlayers.filter(p => p.nationality.toLowerCase().includes(this.model.nationality.toLowerCase()))
-    this.searchSuccessful = "nation"
     this.searchedPlayers = this.searchedPlayers.filter(p => taller ? p.height_cm >= this.model.height_cm : p.height_cm <= this.model.height_cm)
-    this.searchSuccessful = "height"
     this.searchedPlayers = this.searchedPlayers.filter(p => older ? p.age >= this.model.age : p.age <= this.model.age)
-    this.searchSuccessful = "age"
     this.searchedPlayers = this.searchedPlayers.filter(p => heavier ? p.weight_kg >= this.model.weight_kg : p.weight_kg <= this.model.weight_kg)
-    this.searchSuccessful = "weight"
     this.searchedPlayers = this.searchedPlayers.filter(p => better ? p.overall >= this.model.overall : p.overall <= this.model.overall)
-    this.searchSuccessful = "skill"
     this.searchedPlayers = this.searchedPlayers.filter(p => p.player_positions.toLowerCase().includes(this.model.player_positions.toLowerCase()))
-    this.searchSuccessful = "position"
     this.searchedPlayers = this.searchedPlayers.filter(p => p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLowerCase()))
-    this.searchSuccessful = "done"
-    
-    this.loadPlayers(0)
-    }
+  }
+
+  Hideloader() {
+    // Setting display of spinner element to none
+    this.renderer.setStyle(this.el.nativeElement.querySelector('#loading'), 'display', 'none');
+  }
 }
