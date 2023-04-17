@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230329113910_sqlTest01")]
-    partial class sqlTest01
+    [Migration("20230417105634_hashsetLeague")]
+    partial class hashsetLeague
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -172,7 +172,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5318d6f0-db35-4b11-9d46-428b1758455d"),
+                            Id = new Guid("e932150c-75e3-4fb0-838b-1cb3039d3185"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",

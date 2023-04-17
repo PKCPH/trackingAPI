@@ -24,7 +24,7 @@ import { AddPlayerComponent } from './components/main-player/add-player/add-play
 import { EditPlayerComponent } from './components/main-player/edit-player/edit-player.component';
 import { PlayersOnTeamComponent } from './components/main-teams/players-on-team/players-on-team.component';
 import { UserprofileComponent } from './components/main-login/userprofile/userprofile.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmboxComponent } from './components/main-login/userprofile/confirmbox/confirmbox.component';
 import { ChangepasswordComponent } from './components/main-login/userprofile/changepassword/changepassword.component';
 import { AdminboardComponent } from './components/main-login/adminboard/adminboard.component';
@@ -53,6 +53,8 @@ import { AddLeagueComponent } from './components/main-leagues/add-league/add-lea
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgDropdownPanelComponent } from '@ng-select/ng-select/lib/ng-dropdown-panel.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -93,7 +95,7 @@ export function tokenGetter() {
     FooterComponent,
     ContactComponent,
     MainLeaguesListComponent,
-    AddLeagueComponent
+    AddLeagueComponent,
 
   ],
   imports: [
@@ -118,7 +120,10 @@ export function tokenGetter() {
     MatSortModule,
     FontAwesomeModule,
     CommonModule,
-    NgSelectModule
+    NgSelectModule,
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
+
   ],
   providers: [
     { provide: ErrorHandler, useClass: CustomErrorHandlerService }, [AuthguardService]

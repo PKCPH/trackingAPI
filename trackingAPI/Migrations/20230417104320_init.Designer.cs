@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230417104320_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,27 +23,6 @@ namespace trackingAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("LeagueTeam", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("LeagueId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TeamId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LeagueId");
-
-                    b.HasIndex("TeamId");
-
-                    b.ToTable("LeagueTeams");
-                });
 
             modelBuilder.Entity("trackingAPI.Models.Bet", b =>
                 {
@@ -130,6 +111,27 @@ namespace trackingAPI.Migrations
                     b.ToTable("Leagues");
                 });
 
+            modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LeaguesId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TeamId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaguesId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("LeagueTeams");
+                });
+
             modelBuilder.Entity("trackingAPI.Models.Login", b =>
                 {
                     b.Property<Guid>("Id")
@@ -170,7 +172,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0db754ef-52f6-4d9c-9fe4-4339e2402a3f"),
+                            Id = new Guid("30989f88-b877-44eb-b7ab-14441c966be0"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -572,25 +574,6 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("LeagueTeam", b =>
-                {
-                    b.HasOne("trackingAPI.Models.League", "League")
-                        .WithMany("Teams")
-                        .HasForeignKey("LeagueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("trackingAPI.Models.Team", "Team")
-                        .WithMany("Leagues")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("League");
-
-                    b.Navigation("Team");
-                });
-
             modelBuilder.Entity("trackingAPI.Models.Bet", b =>
                 {
                     b.HasOne("trackingAPI.Models.Login", null)
@@ -615,6 +598,25 @@ namespace trackingAPI.Migrations
                         .HasForeignKey("LeagueId");
 
                     b.Navigation("league");
+                });
+
+            modelBuilder.Entity("trackingAPI.Models.LeagueTeam", b =>
+                {
+                    b.HasOne("trackingAPI.Models.League", "Leagues")
+                        .WithMany("Teams")
+                        .HasForeignKey("LeaguesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("trackingAPI.Models.Team", "Team")
+                        .WithMany("Leagues")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Leagues");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.MatchTeam", b =>

@@ -154,4 +154,25 @@ public class TeamController : ControllerBase
 
         return playerTeamsList == null ? NotFound() : Ok(playerTeamsList);
     }
+
+    //For creating league
+    [HttpGet("getAvailableTeams")]
+    public async Task<IActionResult> GetAvailableTeams()
+    {
+        //get a list of Issue
+        var teams = await _context.Teams.Where(t => t.IsAvailable == true).OrderBy(t => t.Name).ToListAsync();
+        var playerTeams = await _context.PlayerTeams.ToListAsync();
+        foreach (var team in teams)
+        {
+            foreach (var playerTeam in playerTeams)
+            {
+                if (playerTeam.TeamId == team.Id)
+                {
+                    team.Players.Add(playerTeam);
+                }
+            }
+        }
+        //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
+        return Ok(teams);
+    }
 }

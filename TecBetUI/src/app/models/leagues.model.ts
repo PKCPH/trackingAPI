@@ -8,7 +8,7 @@ export interface Leagues {
     name: string;
     startDate: string;
     match: Match[];
-    team: Team[];
+    teams: Team[];
 }
 
 // enum LeagueState{

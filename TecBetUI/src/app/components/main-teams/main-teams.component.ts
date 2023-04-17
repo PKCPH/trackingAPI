@@ -21,7 +21,7 @@ export class MainTeamsComponent implements OnDestroy {
 
   //ViewChield is used to fetch a components html element object
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort | any;
+  @ViewChild(MatSort, { static: true }) sort: MatSort | any;
 
   //ngOnDestroy is when you route out of a component it triggers, and inside it I unsubscribe to everything, so it doesnt keep running while on another component.
 
@@ -73,7 +73,7 @@ export class MainTeamsComponent implements OnDestroy {
           }
         }
       });
-      }
+  }
 
 
   //The getall method that repeats itself every 1.5 seconds, to dynamically update the view with repeated API calls.

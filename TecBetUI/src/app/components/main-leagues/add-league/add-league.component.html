@@ -30,8 +30,7 @@
       <div class="mb-3">
         <h1 class="mb-5">Create new league</h1>
         <div>
-          <div>
-            <label for="Teams" class="form-label">Teams</label>
+              <label for="teamList" class="form-label">Teams</label>
 
               <!--
 
@@ -40,31 +39,15 @@
               -->
 
 
-            <!-- Using Items Input -->
-            <ng-select
-            class="form-control"
-            id="selectedTeams"
-            formControlName="selectedTeams"
-            [items]="teams"
-            bindLabel="name"
-            placeholder=""
-            appendTo="body"
-            [(ngModel)]="selectedTeams"
-            [multiple]="true">
-              <tr class="tablerow" *ngFor="let team of teams">
-                <td>
-                  <tr>
-                  {{ team.name }}
-                </tr>
-              </td>
-              </tr>
+
+              <!-- Using Items Input -->
+              <ng-select (onChange)="changeFn" class="custom" id="selectedTeams" formControlName="selectedTeams" [items]="teamList"
+              bindLabel="name" style="overflow: visible" [multiple]="true" placeholder="Search teams...">
 
 
               <!--<ng-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</ng-option>-->
             </ng-select>
 
-
-          </div>
 
 
           <label for="name" class="form-label">Name</label>
@@ -85,12 +68,14 @@
           <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
             Start date must exists in the future.
           </div>
-        </div>
-      </div>
-      <button type="submit" class="btn btn-success mt-4">Create League</button>
-      <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go
-        Back</button></a>
-      </form>
-    </div>
 
         </div>
+      </div>
+      <button type="submit" (onClick)="addLeague()" class="btn btn-success mt-4">Create League</button>
+      <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go
+          Back</button></a>
+
+    </form>
+  </div>
+
+</div>

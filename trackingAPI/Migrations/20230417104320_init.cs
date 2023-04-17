@@ -296,7 +296,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("e0e32e76-ee05-427b-b520-311375832480"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("30989f88-b877-44eb-b7ab-14441c966be0"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",

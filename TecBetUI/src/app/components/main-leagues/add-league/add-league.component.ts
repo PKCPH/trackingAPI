@@ -10,7 +10,6 @@ import { Sort, MatSort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
   selector: 'app-add-league',
   templateUrl: './add-league.component.html',
@@ -18,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddLeagueComponent implements OnInit {
 
-  teams: Team[] = [];
+  teamList: Team[] = [];
   searchedTeams: Team[] = [];
   selectedTeams: Team[] = [];
   shownTeams: Team[] = [];
@@ -31,7 +30,7 @@ export class AddLeagueComponent implements OnInit {
     id: '',
     name: '',
     startDate: '',
-    team: [],
+    teams: [],
     match: [],
   }
 
@@ -41,7 +40,6 @@ export class AddLeagueComponent implements OnInit {
   }
 
   //ViewChield is used to fetch a components html element object
-
   @ViewChild(MatSort, { static: true }) sort: MatSort | any;
 
   leagueForm: FormGroup | any;
@@ -60,38 +58,44 @@ export class AddLeagueComponent implements OnInit {
   buildValidator() {
     this.leagueForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      startDate: ['', [Validators.required]]
+      startDate: ['', [Validators.required]],
+      selectedTeams: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
-    this.teamsService.getAllTeams()
+    this.teamsService.getAvailableTeams()
     .subscribe({
       next: (teams) => {
         console.log(teams);
-        this.teams = teams
+        this.teamList = teams
         this.searchedTeams = teams
       }
     })
   }
 
+
+  onItemSelect($event: any){
+    console.log('$event is ', $event);
+  }
+
   addLeague() {
     this.submitted = true;
     if (this.leagueForm.valid) {
+      console.log("leagueForm Valid")
       if (this.addLeagueRequest) {
         this.addLeagueRequest = {
           ...this.addLeagueRequest,
           name: this.leagueForm.get('name')?.value,
           startDate: this.leagueForm.get('startDate')?.value,
-          team: this.leagueForm.get('selectedTeams')?.value
-
+          teams: this.leagueForm.get('selectedTeams')?.value
         };
       }
-      console.log(this.addLeagueRequest.team);
+      console.log("3434343", this.addLeagueRequest);
       this.leagueService.addLeague(this.addLeagueRequest)
         .subscribe({
           next: (members) => {
-            this.router.navigate(['leagues']);
+            //this.router.navigate(['leagues']);
           },
           error: (error) => {
             console.log(error); // Log the error for debugging purposes
@@ -115,21 +119,19 @@ export class AddLeagueComponent implements OnInit {
       this.errorMessage = error;
     });
 
-    this.teamsService.getAllTeams()
+    this.teamsService.getAvailableTeams()
       .subscribe({
         next: (teams) => {
-          this.teams = teams.map(team => {
+          this.teamList = teams.map(team => {
             return {
-              ...team,
-              availability: team.isAvailable ? 'No' : 'Yes'
+              ...team
             }
           });
-          console.log(this.teams);
+          console.log(this.teamList);
           if (teams) {
-            this.sortedTeams = this.teams.slice();
+            this.sortedTeams = this.teamList.slice();
             this.toggleOverflowDiv();
             this.Hideloader();
-            this.sortData(this.sort);
           }
           if (teams.length > 0) {
             this.errorMessage = "";
@@ -149,26 +151,6 @@ export class AddLeagueComponent implements OnInit {
     }
   }
 
-  //This functions take the sorted teams and updates them
-
-  updateSortedTeams() {
-    const sortColumn = this.sort.active;
-    const sortDirection = this.sort.direction;
-    this.sortedTeams = this.teams.slice().sort((a, b) => {
-      const isAsc = sortDirection === 'asc';
-      switch (sortColumn) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  //This functions saves the sort event, to dynamically update the sorted teams, whenever it gets re-fetched
-
-  sortData(event: any) {
-    this.sort = event; // Store sort state for dynamic data update
-    this.updateSortedTeams();
-  }
 
   //Simple delete, it gets parsed the string and it deletes the correspondant team. After I do another getall, to update my view.
 
@@ -179,7 +161,7 @@ export class AddLeagueComponent implements OnInit {
           this.teamsService.getAllTeams()
             .subscribe({
               next: (teams) => {
-                this.teams = teams.map(team => {
+                this.teamList = teams.map(team => {
                   return {
                     ...team,
                     availability: team.isAvailable ? 'No' : 'Yes'
@@ -217,8 +199,19 @@ export class AddLeagueComponent implements OnInit {
     }
   }
 
-  searchTeams(){
-    this.searchedTeams = this.teams.filter(p => p.name.toLowerCase().includes(this.teamModel.name.toLowerCase()))
+  changeFn(selectedTeams: Team[]): void {
+    // Access the selected teams array
+    console.log("Selected Teams:", selectedTeams);
+
+    // Loop through the selected teams array and extract the desired data
+    for (let i = 0; i < selectedTeams.length; i++) {
+      const team = selectedTeams[i];
+      const teamId = team.id; // Extract team id
+      const teamName = team.name; // Extract team name
+
+      console.log("Team ID:", teamId);
+      console.log("Team Name:", teamName);
+    }
   }
 
 

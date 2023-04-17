@@ -17,7 +17,7 @@
             <img style="height: 25px; position: absolute; top: -35%; right: -20%;" src="/images/arrow.png">
           </div>
 
-        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'username' && !errorMessage">Create a Team</button>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddTeam()" id="addbutton" *ngIf="role == 'Admin' && !errorMessage">Create a Team</button>
 
         <table matSort (matSortChange)="sortData($event)" class="table tabletext" *ngIf="teams && teams.length > 0">
             <thead>
