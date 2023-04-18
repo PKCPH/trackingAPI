@@ -1,88 +1,170 @@
 <div class="section1 tablediv">
-    <div class="container my-2 divs py-5">
-        <h1 class="mb-3">Players</h1>
-        <div>
-            <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
-            <table class="table tabletext" *ngIf="players && players.length > 0">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Nationality</th>
-                        <th>Age</th>
-                        <th>Height(cm)</th>
-                        <th>Weight(kg)</th>
-                        <th>Overall</th>
-                        <th>Player Positions</th>
-                        <th>Preferred Foot</th>
-                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
-                        <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <select name="age" id="age" [(ngModel)]="model.older">
-                                <option value="older">Older</option>
-                                <option value="younger">Younger</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="height" id="height" [(ngModel)]="model.taller">
-                                <option value="taller">Taller</option>
-                                <option value="shorter">Shorter</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="weight" id="weight" [(ngModel)]="model.heavier">
-                                <option value="heavier">Heavier</option>
-                                <option value="lighter">Lighter</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select name="overall" id="overall" [(ngModel)]="model.better">
-                                <option value="better">Better</option>
-                                <option value="worse">Worse</option>
-                            </select>
-                        </td>
-                        <td></td>
-                        <td *ngIf="credentials.role !== 'Admin'"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" [(ngModel)]="model.name"></td>
-                        <td><input type="text" [(ngModel)]="model.nationality"></td>
-                        <td><input type="number" [(ngModel)]="model.age"></td>
-                        <td><input type="number" [(ngModel)]="model.height_cm"></td>
-                        <td><input type="number" [(ngModel)]="model.weight_kg"></td>
-                        <td><input type="number" [(ngModel)]="model.overall"></td>
-                        <td><input type="text" [(ngModel)]="model.player_positions"></td>
-                        <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                    </tr>
-                    <tr *ngFor="let player of searchedPlayers">
-                        <td> {{player.name}}</td>
-                        <td> {{player.nationality}}</td>
-                        <td> {{player.age}}</td>
-                        <td> {{player.height_cm}}</td>
-                        <td> {{player.weight_kg}}</td>
-                        <td> {{player.overall}}</td>
-                        <td> {{player.player_positions}}</td>
-                        <td> {{player.preferred_foot}}</td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
-                            <a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a>
-                        </td>
-                        <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
-                            <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p *ngIf="!players || players.length <= 0">No Players found</p>
+    <div id="loading"></div>
+    <div *ngIf="searchedPlayers && searchedPlayers.length > 0">
+        <div class="container my-2 divs py-5">
+            <h1 class="mb-3">Players</h1>
+            <h4 *ngIf="players.length == searchedPlayers.length">Number of players in database: {{players.length}}</h4>
+            <div>
+                <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
+                <table class="table tabletext">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Nationality</th>
+                            <th>Age</th>
+                            <th>Height(cm)</th>
+                            <th>Weight(kg)</th>
+                            <th>Overall</th>
+                            <th>Player Positions</th>
+                            <th>Preferred Foot</th>
+                            <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
+                            <th *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <select name="age" id="age" [(ngModel)]="model.older">
+                                    <option value="older">Older</option>
+                                    <option value="younger">Younger</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="height" id="height" [(ngModel)]="model.taller">
+                                    <option value="taller">Taller</option>
+                                    <option value="shorter">Shorter</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="weight" id="weight" [(ngModel)]="model.heavier">
+                                    <option value="heavier" sele>Heavier</option>
+                                    <option value="lighter">Lighter</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="overall" id="overall" [(ngModel)]="model.better">
+                                    <option value="better">Better</option>
+                                    <option value="worse">Worse</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td *ngIf="credentials.role !== 'Admin'"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" [(ngModel)]="model.name"></td>
+                            <td><input type="text" [(ngModel)]="model.nationality"></td>
+                            <td><input type="number" [(ngModel)]="model.age"></td>
+                            <td><input type="number" [(ngModel)]="model.height_cm"></td>
+                            <td><input type="number" [(ngModel)]="model.weight_kg"></td>
+                            <td><input type="number" [(ngModel)]="model.overall"></td>
+                            <td><input type="text" [(ngModel)]="model.player_positions"></td>
+                            <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                        </tr>
+                        <tr *ngFor="let player of searchedPlayers | slice:(0+numberOfPlayersShown*pageNumber):(numberOfPlayersShown+numberOfPlayersShown*pageNumber)">
+                            <td> {{player.name}}</td>
+                            <td> {{player.nationality}}</td>
+                            <td> {{player.age}}</td>
+                            <td> {{player.height_cm}}</td>
+                            <td> {{player.weight_kg}}</td>
+                            <td> {{player.overall}}</td>
+                            <td> {{player.player_positions}}</td>
+                            <td> {{player.preferred_foot}}</td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+                                <a [routerLink]="['/players', 'edit', player.id]"><button type="button" class="btn btn-primary">Change player</button></a>
+                            </td>
+                            <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+                                <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="position-relative top-90 start-50 translate-middle-x" *ngIf="searchedPlayers.length > 0">
+                    <tbody>
+                        <tr>
+                            <td *ngIf="pageNumber > 2">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = 0">First</button>
+                            </td>
+                            <td *ngIf="pageNumber > 1">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber - 2">{{pageNumber - 1}}</button>
+                            </td>
+                            <td *ngIf="pageNumber > 0">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber - 1">{{pageNumber}}</button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success">{{pageNumber + 1}}</button>
+                            </td>
+                            <td *ngIf="(pageNumber * numberOfPlayersShown) + numberOfPlayersShown < searchedPlayers.length">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber + 1">{{pageNumber + 2}}</button>
+                            </td>
+                            <td *ngIf="(pageNumber * numberOfPlayersShown) + numberOfPlayersShown * 2 < searchedPlayers.length">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber + 2">{{pageNumber + 3}}</button>
+                            </td>
+                            <td *ngIf="(pageNumber * numberOfPlayersShown) + numberOfPlayersShown * 3 < searchedPlayers.length">
+                                <button type="button" class="btn btn-primary" (click)="pageNumber = ((searchedPlayers.length - searchedPlayers.length % numberOfPlayersShown) / numberOfPlayersShown)">Last</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
+    <div class="container my-2 divs py-5" *ngIf="searchedPlayers.length <= 0 && players.length > 0">
+        <h3>No Player Matches search</h3>
+        <table class="table tabletext">
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select name="age" id="age" [(ngModel)]="model.older">
+                            <option value="older">Older</option>
+                            <option value="younger">Younger</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="height" id="height" [(ngModel)]="model.taller">
+                            <option value="taller">Taller</option>
+                            <option value="shorter">Shorter</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="weight" id="weight" [(ngModel)]="model.heavier">
+                            <option value="heavier">Heavier</option>
+                            <option value="lighter">Lighter</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="overall" id="overall" [(ngModel)]="model.better">
+                            <option value="better">Better</option>
+                            <option value="worse">Worse</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td *ngIf="credentials.role !== 'Admin'"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
+                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
+                </tr>
+                <tr>
+                    <td><input type="text" [(ngModel)]="model.name"></td>
+                    <td><input type="text" [(ngModel)]="model.nationality"></td>
+                    <td><input type="number" [(ngModel)]="model.age"></td>
+                    <td><input type="number" [(ngModel)]="model.height_cm"></td>
+                    <td><input type="number" [(ngModel)]="model.weight_kg"></td>
+                    <td><input type="number" [(ngModel)]="model.overall"></td>
+                    <td><input type="text" [(ngModel)]="model.player_positions"></td>
+                    <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
+                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

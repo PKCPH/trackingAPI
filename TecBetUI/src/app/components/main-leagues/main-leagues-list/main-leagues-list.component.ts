@@ -1,9 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Leagues } from 'src/app/models/leagues.model';
 import { LeaguesService } from 'src/app/services/leagues.service';
-//import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
-//import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
-//import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-main-leagues-list',
@@ -12,8 +12,8 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 })
 export class MainLeaguesListComponent {
 
-  //arrowDown = faCircleChevronDown;
-  //arrowUp = faCircleChevronUp;
+  arrowDown = faCircleChevronDown;
+  arrowUp = faCircleChevronUp;
   output: number = 0;
   byeCheese: boolean = false;
 
