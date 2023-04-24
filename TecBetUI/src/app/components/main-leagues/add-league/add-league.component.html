@@ -24,69 +24,54 @@
 -->
 
 <div class="section1">
-  <!-- Need better solution here not sure whats going on -->
   <div class="container divs my-5 py-5">
     <form [formGroup]="leagueForm" (ngSubmit)="addLeague()">
       <div class="mb-3">
         <h1 class="mb-5">Create new league</h1>
         <div>
-              <label for="teamList" class="form-label">Amount Of Teams</label>
-
-              <input type="number" class="form-control" id="amountOfTeams" formControlName="amountOfTeams"
-              min="2" />
-              <!--
-
-                <input type="text" placeholder="Search team.." class="form-control" id="teams" formControlName="teams">
-                <td><button (click)="searchTeams()" class="btn btn-secondary">Search</button></td>
-              -->
-
-
-
-              <!-- Using Items Input -->
-              <!-- <ng-select (onChange)="changeFn" class="custom" id="selectedTeams" formControlName="selectedTeams" [items]="teamList"
-              bindLabel="name" style="overflow: visible" [multiple]="true" placeholder="Search teams...">
-
-
-              <ng-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</ng-option>
-            </ng-select> -->
-
-
-
           <label for="name" class="form-label">Name</label>
           <input type="text" class="form-control" id="name" formControlName="name" />
+        </div>
+        <div>
+          <label for="teamList" class="form-label">Amount Of Teams (Available: {{teamList.length}})</label>
+          <input type="number" class="form-control" id="amountOfTeams" formControlName="amountOfTeams" min="2" />
         </div>
         <div>
           <label for="startdate" class="form-label">Start Date</label>
           <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate" />
         </div>
 
-        <div class="submitValidBox" *ngIf="submitted">
+
+        <div class="submitBox" *ngIf="submitted">
 
           <div class="validBox" *ngIf="leagueForm.get('name')?.invalid
           || leagueForm.get('startDate')?.invalid
           || leagueForm.get('amountOfTeams')?.invalid">
-          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['required']">
-            Please choose an amount of teams.
-          </div>
-          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['min']">
-            Minimum teams required is 2
-          </div>
-          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.max">
-            The amount of teams is not available, please choose a lower number (teams available: {{teamList.length}})
-          </div>
 
-          <div *ngIf="leagueForm.get('name')?.errors?.['required']">
-            Name is required.
-          </div>
-          <div *ngIf="leagueForm.get('name')?.errors?.['pattern']">
-            Name cannot contain numbers.
-          </div>
-          <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
-            Start date must exists in the future.
-          </div>
+            <div *ngIf="leagueForm.get('name')?.errors?.['required']">
+              Name is required.
+            </div>
 
+            <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['required']">
+              Please choose an amount of teams.
+            </div>
+            <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['min']">
+              Minimum amount of teams required is 2
+            </div>
+            <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.max">
+              The amount of teams is not available, please choose a lower number (teams available: {{teamList.length}})
+            </div>
+
+            <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
+              Start date must exists in the future.
+            </div>
+
+          </div>
         </div>
-      </div>
+        <div class="submitValid" *ngIf="submitted
+        && !leagueForm.get('name')?.invalid
+        && !leagueForm.get('startDate')?.invalid
+        && !leagueForm.get('amountOfTeams')?.invalid">League created. Navigating to league page</div>
       </div>
       <button type="submit" (onClick)="addLeague()" class="btn btn-success mt-4">Create League</button>
 
@@ -95,5 +80,4 @@
 
     </form>
   </div>
-
 </div>

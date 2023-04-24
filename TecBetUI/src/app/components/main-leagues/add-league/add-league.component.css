@@ -2,3 +2,7 @@
     font-style:normal;
     text-shadow: none;
 }
+
+.validBox {
+    color: red;
+}
