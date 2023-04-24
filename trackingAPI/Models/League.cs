@@ -19,6 +19,8 @@ namespace trackingAPI.Models
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+        
+        public int AmountOfTeams { get; set; }
 
         [DefaultValue(LeagueState.NotStarted)]
         public LeagueState LeagueState { get; set; }
@@ -26,6 +28,7 @@ namespace trackingAPI.Models
         public DateTime StartDate { get; set; }
 
         public ICollection<LeagueTeam> Teams { get; set; }
+
 
         public ICollection<Gamematch> Gamematches { get; set; }
     }

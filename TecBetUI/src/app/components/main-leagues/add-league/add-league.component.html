@@ -30,8 +30,10 @@
       <div class="mb-3">
         <h1 class="mb-5">Create new league</h1>
         <div>
-              <label for="teamList" class="form-label">Teams</label>
+              <label for="teamList" class="form-label">Amount Of Teams</label>
 
+              <input type="number" class="form-control" id="amountOFTeams" formControlName="amountOFTeams"
+              min="1" max="15" />
               <!--
 
                 <input type="text" placeholder="Search team.." class="form-control" id="teams" formControlName="teams">
@@ -41,12 +43,12 @@
 
 
               <!-- Using Items Input -->
-              <ng-select (onChange)="changeFn" class="custom" id="selectedTeams" formControlName="selectedTeams" [items]="teamList"
+              <!-- <ng-select (onChange)="changeFn" class="custom" id="selectedTeams" formControlName="selectedTeams" [items]="teamList"
               bindLabel="name" style="overflow: visible" [multiple]="true" placeholder="Search teams...">
 
 
-              <!--<ng-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</ng-option>-->
-            </ng-select>
+              <ng-option *ngFor="let team of teams" [value]="team.id">{{team.name}}</ng-option>
+            </ng-select> -->
 
 
 
@@ -67,6 +69,9 @@
           </div>
           <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
             Start date must exists in the future.
+          </div>
+          <div *ngIf="leagueForm.get('amountOFTeams')?.errors?.['pattern']">
+            The Amount oF teams must not be higher than team that is available
           </div>
 
         </div>

@@ -15,6 +15,7 @@ namespace trackingAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AmountOfTeams = table.Column<int>(type: "int", nullable: false),
                     LeagueState = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -192,15 +193,15 @@ namespace trackingAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LeaguesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LeagueId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeagueTeams", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LeagueTeams_Leagues_LeaguesId",
-                        column: x => x.LeaguesId,
+                        name: "FK_LeagueTeams_Leagues_LeagueId",
+                        column: x => x.LeagueId,
                         principalTable: "Leagues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -296,7 +297,7 @@ namespace trackingAPI.Migrations
             migrationBuilder.InsertData(
                 table: "Logins",
                 columns: new[] { "Id", "Balance", "Email", "Password", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UserName" },
-                values: new object[] { new Guid("30989f88-b877-44eb-b7ab-14441c966be0"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
+                values: new object[] { new Guid("c3fcbd01-34d8-478c-81eb-1e92e056b4b2"), 1000, "", "123456", null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bets_LoginId",
@@ -309,9 +310,9 @@ namespace trackingAPI.Migrations
                 column: "MatchId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeagueTeams_LeaguesId",
+                name: "IX_LeagueTeams_LeagueId",
                 table: "LeagueTeams",
-                column: "LeaguesId");
+                column: "LeagueId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LeagueTeams_TeamId",

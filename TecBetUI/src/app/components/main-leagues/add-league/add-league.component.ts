@@ -19,7 +19,7 @@ export class AddLeagueComponent implements OnInit {
 
   teamList: Team[] = [];
   searchedTeams: Team[] = [];
-  selectedTeams: Team[] = [];
+  amountOfTeams: number | any;
   shownTeams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription | any;
@@ -30,7 +30,7 @@ export class AddLeagueComponent implements OnInit {
     id: '',
     name: '',
     startDate: '',
-    teams: [],
+    amountOfTeams: 0,
     match: [],
   }
 
@@ -59,7 +59,7 @@ export class AddLeagueComponent implements OnInit {
     this.leagueForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
-      selectedTeams: ['', [Validators.required]]
+      amountOfTeams: ['', [Validators.required], [Validators]]
     });
   }
 
@@ -88,7 +88,7 @@ export class AddLeagueComponent implements OnInit {
           ...this.addLeagueRequest,
           name: this.leagueForm.get('name')?.value,
           startDate: this.leagueForm.get('startDate')?.value,
-          teams: this.leagueForm.get('selectedTeams')?.value
+          amountOfTeams: this.leagueForm.get('amountOfTeams')?.value
         };
       }
       console.log("3434343", this.addLeagueRequest);

@@ -115,6 +115,9 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AmountOfTeams")
+                        .HasColumnType("int");
+
                     b.Property<int>("LeagueState")
                         .HasColumnType("int");
 
@@ -170,7 +173,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("0db754ef-52f6-4d9c-9fe4-4339e2402a3f"),
+                            Id = new Guid("c3fcbd01-34d8-478c-81eb-1e92e056b4b2"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
