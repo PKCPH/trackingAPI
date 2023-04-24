@@ -100,42 +100,4 @@ public class LeagueController : ControllerBase
 
         return Ok(leagues);
     }
-
-    //[HttpPost]
-    //public async Task<IActionResult> AddTeamsToLeague([FromBody] League model)
-    //{
-    //    // Create the league
-    //    League league = new League
-    //    {
-    //        Name = model.Name,
-    //        StartDate = model.StartDate
-    //    };
-    //    _context.Leagues.Add(league);
-    //    await _context.SaveChangesAsync();
-
-    //    // Obtain the newly created leagueId
-    //    Guid leagueId = league.Id;
-
-    //    // Loop through the teams and add them to the league
-    //    foreach (var teamDto in model.Teams)
-    //    {
-    //        // Find the existing team by teamId
-    //        Team team = await _context.Teams.FirstOrDefaultAsync(t => t.Id == teamDto.Team.Id);
-
-    //        if (team != null)
-    //        {
-    //            // Create the LeagueTeam relationship
-    //            LeagueTeam leagueTeam = new LeagueTeam
-    //            {
-    //                Team = team,
-    //                League = league
-    //            };
-    //            _context.LeagueTeams.Add(leagueTeam);
-    //        }
-    //    }
-
-    //    await _context.SaveChangesAsync();
-
-    //    return Ok("Teams added to league successfully");
-    //}
 }

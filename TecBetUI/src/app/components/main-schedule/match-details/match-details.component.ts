@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnDestroy, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription, interval, switchMap } from 'rxjs';
@@ -14,8 +14,9 @@ import { BettingWindowComponent } from '../../betting/betting-window/betting-win
   templateUrl: './match-details.component.html',
   styleUrls: ['./match-details.component.css']
 })
-export class MatchDetailsComponent implements OnDestroy {
-
+export class MatchDetailsComponent implements OnInit, OnDestroy {
+  startTime: Date | any;
+  stopwatch: string | any;
   matchDetails: Match | any;
   credentials: LoginModel | any;
   storedCredentialsString: any;
@@ -36,6 +37,30 @@ export class MatchDetailsComponent implements OnDestroy {
 
   updateSubscription: Subscription;
   id: any;
+
+  ngOnInit(): void {
+    // set the starting datetime
+    //this.startTime = new Date('2023-04-24T11:00:00Z');
+    this.startTime = new Date(this.matchDetails.dateOfMatch);
+    console.log("test time: " + this.startTime)
+
+    // update the stopwatch every 10 milliseconds
+    setInterval(() => {
+      // get the current time
+      const now = new Date();
+
+      // calculate the elapsed time in milliseconds
+      const elapsedTime = now.getTime() - this.startTime.getTime();
+
+      // convert the elapsed time to minutes, seconds, and milliseconds
+      const minutes = Math.floor(elapsedTime / 60000);
+      const seconds = Math.floor((elapsedTime % 60000) / 1000);
+      const milliseconds = elapsedTime % 1000;
+
+      // format the time as a string
+      this.stopwatch = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 10); // update the stopwatch every 10 milliseconds
+  }
 
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
@@ -66,8 +91,12 @@ export class MatchDetailsComponent implements OnDestroy {
   fetch() {
     this.matchesService.getMatchDetails(this.id).subscribe({
       next: (response) => {
-        this.matchDetails = response
+        this.matchDetails = response;
         console.log(this.matchDetails);
+
+        // Set the start time after the match details have been fetched
+        this.startTime = new Date(this.matchDetails.dateOfMatch);
+
         if (this.matchDetails) {
           if (this.matchDetails.matchState == 2) {
             this.modalService.dismissAll(BettingWindowComponent);
@@ -128,5 +157,7 @@ export class MatchDetailsComponent implements OnDestroy {
     }
 
   }
+
+
 
 }
