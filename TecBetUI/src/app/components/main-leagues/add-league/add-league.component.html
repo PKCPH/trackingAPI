@@ -60,14 +60,18 @@
           <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate" />
         </div>
 
-        <div class="validBox" *ngIf="submitted && leagueForm.get('name')?.invalid">
+        <div class="submitValidBox" *ngIf="submitted">
+
+          <div class="validBox" *ngIf="leagueForm.get('name')?.invalid
+          || leagueForm.get('startDate')?.invalid
+          || leagueForm.get('amountOfTeams')?.invalid">
           <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['required']">
             Please choose an amount of teams.
           </div>
           <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['min']">
             Minimum teams required is 2
           </div>
-          <div *ngIf="leagueForm.get('amountOfTeams.max.true')?.errors?.['max']">
+          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.max">
             The amount of teams is not available, please choose a lower number (teams available: {{teamList.length}})
           </div>
 
@@ -82,6 +86,7 @@
           </div>
 
         </div>
+      </div>
       </div>
       <button type="submit" (onClick)="addLeague()" class="btn btn-success mt-4">Create League</button>
 

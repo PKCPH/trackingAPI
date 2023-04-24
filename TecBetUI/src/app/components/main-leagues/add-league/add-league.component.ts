@@ -18,7 +18,6 @@ import { FormsModule } from '@angular/forms';
 export class AddLeagueComponent implements OnInit {
 
   teamList: Team[] = [];
-  searchedTeams: Team[] = [];
   shownTeams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription | any;
@@ -52,21 +51,19 @@ export class AddLeagueComponent implements OnInit {
     private teamsService: TeamsService,
     private el: ElementRef,
     private renderer: Renderer2
-    ) {
+  ) {
     this.buildValidator();
   }
 
   ngOnInit(): void {
     this.teamsService.getAvailableTeams()
-    .subscribe({
-      next: (teams) => {
-        console.log(teams);
-        this.teamList = teams
-        this.searchedTeams = teams
-        console.log("Teams " + this.teamList.length)
-        this.buildValidator();
-      }
-    })
+      .subscribe({
+        next: (teams) => {
+          console.log(teams);
+          this.teamList = teams
+          this.buildValidator();
+        }
+      })
   }
 
   buildValidator() {
@@ -77,17 +74,13 @@ export class AddLeagueComponent implements OnInit {
     });
   }
 
-  maxValidator(control: any){
-    if(control.value > this.teamList.length){
+  maxValidator(control: any) {
+    if (control.value > this.teamList.length) {
       return { 'max': true };
     }
     return null;
   }
 
-
-  onItemSelect($event: any){
-    console.log('$event is ', $event);
-  }
 
   addLeague() {
     this.submitted = true;
@@ -104,13 +97,15 @@ export class AddLeagueComponent implements OnInit {
       console.log("3434343", this.addLeagueRequest);
       this.leagueService.addLeague(this.addLeagueRequest)
         .subscribe({
-          next: (members) => {
-            //this.router.navigate(['leagues']);
+          next: async (members) => {
+            await delay(5000);
+            this.router.navigate(['leagues']);
           },
           error: (error) => {
             console.log(error); // Log the error for debugging purposes
           }
         });
+
     } else {
       for (const key in this.leagueForm.controls) {
         if (this.leagueForm.controls.hasOwnProperty(key)) {
@@ -183,25 +178,11 @@ export class AddLeagueComponent implements OnInit {
       this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
     }
   }
-
-  changeFn(selectedTeams: Team[]): void {
-    // Access the selected teams array
-    console.log("Selected Teams:", selectedTeams);
-
-    // Loop through the selected teams array and extract the desired data
-    for (let i = 0; i < selectedTeams.length; i++) {
-      const team = selectedTeams[i];
-      const teamId = team.id; // Extract team id
-      const teamName = team.name; // Extract team name
-
-      console.log("Team ID:", teamId);
-      console.log("Team Name:", teamName);
-    }
-  }
-
-
 }
 
+function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 function compare(a: number | string, b: number | string, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
