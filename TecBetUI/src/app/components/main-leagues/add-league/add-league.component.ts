@@ -19,18 +19,18 @@ export class AddLeagueComponent implements OnInit {
 
   teamList: Team[] = [];
   searchedTeams: Team[] = [];
-  amountOfTeams: number | any;
   shownTeams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription | any;
   storedCredentialsString: any;
   role: any;
   sortedTeams: Team[] = [];
+  max: number | any;
   addLeagueRequest: Leagues = {
     id: '',
     name: '',
     startDate: '',
-    amountOfTeams: 0,
+    amountOfTeams: '',
     match: [],
   }
 
@@ -55,13 +55,6 @@ export class AddLeagueComponent implements OnInit {
     ) {
     this.buildValidator();
   }
-  buildValidator() {
-    this.leagueForm = this.formBuilder.group({
-      name: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
-      amountOfTeams: ['', [Validators.required], [Validators]]
-    });
-  }
 
   ngOnInit(): void {
     this.teamsService.getAvailableTeams()
@@ -70,8 +63,25 @@ export class AddLeagueComponent implements OnInit {
         console.log(teams);
         this.teamList = teams
         this.searchedTeams = teams
+        console.log("Teams " + this.teamList.length)
+        this.buildValidator();
       }
     })
+  }
+
+  buildValidator() {
+    this.leagueForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      startDate: ['', [Validators.required]],
+      amountOfTeams: ['', [Validators.required, Validators.min(2), this.maxValidator.bind(this)]]
+    });
+  }
+
+  maxValidator(control: any){
+    if(control.value > this.teamList.length){
+      return { 'max': true };
+    }
+    return null;
   }
 
 
@@ -149,31 +159,6 @@ export class AddLeagueComponent implements OnInit {
 
       this.role = storedCredentials.role;
     }
-  }
-
-
-  //Simple delete, it gets parsed the string and it deletes the correspondant team. After I do another getall, to update my view.
-
-  deleteTeam(id: string) {
-    this.teamsService.deleteTeam(id)
-      .subscribe({
-        next: (response) => {
-          this.teamsService.getAllTeams()
-            .subscribe({
-              next: (teams) => {
-                this.teamList = teams.map(team => {
-                  return {
-                    ...team,
-                    availability: team.isAvailable ? 'No' : 'Yes'
-                  }
-                });
-              },
-              error: (response) => {
-                console.log(response);
-              }
-            });
-        }
-      });
   }
 
   //Hides loader, and shows relevant divs that should only appear after loading have finished.

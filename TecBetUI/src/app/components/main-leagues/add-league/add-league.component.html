@@ -32,8 +32,8 @@
         <div>
               <label for="teamList" class="form-label">Amount Of Teams</label>
 
-              <input type="number" class="form-control" id="amountOFTeams" formControlName="amountOFTeams"
-              min="1" max="15" />
+              <input type="number" class="form-control" id="amountOfTeams" formControlName="amountOfTeams"
+              min="2" />
               <!--
 
                 <input type="text" placeholder="Search team.." class="form-control" id="teams" formControlName="teams">
@@ -61,6 +61,16 @@
         </div>
 
         <div class="validBox" *ngIf="submitted && leagueForm.get('name')?.invalid">
+          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['required']">
+            Please choose an amount of teams.
+          </div>
+          <div *ngIf="leagueForm.get('amountOfTeams')?.errors?.['min']">
+            Minimum teams required is 2
+          </div>
+          <div *ngIf="leagueForm.get('amountOfTeams.max.true')?.errors?.['max']">
+            The amount of teams is not available, please choose a lower number (teams available: {{teamList.length}})
+          </div>
+
           <div *ngIf="leagueForm.get('name')?.errors?.['required']">
             Name is required.
           </div>
@@ -70,13 +80,11 @@
           <div *ngIf="leagueForm.get('startDate')?.errors?.['required']">
             Start date must exists in the future.
           </div>
-          <div *ngIf="leagueForm.get('amountOFTeams')?.errors?.['pattern']">
-            The Amount oF teams must not be higher than team that is available
-          </div>
 
         </div>
       </div>
       <button type="submit" (onClick)="addLeague()" class="btn btn-success mt-4">Create League</button>
+
       <a routerLink="/adminboard"><button type="button" class="btn btn-primary mt-4 mx-3 button-danger">Go
           Back</button></a>
 
