@@ -106,15 +106,43 @@ h1 {
     color: #ffe680ff;
     font-family: 'Rakesly', sans-serif;
     font-weight: 400;
+    text-shadow: none;
 }
 
 .h1Shadow{
-    text-shadow: 10px -10px 1px #a02c2cff, 20px -20px 1px #d45500ff;
+    animation: shadowAnimation 1.5s ease forwards;
     text-align: center;
     font-family: 'Rakesly';
     font-weight: 600;
     letter-spacing: 3px;
     color: #ffe680ff;
+}
+
+
+
+@keyframes shadowAnimation {
+    15%{
+        text-shadow:
+        0px 0px 1px #a02c2cff;
+    }
+    /* 50% {
+        text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
+    } */
+    25%{
+        text-shadow:
+        10px -10px 1px #a02c2cff;
+    }
+    50%{
+        text-shadow:
+        10px -10px 1px #a02c2cff,
+        20px -20px 1px #d45500ff;
+    }
+    100% {
+        text-shadow:
+        10px -10px 1px #a02c2cff,
+        20px -20px 1px #d45500ff,
+        30px -30px 1px rgb(253, 180, 22);
+    }
 }
 
 h2{

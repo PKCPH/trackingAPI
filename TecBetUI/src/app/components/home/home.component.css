@@ -5,7 +5,7 @@
   }
 
   .divs {
-    position: fixed;
+    position: absolute;
     top: 35%;
     right: 30vh;
     /*border-radius: 45px;
@@ -35,6 +35,7 @@
     color: #d45500ff;
     align-items: center;
     text-shadow: none;
+    animation: fadeInAnimation 2s forwards;
   }
 
   .divs h1 {
@@ -59,3 +60,15 @@
       width: 85.8%;
     }
   }
+
+  @keyframes fadeInAnimation{
+    0%{
+      opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
