@@ -98,7 +98,7 @@ export class AddLeagueComponent implements OnInit {
       this.leagueService.addLeague(this.addLeagueRequest)
         .subscribe({
           next: async (members) => {
-            await delay(5000);
+            await delay(3000);
             this.router.navigate(['leagues']);
           },
           error: (error) => {
