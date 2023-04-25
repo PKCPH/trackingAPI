@@ -15,12 +15,10 @@
             <p class="matchInfo" *ngIf="matchDetails.matchState == 4">Overtime</p>
             <p class="matchInfo" *ngIf="matchDetails.matchState == 5">Penalty Shootout</p>
             <p class="matchInfo" *ngIf="matchDetails.matchState == 6">Finished</p>
-            <div>
+            <div class="matchTimer">
                 <h2 class="matchInfo" *ngIf="matchDetails.matchState != 0 && matchDetails.matchState != 6">
                     {{ stopwatch }}
-
                 </h2>
-
             </div>
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">
                 {{matchDetails.participatingTeams[0].name}} WON</h2>

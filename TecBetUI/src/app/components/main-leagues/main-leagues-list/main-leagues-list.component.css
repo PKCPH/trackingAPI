@@ -46,7 +46,7 @@ td {
 }
 
 .grid:hover {
-  background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .datecell {
@@ -69,4 +69,64 @@ td {
 .goalcell {
   /* background-color: purple; */
   flex: 0 0 10%;
+}
+
+.leagueName {
+  color: #ffe680ff;
+  letter-spacing: 1px;
+}
+
+p {
+  margin: auto;
+  color: #ffe680ff;
+  font-family: Rakesly;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.leagueState {
+  color: #d45500ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.leagueTable{
+  padding-left: 1.5vh;
+  padding-right: 1.5vh;
+}
+
+.test:hover{
+  background-color: rgba(40, 23, 23, 0.883);
+}
+
+.test:hover .leagueName{
+  animation: logoShadowAnimation .5s ease forwards;
+  cursor: pointer;
+}
+
+@keyframes logoShadowAnimation {
+  15%{
+      text-shadow:
+      0px 0px 1px rgb(160, 44, 44, 0.5);
+  }
+  /* 50% {
+      text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
+  } */
+  25%{
+      text-shadow:
+      2px -2px 1px rgb(160, 44, 44, 0.5);
+    }
+  50%{
+      text-shadow:
+      2px -2px 1px rgb(160, 44, 44, 0.5),
+      4px -4px 1px rgb(212, 85, 0, 0.5);
+    }
+  100% {
+      text-shadow:
+      2px -2px 1px rgb(160, 44, 44, 0.5),
+      4px -4px 1px rgb(212, 85, 0, 0.5),
+      6px -6px 1px rgb(253, 180, 22, 0.5);
+    }
 }

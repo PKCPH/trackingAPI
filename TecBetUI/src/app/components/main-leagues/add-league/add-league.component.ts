@@ -31,6 +31,7 @@ export class AddLeagueComponent implements OnInit {
     startDate: '',
     amountOfTeams: '',
     match: [],
+    leagueState: 0
   }
 
   teamModel = {

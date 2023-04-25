@@ -217,6 +217,10 @@ form {
     background-color: rgba(0, 0, 0, 0.6);
     text-align: center;
     transition: all 400ms ease;
+    font-family: Rakesly;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-shadow: none;
 }
 
 .errorMsg {
@@ -270,6 +274,8 @@ form {
 
 .tabletext {
     color: white;
+    font-family: Rakesly;
+    font-weight: 400;
 }
 
 .footer {

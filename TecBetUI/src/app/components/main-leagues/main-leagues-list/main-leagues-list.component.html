@@ -2,16 +2,24 @@
   <div class="my-5 divs">
     <h1 class="my-5">Leagues</h1>
     <ng-container *ngFor="let league of leagues">
-      <table>
-        <tr class="test">
+      <table class="leagueTable">
+        <tr class="test" (click)="toggleTable(league.startDate, league.id)">
           <div>
             <h2 class="leagueName">{{league.name}}</h2>
           </div>
           <div style="display: flex; justify-content: center;">
-            <p class="mx-2" style="margin: auto; color: rgba(150, 150, 150, 0.7)">Display matches
-              ({{league.match.length}})</p>
-            <fa-icon class="arrowIcon" style="margin: auto" [id]="league.id"
-              (click)="toggleTable(league.startDate, league.id)"
+            <div>
+              <div>
+                <p class="mx-2">Display matches
+                  ({{league.match.length}})</p>
+              </div>
+              <div>
+                <p class="leagueState" *ngIf="league.leagueState == 0">Not started</p>
+                <p class="leagueState" *ngIf="league.leagueState == 1">On going</p>
+                <p class="leagueState" *ngIf="league.leagueState == 2">Finished</p>
+              </div>
+            </div>
+            <fa-icon class="arrowIcon" style="margin:auto;" [id]="league.id"
               [icon]="iconStates[league.id] === 'down' ? arrowUp : arrowDown" size="lg"></fa-icon>
           </div>
         </tr>
