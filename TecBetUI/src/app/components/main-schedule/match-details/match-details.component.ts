@@ -39,11 +39,10 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
   id: any;
 
   ngOnInit(): void {
-    // set the starting datetime
-    //this.startTime = new Date('2023-04-24T11:00:00Z');
-    this.startTime = new Date(this.matchDetails.dateOfMatch);
-    console.log("test time: " + this.startTime)
+    this.matchStopwatch();
+  }
 
+  matchStopwatch(){
     // update the stopwatch every 10 milliseconds
     setInterval(() => {
       // get the current time
@@ -55,11 +54,11 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
       // convert the elapsed time to minutes, seconds, and milliseconds
       const minutes = Math.floor(elapsedTime / 60000);
       const seconds = Math.floor((elapsedTime % 60000) / 1000);
-      const milliseconds = elapsedTime % 1000;
+      //const milliseconds = elapsedTime % 1000;
 
       // format the time as a string
       this.stopwatch = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }, 10); // update the stopwatch every 10 milliseconds
+    }, 10); // update the stopwatch every second
   }
 
   ngOnDestroy() {
