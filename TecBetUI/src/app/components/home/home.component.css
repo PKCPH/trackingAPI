@@ -31,9 +31,10 @@
 
   .subtitle {
     margin-top: 10px;
-    font-size: 1.5rem;
+    font-size: 7vh;
     color: #d45500ff;
     align-items: center;
+    text-shadow: none;
   }
 
   .divs h1 {

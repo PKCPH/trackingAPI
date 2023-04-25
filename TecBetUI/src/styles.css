@@ -1,5 +1,6 @@
 @import '@angular/cdk/a11y-prebuilt.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+/* @import url('https://fonts.cdnfonts.com/css/rakesly'); */
 /* You can add global styles to this file, and also import other style files */
 * {
     margin: 0;
@@ -11,7 +12,12 @@
     text-decoration: none;
 }
 
-@font-face{
+@font-face {
+    font-family: Rakesly;
+    src: url('https://fonts.cdnfonts.com/css/rakesly');
+}
+
+/* @font-face{
     font-family: Rakesly Bk;
     src: url(src\assets\fonts\RakeslyBk-Italic.otf) format('opentype');
     font-style: italic;
@@ -76,9 +82,6 @@
     font-style: normal;
 }
 
-
-
-
 @font-face{
     font-family: Rakesly El;
     src: url(src\assets\fonts\RakeslyEl-Regular.otf) format('opentype');
@@ -88,7 +91,7 @@
     font-family: Rakesly El;
     src: url(src\assets\fonts\RakeslyEl-Italic.otf) format('opentype');
     font-style: italic;
-}
+} */
 
 
 body {
@@ -99,23 +102,23 @@ body {
 
 h1 {
     text-align: center;
-    font-family: 'Rakesly Rg';
-    font-style: bold;
     letter-spacing: 3px;
     color: #ffe680ff;
+    font-family: 'Rakesly', sans-serif;
+    font-weight: 400;
 }
 
 .h1Shadow{
-    text-shadow: 5px -5px 1px #a02c2cff, 10px -10px 1px #d45500ff;
+    text-shadow: 10px -10px 1px #a02c2cff, 20px -20px 1px #d45500ff;
     text-align: center;
-    font-family: 'Rakesly Rg';
-    font-style: bold;
+    font-family: 'Rakesly';
+    font-weight: 600;
     letter-spacing: 3px;
     color: #ffe680ff;
 }
 
 h2{
-    font-family: 'Rakesly Rg';
+    font-family: 'Rakesly';
     font-style: bold;
     color: #a02c2cff;
 }
