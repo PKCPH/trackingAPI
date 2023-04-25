@@ -5,12 +5,13 @@
   }
 
   .divs {
-    position: absolute;
+    position: fixed;
     top: 35%;
-    left: 37%;
-    border-radius: 45px;
-    width: 25%;
+    right: 30vh;
+    /*border-radius: 45px;
+    width: 25%;*/
     background-color: rgba(0, 0, 0, 0);
+    text-align: center;
   }
 
   .videobackdrop {
@@ -31,12 +32,12 @@
   .subtitle {
     margin-top: 10px;
     font-size: 1.5rem;
-    color: lightblue;
+    color: #d45500ff;
     align-items: center;
   }
 
   .divs h1 {
-    font-size: 80px;
+    font-size: 20vh;
   }
 
   @media screen and (max-width: 1000px) {
