@@ -4,10 +4,14 @@
 }
 
 .nav-text {
-    color: white;
+    color: #ffe680ff;;
     text-decoration: none;
     margin-left: 10px;
     margin-right: 10px;
+    font-family: Rakesly;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 1px;
     font-size: 20px;
 }
 
@@ -52,6 +56,7 @@ a:hover {
 }
 
 .menu a {
+text-decoration: none;
  background: transparent;
  border-radius: 10px;
  display: flex;
@@ -72,9 +77,9 @@ a:hover {
 }
 
 .leftsidenav a:hover, .menu2 a:hover {
- color: red;
+ color: #d45500ff;
  transition: all 400ms ease;
- font-size: 2rem;
+ /* font-size: 2rem; */
 }
 
 .rightsidenav a:hover, span:hover {
@@ -98,7 +103,7 @@ a:hover {
 }
 
 .logo img {
-    position: absolute;
+    position: fixed;
     left: -2%;
     top: -45%;
     height: 150px;
@@ -129,7 +134,7 @@ a:hover {
 .dropDownButton img {
     margin-left: 3px;
     height: 8px;
-} 
+}
 
 .dropDownItems {
     cursor: pointer;
@@ -153,6 +158,7 @@ a:hover {
     position: absolute;
     right: 17.8%;
     top: 60%;
+    color: #ffe680ff
 }
 
 .balance img {
@@ -165,7 +171,7 @@ a:hover {
 
 .balance:hover {
     cursor: default;
-}  
+}
 
 .navIcons {
     font-size: 25px;
@@ -176,8 +182,8 @@ a:hover {
 
     .menu a {
         font-size: 13px;
-    } 
-    
+    }
+
     .menu2 a {
         font-size: 15px;
     }
