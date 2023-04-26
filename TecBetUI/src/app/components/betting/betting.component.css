@@ -40,12 +40,26 @@
 }
 
 .bulletpoints{
-  padding: auto;
+  padding-top: 10vh;
+
 }
 
 .h1{
   size: 50%;
+}
 
+.section2{
+  display: flex;
+  padding-top: 20vh;
+}
+.left-grid {
+  flex: 1;
+  padding: 20px;
+}
+
+.right-grid {
+  flex: 1;
+  padding: 20px;
 }
 
 img {

@@ -1,11 +1,37 @@
 <div id="section2" class="section2">
-    <div class="bulletpoints">
+    <div class="left-grid">
+                <h1>Track live scores</h1>
+                <h1>Follow top leagues</h1>
+                <h1>Search player stats</h1>
+                <h1>Bet on sport matches</h1>
+      </div>
+      <div class="right-grid">
+        <div class="divs">
 
-        <h1>Track live scores</h1>
-        <h1>Follow top leagues</h1>
-        <h1>Search player stats</h1>
-        <h1>Bet on sport matches</h1>
-    </div>
+            <!-- <div>
+                <h1>{{matchDetails.participatingTeams[0].name}} vs {{matchDetails.participatingTeams[1].name}}</h1>
+                <p>{{matchDetails.dateOfMatch | date: 'dd. MMM yyyy HH:mm:ss' }}</p>
+                <h2 class="matchInfo">{{matchDetails.participatingTeams[0].score}} - {{matchDetails.participatingTeams[1].score}}</h2>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 0">Not Started Yet</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 1">First Half</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 2">Half Time Break</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 3">Second Half</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 4">Overtime</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 5">Penalty Shootout</p>
+                <p class="matchInfo" *ngIf="matchDetails.matchState == 6">Finished</p>
+                <div class="matchTimer">
+                    <h2 class="matchInfo" *ngIf="matchDetails.matchState != 0 && matchDetails.matchState != 6">
+                        {{ stopwatch }}
+                    </h2>
+                </div>
+                <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">
+                    {{matchDetails.participatingTeams[0].name}} WON</h2>
+                    <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">
+                        {{matchDetails.participatingTeams[1].name}} WON</h2>
+                        <div class="my-5"><img src="images/simu.gif"></div>
+            </div> -->
+        </div>
+        </div>
     <!-- Not sure whats going on here ??? Have this for now -->
     <!-- <div class="d-flex"></div>
     <div class="inverted-7">
