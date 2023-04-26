@@ -1,6 +1,9 @@
 .divs {
   width: 50%;
   margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 table {
@@ -11,12 +14,6 @@ table {
 
 td {
   text-align: left;
-}
-
-.divs {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 .test {
