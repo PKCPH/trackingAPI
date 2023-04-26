@@ -92,7 +92,6 @@ a:hover {
 }
 
 .rightsidenav a:hover, span:hover {
-    color: red;
     transition: all 400ms ease;
 }
 
@@ -100,7 +99,7 @@ a:hover {
 .username {
     color: #a02c2cff;
     transition: all 1000ms ease;
-    outline-color: aliceblue;
+    letter-spacing: 1px;
 }
 
 .username img{
@@ -109,7 +108,7 @@ a:hover {
 
 .username:hover {
     cursor: pointer;
-    color: seagreen;
+    color: #ffe680ff;
     transition: all 1000ms ease;
 }
 
@@ -132,7 +131,7 @@ a:hover {
     background-color: rgba(0,0,0,0.8);
     padding: 1px;
     top: 80%;
-    right: 13%;
+    right: 10%;
     z-index: 2;
     border-radius: 10%;
 }
@@ -143,18 +142,22 @@ a:hover {
 }
 
 .dropDownButton img {
-    margin-left: 3px;
+    margin-left: 8px;
     height: 8px;
 }
 
 .dropDownItems {
     cursor: pointer;
-    padding: 4px;
-    padding-top: 10px;
+    padding: 6px;
 }
 
 .dropDownItem {
-    color: white;
+    padding-top: 10px;
+    color: #ffe680ff;
+    font-family: Rakesly;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 1px;
     text-decoration: none;
     margin: auto;
     font-size: 20px;
@@ -169,11 +172,9 @@ a:hover {
 }
 
 .balance {
-    font-size: 15px;
     position: absolute;
-    right: 17.8%;
-    top: 60%;
-    color: #ffe680ff
+    margin-left: -15vh;
+    color: #ffe680ff;
 }
 
 .balance img {

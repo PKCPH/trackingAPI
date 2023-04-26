@@ -1,8 +1,8 @@
    table {
-    border-collapse:separate; 
+    border-collapse:separate;
     border-spacing: 0 2em;
   }
-   
+
   #loading {
     background-image: url('src/images/spinner.gif');
     background-repeat: no-repeat;
@@ -14,15 +14,15 @@
     width: 500px;
     height: 500px;
    }
-   
+
    #schedulecontainer {
     display: none;
    }
-   
+
    #addbutton {
     display: none;
    }
-   
+
    .errorMsg {
     font-weight: bold;
     font-size: 20px;
@@ -58,4 +58,3 @@
    #paginator {
     display: none;
    }
-     
