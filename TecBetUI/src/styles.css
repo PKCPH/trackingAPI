@@ -1,5 +1,6 @@
 @import '@angular/cdk/a11y-prebuilt.css';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+
 /* @import url('https://fonts.cdnfonts.com/css/rakesly'); */
 /* You can add global styles to this file, and also import other style files */
 * {
@@ -109,7 +110,7 @@ h1 {
     text-shadow: none;
 }
 
-.h1Shadow{
+.h1Shadow {
     animation: shadowAnimation 1.5s ease forwards;
     text-align: center;
     font-family: 'Rakesly';
@@ -121,55 +122,62 @@ h1 {
 
 
 @keyframes shadowAnimation {
-    15%{
+    15% {
         text-shadow:
-        0px 0px 1px #a02c2cff;
+            0px 0px 1px #a02c2cff;
     }
+
     /* 50% {
         text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
     } */
-    25%{
+    25% {
         text-shadow:
-        10px -10px 1px #a02c2cff;
+            10px -10px 1px #a02c2cff;
     }
-    50%{
+
+    50% {
         text-shadow:
-        10px -10px 1px #a02c2cff,
-        20px -20px 1px #d45500ff;
+            10px -10px 1px #a02c2cff,
+            20px -20px 1px #d45500ff;
     }
+
     100% {
         text-shadow:
-        10px -10px 1px #a02c2cff,
-        20px -20px 1px #d45500ff,
-        30px -30px 1px rgb(253, 180, 22);
+            10px -10px 1px #a02c2cff,
+            20px -20px 1px #d45500ff,
+            30px -30px 1px rgb(253, 180, 22);
     }
 }
 
 @keyframes logoShadowAnimation {
-    15%{
+    15% {
         text-shadow:
-        0px 0px 1px #a02c2cff;
+            0px 0px 1px #a02c2cff;
     }
+
     /* 50% {
         text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
     } */
-    25%{
+    25% {
         text-shadow:
-        5px -5px 1px #a02c2cff;
+            5px -5px 1px #a02c2cff;
     }
-    50%{
+
+    50% {
         text-shadow:
-        5px -5px 1px #a02c2cff,
-        10px -10px 1px #d45500ff;
+            5px -5px 1px #a02c2cff,
+            10px -10px 1px #d45500ff;
     }
+
     100% {
         text-shadow:
-        5px -5px 1px #a02c2cff,
-        10px -10px 1px #d45500ff,
-        15px -15px 1px rgb(253, 180, 22);
+            5px -5px 1px #a02c2cff,
+            10px -10px 1px #d45500ff,
+            15px -15px 1px rgb(253, 180, 22);
     }
 }
-.logoheader{
+
+.logoheader {
     animation: logoShadowAnimation 1.5s ease forwards;
     text-align: center;
     font-family: 'Rakesly';
@@ -180,7 +188,7 @@ h1 {
     margin-top: 2vh;
 }
 
-h2{
+h2 {
     font-family: 'Rakesly';
     font-style: bold;
     color: #a02c2cff;
@@ -242,7 +250,9 @@ form {
 
 .section2 {
     height: 100vh;
-    background-image: url('images/wallpaper2.jpg');
+    background: rgb(212, 85, 0);
+    background: linear-gradient(0deg, rgba(212, 85, 0, 1) 0%, rgba(160, 44, 44, 1) 100%);
+    /* background-image: url('images/wallpaper2.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -319,22 +329,22 @@ form {
 /* Removing any tooltip popups from paginator icons */
 mat-tooltip-component {
     display: none !important;
-  }
+}
 
 
-  /* MAT SORT STYLINGS */
+/* MAT SORT STYLINGS */
 
-  .mat-sort-header-container {
+.mat-sort-header-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-  }
+}
 
-  /* MAT ICON STYLINGS */
+/* MAT ICON STYLINGS */
 
-  .mat-icon {
+.mat-icon {
     vertical-align: middle;
     margin-top: -4px;
-  }
+}
 
 /* MEDIA QUERIES */

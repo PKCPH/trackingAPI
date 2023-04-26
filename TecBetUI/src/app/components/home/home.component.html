@@ -6,7 +6,7 @@
 
         <div class="videodiv" id="videodiv">
             <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video"
-                onloadedmetadata="this.muted = true">
+                onloadedmetadata="this.muted = true" [@fadeIn]>
                 <source [src]="videoSrc" type="video/mp4">
                 Your browser does not support the video tag.
             </video>

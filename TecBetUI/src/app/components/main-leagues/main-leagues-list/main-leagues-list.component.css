@@ -30,6 +30,7 @@ td {
   text-align: left;
 }
 
+
 #icon {
   size: 100px;
 }
@@ -106,6 +107,20 @@ p {
   cursor: pointer;
 }
 
+
+.showHide{
+  display: none;
+  margin: auto;
+  color: #ffe680ff;
+  font-family: Rakesly;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.test:hover .showHide{
+  display:block;
+}
+
 @keyframes logoShadowAnimation {
   15%{
       text-shadow:
@@ -127,6 +142,6 @@ p {
       text-shadow:
       2px -2px 1px rgb(160, 44, 44, 0.5),
       4px -4px 1px rgb(212, 85, 0, 0.5),
-      6px -6px 1px rgb(253, 180, 22, 0.5);
+      6px -6px 1px rgb(253, 180, 22, 0.5)
     }
 }

@@ -4,7 +4,7 @@
   --c: #1095c1; /* the color */
   --b: .1em;    /* border length*/
   --d: 20px;    /* the cube depth */
-  
+
   --_s: calc(var(--d) + var(--b));
   color: var(--c);
   border: solid #0000;
@@ -15,11 +15,11 @@
     conic-gradient(at left var(--_s) bottom var(--_s),
       #0000 90deg,var(--c) 0) 0 100%/calc(100% - var(--b)) calc(100% - var(--b))  border-box;
   transform: translate(calc(var(--d)/-1),var(--d));
-  clip-path: 
+  clip-path:
     polygon(
-     var(--d) 0%, 
-     var(--d) 0%, 
-     100% 0%, 
+     var(--d) 0%,
+     var(--d) 0%,
+     100% 0%,
      100% calc(100% - var(--d)),
      100% calc(100% - var(--d)),
      var(--d) calc(100% - var(--d))
@@ -28,15 +28,24 @@
 }
 .d-1:hover {
   transform: translate(0,0);
-  clip-path: 
+  clip-path:
     polygon(
-     0% var(--d), 
-     var(--d) 0%, 
-     100% 0%, 
-     100% calc(100% - var(--d)), 
-     calc(100% - var(--d)) 100%, 
+     0% var(--d),
+     var(--d) 0%,
+     100% 0%,
+     100% calc(100% - var(--d)),
+     calc(100% - var(--d)) 100%,
      0% 100%
    );
+}
+
+.bulletpoints{
+  padding: auto;
+}
+
+.h1{
+  size: 50%;
+
 }
 
 img {
@@ -49,13 +58,13 @@ img {
     --y: 20px;
     transform: perspective(1000px) rotateX(var(--_a,40deg));
     /* */
-    clip-path: polygon(       
-       var(--y)              var(--y),       
-       calc(100% - var(--y)) var(--y),       
-       calc(100% - var(--y)) calc(100% - var(--y)),       
-       calc(100% - var(--y) - var(--x)) var(--_c,100%),       
-       calc(var(--x) + var(--y))        var(--_c,100%),      
-       var(--y)        calc(100% - var(--y))       
+    clip-path: polygon(
+       var(--y)              var(--y),
+       calc(100% - var(--y)) var(--y),
+       calc(100% - var(--y)) calc(100% - var(--y)),
+       calc(100% - var(--y) - var(--x)) var(--_c,100%),
+       calc(var(--x) + var(--y))        var(--_c,100%),
+       var(--y)        calc(100% - var(--y))
        );
     outline: var(--y) solid rgba(0,0,0,0.4);
     outline-offset: calc(-1*var(--y));
