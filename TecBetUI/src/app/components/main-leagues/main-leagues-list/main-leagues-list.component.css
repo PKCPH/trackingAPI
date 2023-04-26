@@ -115,10 +115,11 @@ p {
   font-family: Rakesly;
   font-weight: 400;
   letter-spacing: 1px;
+  font-size: larger;
 }
 
 .test:hover .showHide{
-  display:block;
+  display: block;
 }
 
 @keyframes logoShadowAnimation {

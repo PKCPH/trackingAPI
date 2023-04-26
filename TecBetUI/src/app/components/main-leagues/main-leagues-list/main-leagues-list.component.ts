@@ -18,6 +18,7 @@ export class MainLeaguesListComponent {
   arrowUp = faCircleChevronUp;
   output: number = 0;
   byeCheese: boolean = false;
+  isLeagueShown: boolean = false;
 
   iconStates: any = {};
 
@@ -86,7 +87,6 @@ export class MainLeaguesListComponent {
     }
   }
 
-
   GetRoundTerm(matches: any) {
     for (let i = 0; i < matches.length; i++) {
 
@@ -118,6 +118,7 @@ export class MainLeaguesListComponent {
   toggleTable(startDate: string, leagueId: string) {
     const table = document.getElementById(startDate) as HTMLElement;
     const icon = document.getElementById(leagueId) as HTMLElement;
+    this.isLeagueShown = !this.isLeagueShown;
     if (table.style.display === 'none') {
       table.style.display = 'block';
       this.iconStates[leagueId] = 'down';
