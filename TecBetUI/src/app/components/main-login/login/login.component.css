@@ -25,3 +25,17 @@
 .container {
   text-align: center;
 }
+
+.logoheader{
+  text-decoration: none;
+}
+
+.my-4{
+    text-align: center;
+    font-family: 'Rakesly';
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #ffe680ff;
+    margin-left: 5vh;
+    margin-top: 2vh;
+}

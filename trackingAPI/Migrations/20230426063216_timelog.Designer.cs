@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230426063216_timelog")]
+    partial class timelog
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +175,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d7135fdf-c25c-4975-b00a-39fd856ecbf4"),
+                            Id = new Guid("38ae9ff4-2e73-42f6-a9a5-fbcc1d0780cf"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -586,9 +588,6 @@ namespace trackingAPI.Migrations
 
                     b.Property<Guid>("GamematchId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("MatchState")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

@@ -86,6 +86,7 @@ export class MainLeaguesListComponent {
     }
   }
 
+
   GetRoundTerm(matches: any) {
     for (let i = 0; i < matches.length; i++) {
 

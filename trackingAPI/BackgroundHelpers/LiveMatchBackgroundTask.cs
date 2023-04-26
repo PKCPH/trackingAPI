@@ -20,20 +20,43 @@ public class LiveMatchBackgroundTask
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
         PlayGameHalf(gamematch, MatchState.FirstHalf);
+       
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
+        AddTimelog(gamematch);
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
         
-        PlayGameHalf(gamematch, MatchState.SecondHalf);
 
+        PlayGameHalf(gamematch, MatchState.SecondHalf);
+     
         ////if not draw or draw is allowed then return
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
             || gamematch.IsDrawAllowed) return Task.CompletedTask;
         PlayOvertime(gamematch, MatchState.OverTime);
+     
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
         PlayPenaltyShootout(gamematch, MatchState.PenaltyShootOut);
+      
 
+        return Task.CompletedTask;
+    }
+
+    public Task AddTimelog(Gamematch gamematch)
+    {
+        Timelog timelog = new();
+        timelog.DateTime = DateTime.Now;
+        timelog.Gamematch = gamematch;
+        timelog.MatchState = gamematch.MatchState;
+
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            _context.Entry(timelog).State = EntityState.Added;
+            _context.SaveChanges();
+        }
         return Task.CompletedTask;
     }
 
@@ -55,8 +78,9 @@ public class LiveMatchBackgroundTask
     {
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
+        AddTimelog(gamematch);
         timer.Start();
-
+        
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
@@ -74,6 +98,7 @@ public class LiveMatchBackgroundTask
     {
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
+        AddTimelog(gamematch);
         timer.Start();
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
@@ -99,6 +124,7 @@ public class LiveMatchBackgroundTask
         var teamBPKScore = 0;
 
         UpdatePlayingState(gamematch, matchState);
+        AddTimelog(gamematch);
         while (teamAPKScore == teamBPKScore || rounds < 4)
         {
             PenaltyKick(ref teamAPKScore, gamematch.ParticipatingTeams.First(), rnd);
