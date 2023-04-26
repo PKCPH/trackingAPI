@@ -83,14 +83,24 @@ a:hover {
     /* font-size: 2rem; */
 }
 
+.nav-item{
+    font-family: Rakesly;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 20px;
+}
+
 .rightsidenav a:hover, span:hover {
     color: red;
     transition: all 400ms ease;
 }
 
+
 .username {
-    color: lightseagreen;
+    color: #a02c2cff;
     transition: all 1000ms ease;
+    outline-color: aliceblue;
 }
 
 .username img{
@@ -152,6 +162,10 @@ a:hover {
 
 .dropDownItems:hover {
     background-color: rgba(50,0,0,0.5);
+}
+
+.nav-item{
+    color: #ffe680ff;
 }
 
 .balance {
