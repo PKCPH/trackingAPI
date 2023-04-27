@@ -39,9 +39,9 @@
    );
 }
 
-.bulletpoints{
-  padding-top: 10vh;
 
+.divs{
+  padding: 5vh;
 }
 
 .h1{
@@ -50,7 +50,7 @@
 
 .section2{
   display: flex;
-  padding-top: 20vh;
+  padding-top: 15vh;
 }
 .left-grid {
   flex: 1;
@@ -59,7 +59,19 @@
 
 .right-grid {
   flex: 1;
-  padding: 20px;
+}
+
+
+.divBulletpoints{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 5vh;
+}
+
+.bulletpoint{
 }
 
 img {
@@ -158,6 +170,26 @@ a:hover {
 
 span:hover {
     color: darkred;
+}
+
+
+.slide-in {
+  /* Other CSS properties */
+  transform: translateX(100%);
+}
+
+.slide-in-active {
+  animation: slideInRight 5s forwards;
+  transform: translateX(0%);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @media screen and (max-width: 1800px) {

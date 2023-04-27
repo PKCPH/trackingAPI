@@ -1,66 +1,20 @@
 <div id="section2" class="section2">
     <div class="left-grid">
-                <h1>Track live scores</h1>
-                <h1>Follow top leagues</h1>
-                <h1>Search player stats</h1>
-                <h1>Bet on sport matches</h1>
-      </div>
-      <div class="right-grid">
-        <div class="divs">
-
-            <!-- <div>
-                <h1>{{matchDetails.participatingTeams[0].name}} vs {{matchDetails.participatingTeams[1].name}}</h1>
-                <p>{{matchDetails.dateOfMatch | date: 'dd. MMM yyyy HH:mm:ss' }}</p>
-                <h2 class="matchInfo">{{matchDetails.participatingTeams[0].score}} - {{matchDetails.participatingTeams[1].score}}</h2>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 0">Not Started Yet</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 1">First Half</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 2">Half Time Break</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 3">Second Half</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 4">Overtime</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 5">Penalty Shootout</p>
-                <p class="matchInfo" *ngIf="matchDetails.matchState == 6">Finished</p>
-                <div class="matchTimer">
-                    <h2 class="matchInfo" *ngIf="matchDetails.matchState != 0 && matchDetails.matchState != 6">
-                        {{ stopwatch }}
-                    </h2>
-                </div>
-                <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">
-                    {{matchDetails.participatingTeams[0].name}} WON</h2>
-                    <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">
-                        {{matchDetails.participatingTeams[1].name}} WON</h2>
-                        <div class="my-5"><img src="images/simu.gif"></div>
-            </div> -->
+        <div class="divBulletpoints">
+            <h1 class="bulletpoint">Track live scores</h1>
+            <h1 class="bulletpoint">Follow top leagues</h1>
+            <h1 class="bulletpoint">Search player stats</h1>
+            <h1 class="bulletpoint">Bet on sport matches</h1>
         </div>
+    </div>
+    <div class="right-grid">
+        <div class="slide-in" #slideInDiv>
+            <div class="divs">
+                <h1 class="matchInfo">{{ team1 }} vs {{ team2 }}</h1>
+                <h1 class="matchInfo">{{ score1 }} - {{ score2 }}</h1>
+                <h1 class="matchInfo">{{ stopwatch }}</h1>
+                <div class="my-5"><img src="images/simu.gif"></div>
+            </div>
         </div>
-    <!-- Not sure whats going on here ??? Have this for now -->
-    <!-- <div class="d-flex"></div>
-    <div class="inverted-7">
-        <div class="container divs my-5 py-5">
-            <h1>Bet on your favourite teams!</h1>
-            <p><a routerLink="schedule" data-replace="schedule">Check the <span>schedule</span> for information about
-                    the matches.</a></p>
-            <p>Check out the different sports we have below.</p>
-        </div>
-    </div> -->
-    <!-- <div class="sportsGallery" id="gallery">
-        <div class="box">
-            <h2>Soccer</h2>
-            <img src="https://storage.googleapis.com/pod_public/1300/119074.jpg">
-        </div>
-        <div class="box">
-            <h2>Basketball</h2>
-            <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Carter_vs_Gasol%2C_Lakers_vs_Magic.jpg/640px-Carter_vs_Gasol%2C_Lakers_vs_Magic.jpg">
-        </div>
-        <div class="box">
-            <h2>Baseball</h2>
-            <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Mookie_Betts_hitting_the_ball_%2836478781664%29.jpg/640px-Mookie_Betts_hitting_the_ball_%2836478781664%29.jpg">
-        </div>
-        <div class="box">
-            <h2>Esports</h2>
-            <img
-                src="https://cdn.sanity.io/images/zoz4y99f/production/63fe73d90694450859da70fe142d72e445a0a9cc-1600x900.jpg?w=1600&auto=format">
-        </div>
-    </div> -->
+    </div>
 </div>
