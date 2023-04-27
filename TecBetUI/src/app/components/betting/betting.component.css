@@ -55,6 +55,7 @@
 .left-grid {
   flex: 1;
   padding: 20px;
+  padding-top: 10vh;
 }
 
 .right-grid {
@@ -195,6 +196,26 @@ span:hover {
 .slide-in-active {
   animation: slideInRight 5s forwards;
   transform: translateX(0%);
+}
+
+.fade-in {
+  /* Other CSS properties */
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.fade-in-active {
+  animation: fadeinBulletpoint 5s forwards;
+  transform: translateX(0%);
+}
+
+@keyframes fadeinBulletpoint{
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInRight {

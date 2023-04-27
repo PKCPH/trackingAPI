@@ -29,20 +29,40 @@ export class BettingComponent implements OnInit {
     "Ajax"
   ];
 
+  // ngOnInit(): void {
+  //   this.matchStopwatch();
+  //   this.selectDemoTeams();
+  //   this.selectDemoScore();
+  //   window.addEventListener('scroll', () => {
+  //     const scrollPosition = window.scrollY;
+
+  //     if (scrollPosition >= 500) {
+  //       this.slideInDiv.nativeElement.classList.add('slide-in-active');
+  //       this.fadeInDiv.nativeElement.classList.add('fade-in-active')
+  //     }
+  //   });
+  // }
+
   ngOnInit(): void {
     this.matchStopwatch();
     this.selectDemoTeams();
     this.selectDemoScore();
     window.addEventListener('scroll', () => {
       const scrollPosition = window.scrollY;
+      const slideInDivOffsetTop = this.slideInDiv.nativeElement.offsetTop;
 
-      if (scrollPosition >= 500) {
+      if (scrollPosition >= slideInDivOffsetTop - 500) {
         this.slideInDiv.nativeElement.classList.add('slide-in-active');
+        this.fadeInDiv.nativeElement.classList.add('fade-in-active');
+      } else {
+        this.slideInDiv.nativeElement.classList.remove('slide-in-active');
+        this.fadeInDiv.nativeElement.classList.remove('fade-in-active');
       }
     });
   }
 
   @ViewChild('slideInDiv') slideInDiv!: ElementRef;
+  @ViewChild('fadeInDiv') fadeInDiv!: ElementRef;
 
   selectDemoTeams() {
     const randomIndex1 = Math.floor(Math.random() * this.teamNames.length);

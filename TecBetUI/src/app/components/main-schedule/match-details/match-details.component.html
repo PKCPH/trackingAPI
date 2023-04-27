@@ -24,7 +24,10 @@
                 {{matchDetails.participatingTeams[0].name}} WON</h2>
                 <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">
                     {{matchDetails.participatingTeams[1].name}} WON</h2>
-                    <div class="my-5"><img src="images/simu.gif"></div>
+                    <div class="my-5">
+                        <img *ngIf="matchDetails.matchState != 6 && matchDetails.matchState != 2" src="images/simu.gif">
+                        <img *ngIf="matchDetails.matchState == 6 || matchDetails.matchState == 2" src="images/soccerField.png">
+                    </div>
         </div>
     </div>
     <div class="divs" id="showBetting" *ngIf="matchDetails.matchState != 6 && role != null && !errorMessage">
