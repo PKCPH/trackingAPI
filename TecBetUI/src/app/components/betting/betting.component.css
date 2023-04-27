@@ -194,7 +194,7 @@ span:hover {
 }
 
 .slide-in-active {
-  animation: slideInRight 5s forwards;
+  animation: slideInRight 3s forwards;
   transform: translateX(0%);
 }
 
@@ -205,7 +205,7 @@ span:hover {
 }
 
 .fade-in-active {
-  animation: fadeinBulletpoint 5s forwards;
+  animation: fadeinBulletpoint 3s forwards;
   transform: translateX(0%);
 }
 

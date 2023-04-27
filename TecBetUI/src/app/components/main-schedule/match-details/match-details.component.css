@@ -39,3 +39,8 @@
     transition: all 500ms;
 }
 
+.btn.btn-warning{
+    background-color: rgb(253, 180, 22);
+    letter-spacing: 0.3px;
+}
+
