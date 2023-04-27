@@ -71,8 +71,23 @@
   padding-bottom: 5vh;
 }
 
-.bulletpoint{
+.joinNow{
+  margin-top: 5vh;
+  padding: 2vh;
+  background-color: #a02c2cff;
+  cursor: pointer;
+  border-radius: 25px;
+
 }
+
+.joinNow:hover .bulletpointLink{
+  animation: logoShadowAnimation .5s ease forwards;
+}
+
+.bulletpointLink{
+  font-weight: bolder;
+}
+
 
 img {
     border: rgba(255, 0, 255, 0.3) solid 6px;
@@ -171,7 +186,6 @@ a:hover {
 span:hover {
     color: darkred;
 }
-
 
 .slide-in {
   /* Other CSS properties */

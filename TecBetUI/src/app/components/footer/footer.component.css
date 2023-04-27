@@ -1,5 +1,5 @@
 .footer-section {
-       width: 70%;
+       width: 100%;
 }
 
 .footer-container {
@@ -24,6 +24,16 @@ a:link {
 .tos {
        color: rgba(50, 50, 50, 1);
        text-decoration: none;
+}
+
+.text-white{
+       font-family: rakesly;
+       letter-spacing: 2px;
+}
+
+.text-uppercase{
+       font-family:  rakesly;
+       letter-spacing: 2px;
 }
 
 @media screen and (max-width: 1800px) {
