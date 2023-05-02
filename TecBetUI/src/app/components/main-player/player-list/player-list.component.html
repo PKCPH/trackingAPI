@@ -167,4 +167,8 @@
             </tbody>
         </table>
     </div>
+    <div class="container my-2 divs py-5" *ngIf="players.length < 1">
+        <h3>Database Doesnt contain any players</h3>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
+    </div>
 </div>

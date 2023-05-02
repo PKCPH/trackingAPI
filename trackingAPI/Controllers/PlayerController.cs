@@ -72,14 +72,11 @@ namespace trackingAPI.Controllers
             player.Id = updatePlayerRequest.Id;
             player.Name= updatePlayerRequest.Name;
             player.Age = updatePlayerRequest.Age;
+            player.height_cm = updatePlayerRequest.height_cm;
+            player.weight_kg = updatePlayerRequest.weight_kg;
             player.Overall = updatePlayerRequest.Overall;
-            player.Potential = updatePlayerRequest.Potential;
-            player.Pace = updatePlayerRequest.Pace;
-            player.Shooting = updatePlayerRequest.Shooting;
-            player.Passing = updatePlayerRequest.Passing;
-            player.Dribbling = updatePlayerRequest.Dribbling;
-            player.Defense = updatePlayerRequest.Defense;
-            player.Physical = updatePlayerRequest.Physical;
+            player.player_positions = updatePlayerRequest.player_positions;
+            player.preferred_foot = updatePlayerRequest.preferred_foot;
 
             await databaseContext.SaveChangesAsync();
 
