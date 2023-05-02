@@ -19,12 +19,13 @@ public class LiveMatchBackgroundTask
     }
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
+        AddTimelog(gamematch, CategoryLog.MatchBegin);
         PlayGameHalf(gamematch, MatchState.FirstHalf);
-       
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
-        AddTimelog(gamematch);
+        AddTimelog(gamematch, CategoryLog.MatchStateStarting);
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
+        AddTimelog(gamematch, CategoryLog.MatchStateCompleted);
         
 
         PlayGameHalf(gamematch, MatchState.SecondHalf);
@@ -37,17 +38,21 @@ public class LiveMatchBackgroundTask
 
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
         PlayPenaltyShootout(gamematch, MatchState.PenaltyShootOut);
-      
 
+
+        AddTimelog(gamematch, CategoryLog.MatchEnded);
         return Task.CompletedTask;
     }
 
-    public Task AddTimelog(Gamematch gamematch)
+    public Task AddTimelog(Gamematch gamematch, CategoryLog categoryLog)
     {
         Timelog timelog = new();
         timelog.DateTime = DateTime.Now;
-        timelog.Gamematch = gamematch;
+        timelog.GamematchId = gamematch.Id;
         timelog.MatchState = gamematch.MatchState;
+        timelog.CategoryLog = categoryLog;
+        timelog.Information = $"{gamematch.ParticipatingTeams.First().Team.Name} VS {gamematch.ParticipatingTeams.Last().Team.Name}. " +
+            $"{gamematch.MatchState} {timelog.CategoryLog}";
 
         using (var scope = _services.CreateScope())
         {
@@ -78,7 +83,7 @@ public class LiveMatchBackgroundTask
     {
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
-        AddTimelog(gamematch);
+        AddTimelog(gamematch, CategoryLog.MatchStateStarting);
         timer.Start();
         
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
@@ -89,6 +94,7 @@ public class LiveMatchBackgroundTask
             IsGoalScoredChance(gamematch);
             Thread.Sleep(1000);
         }
+        AddTimelog(gamematch, CategoryLog.MatchStateCompleted);
         timer.Stop();
 
         return gamematch;
@@ -98,7 +104,7 @@ public class LiveMatchBackgroundTask
     {
         Stopwatch timer = new Stopwatch();
         UpdatePlayingState(gamematch, matchState);
-        AddTimelog(gamematch);
+        AddTimelog(gamematch, CategoryLog.MatchStateStarting);
         timer.Start();
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
@@ -111,6 +117,7 @@ public class LiveMatchBackgroundTask
             Console.WriteLine();
             Thread.Sleep(1000);
         }
+        AddTimelog(gamematch, CategoryLog.MatchStateCompleted);
         timer.Stop();
         return gamematch;
     }
@@ -124,7 +131,7 @@ public class LiveMatchBackgroundTask
         var teamBPKScore = 0;
 
         UpdatePlayingState(gamematch, matchState);
-        AddTimelog(gamematch);
+        AddTimelog(gamematch, CategoryLog.MatchStateStarting);
         while (teamAPKScore == teamBPKScore || rounds < 4)
         {
             PenaltyKick(ref teamAPKScore, gamematch.ParticipatingTeams.First(), rnd);
@@ -135,6 +142,7 @@ public class LiveMatchBackgroundTask
             rounds++;
             Thread.Sleep(1000);
         }
+        AddTimelog(gamematch, CategoryLog.MatchStateCompleted);
         return gamematch;
     }
 

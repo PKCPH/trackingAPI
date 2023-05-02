@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trackingAPI.Data;
 
@@ -11,9 +12,10 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230502055104_timelogInformation")]
+    partial class timelogInformation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +175,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dd12cee3-4b14-4e9a-af48-389f76fc85fa"),
+                            Id = new Guid("4f6ecbb7-b29c-418f-836d-06f7fd560656"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -581,9 +583,6 @@ namespace trackingAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CategoryLog")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
@@ -682,11 +681,13 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Timelog", b =>
                 {
-                    b.HasOne("trackingAPI.Models.Gamematch", null)
+                    b.HasOne("trackingAPI.Models.Gamematch", "Gamematch")
                         .WithMany("Timelogs")
                         .HasForeignKey("GamematchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Gamematch");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>

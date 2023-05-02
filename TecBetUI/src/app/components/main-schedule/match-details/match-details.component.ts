@@ -42,6 +42,10 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.matchStopwatch();
   }
 
+  fetchTimelog(){
+
+  }
+
   matchStopwatch(){
     // update the stopwatch every 10 milliseconds
     setInterval(() => {
