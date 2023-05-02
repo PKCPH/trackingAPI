@@ -13,13 +13,14 @@ import { Sort, MatSort } from '@angular/material/sort';
 export class MainTeamsComponent implements OnDestroy {
 
   //current page number starting from 0
-  pageNumber: number = 0
-
-  
+  pageNumber: number = 0;
   //number of Teams shown
-  numberOfTeamsShown: number = 50
+  numberOfTeamsShown: number = 50;
+  //substring used to filter teams
+  searchString: string = "";
   
   teams: Team[] = [];
+  searchedTeams: Team[] = []
   errorMessage: string = "";
   updateSubscription: Subscription | any;
   storedCredentialsString: any;
@@ -71,6 +72,8 @@ export class MainTeamsComponent implements OnDestroy {
           console.log(this.teams);
           if (teams) {
             this.sortedTeams = this.teams.slice();
+            this.searchedTeams = this.sortedTeams
+            this.searchTeams();
             this.toggleOverflowDiv();
             this.Hideloader();
             this.sortData(this.sort);
@@ -210,6 +213,9 @@ export class MainTeamsComponent implements OnDestroy {
     } else {
       this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
     }
+  }
+  searchTeams():void{
+    this.searchedTeams = this.sortedTeams.filter(t => t.name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase()))
   }
 
 }
