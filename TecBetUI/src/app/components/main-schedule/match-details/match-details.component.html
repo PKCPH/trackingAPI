@@ -17,8 +17,13 @@
             <p class="matchInfo" *ngIf="matchDetails.matchState == 5">Penalty Shootout</p>
             <p class="matchInfo" *ngIf="matchDetails.matchState == 6">Finished</p>
             <div class="matchTimer">
-                <h2 class="matchInfo" *ngIf="matchDetails.matchState != 0 && matchDetails.matchState != 6">
+                <h2 class="matchInfo" *ngIf="matchDetails.matchState != 0
+                && matchDetails.matchState != 2
+                && matchDetails.matchState != 6">
                     {{ stopwatch }}
+                </h2>
+                <h2 class="matchInfo" *ngIf="matchDetails.matchState == 2">
+                    45:00
                 </h2>
             </div>
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">
