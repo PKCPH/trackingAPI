@@ -97,6 +97,7 @@ p {
 
 .test:hover{
   background-color: rgba(40, 23, 23, 0.883);
+  cursor: pointer;
 }
 
 .test:hover .leagueName{
