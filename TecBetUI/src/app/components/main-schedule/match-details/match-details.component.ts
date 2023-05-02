@@ -6,8 +6,10 @@ import { LoginModel } from 'src/app/models/login.model';
 import { Match } from 'src/app/models/matches.model';
 import { Team } from 'src/app/models/teams.model';
 import { LoginService } from 'src/app/services/login.service';
+import { TimelogService } from 'src/app/services/timelog.service';
 import { MatchesService } from 'src/app/services/matches.service';
 import { BettingWindowComponent } from '../../betting/betting-window/betting-window.component';
+import { Timelog } from 'src/app/models/timelog.model';
 
 @Component({
   selector: 'app-match-details',
@@ -18,6 +20,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
   startTime: Date | any;
   stopwatch: string | any;
   matchDetails: Match | any;
+  timelog: Timelog | any;
   credentials: LoginModel | any;
   storedCredentialsString: any;
   role: any;
@@ -40,10 +43,6 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.matchStopwatch();
-  }
-
-  fetchTimelog(){
-
   }
 
   matchStopwatch(){
@@ -69,25 +68,31 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.updateSubscription.unsubscribe();
   }
 
-  constructor(private route: ActivatedRoute, private matchesService: MatchesService, private router: Router,
-    private modalService: NgbModal, private loginService: LoginService,
-    private el: ElementRef, private renderer: Renderer2) {
+  constructor(
+    private route: ActivatedRoute,
+    private matchesService: MatchesService,
+    private router: Router,
+    private modalService: NgbModal,
+    private loginService: LoginService,
+    private timelogService: TimelogService,
+    private el: ElementRef,
+    private renderer: Renderer2) {
 
     this.getCredentials();
     window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
     this.getId();
 
     this.fetch();
+    this.fetchTimelog();
 
     this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
+      this.fetchTimelog();
     });
 
     this.loginService.currentCredentials.subscribe(credentials => {
       this.credentials = credentials;
     });
-
-
 
   }
 
@@ -109,6 +114,25 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
         this.matchesService.errorMessage.subscribe(error => {
           // this.errorMessage = error;
           if (this.matchDetails == null) {
+            // this.errorMessage = "";
+          }
+        });
+      },
+      error: (response) => {
+        console.log(response);
+      }
+    });
+  }
+
+  fetchTimelog(){
+    this.timelogService.getLastTimelogFromGamematch(this.id).subscribe({
+      next: (response) => {
+        this.timelog = response;
+        console.log(this.timelog);
+
+        this.timelogService.errorMessage.subscribe(error => {
+           // this.errorMessage = error;
+           if (this.matchDetails == null) {
             // this.errorMessage = "";
           }
         });
