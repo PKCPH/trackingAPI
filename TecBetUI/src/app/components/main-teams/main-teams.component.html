@@ -38,7 +38,7 @@
                     <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Delete</button></a></td>
             </tr> 
         </table>
-        <table class="position-relative top-90 start-50 translate-middle-x" *ngIf="teams && teams.length > 0">
+        <table class="position-relative top-90 start-50 translate-middle-x" *ngIf="teams && teams.length > numberOfTeamsShown">
             <tbody>
                 <tr>
                     <td *ngIf="pageNumber > 2">
