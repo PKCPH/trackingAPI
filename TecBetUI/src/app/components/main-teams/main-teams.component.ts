@@ -145,7 +145,7 @@ export class MainTeamsComponent implements OnDestroy {
   updateSortedTeams() {
     const sortColumn = this.sort.active;
     const sortDirection = this.sort.direction;
-    this.sortedTeams = this.teams.slice().sort((a, b) => {
+    this.sortedTeams = this.searchedTeams.slice().sort((a, b) => {
       const isAsc = sortDirection === 'asc';
       switch (sortColumn) {
         case 'name': return compare(a.name, b.name, isAsc);
@@ -215,7 +215,8 @@ export class MainTeamsComponent implements OnDestroy {
     }
   }
   searchTeams():void{
-    this.searchedTeams = this.sortedTeams.filter(t => t.name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase()))
+    this.searchedTeams = this.teams.filter(t => t.name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase()))
+    this.updateSortedTeams
   }
 
 }
