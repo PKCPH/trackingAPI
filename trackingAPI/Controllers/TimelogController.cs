@@ -20,18 +20,18 @@ public class TimelogController : ControllerBase
        //get a list of Issue
        => await _context.Timelog.ToListAsync();
     
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(Timelog), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetById(Guid id)
-    {
-        //finding Issue with the id
-        var timelog = await _context.Timelog.FindAsync(id);
-        //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
-        return timelog == null ? NotFound() : Ok(timelog);
-    }
+    //[HttpGet("{id}")]
+    //[ProducesResponseType(typeof(Timelog), StatusCodes.Status200OK)]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
+    //public async Task<IActionResult> GetById(Guid id)
+    //{
+    //    //finding Issue with the id
+    //    var timelog = await _context.Timelog.FindAsync(id);
+    //    //if issue is not found return NotFound() (404 status) if found return Ok(issue) (200 status);
+    //    return timelog == null ? NotFound() : Ok(timelog);
+    //}
 
-    [HttpGet("timelog/{gamematchId}")]
+    [HttpGet("{gamematchId}")]
     [ProducesResponseType(typeof(Timelog), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IEnumerable<Timelog>> GetByGamematchId(Guid gamematchId)

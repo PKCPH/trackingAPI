@@ -1,4 +1,4 @@
-export interface Timelog{
+export interface Timelogs{
     id: string;
     datetime: Date;
     gamematchId: string;

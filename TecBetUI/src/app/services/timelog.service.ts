@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
-import { Timelog } from '../models/timelog.model';
+import { Timelogs } from '../models/timelog.model';
 import { CustomErrorHandlerService } from './custom-error-handler.service';
 import * as serviceVariables from './serviceVariables'
 
@@ -19,9 +19,9 @@ export class TimelogService {
   private errorSubject = new BehaviorSubject<string>("");
   errorMessage = this.errorSubject.asObservable();
 
-  getAllTimelogs(): Observable<Timelog[]> {
+  getAllTimelogs(): Observable<Timelogs[]> {
     this.isLoading = true;
-    return this.http.get<Timelog[]>(serviceVariables.baseApiUrl + '/api/Timelog')
+    return this.http.get<Timelogs[]>(serviceVariables.baseApiUrl + '/api/Timelog')
       .pipe(
         tap(timelogs => {
           this.errorSubject.next('');
@@ -35,9 +35,9 @@ export class TimelogService {
   }
 
 
-  getTimelogsFromGamematch(id: string): Observable<Timelog[]> {
+  getTimelogsFromGamematch(gamematchId: string): Observable<Timelogs[]> {
     this.isLoading = true;
-    return this.http.get<Timelog[]>(serviceVariables.baseApiUrl + '/api/Timelog/' + id)
+    return this.http.get<Timelogs[]>(serviceVariables.baseApiUrl + '/api/Timelog/' + gamematchId)
       .pipe(
         tap(matches => {
           this.errorSubject.next('');
@@ -52,9 +52,9 @@ export class TimelogService {
       );
   }
 
-  getLastTimelogFromGamematch(id: string): Observable<Timelog[]> {
+  getLastTimelogFromGamematch(gamematchId: string): Observable<Timelogs[]> {
     this.isLoading = true;
-    return this.http.get<Timelog[]>(serviceVariables.baseApiUrl + '/api/Timelog/lastestTimelog/' + id)
+    return this.http.get<Timelogs[]>(serviceVariables.baseApiUrl + '/api/Timelog/lastestTimelog/' + gamematchId)
       .pipe(
         tap(matches => {
           this.errorSubject.next('');

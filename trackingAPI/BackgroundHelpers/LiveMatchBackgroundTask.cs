@@ -53,6 +53,26 @@ public class LiveMatchBackgroundTask
         timelog.CategoryLog = categoryLog;
         timelog.Information = $"{gamematch.ParticipatingTeams.First().Team.Name} VS {gamematch.ParticipatingTeams.Last().Team.Name}. " +
             $"{gamematch.MatchState} {timelog.CategoryLog}";
+        
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            _context.Entry(timelog).State = EntityState.Added;
+            _context.SaveChanges();
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task AddTimelog(Gamematch gamematch, CategoryLog categoryLog, string message)
+    {
+        Timelog timelog = new();
+        timelog.DateTime = DateTime.Now;
+        timelog.GamematchId = gamematch.Id;
+        timelog.MatchState = gamematch.MatchState;
+        timelog.CategoryLog = categoryLog;
+        timelog.Information = message;
 
         using (var scope = _services.CreateScope())
         {

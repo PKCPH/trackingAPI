@@ -9,7 +9,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { TimelogService } from 'src/app/services/timelog.service';
 import { MatchesService } from 'src/app/services/matches.service';
 import { BettingWindowComponent } from '../../betting/betting-window/betting-window.component';
-import { Timelog } from 'src/app/models/timelog.model';
+import { Timelogs } from 'src/app/models/timelog.model';
 
 @Component({
   selector: 'app-match-details',
@@ -20,7 +20,8 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
   startTime: Date | any;
   stopwatch: string | any;
   matchDetails: Match | any;
-  timelog: Timelog | any;
+  timelogs: Timelogs[] = [];
+  latestLogTime: Date | any;
   credentials: LoginModel | any;
   storedCredentialsString: any;
   role: any;
@@ -52,7 +53,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
       const now = new Date();
 
       // calculate the elapsed time in milliseconds
-      const elapsedTime = now.getTime() - this.startTime.getTime();
+      let elapsedTime = now.getTime() - this.startTime.getTime();
 
       // convert the elapsed time to minutes, seconds, and milliseconds
       const minutes = Math.floor(elapsedTime / 60000);
@@ -88,6 +89,13 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
       this.fetchTimelog();
+      console.log("TEST matchstate: " +
+      this.timelogs[this.timelogs.length-1].matchState +
+      " time: " +
+      this.timelogs[this.timelogs.length-1].datetime +
+      " NOW: " +
+      new Date()
+      );
     });
 
     this.loginService.currentCredentials.subscribe(credentials => {
@@ -125,10 +133,11 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
   }
 
   fetchTimelog(){
-    this.timelogService.getLastTimelogFromGamematch(this.id).subscribe({
+    this.timelogService.getTimelogsFromGamematch(this.id).subscribe({
       next: (response) => {
-        this.timelog = response;
-        console.log(this.timelog);
+        this.timelogs = response;
+        // this.latestLogTime = response[length-1].datetime;
+        console.log(this.timelogs);
 
         this.timelogService.errorMessage.subscribe(error => {
            // this.errorMessage = error;
