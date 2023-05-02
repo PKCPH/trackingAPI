@@ -12,6 +12,13 @@ import { Sort, MatSort } from '@angular/material/sort';
 })
 export class MainTeamsComponent implements OnDestroy {
 
+  //current page number starting from 0
+  pageNumber: number = 0
+
+  
+  //number of Teams shown
+  numberOfTeamsShown: number = 50
+  
   teams: Team[] = [];
   errorMessage: string = "";
   updateSubscription: Subscription | any;

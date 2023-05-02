@@ -29,7 +29,7 @@
                 </tr>
             </thead>
 
-            <tr class="tablerow" *ngFor="let teams of sortedTeams">  
+            <tr class="tablerow" *ngFor="let teams of sortedTeams | slice:(0+numberOfTeamsShown*pageNumber):(numberOfTeamsShown+numberOfTeamsShown*pageNumber)">  
                 <td>{{ teams.name }}</td>
                 <td>{{ teams.players.length}}</td>
                 <td>{{ teams.availability }}</td>
@@ -37,7 +37,34 @@
                     <a [routerLink]="['/teams', 'players', teams.id]"><button class="btn btn-primary mt-3">View Players</button></a>
                     <a><button class="btn btn-danger mt-3" (click)="deleteTeam(teams.id)" *ngIf="storedCredentialsString && role == 'Admin'">Delete</button></a></td>
             </tr> 
-        </table>  
+        </table>
+        <table class="position-relative top-90 start-50 translate-middle-x" *ngIf="teams && teams.length > 0">
+            <tbody>
+                <tr>
+                    <td *ngIf="pageNumber > 2">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = 0">First</button>
+                    </td>
+                    <td *ngIf="pageNumber > 1">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber - 2">{{pageNumber - 1}}</button>
+                    </td>
+                    <td *ngIf="pageNumber > 0">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber - 1">{{pageNumber}}</button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success">{{pageNumber + 1}}</button>
+                    </td>
+                    <td *ngIf="(pageNumber * numberOfTeamsShown) + numberOfTeamsShown < sortedTeams.length">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber + 1">{{pageNumber + 2}}</button>
+                    </td>
+                    <td *ngIf="(pageNumber * numberOfTeamsShown) + numberOfTeamsShown * 2 < sortedTeams.length">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = pageNumber + 2">{{pageNumber + 3}}</button>
+                    </td>
+                    <td *ngIf="(pageNumber * numberOfTeamsShown) + numberOfTeamsShown * 3 < sortedTeams.length">
+                        <button type="button" class="btn btn-primary" (click)="pageNumber = ((sortedTeams.length - sortedTeams.length % numberOfTeamsShown) / numberOfTeamsShown)">Last</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
             {{ errorMessage }}
