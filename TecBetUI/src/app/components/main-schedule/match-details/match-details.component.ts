@@ -84,18 +84,9 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.getId();
 
     this.fetch();
-    this.fetchTimelog();
 
     this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
-      this.fetchTimelog();
-      console.log("TEST matchstate: " +
-      this.timelogs[this.timelogs.length-1].matchState +
-      " time: " +
-      this.timelogs[this.timelogs.length-1].datetime +
-      " NOW: " +
-      new Date()
-      );
     });
 
     this.loginService.currentCredentials.subscribe(credentials => {
