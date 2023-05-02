@@ -17,7 +17,6 @@ public class DatabaseContext : DbContext
     public DbSet<League> Leagues { get; set; }
     public DbSet<Gamematch> Matches { get; set; }
     public DbSet<Bet> Bets { get; set; }
-    public DbSet<Timelog> Timelog { get; set; }
 
 
     public DbSet<LeagueTeam> LeagueTeams { get; set; }

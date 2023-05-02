@@ -31,7 +31,6 @@ public class Gamematch
     public League? league { get; set; }
     public ICollection<Bet> Bets { get; set; }
     public int? Round { get; set; }
-    public ICollection<Timelog> Timelogs { get; set; }
 }
 
 public enum MatchState

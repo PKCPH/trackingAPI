@@ -173,7 +173,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("dd12cee3-4b14-4e9a-af48-389f76fc85fa"),
+                            Id = new Guid("f5936a4f-08d0-43a8-a4f4-ec3357139330"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -575,34 +575,6 @@ namespace trackingAPI.Migrations
                     b.ToTable("Teams");
                 });
 
-            modelBuilder.Entity("trackingAPI.Models.Timelog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CategoryLog")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("GamematchId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Information")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MatchState")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GamematchId");
-
-                    b.ToTable("Timelog");
-                });
-
             modelBuilder.Entity("LeagueTeam", b =>
                 {
                     b.HasOne("trackingAPI.Models.League", "League")
@@ -680,22 +652,11 @@ namespace trackingAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("trackingAPI.Models.Timelog", b =>
-                {
-                    b.HasOne("trackingAPI.Models.Gamematch", null)
-                        .WithMany("Timelogs")
-                        .HasForeignKey("GamematchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
                 {
                     b.Navigation("Bets");
 
                     b.Navigation("ParticipatingTeams");
-
-                    b.Navigation("Timelogs");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.League", b =>

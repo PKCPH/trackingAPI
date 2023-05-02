@@ -6,10 +6,8 @@ import { LoginModel } from 'src/app/models/login.model';
 import { Match } from 'src/app/models/matches.model';
 import { Team } from 'src/app/models/teams.model';
 import { LoginService } from 'src/app/services/login.service';
-import { TimelogService } from 'src/app/services/timelog.service';
 import { MatchesService } from 'src/app/services/matches.service';
 import { BettingWindowComponent } from '../../betting/betting-window/betting-window.component';
-import { Timelogs } from 'src/app/models/timelog.model';
 
 @Component({
   selector: 'app-match-details',
@@ -20,7 +18,6 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
   startTime: Date | any;
   stopwatch: string | any;
   matchDetails: Match | any;
-  timelogs: Timelogs[] = [];
   latestLogTime: Date | any;
   credentials: LoginModel | any;
   storedCredentialsString: any;
@@ -34,7 +31,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     availability: '',
     score: 0,
     result: 0,
-    players:[],
+    players: [],
     rating: 0,
   };
 
@@ -46,7 +43,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.matchStopwatch();
   }
 
-  matchStopwatch(){
+  matchStopwatch() {
     // update the stopwatch every 10 milliseconds
     setInterval(() => {
       // get the current time
@@ -74,10 +71,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     private matchesService: MatchesService,
     private router: Router,
     private modalService: NgbModal,
-    private loginService: LoginService,
-    private timelogService: TimelogService,
-    private el: ElementRef,
-    private renderer: Renderer2) {
+    private loginService: LoginService) {
 
     this.getCredentials();
     window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
@@ -122,27 +116,6 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-  fetchTimelog(){
-    this.timelogService.getTimelogsFromGamematch(this.id).subscribe({
-      next: (response) => {
-        this.timelogs = response;
-        // this.latestLogTime = response[length-1].datetime;
-        console.log(this.timelogs);
-
-        this.timelogService.errorMessage.subscribe(error => {
-           // this.errorMessage = error;
-           if (this.matchDetails == null) {
-            // this.errorMessage = "";
-          }
-        });
-      },
-      error: (response) => {
-        console.log(response);
-      }
-    });
-  }
-
   getId() {
     this.route.paramMap.subscribe({
       next: (params) => {
@@ -184,7 +157,4 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     }
 
   }
-
-
-
 }

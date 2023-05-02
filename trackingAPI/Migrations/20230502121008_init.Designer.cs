@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230502062720_newCategoryLog")]
-    partial class newCategoryLog
+    [Migration("20230502121008_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -175,7 +175,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4e68febe-12fd-4ddd-ade6-6c760ab87061"),
+                            Id = new Guid("c0a64e58-3137-48c2-8ee7-a1c7ff855978"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -684,13 +684,11 @@ namespace trackingAPI.Migrations
 
             modelBuilder.Entity("trackingAPI.Models.Timelog", b =>
                 {
-                    b.HasOne("trackingAPI.Models.Gamematch", "Gamematch")
+                    b.HasOne("trackingAPI.Models.Gamematch", null)
                         .WithMany("Timelogs")
                         .HasForeignKey("GamematchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Gamematch");
                 });
 
             modelBuilder.Entity("trackingAPI.Models.Gamematch", b =>
