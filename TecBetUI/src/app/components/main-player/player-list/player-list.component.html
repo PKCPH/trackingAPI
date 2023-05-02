@@ -117,55 +117,7 @@
     </div>
     <div class="container my-2 divs py-5" *ngIf="searchedPlayers.length <= 0 && players.length > 0">
         <h3>No Player Matches search</h3>
-        <table class="table tabletext">
-            <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <select name="age" id="age" [(ngModel)]="model.older">
-                            <option value="older">Older</option>
-                            <option value="younger">Younger</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="height" id="height" [(ngModel)]="model.taller">
-                            <option value="taller">Taller</option>
-                            <option value="shorter">Shorter</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="weight" id="weight" [(ngModel)]="model.heavier">
-                            <option value="heavier">Heavier</option>
-                            <option value="lighter">Lighter</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select name="overall" id="overall" [(ngModel)]="model.better">
-                            <option value="better">Better</option>
-                            <option value="worse">Worse</option>
-                        </select>
-                    </td>
-                    <td></td>
-                    <td *ngIf="credentials.role !== 'Admin'"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
-                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"><button (click)="searchPlayers()" class="btn btn-primary">Search</button></td>
-                </tr>
-                <tr>
-                    <td><input type="text" [(ngModel)]="model.name"></td>
-                    <td><input type="text" [(ngModel)]="model.nationality"></td>
-                    <td><input type="number" [(ngModel)]="model.age"></td>
-                    <td><input type="number" [(ngModel)]="model.height_cm"></td>
-                    <td><input type="number" [(ngModel)]="model.weight_kg"></td>
-                    <td><input type="number" [(ngModel)]="model.overall"></td>
-                    <td><input type="text" [(ngModel)]="model.player_positions"></td>
-                    <td><input type="text" [(ngModel)]="model.preferred_foot"></td>
-                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                    <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()"></td>
-                </tr>
-            </tbody>
-        </table>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
     </div>
     <div class="container my-2 divs py-5" *ngIf="players.length < 1 && response == true">
         <h3>Database Doesnt contain any players</h3>
