@@ -116,7 +116,9 @@
         </div>
     </div>
     <div class="container my-2 divs py-5" *ngIf="searchedPlayers.length <= 0 && players.length > 0">
-        <h3>No Player Matches search</h3>
+        <h1 class="mb-3">Players</h1>
+        <h4>No Player Matches search</h4>
+        <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
         <table class="table tabletext">
             <tbody>
                 <tr>
@@ -168,7 +170,8 @@
         </table>
     </div>
     <div class="container my-2 divs py-5" *ngIf="players.length < 1 && response == true">
-        <h3>Database Doesnt contain any players</h3>
+        <h1 class="mb-3">Players</h1>
+        <h4>Database Doesnt contain any players</h4>
         <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
     </div>
 </div>
