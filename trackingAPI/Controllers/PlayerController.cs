@@ -59,18 +59,21 @@ namespace trackingAPI.Controllers
         //Update
         [HttpPut]
         [Route("{id:Guid}")]
-        public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, Player updatePlayerRequest)
+        public async Task<IActionResult> UpdatePlayer([FromRoute] Guid id, [FromBody] Player updatePlayerRequest)
         {
-            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
             var player = await databaseContext.Players.FindAsync(id);
             if(player == null ) { return NotFound(); }
+            if(updatePlayerRequest.Teams != null) 
+            { 
+                var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+                await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
 
-            await playerService.PlayerUpdateRemovePlayerTeams(updatePlayerRequest, playerTeams);
-
-            await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
+                await playerService.PlayerUpdateAddPlayerTeams(updatePlayerRequest, playerTeams);
+            }
             
             player.Id = updatePlayerRequest.Id;
             player.Name= updatePlayerRequest.Name;
+            player.nationality = updatePlayerRequest.nationality;
             player.Age = updatePlayerRequest.Age;
             player.height_cm = updatePlayerRequest.height_cm;
             player.weight_kg = updatePlayerRequest.weight_kg;

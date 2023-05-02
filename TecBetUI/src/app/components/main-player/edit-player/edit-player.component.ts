@@ -153,7 +153,7 @@ export class EditPlayerComponent {
     .subscribe({
       next: (response) => {
         console.log(response)
-        this.router.navigate(['players/'])
+        this.router.navigate(['players'])
       }
     })
   }

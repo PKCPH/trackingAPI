@@ -11,11 +11,11 @@ namespace trackingAPI.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
-        public DateTime dob { get; set; }
+        /*public DateTime dob { get; set; }*/
         public int height_cm { get; set; }
         public int weight_kg { get; set; }
         public string nationality { get; set; }
-        public ICollection<PlayerTeam> Teams { get; set; }        
+        public ICollection<PlayerTeam>? Teams { get; set; }        
         public int Overall { get; set; }
        /* public int Potential { get; set; }
         public int value_eur { get; set; }

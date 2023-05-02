@@ -26,9 +26,14 @@ export class PlayersService {
     return this.http.get<Player>(serviceVariables.baseApiUrl + '/api/Player/' + id)
   }
   updatePlayer(id:string, updatePlayerRequest: Player): Observable<Player>{
-    updatePlayerRequest.teams.forEach(element => {
-      element.id = '00000000-0000-0000-0000-000000000000'
-    });
+    if(updatePlayerRequest.teams != null){
+      updatePlayerRequest.teams.forEach(element => {
+        element.id = '00000000-0000-0000-0000-000000000000'
+      });
+    }
+    
+    console.log(updatePlayerRequest)
+
     return this.http.put<Player>(serviceVariables.baseApiUrl + '/api/Player/' + id, updatePlayerRequest);
   }
   deletePlayer(id:string):Observable<Player>{
