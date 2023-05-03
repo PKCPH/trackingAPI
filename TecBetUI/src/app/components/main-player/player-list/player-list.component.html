@@ -117,7 +117,7 @@
     </div>
     <div class="container my-2 divs py-5" *ngIf="searchedPlayers.length <= 0 && players.length > 0">
         <h1 class="mb-3">Players</h1>
-        <h4>No Player Matches search</h4>
+        <h4>No player matches the current search parameters</h4>
         <button type="button" class="btn btn-primary mt-3 mb-5" (click)="GoAddPlayer()" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()" id="addbutton">Create a Player</button>
         <table class="table tabletext">
             <tbody>
