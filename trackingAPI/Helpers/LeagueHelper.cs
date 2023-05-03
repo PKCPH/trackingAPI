@@ -24,6 +24,11 @@ public class LeagueHelper
         return league;
     }
 
+    //creates a tournament:
+    //first round is filled with team, roundNumber and a seed for each teams
+    //teams a match with 16 vs 1, 15 vs 2 etc...
+    //the winner of the matchup gets the lowest seed number between each other
+    //and is added to the next match that is matching the seednumber and round(minus 1) with the same leagueId
     private List<Gamematch> CreateGamematchRounds(int rounds, int byes, List<Team> teams, DateTime leagueDateTime)
     {
         //Creating first round
