@@ -313,7 +313,8 @@ form {
 }
 
 .modal-bet .modal-content {
-    background-color: rgba(45, 0, 45, 1);
+    /* background-color: rgba(212, 85, 0, 1); */
+    background-color: rgba(160, 44, 44, 1);
     border-radius: 10px;
 }
 
