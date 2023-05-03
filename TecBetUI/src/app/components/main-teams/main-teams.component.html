@@ -37,7 +37,7 @@
             <tbody>
                 <tr class="tablerow" *ngFor="let teams of sortedTeams | slice:(0+numberOfTeamsShown*pageNumber):(numberOfTeamsShown+numberOfTeamsShown*pageNumber)">  
                     <td>{{ teams.name }}</td>
-                    <td *ngIf="teams.rating > 0">{{ teams.rating}}</td>
+                    <td *ngIf="teams.rating > 0 && teams.players.length != 0">{{ teams.rating}}</td>
                     <td *ngIf="teams.rating == 0 && teams.players.length != 0">The teams rating has yet to be calculated, open the team to calculate it</td>
                     <td *ngIf="teams.players.length == 0">The team is empty</td>
                     <td>{{ teams.availability }}</td>
