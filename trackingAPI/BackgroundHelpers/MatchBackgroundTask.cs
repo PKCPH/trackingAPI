@@ -26,7 +26,7 @@ public class MatchBackgroundTask
 
             var n = 1;
 
-            for (int i = 1; i <= n; i++)
+            for (int i = 0; i <= n; i++)
             {
                 if (_context.Teams.Count(x => (bool)x.IsAvailable) > 1)
                 {
