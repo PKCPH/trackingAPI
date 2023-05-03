@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using trackingAPI.Data;
+using trackingAPI.Helpers;
 using trackingAPI.Models;
 
 namespace trackingAPI.Controllers;
@@ -14,7 +15,12 @@ public class TeamController : ControllerBase
     /// accessing the database at runtime
     /// </summary>
     private readonly DatabaseContext _context;
-    public TeamController(DatabaseContext context) => _context = context;
+    private readonly IPlayerService _playerService;
+    public TeamController(DatabaseContext context, IPlayerService playerService)
+    {
+        _context = context;
+        _playerService = playerService;
+    }
 
     //action method, does as a response of the http request, to get a list of Issue
     //attribute to make it handle httpGet!
@@ -126,31 +132,7 @@ public class TeamController : ControllerBase
     [HttpPost("players/add")]
     public async Task<IActionResult> ChangePlayersOnTeam(List<List<PlayerTeam>> playerTeamsList)
         {
-        var playerTeams = await _context.PlayerTeams.ToListAsync();
-
-        foreach (var playerTeam in playerTeamsList[0])
-        {
-            for (int i = 0; i < playerTeams.Count; i++)
-            {
-                if (playerTeams[i].Id == playerTeam.Id)
-                {
-                    _context.PlayerTeams.Remove(playerTeams[i]);
-                    await _context.SaveChangesAsync();
-                    playerTeams.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-
-        foreach (var playerTeam in playerTeamsList[1]) 
-        {
-            if (!playerTeams.Contains(playerTeam))
-            {
-                playerTeam.Id = Guid.NewGuid();
-                await _context.PlayerTeams.AddAsync(playerTeam);
-                await _context.SaveChangesAsync();
-            }
-        }
+        if (playerTeamsList != null) await _playerService.ChangePlayersOnTeam(playerTeamsList);
 
         return playerTeamsList == null ? NotFound() : Ok(playerTeamsList);
     }

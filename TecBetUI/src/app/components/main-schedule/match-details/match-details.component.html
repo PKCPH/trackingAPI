@@ -31,8 +31,8 @@
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[1].result == 1">
                 {{matchDetails.participatingTeams[1].name}} WON</h2>
             <div class="my-5">
-                <img *ngIf="matchDetails.matchState != 6 && matchDetails.matchState != 2" src="images/simu.gif">
-                <img *ngIf="matchDetails.matchState == 6 || matchDetails.matchState == 2" src="images/soccerField.png">
+                <img *ngIf="matchDetails.matchState != 0 && matchDetails.matchState != 6 && matchDetails.matchState != 2" src="images/simu.gif">
+                <img *ngIf="matchDetails.matchState == 0 || matchDetails.matchState == 6 || matchDetails.matchState == 2" src="images/soccerField.png">
             </div>
         </div>
     </div>

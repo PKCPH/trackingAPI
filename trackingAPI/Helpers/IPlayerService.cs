@@ -9,5 +9,6 @@ namespace trackingAPI.Helpers
         public Player AssignTeamsToPlayer(Player player, List<PlayerTeam> playerTeams);
         public Task PlayerUpdateRemovePlayerTeams(Player player, List<PlayerTeam> playerTeams);
         public Task PlayerUpdateAddPlayerTeams(Player player, List<PlayerTeam> playerTeams);
+        public Task ChangePlayersOnTeam(List<List<PlayerTeam>> playerTeamsList);
     }
 }
