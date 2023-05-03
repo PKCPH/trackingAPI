@@ -90,7 +90,7 @@ export class BettingWindowComponent {
         (error: any) => {
           // Handle error
           this.errorMessage = error.error;
-          console.log(this.errorMessage);
+          // console.log(this.errorMessage);
         }
       );
 

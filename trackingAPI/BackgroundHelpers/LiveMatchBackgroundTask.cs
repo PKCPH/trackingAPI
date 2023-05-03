@@ -140,7 +140,7 @@ public class LiveMatchBackgroundTask
         Random rnd = new Random();
         var ballPossessionTeam = rnd.Next(10000)/100;
         bool GoalToTeamA = false;
-        var chanceOfGoal = rnd.Next(1, 100);
+        var chanceOfGoal = rnd.Next(1, 200);
         if (ballPossessionTeam > 100 - ParticipantSuperiority(Convert.ToDouble(gameMatch.ParticipatingTeams.First().Team.Rating),Convert.ToDouble(gameMatch.ParticipatingTeams.Last().Team.Rating))*100) GoalToTeamA = true;
         if (chanceOfGoal > 1) return gameMatch;
 
@@ -169,7 +169,7 @@ public class LiveMatchBackgroundTask
     //Calculates the advantage that Team A has over Team B using a modified version of Dr. Elos chess rating equations
     public static double ParticipantSuperiority(double participantA, double participantB)
     {
-        double participantSuperiority = (1 / (1 + Math.Pow(10, Convert.ToDouble(participantB - participantA) / 20)));
+        double participantSuperiority = (1 / (1 + Math.Pow(10, Convert.ToDouble(participantB - participantA) / 200)));
         return participantSuperiority;
     }
 }
