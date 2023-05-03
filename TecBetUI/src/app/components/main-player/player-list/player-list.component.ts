@@ -26,6 +26,9 @@ export class PlayerListComponent {
 
   //number of players shown
   numberOfPlayersShown: number = 50
+
+  //stores if the backend has responded with the playerList
+  response: boolean = false
   
   //stores the filter
   model = {
@@ -78,6 +81,7 @@ export class PlayerListComponent {
         this.Hideloader();
         this.players = players
         this.searchedPlayers = players
+        this.response = true
       },
       error: (response) => {
         console.log(response);
@@ -130,6 +134,7 @@ export class PlayerListComponent {
     this.searchedPlayers = this.searchedPlayers.filter(p => better ? p.overall >= this.model.overall : p.overall <= this.model.overall)
     this.searchedPlayers = this.searchedPlayers.filter(p => p.player_positions.toLowerCase().includes(this.model.player_positions.toLowerCase()))
     this.searchedPlayers = this.searchedPlayers.filter(p => p.preferred_foot.toLowerCase().includes(this.model.preferred_foot.toLowerCase()))
+    this.pageNumber = 0
   }
 
   Hideloader() {

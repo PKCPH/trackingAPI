@@ -11,18 +11,18 @@ namespace trackingAPI.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
-        public DateTime dob { get; set; }
+        /*public DateTime dob { get; set; }*/
         public int height_cm { get; set; }
         public int weight_kg { get; set; }
         public string nationality { get; set; }
-        public ICollection<PlayerTeam> Teams { get; set; }        
+        public ICollection<PlayerTeam>? Teams { get; set; }        
         public int Overall { get; set; }
-        public int Potential { get; set; }
+       /* public int Potential { get; set; }
         public int value_eur { get; set; }
-        public int wage_eur { get; set; }
-        public string player_positions { get; set; }
-        public string preferred_foot { get; set; }
-        public int international_reputation { get; set; }
+        public int wage_eur { get; set; }*/
+        public string? player_positions { get; set; }
+        public string? preferred_foot { get; set; }
+        /*public int international_reputation { get; set; }
         public int weak_foot { get; set; }
         public int skill_moves { get; set; }
         public string work_rate { get; set; }
@@ -109,6 +109,6 @@ namespace trackingAPI.Models
         public string? lcb { get; set; }
         public string? cb { get; set; }
         public string? rcb { get; set; }
-        public string? rb { get; set; }
+        public string? rb { get; set; }*/
     }
 }

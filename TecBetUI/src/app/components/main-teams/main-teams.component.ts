@@ -12,7 +12,15 @@ import { Sort, MatSort } from '@angular/material/sort';
 })
 export class MainTeamsComponent implements OnDestroy {
 
+  //current page number starting from 0
+  pageNumber: number = 0;
+  //number of Teams shown
+  numberOfTeamsShown: number = 50;
+  //substring used to filter teams
+  searchString: string = "";
+  
   teams: Team[] = [];
+  searchedTeams: Team[] = []
   errorMessage: string = "";
   updateSubscription: Subscription | any;
   storedCredentialsString: any;
@@ -64,6 +72,8 @@ export class MainTeamsComponent implements OnDestroy {
           console.log(this.teams);
           if (teams) {
             this.sortedTeams = this.teams.slice();
+            this.searchedTeams = this.sortedTeams
+            this.searchTeams();
             this.toggleOverflowDiv();
             this.Hideloader();
             this.sortData(this.sort);
@@ -135,7 +145,7 @@ export class MainTeamsComponent implements OnDestroy {
   updateSortedTeams() {
     const sortColumn = this.sort.active;
     const sortDirection = this.sort.direction;
-    this.sortedTeams = this.teams.slice().sort((a, b) => {
+    this.sortedTeams = this.searchedTeams.slice().sort((a, b) => {
       const isAsc = sortDirection === 'asc';
       switch (sortColumn) {
         case 'name': return compare(a.name, b.name, isAsc);
@@ -203,6 +213,10 @@ export class MainTeamsComponent implements OnDestroy {
     } else {
       this.renderer.setStyle(this.el.nativeElement.querySelector('#overflow-div'), 'display', 'none');
     }
+  }
+  searchTeams():void{
+    this.searchedTeams = this.teams.filter(t => t.name.toLocaleLowerCase().includes(this.searchString.toLocaleLowerCase()))
+    this.updateSortedTeams
   }
 
 }

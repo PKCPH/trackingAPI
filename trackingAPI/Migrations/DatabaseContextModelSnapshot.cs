@@ -170,7 +170,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e0e32e76-ee05-427b-b520-311375832480"),
+                            Id = new Guid("e1592177-e173-43cf-837d-ea8d1d41c113"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
@@ -221,12 +221,6 @@ namespace trackingAPI.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Dribbling")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -234,295 +228,21 @@ namespace trackingAPI.Migrations
                     b.Property<int>("Overall")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Pace")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Passing")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Physical")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Potential")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Shooting")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attacking_crossing")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attacking_finishing")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attacking_heading_accuracy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attacking_short_passing")
-                        .HasColumnType("int");
-
-                    b.Property<int>("attacking_volleys")
-                        .HasColumnType("int");
-
-                    b.Property<string>("body_type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cdm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cf")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("contract_valid_until")
-                        .HasColumnType("int");
-
-                    b.Property<int>("defending_marking")
-                        .HasColumnType("int");
-
-                    b.Property<int>("defending_sliding_tackle")
-                        .HasColumnType("int");
-
-                    b.Property<int>("defending_standing_tackle")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("dob")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("gk_diving")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("gk_handling")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("gk_kicking")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("gk_positioning")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("gk_reflexes")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("gk_speed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("goalkeeping_diving")
-                        .HasColumnType("int");
-
-                    b.Property<int>("goalkeeping_handling")
-                        .HasColumnType("int");
-
-                    b.Property<int>("goalkeeping_kicking")
-                        .HasColumnType("int");
-
-                    b.Property<int>("goalkeeping_positioning")
-                        .HasColumnType("int");
-
-                    b.Property<int>("goalkeeping_reflexes")
-                        .HasColumnType("int");
-
                     b.Property<int>("height_cm")
                         .HasColumnType("int");
-
-                    b.Property<int>("international_reputation")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("joined")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("lam")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lcb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lcm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ldm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lf")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("loaned_from")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ls")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lw")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("lwb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("mentality_aggression")
-                        .HasColumnType("int");
-
-                    b.Property<int>("mentality_composure")
-                        .HasColumnType("int");
-
-                    b.Property<int>("mentality_interceptions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("mentality_penalties")
-                        .HasColumnType("int");
-
-                    b.Property<int>("mentality_positioning")
-                        .HasColumnType("int");
-
-                    b.Property<int>("mentality_vision")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movement_acceleration")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movement_agility")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movement_balance")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movement_reactions")
-                        .HasColumnType("int");
-
-                    b.Property<int>("movement_sprint_speed")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("nation_jersey_number")
-                        .HasColumnType("int");
-
-                    b.Property<string>("nation_position")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("nationality")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("player_positions")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("player_tags")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("player_traits")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("power_jumping")
-                        .HasColumnType("int");
-
-                    b.Property<int>("power_long_shots")
-                        .HasColumnType("int");
-
-                    b.Property<int>("power_shot_power")
-                        .HasColumnType("int");
-
-                    b.Property<int>("power_stamina")
-                        .HasColumnType("int");
-
-                    b.Property<int>("power_strength")
-                        .HasColumnType("int");
 
                     b.Property<string>("preferred_foot")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ram")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rcb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rcm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rdm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("real_face")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("release_clause_eur")
-                        .HasColumnType("int");
-
-                    b.Property<string>("rf")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rm")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rs")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rw")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("rwb")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("skill_ball_control")
-                        .HasColumnType("int");
-
-                    b.Property<int>("skill_curve")
-                        .HasColumnType("int");
-
-                    b.Property<int>("skill_dribbling")
-                        .HasColumnType("int");
-
-                    b.Property<int>("skill_fk_accuracy")
-                        .HasColumnType("int");
-
-                    b.Property<int>("skill_long_passing")
-                        .HasColumnType("int");
-
-                    b.Property<int>("skill_moves")
-                        .HasColumnType("int");
-
-                    b.Property<string>("st")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("team_jersey_number")
-                        .HasColumnType("int");
-
-                    b.Property<string>("team_position")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("value_eur")
-                        .HasColumnType("int");
-
-                    b.Property<int>("wage_eur")
-                        .HasColumnType("int");
-
-                    b.Property<int>("weak_foot")
-                        .HasColumnType("int");
 
                     b.Property<int>("weight_kg")
                         .HasColumnType("int");
-
-                    b.Property<string>("work_rate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

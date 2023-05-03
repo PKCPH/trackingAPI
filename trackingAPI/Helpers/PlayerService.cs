@@ -1,4 +1,5 @@
-﻿using trackingAPI.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using trackingAPI.Data;
 using trackingAPI.Models;
 
 namespace trackingAPI.Helpers
@@ -77,6 +78,35 @@ namespace trackingAPI.Helpers
                 }
             }
             await databaseContext.SaveChangesAsync();
+        }
+
+        public async Task ChangePlayersOnTeam(List<List<PlayerTeam>> playerTeamsList)
+        {
+            var playerTeams = await databaseContext.PlayerTeams.ToListAsync();
+
+            foreach (var playerTeam in playerTeamsList[0])
+            {
+                for (int i = 0; i < playerTeams.Count; i++)
+                {
+                    if (playerTeams[i].Id == playerTeam.Id)
+                    {
+                        databaseContext.PlayerTeams.Remove(playerTeams[i]);
+                        await databaseContext.SaveChangesAsync();
+                        playerTeams.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            foreach (var playerTeam in playerTeamsList[1])
+            {
+                if (!playerTeams.Contains(playerTeam))
+                {
+                    playerTeam.Id = Guid.NewGuid();
+                    await databaseContext.PlayerTeams.AddAsync(playerTeam);
+                    await databaseContext.SaveChangesAsync();
+                }
+            }
         }
     }
 }
