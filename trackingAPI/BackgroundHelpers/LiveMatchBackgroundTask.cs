@@ -13,12 +13,23 @@ namespace trackingAPI.BackgroundHelpers;
 public class LiveMatchBackgroundTask
 {
     private readonly IServiceProvider _services;
+    private double participantSuperiority;
     public LiveMatchBackgroundTask(IServiceProvider services)
     {
         _services = services;
     }
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
+        this.participantSuperiority = ParticipantSuperiority(
+            Convert.ToDouble(gamematch.ParticipatingTeams.First().Team.Rating),
+            Convert.ToDouble(gamematch.ParticipatingTeams.Last().Team.Rating)) * 100;
+
+        Console.WriteLine("partiSup" + this.participantSuperiority);
+        Console.WriteLine("partiSup" + this.participantSuperiority);
+        Console.WriteLine("partiSup" + this.participantSuperiority);
+        Console.WriteLine("partiSup" + this.participantSuperiority);
+        Console.WriteLine("partiSup" + this.participantSuperiority);
+
         PlayGameHalf(gamematch, MatchState.FirstHalf);
 
         UpdatePlayingState(gamematch, MatchState.HalfTimePause);
@@ -141,7 +152,7 @@ public class LiveMatchBackgroundTask
         var ballPossessionTeam = rnd.Next(10000)/100;
         bool GoalToTeamA = false;
         var chanceOfGoal = rnd.Next(1, 200);
-        if (ballPossessionTeam > 100 - ParticipantSuperiority(Convert.ToDouble(gameMatch.ParticipatingTeams.First().Team.Rating),Convert.ToDouble(gameMatch.ParticipatingTeams.Last().Team.Rating))*100) GoalToTeamA = true;
+        if (ballPossessionTeam > 100 - this.participantSuperiority) GoalToTeamA = true;
         if (chanceOfGoal > 1) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");

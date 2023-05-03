@@ -12,8 +12,8 @@ using trackingAPI.Data;
 namespace trackingAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230502121637_timelogRemoved")]
-    partial class timelogRemoved
+    [Migration("20230503082054_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -175,7 +175,7 @@ namespace trackingAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f5936a4f-08d0-43a8-a4f4-ec3357139330"),
+                            Id = new Guid("05885e42-b87a-462a-98d5-1cca98d34dc8"),
                             Balance = 1000,
                             Email = "",
                             Password = "123456",
