@@ -24,11 +24,12 @@ public class LeagueHelper
         return league;
     }
 
-    //creates a tournament:
-    //first round is filled with team, roundNumber and a seed for each teams
-    //teams a match with 16 vs 1, 15 vs 2 etc...
+    //Creates a tournament:
+    //each MatchTeam is filled with a TeamId (only first round), TeamScore, Result and Seed
+    //Gamematch is filled with MatchState, DateOfMatch, DrawAllowed, LeagueId and Round
+    //teams are seeded with 16 vs 1, 15 vs 2 etc...
     //the winner of the matchup gets the lowest seed number between each other
-    //and is added to the next match that is matching the seednumber and round(minus 1) with the same leagueId
+    //and is added to the next match that is matching the seednumber roundNumber(minus 1) with the same leagueId
     private List<Gamematch> CreateGamematchRounds(int rounds, int byes, List<Team> teams, DateTime leagueDateTime)
     {
         //Creating first round
@@ -118,6 +119,8 @@ public class LeagueHelper
         }
         return league;
     }
+
+    //used to set a Bye team to matches that are missing a opponent. The bye team is deleted when the match is "played"
     public static int NumberOfByes(int rounds, int numberOfTeams)
     {
         int totalTeams = 1;
@@ -143,7 +146,8 @@ public class LeagueHelper
 
     public static Dictionary<Team, double> TournamentWinChances(params Team[] teams)
     {
-        //How harshly the algorithm judges a team based on their rating. the lower the value the harsher the judgement. Any values below 0 gives faulty answers
+        //How harshly the algorithm judges a team based on their rating. the lower the value the harsher the judgement.
+        //Any values below 0 gives faulty answers
         double sensisivity = 20;
         Dictionary<Team, double> result = new Dictionary<Team, double>();
 
