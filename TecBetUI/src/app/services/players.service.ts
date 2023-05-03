@@ -20,6 +20,7 @@ export class PlayersService {
       element.id = '00000000-0000-0000-0000-000000000000';
       element.playerId = '00000000-0000-0000-0000-000000000000'
     });
+    if(addPlayerRequest.overall == 0) addPlayerRequest.overall = 1
     return this.http.post<Player>(serviceVariables.baseApiUrl + '/api/Player',addPlayerRequest);
   }
   getPlayer(id:string): Observable<Player>{
