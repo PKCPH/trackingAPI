@@ -4,7 +4,7 @@
   --c: #1095c1; /* the color */
   --b: .1em;    /* border length*/
   --d: 20px;    /* the cube depth */
-  
+
   --_s: calc(var(--d) + var(--b));
   color: var(--c);
   border: solid #0000;
@@ -15,11 +15,11 @@
     conic-gradient(at left var(--_s) bottom var(--_s),
       #0000 90deg,var(--c) 0) 0 100%/calc(100% - var(--b)) calc(100% - var(--b))  border-box;
   transform: translate(calc(var(--d)/-1),var(--d));
-  clip-path: 
+  clip-path:
     polygon(
-     var(--d) 0%, 
-     var(--d) 0%, 
-     100% 0%, 
+     var(--d) 0%,
+     var(--d) 0%,
+     100% 0%,
      100% calc(100% - var(--d)),
      100% calc(100% - var(--d)),
      var(--d) calc(100% - var(--d))
@@ -28,16 +28,67 @@
 }
 .d-1:hover {
   transform: translate(0,0);
-  clip-path: 
+  clip-path:
     polygon(
-     0% var(--d), 
-     var(--d) 0%, 
-     100% 0%, 
-     100% calc(100% - var(--d)), 
-     calc(100% - var(--d)) 100%, 
+     0% var(--d),
+     var(--d) 0%,
+     100% 0%,
+     100% calc(100% - var(--d)),
+     calc(100% - var(--d)) 100%,
      0% 100%
    );
 }
+
+
+.divs{
+  padding: 5vh;
+}
+
+.h1{
+  size: 50%;
+}
+
+.section2{
+  display: flex;
+  padding-top: 15vh;
+}
+.left-grid {
+  flex: 1;
+  padding: 20px;
+  padding-top: 10vh;
+}
+
+.right-grid {
+  flex: 1;
+}
+
+
+.divBulletpoints{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 5vh;
+}
+
+.joinNow{
+  margin-top: 5vh;
+  padding: 2vh;
+  background-color: #a02c2cff;
+  cursor: pointer;
+  border-radius: 25px;
+
+}
+
+.joinNow:hover .bulletpointLink{
+  animation: logoShadowAnimation .5s ease forwards;
+}
+
+.bulletpointLink{
+  font-weight: bolder;
+}
+
 
 img {
     border: rgba(255, 0, 255, 0.3) solid 6px;
@@ -49,13 +100,13 @@ img {
     --y: 20px;
     transform: perspective(1000px) rotateX(var(--_a,40deg));
     /* */
-    clip-path: polygon(       
-       var(--y)              var(--y),       
-       calc(100% - var(--y)) var(--y),       
-       calc(100% - var(--y)) calc(100% - var(--y)),       
-       calc(100% - var(--y) - var(--x)) var(--_c,100%),       
-       calc(var(--x) + var(--y))        var(--_c,100%),      
-       var(--y)        calc(100% - var(--y))       
+    clip-path: polygon(
+       var(--y)              var(--y),
+       calc(100% - var(--y)) var(--y),
+       calc(100% - var(--y)) calc(100% - var(--y)),
+       calc(100% - var(--y) - var(--x)) var(--_c,100%),
+       calc(var(--x) + var(--y))        var(--_c,100%),
+       var(--y)        calc(100% - var(--y))
        );
     outline: var(--y) solid rgba(0,0,0,0.4);
     outline-offset: calc(-1*var(--y));
@@ -135,6 +186,45 @@ a:hover {
 
 span:hover {
     color: darkred;
+}
+
+.slide-in {
+  /* Other CSS properties */
+  transform: translateX(100%);
+}
+
+.slide-in-active {
+  animation: slideInRight 3s forwards;
+  transform: translateX(0%);
+}
+
+.fade-in {
+  /* Other CSS properties */
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.fade-in-active {
+  animation: fadeinBulletpoint 3s forwards;
+  transform: translateX(0%);
+}
+
+@keyframes fadeinBulletpoint{
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @media screen and (max-width: 1800px) {

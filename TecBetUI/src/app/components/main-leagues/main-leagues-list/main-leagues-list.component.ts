@@ -4,6 +4,9 @@ import { LeaguesService } from 'src/app/services/leagues.service';
 import { faCircleChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { Match } from 'src/app/models/matches.model';
+import { Team } from 'src/app/models/teams.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-leagues-list',
@@ -11,11 +14,11 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./main-leagues-list.component.css']
 })
 export class MainLeaguesListComponent {
-
   arrowDown = faCircleChevronDown;
   arrowUp = faCircleChevronUp;
   output: number = 0;
   byeCheese: boolean = false;
+  isLeagueShown: boolean = false;
 
   iconStates: any = {};
 
@@ -23,7 +26,7 @@ export class MainLeaguesListComponent {
 
   leagues: Leagues[] = [];
 
-  constructor(private leaguesService: LeaguesService) {
+  constructor(private leaguesService: LeaguesService, private router: Router) {
 
     this.fetch();
 
@@ -101,15 +104,47 @@ export class MainLeaguesListComponent {
 
   }
 
+  GoMatchDetails(id: string, participatingTeams: Team[])
+  {
+  if(participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD')
+  {
+   if(participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE')
+   {
+   this.router.navigateByUrl("details/" + id);
+   }
+  }
+  }
+
   toggleTable(startDate: string, leagueId: string) {
     const table = document.getElementById(startDate) as HTMLElement;
     const icon = document.getElementById(leagueId) as HTMLElement;
+    this.isLeagueShown = !this.isLeagueShown;
     if (table.style.display === 'none') {
       table.style.display = 'block';
       this.iconStates[leagueId] = 'down';
     } else {
       table.style.display = 'none';
       this.iconStates[leagueId] = 'up';
+    }
+  }
+
+  getCredentials() {
+    let storedCredentials;
+
+    let storedCredentialsString = localStorage.getItem("credentials");
+    if (storedCredentialsString) {
+      storedCredentials = JSON.parse(storedCredentialsString);
+
+      let role = storedCredentials.role;
+
+      if (role === 'Admin') {
+        this.router.navigate(['/matches']);
+      } else {
+        this.router.navigate(['/']);
+      }
+    }
+    else if (!storedCredentialsString) {
+      this.router.navigate(['/']);
     }
   }
 }

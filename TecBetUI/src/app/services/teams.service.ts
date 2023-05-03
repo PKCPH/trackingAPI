@@ -14,38 +14,38 @@ import * as serviceVariables from './serviceVariables'
 export class TeamsService {
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) {}
+  constructor(private http: HttpClient, private customErrorHandlerService: CustomErrorHandlerService) { }
 
   //Declaring error variables to dynicamally update it depending on what error you encounter
   //The components who wants to use these will then have to .subscribe to it
-   private errorSubject = new BehaviorSubject<string>("");
-   errorMessage = this.errorSubject.asObservable();
+  private errorSubject = new BehaviorSubject<string>("");
+  errorMessage = this.errorSubject.asObservable();
 
-   //Observable is a class in the RxJS library that represents a data stream that can emit zero or more values over time. 
-   //Observables are often used to represent asynchronous data sources, such as HTTP requests or user input events.
-   //pipe() is a method that allows you to chain together multiple operators to transform or filter the data emitted by an Observable. 
-   //An operator is a function that takes an Observable as input and returns a new Observable with modified data. (Below we use .tap() and catchError())
-   //tap() is a method that allows you to inspect the data stream without modifying it. It's useful for debugging or logging purposes. 
-   getAllTeams(): Observable<Team[]> {
+  //Observable is a class in the RxJS library that represents a data stream that can emit zero or more values over time.
+  //Observables are often used to represent asynchronous data sources, such as HTTP requests or user input events.
+  //pipe() is a method that allows you to chain together multiple operators to transform or filter the data emitted by an Observable.
+  //An operator is a function that takes an Observable as input and returns a new Observable with modified data. (Below we use .tap() and catchError())
+  //tap() is a method that allows you to inspect the data stream without modifying it. It's useful for debugging or logging purposes.
+  getAllTeams(): Observable<Team[]> {
     this.isLoading = true;
     return this.http.get<Team[]>(serviceVariables.baseApiUrl + '/api/Team')
-          .pipe(
-            tap(teams => {
-              this.errorSubject.next('');
-            }),
-            catchError(error => {
-              this.errorSubject.next(this.customErrorHandlerService.handleError(error));
-              this.isLoading = false;
-              return of([]);
-            })
-          );
+      .pipe(
+        tap(teams => {
+          this.errorSubject.next('');
+        }),
+        catchError(error => {
+          this.errorSubject.next(this.customErrorHandlerService.handleError(error));
+          this.isLoading = false;
+          return of([]);
+        })
+      );
   }
 
   addTeam(addTeamRequest: Team): Observable<Team> {
-    //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we 
+    //Adding this cos JSON doesnt like that we dont return anything to our GUID ID field, so we
     //just return an empty guid thats gonna be overwritten by the API either way
     addTeamRequest.id = '00000000-0000-0000-0000-000000000000';
-    
+
     return this.http.post<Team>(serviceVariables.baseApiUrl + '/api/Team', addTeamRequest);
   }
 
@@ -62,12 +62,27 @@ export class TeamsService {
     return this.http.delete<Team>(serviceVariables.baseApiUrl + '/api/Team/' + id)
   }
 
-  getPlayers(id: string): Observable<Player[]>{
+  getPlayers(id: string): Observable<Player[]> {
     return this.http.get<Player[]>(serviceVariables.baseApiUrl + '/api/Team/players/' + id)
   }
 
-  changePlayers(playerTeams: playerTeam[][]): Observable<playerTeam[][]>{
+  changePlayers(playerTeams: playerTeam[][]): Observable<playerTeam[][]> {
     console.log(playerTeams);
     return this.http.post<playerTeam[][]>(serviceVariables.baseApiUrl + '/api/Team/players/add', playerTeams)
+  }
+
+  getAvailableTeams(): Observable<Team[]> {
+    this.isLoading = true;
+    return this.http.get<Team[]>(serviceVariables.baseApiUrl + '/api/Team/getAvailableTeams')
+      .pipe(
+        tap(teams => {
+          this.errorSubject.next('');
+        }),
+        catchError(error => {
+          this.errorSubject.next(this.customErrorHandlerService.handleError(error));
+          this.isLoading = false;
+          return of([]);
+        })
+      );
   }
 }

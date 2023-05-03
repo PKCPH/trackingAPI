@@ -1,78 +1,115 @@
-<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu" *ngIf="scrolled == 0">
-  <div class="logo"><a href="#section4"><img src="images/logo.png"></a></div>
-    <div class="container">
-      <div class="leftsidenav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-text" routerLink="teams">Teams</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="players">Players</a>
-          </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
-            <a class="nav-text " routerLink="matches">Matches</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="schedule">Schedule</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="leagues">Leagues</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " href="#section2">Betting</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="animalrace">Minigame</a>
-          </li>
-          <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
-            <a class="nav-text" routerLink="adminboard">Admin Board</a>
-          </li>
-        </ul> 
-      </div>
-
-      <div class="rightsidenav">
+<nav class="navbar navbar-expand-lg navbar-bg navbar-light menu">
+  <!-- <div class="logo"><a href="#section4"><img src="images/logo.png"></a></div> -->
+  <div class="logo"><a href="#section4">
+      <h1 class="logoheader">SPORTHAVEN</h1>
+    </a></div>
+  <div class="container">
+    <div class="leftsidenav">
       <ul class="navbar-nav">
-  
-        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">Logged in as <button class="dropDownButton" (click)="toggleDropdown()"><span class="username">{{ credentials.userName | titlecase }}</span><img src="images/dropdownarrow.png"></button>
+        <li class="nav-item">
+          <a class="nav-text" routerLink="teams" routerLinkActive="active-link">Teams</a>
         </li>
-        <li>
-          <p *ngIf="isUserAuthenticated() && !isRegisterPage()" class="balance">Balance: <span *ngIf="!credentials.balance && credentials.balance != 0"><img src="images/coin.gif"></span><span *ngIf="credentials.balance || credentials.balance == 0" class="balanceTxt">{{ credentials.balance}}$</span></p>
+        <li class="nav-item">
+          <a class="nav-text " routerLink="players" routerLinkActive="active-link">Players</a>
+        </li>
+        <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+          <a class="nav-text " routerLink="matches" routerLinkActive="active-link">Matches</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-text " routerLink="schedule" routerLinkActive="active-link">Schedule</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-text " routerLink="leagues" routerLinkActive="active-link">Leagues</a>
+        </li>
+        <!-- <li class="nav-item">
+            <a class="nav-text " href="#section2" routerLinkActive="active-link">Betting</a>
+          </li> -->
+        <!-- <li class="nav-item">
+          <a class="nav-text " routerLink="animalrace" routerLinkActive="active-link">Minigame</a>
+        </li> -->
+        <li class="nav-item" *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
+          <a class="nav-text" routerLink="adminboard" routerLinkActive="active-link">Admin Board</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rightsidenav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <p *ngIf="isUserAuthenticated() && !isRegisterPage()" class="balance">Balance:
+            <span *ngIf="!credentials.balance && credentials.balance != 0"><img src="images/coin.gif"></span>
+            <span *ngIf="credentials.balance || credentials.balance == 0" class="balanceTxt">{{ credentials.balance }}$</span>
+          </p>
         </li>
 
-        <li *ngIf="!isUserAuthenticated()"><a class="nav-text" (click)="openLogin()">Login</a></li>
-        <li *ngIf="!isUserAuthenticated() && !isRegisterPage()"><a class="nav-text" routerLink="/register">Register</a></li>
+        <li class="nav-item" *ngIf="isUserAuthenticated() && !isRegisterPage()">
+          <span>Logged in as</span>
+        </li>
+
+        <li *ngIf="isUserAuthenticated() && !isRegisterPage()" class="nav-text">
+          <button class="dropDownButton" (click)="toggleDropdown()">
+            <span class="username">{{ credentials.userName | titlecase }}</span><img src="images/dropdownarrow.png">
+          </button>
+        </li>
+
+        <li *ngIf="!isUserAuthenticated()">
+          <a class="nav-text" (click)="openLogin()">Login</a>
+        </li>
+
+        <li *ngIf="!isUserAuthenticated() && !isRegisterPage()">
+          <a class="nav-text" routerLink="/register">Register</a>
+        </li>
+
       </ul>
+
       <ul class="dropDownBox" *ngIf="showDropdown">
         <li class="dropDownItems" *ngFor="let item of items" (click)="onItemClick(item.text)">
-          <a class="dropDownItem" *ngIf="item.text === 'Log Out'" (click)="logOut()"><mat-icon style="margin: auto; padding-right: 30px;">exit_to_app</mat-icon><span style="padding-right: 25px">{{item.text}}</span></a>
-          <a class="dropDownItem" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]"><mat-icon style="margin: auto; padding-right: 30px;">dashboard</mat-icon><span style="padding-right: 5px;">{{item.text}}</span></a>
-          <a class="dropDownItem" *ngIf="item.text === 'My Bets'" [routerLink]="['/dashboard', credentials.userName, 'mybets']"><mat-icon style="margin: auto; padding-right: 30px;">attach_money</mat-icon><span style="padding-right: 28px">{{item.text}}</span></a>
+          <a class="dropDownItem" *ngIf="item.text === 'Log Out'" (click)="logOut()">
+            <mat-icon style="margin: auto; padding-right: 30px;">exit_to_app</mat-icon><span
+              style="padding-right: 25px">{{item.text}}</span>
+          </a>
+          <a class="dropDownItem" *ngIf="item.text === 'Dashboard'" [routerLink]="['/dashboard', credentials.userName]">
+            <mat-icon style="margin: auto; padding-right: 30px;">dashboard</mat-icon><span
+              style="padding-right: 5px;">{{item.text}}</span>
+          </a>
+          <a class="dropDownItem" *ngIf="item.text === 'My Bets'"
+            [routerLink]="['/dashboard', credentials.userName, 'mybets']">
+            <mat-icon style="margin: auto; padding-right: 30px;">attach_money</mat-icon><span
+              style="padding-right: 28px">{{item.text}}</span>
+          </a>
         </li>
       </ul>
     </div>
-    </div> 
-  </nav>
-  
-  
-  
-  <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">
-    <div class="container">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-text" aria-current="page" href="#section4"><mat-icon class="navIcons">home</mat-icon></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="teams"><mat-icon class="navIcons">group</mat-icon></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " routerLink="schedule"><mat-icon class="navIcons">schedule</mat-icon></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-text " href="#section2"><mat-icon class="navIcons">casino</mat-icon></a>
-          </li>
-        </ul>  
-    </div>
-  </nav>
-  
-  <router-outlet></router-outlet>
-  
+  </div>
+</nav>
+
+
+
+<!-- <nav class="navbar navbar-expand-lg navbar-light navbar-bg menu2" *ngIf="scrolled == 1">
+  <div class="container">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-text" aria-current="page" href="#section4">
+          <mat-icon class="navIcons">home</mat-icon>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-text " routerLink="teams">
+          <mat-icon class="navIcons">group</mat-icon>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-text " routerLink="schedule">
+          <mat-icon class="navIcons">schedule</mat-icon>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-text " href="#section2">
+          <mat-icon class="navIcons">casino</mat-icon>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav> -->
+
+<router-outlet></router-outlet>

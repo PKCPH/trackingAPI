@@ -6,15 +6,15 @@
 
         <div class="videodiv" id="videodiv">
             <video autoplay muted (ended)="restartVideo()" oncanplay="this.play()" class="video"
-                onloadedmetadata="this.muted = true">
+                onloadedmetadata="this.muted = true" [@fadeIn]>
                 <source [src]="videoSrc" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
 
-        <div class="container divs py-4">
-            <h1>BetHaven</h1>
-            <p class="my-4 subtitle">LOW RISK LOW REWARD</p>
+        <div class="container divs py-xxl-0">
+            <h1 class="h1Shadow">SPORTHAVEN</h1>
+            <h2 class="my-4 subtitle">ONLINE LIVESCORES</h2>
             <p></p>
         </div>
 

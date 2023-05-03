@@ -37,7 +37,7 @@ public class MatchBackgroundTask
             }
         }
     }
-
+    //finding matches to play and executing the PlayGameMatch() in an seperate thread
     public Task FindAndPlayMatches()
     {
         DateTime now = DateTime.Now;
@@ -73,6 +73,7 @@ public class MatchBackgroundTask
         return gameMatchesSortByOrder;
     }
 
+    //if program is restarted
     public async Task RestartUnfinishedMatches()
     {
         using (var scope = _services.CreateScope())
@@ -94,6 +95,7 @@ public class MatchBackgroundTask
         }
     }
 
+    //called in FindAndPlayMatches()
     public async Task PlayGameMatch(Gamematch gamematch)
     {
         Random random = new Random();
@@ -138,6 +140,7 @@ public class MatchBackgroundTask
             _context.SaveChanges();
         }
     }
+
     //Deletes BYE team and set opponent to winner, match will not be simulated
     private Task ExecuteByeMatch(Gamematch gamematch)
     {

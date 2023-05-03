@@ -1,11 +1,8 @@
 ﻿using System.Diagnostics;
-using System.Timers;
+using Microsoft.EntityFrameworkCore;
 using trackingAPI.Configurations;
 using trackingAPI.Data;
 using trackingAPI.Models;
-using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.ComponentModel.DataAnnotations;
 
 namespace trackingAPI.BackgroundHelpers;
 
@@ -13,50 +10,47 @@ namespace trackingAPI.BackgroundHelpers;
 public class LiveMatchBackgroundTask
 {
     private readonly IServiceProvider _services;
+    private double participantSuperiority;
     public LiveMatchBackgroundTask(IServiceProvider services)
     {
         _services = services;
     }
     public Task ExecuteLiveMatch(ref Gamematch gamematch)
     {
+        //used for IsGoalScored() to calculate elo rating advantages
+        this.participantSuperiority = ParticipantSuperiority(
+            Convert.ToDouble(gamematch.ParticipatingTeams.First().Team.Rating),
+            Convert.ToDouble(gamematch.ParticipatingTeams.Last().Team.Rating)) * 100;
+
+        //First Half
         PlayGameHalf(gamematch, MatchState.FirstHalf);
 
-        UpdatePlayingState(gamematch, MatchState.HalfTimePause);
+        //Half Time
+        UpdateMatchState(gamematch, MatchState.HalfTimePause);
         Thread.Sleep(LiveGamematchConfiguration.HalfTimeBreakLengthInMilliSeconds);
         
+        //Second Half
         PlayGameHalf(gamematch, MatchState.SecondHalf);
-
-        ////if not draw or draw is allowed then return
+     
+        //Overtime
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore
             || gamematch.IsDrawAllowed) return Task.CompletedTask;
         PlayOvertime(gamematch, MatchState.OverTime);
-
+     
+        //Penalty Shootout
         if (gamematch.ParticipatingTeams.First().TeamScore != gamematch.ParticipatingTeams.Last().TeamScore) return Task.CompletedTask;
         PlayPenaltyShootout(gamematch, MatchState.PenaltyShootOut);
 
         return Task.CompletedTask;
     }
 
-    public Task UpdatePlayingState(Gamematch gamematch, MatchState matchState)
-    {
-        using (var scope = _services.CreateScope())
-        {
-            var _context =
-                scope.ServiceProvider
-                    .GetRequiredService<DatabaseContext>();
-            gamematch.MatchState = matchState;
-            _context.Entry(gamematch).State = EntityState.Modified;
-            _context.SaveChanges();
-        }
-        return Task.CompletedTask;
-    }
 
     public Gamematch PlayGameHalf(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
-        UpdatePlayingState(gamematch, matchState);
+        UpdateMatchState(gamematch, matchState);
         timer.Start();
-
+        
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.GamematchLengthInSeconds)
         {
             TimeSpan result = TimeSpan.FromSeconds(timer.Elapsed.TotalSeconds);
@@ -69,11 +63,12 @@ public class LiveMatchBackgroundTask
 
         return gamematch;
     }
-
+    
+    //overtime and penalty shootout is only called is draw is not allowed
     public Gamematch PlayOvertime(Gamematch gamematch, MatchState matchState)
     {
         Stopwatch timer = new Stopwatch();
-        UpdatePlayingState(gamematch, matchState);
+        UpdateMatchState(gamematch, matchState);
         timer.Start();
 
         while (timer.Elapsed.TotalSeconds < LiveGamematchConfiguration.OvertimeLengthInSeconds)
@@ -98,7 +93,7 @@ public class LiveMatchBackgroundTask
         var teamAPKScore = 0;
         var teamBPKScore = 0;
 
-        UpdatePlayingState(gamematch, matchState);
+        UpdateMatchState(gamematch, matchState);
         while (teamAPKScore == teamBPKScore || rounds < 4)
         {
             PenaltyKick(ref teamAPKScore, gamematch.ParticipatingTeams.First(), rnd);
@@ -132,13 +127,15 @@ public class LiveMatchBackgroundTask
         return Task.CompletedTask;
     }
 
+    //Every second this is called to determine who will have the
+    //ballPossession and with a small chance of the goal to be scored
     public Gamematch IsGoalScoredChance(Gamematch gameMatch)
     {
         Random rnd = new Random();
         var ballPossessionTeam = rnd.Next(10000)/100;
         bool GoalToTeamA = false;
-        var chanceOfGoal = rnd.Next(1, 100);
-        if (ballPossessionTeam > 100 - ParticipantSuperiority(Convert.ToDouble(gameMatch.ParticipatingTeams.First().Team.Rating),Convert.ToDouble(gameMatch.ParticipatingTeams.Last().Team.Rating))*100) GoalToTeamA = true;
+        var chanceOfGoal = rnd.Next(1, 200);
+        if (ballPossessionTeam > 100 - this.participantSuperiority) GoalToTeamA = true;
         if (chanceOfGoal > 1) return gameMatch;
 
         Console.WriteLine($"GOAL IS SCORED");
@@ -168,6 +165,20 @@ public class LiveMatchBackgroundTask
     {
         double participantSuperiority = (1 / (1 + Math.Pow(10, Convert.ToDouble(participantB - participantA) / 20)));
         return participantSuperiority;
+    }
+
+    public Task UpdateMatchState(Gamematch gamematch, MatchState matchState)
+    {
+        using (var scope = _services.CreateScope())
+        {
+            var _context =
+                scope.ServiceProvider
+                    .GetRequiredService<DatabaseContext>();
+            gamematch.MatchState = matchState;
+            _context.Entry(gamematch).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+        return Task.CompletedTask;
     }
 }
 

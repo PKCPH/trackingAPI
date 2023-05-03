@@ -1,0 +1,12 @@
+.ng-select.custom {
+    font-style:normal;
+    text-shadow: none;
+}
+
+.validBox {
+    color: red;
+}
+
+.submitValid{
+    color: #21D87D
+}

@@ -1,4 +1,7 @@
 @import '@angular/cdk/a11y-prebuilt.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+/* @import url('https://fonts.cdnfonts.com/css/rakesly'); */
 /* You can add global styles to this file, and also import other style files */
 * {
     margin: 0;
@@ -10,6 +13,88 @@
     text-decoration: none;
 }
 
+@font-face {
+    font-family: Rakesly;
+    src: url('https://fonts.cdnfonts.com/css/rakesly');
+}
+
+/* @font-face{
+    font-family: Rakesly Bk;
+    src: url(src\assets\fonts\RakeslyBk-Italic.otf) format('opentype');
+    font-style: italic;
+}
+@font-face{
+    font-family: Rakesly Bk;
+    src: url(src\assets\fonts\RakeslyBk-Regular.otf) format('opentype');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: Rakesly El;
+    src: url(src\assets\fonts\RakeslyEl-Italic.otf) format('opentype');
+    font-style: italic;
+}
+@font-face{
+    font-family: Rakesly El;
+    src: url(src\assets\fonts\RakeslyEl-Regular.otf) format('opentype');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: Rakesly Lt;
+    src: url(src\assets\fonts\RakeslyLt-Italic.otf) format('opentype');
+    font-style: italic;
+}
+@font-face{
+    font-family: Rakesly Lt;
+    src: url(src\assets\fonts\RakeslyLt-Regular.otf) format('opentype');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: Rakesly Rg;
+    src: url(src\assets\fonts\RakeslyRg-Bold.otf) format('opentype');
+    font-style: bold;
+}
+@font-face{
+    font-family: Rakesly Rg;
+    src: url(src\assets\fonts\RakeslyRg-BoldItalic.otf) format('opentype');
+    font-style: bold italic;
+}
+@font-face{
+    font-family: Rakesly Rg;
+    src: url(src\assets\fonts\RakeslyRg-Italic.otf) format('opentype');
+    font-style: italic;
+}
+@font-face{
+    font-family: Rakesly Rg;
+    src: url(src\assets\fonts\RakeslyRg-Regular.otf) format('opentype');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: Rakesly Ul;
+    src: url(src\assets\fonts\RakeslyUl-Italic.otf) format('opentype');
+    font-style: italic;
+}
+@font-face{
+    font-family: Rakesly Ul;
+    src: url(src\assets\fonts\RakeslyUl-Regular.otf) format('opentype');
+    font-style: normal;
+}
+
+@font-face{
+    font-family: Rakesly El;
+    src: url(src\assets\fonts\RakeslyEl-Regular.otf) format('opentype');
+    font-style: normal;
+}
+@font-face{
+    font-family: Rakesly El;
+    src: url(src\assets\fonts\RakeslyEl-Italic.otf) format('opentype');
+    font-style: italic;
+} */
+
+
 body {
     background-color: rgba(0, 0, 0, 1);
     color: white;
@@ -17,7 +102,96 @@ body {
 }
 
 h1 {
-    text-shadow: rgb(0, 0, 0) 4px 0px 0px, rgb(0, 0, 0) 3.87565px 0.989616px 0px, rgb(0, 0, 0) 3.51033px 1.9177px 0px, rgb(0, 0, 0) 2.92676px 2.72656px 0px, rgb(0, 0, 0) 2.16121px 3.36588px 0px, rgb(0, 0, 0) 1.26129px 3.79594px 0px, rgb(0, 0, 0) 0.282949px 3.98998px 0px, rgb(0, 0, 0) -0.712984px 3.93594px 0px, rgb(0, 0, 0) -1.66459px 3.63719px 0px, rgb(0, 0, 0) -2.51269px 3.11229px 0px, rgb(0, 0, 0) -3.20457px 2.39389px 0px, rgb(0, 0, 0) -3.69721px 1.52664px 0px, rgb(0, 0, 0) -3.95997px 0.56448px 0px, rgb(0, 0, 0) -3.97652px -0.432781px 0px, rgb(0, 0, 0) -3.74583px -1.40313px 0px, rgb(0, 0, 0) -3.28224px -2.28625px 0px, rgb(0, 0, 0) -2.61457px -3.02721px 0px, rgb(0, 0, 0) -1.78435px -3.57996px 0px, rgb(0, 0, 0) -0.843183px -3.91012px 0px, rgb(0, 0, 0) 0.150409px -3.99717px 0px, rgb(0, 0, 0) 1.13465px -3.8357px 0px, rgb(0, 0, 0) 2.04834px -3.43574px 0px, rgb(0, 0, 0) 2.83468px -2.82216px 0px, rgb(0, 0, 0) 3.44477px -2.03312px 0px, rgb(0, 0, 0) 3.84068px -1.11766px 0px, rgb(0, 0, 0) 3.9978px -0.132717px 0px;
+    text-align: center;
+    letter-spacing: 3px;
+    color: #ffe680ff;
+    font-family: 'Rakesly', sans-serif;
+    font-weight: 400;
+    text-shadow: none;
+}
+
+.h1Shadow {
+    animation: shadowAnimation 1.5s ease forwards;
+    text-align: center;
+    font-family: 'Rakesly';
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #ffe680ff;
+}
+
+
+
+@keyframes shadowAnimation {
+    15% {
+        text-shadow:
+            0px 0px 1px #a02c2cff;
+    }
+
+    /* 50% {
+        text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
+    } */
+    25% {
+        text-shadow:
+            10px -10px 1px #a02c2cff;
+    }
+
+    50% {
+        text-shadow:
+            10px -10px 1px #a02c2cff,
+            20px -20px 1px #d45500ff;
+    }
+
+    100% {
+        text-shadow:
+            10px -10px 1px #a02c2cff,
+            20px -20px 1px #d45500ff,
+            30px -30px 1px rgb(253, 180, 22);
+    }
+}
+
+@keyframes logoShadowAnimation {
+    15% {
+        text-shadow:
+            0px 0px 1px #a02c2cff;
+    }
+
+    /* 50% {
+        text-shadow: 20px -20px 2px #a02c2cff, 30px -30px 2px #d45500ff;
+    } */
+    25% {
+        text-shadow:
+            5px -5px 1px #a02c2cff;
+    }
+
+    50% {
+        text-shadow:
+            5px -5px 1px #a02c2cff,
+            10px -10px 1px #d45500ff;
+    }
+
+    100% {
+        text-shadow:
+            5px -5px 1px #a02c2cff,
+            10px -10px 1px #d45500ff,
+            15px -15px 1px rgb(253, 180, 22);
+    }
+}
+
+.logoheader {
+    animation: logoShadowAnimation 1.5s ease forwards;
+    text-align: center;
+    font-family: 'Rakesly';
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: #ffe680ff;
+    margin-left: 5vh;
+    margin-top: 2vh;
+}
+
+h2 {
+    font-family: 'Rakesly';
+    font-style: bold;
+    color: #a02c2cff;
 }
 
 html {
@@ -25,7 +199,7 @@ html {
 }
 
 ::-webkit-scrollbar {
-    width: 3px;
+    width: 20px;
 }
 
 ::-webkit-scrollbar-track {
@@ -45,10 +219,15 @@ form {
     overflow-y: scroll;
 }
 
+
 .divs {
     background-color: rgba(0, 0, 0, 0.6);
     text-align: center;
     transition: all 400ms ease;
+    font-family: Rakesly;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-shadow: none;
 }
 
 .errorMsg {
@@ -63,15 +242,20 @@ form {
 
 .section1 {
     padding-top: 120px;
-    background-image: url("https://img.freepik.com/free-vector/gradient-football-field-background_23-2149013230.jpg?w=1380&t=st=1674046652~exp=1674047252~hmac=f7cd29a06058eda83d904826b68cf66223ad166281ba6e2d64c0807e34c2fa6c");
+    background-image: linear-gradient(50deg, rgb(157, 64, 2) 0%, rgb(160, 44, 44, 1) 100%);
+    /* background-image: url("https://img.freepik.com/free-vector/gradient-football-field-background_23-2149013230.jpg?w=1380&t=st=1674046652~exp=1674047252~hmac=f7cd29a06058eda83d904826b68cf66223ad166281ba6e2d64c0807e34c2fa6c"); */
+    animation: gradient 15s ease-in-out infinite;
     height: 100vh;
     background-repeat: repeat;
-    background-size: cover;
+
 }
 
 .section2 {
     height: 100vh;
-    background-image: url('images/wallpaper2.jpg');
+    background: rgb(212, 85, 0);
+    background: linear-gradient(0deg, rgba(212, 85, 0, 1) 0%, rgba(160, 44, 44, 1) 100%);
+    animation: gradient 15s ease infinite;
+    /* background-image: url('images/wallpaper2.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -102,6 +286,8 @@ form {
 
 .tabletext {
     color: white;
+    font-family: Rakesly;
+    font-weight: 400;
 }
 
 .footer {
@@ -146,22 +332,34 @@ form {
 /* Removing any tooltip popups from paginator icons */
 mat-tooltip-component {
     display: none !important;
-  }
+}
 
 
-  /* MAT SORT STYLINGS */
+/* MAT SORT STYLINGS */
 
-  .mat-sort-header-container {
+.mat-sort-header-container {
     display: flex;
     flex-direction: row;
     justify-content: center;
-  }
+}
 
-  /* MAT ICON STYLINGS */
+/* MAT ICON STYLINGS */
 
-  .mat-icon {
+.mat-icon {
     vertical-align: middle;
     margin-top: -4px;
-  }
+}
 
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 100%;
+	}
+	50% {
+		background-position: 100% 0%;
+	}
+	100% {
+		background-position: 0% 100%;
+	}
+}
 /* MEDIA QUERIES */

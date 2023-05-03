@@ -1,5 +1,5 @@
 .footer-section {
-       width: 70%;
+       width: 100%;
 }
 
 .footer-container {
@@ -12,18 +12,34 @@
        display: flex;
        justify-content: space-between;
 }
+/*
+.copyright .footer-container{
+       padding-top: 10vh;
+} */
 
 a:link {
        text-decoration: none;
 }
 
 .link {
-       color: lightblue;
+       color: #ffe680ff;
 }
 
 .tos {
        color: rgba(50, 50, 50, 1);
        text-decoration: none;
+}
+
+.text-white{
+       font-family: rakesly;
+       letter-spacing: 2px;
+       color: #ffe680ff;
+}
+
+.text-uppercase{
+       font-family:  rakesly;
+       letter-spacing: 2px;
+       color: #ffe680ff;
 }
 
 @media screen and (max-width: 1800px) {

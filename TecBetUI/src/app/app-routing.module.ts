@@ -64,8 +64,7 @@ const routes: Routes = [
   },
   {
     path: 'details/:id',
-    component: MatchDetailsComponent,
-    canActivate: [AuthguardService]
+    component: MatchDetailsComponent
   },
   {
     path: 'login',

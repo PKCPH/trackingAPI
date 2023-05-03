@@ -7,10 +7,11 @@
   .divs {
     position: absolute;
     top: 35%;
-    left: 37%;
-    border-radius: 45px;
-    width: 25%;
+    right: 30vh;
+    /*border-radius: 45px;
+    width: 25%;*/
     background-color: rgba(0, 0, 0, 0);
+    text-align: center;
   }
 
   .videobackdrop {
@@ -30,13 +31,15 @@
 
   .subtitle {
     margin-top: 10px;
-    font-size: 1.5rem;
-    color: lightblue;
+    font-size: 7vh;
+    color: #d45500ff;
     align-items: center;
+    text-shadow: none;
+    animation: fadeInAnimation 2s forwards;
   }
 
   .divs h1 {
-    font-size: 80px;
+    font-size: 20vh;
   }
 
   @media screen and (max-width: 1000px) {
@@ -57,3 +60,15 @@
       width: 85.8%;
     }
   }
+
+  @keyframes fadeInAnimation{
+    0%{
+      opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

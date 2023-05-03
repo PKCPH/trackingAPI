@@ -2,13 +2,13 @@
 <!-- my-5 = Margin on Y axis 5 (up and down) -->
 
 <div class="section3 tablediv">
-  
-    <!-- spinnner element is 
+
+    <!-- spinnner element is
         defined with id loading -->
         <div id="loading"></div>
-      
+
     <!-- data from API is displayed  -->
-    
+
     <div class="container my-2 divs py-5" id="schedulecontainer">
         <h1 class="mb-3">Schedule of Matches</h1>
         <button class="btn btn-warning" id="archivedMatchesButton" (click)="showArchivedMatches()">Show Archived Matches</button>
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <ng-container *ngFor="let games of games" >
-            <tr class="tablerow"  (click)="GoMatchDetails(games.id, games.participatingTeams)"> 
+            <tr class="tablerow"  (click)="GoMatchDetails(games.id, games.participatingTeams)">
                 <td>{{ games.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
 
                 <!-- <td *ngIf="games.participatingTeams[0].name == 'BYE'">{{ games.participatingTeams[1].name}} got a BYE</td>
@@ -40,19 +40,19 @@
 
                 <td *ngIf="games.roundTerm">{{games.league}} {{games.roundTerm}}</td>
                 <td *ngIf="games.league == 'Friendly Match'">{{games.league}}</td>
-    
+
                 <td *ngIf="games.matchState == 0">Not Started Yet</td>
                 <td *ngIf="games.matchState == 1">First Half</td>
                 <td *ngIf="games.matchState == 2">Half Time Pause</td>
                 <td *ngIf="games.matchState == 3">Second Half</td>
                 <td *ngIf="games.matchState == 4">OverTime</td>
                 <td *ngIf="games.matchState == 5">Penalty Shootout</td>
-                
+
                 <!-- <td><a [href]="['#section2']"><button class="btn btn-warning">Bet on Match</button></a>   -->
                 <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
-                </tr> 
+                </tr>
             </ng-container>
-        </table>  
+        </table>
     </div>
 
         <mat-paginator id="paginator" [length]="finishedGames.length" [pageIndex]="pageIndex" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
@@ -70,10 +70,10 @@
                 </tr>
             </thead>
             <ng-container *ngFor="let finGames of pagedGames" >
-                <tr class="tablerow" *ngIf="finGames.matchState == 6"> 
+                <tr class="tablerow" *ngIf="finGames.matchState == 6">
                     <td>{{ finGames.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                     <td>{{ finGames.participatingTeams[0].name}} vs {{finGames.participatingTeams[1].name}}</td>
-    
+
                     <td>{{finGames.participatingTeams[0].score}} - {{finGames.participatingTeams[1].score}}</td>
 
                     <td *ngIf="finGames.roundTerm">{{finGames.league}} {{finGames.roundTerm}}</td>
@@ -81,9 +81,9 @@
 
                     <td *ngIf="finGames.matchState == 6">Finished</td>
                     <!-- <td><a [routerLink]="['/matches', 'edit', game.id]"><button class="btn btn-warning">Bet on Match</button></a>   -->
-                    </tr> 
+                    </tr>
                 </ng-container>
-        </table>  
+        </table>
     </div>
 
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">

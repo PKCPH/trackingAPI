@@ -29,7 +29,7 @@ export class AddTeamComponent {
   constructor(private teamsService: TeamsService, private router: Router, private formBuilder: FormBuilder) {
 
     this.buildValidator();
-    
+
   }
 
   buildValidator() {

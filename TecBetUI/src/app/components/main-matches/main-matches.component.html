@@ -2,13 +2,13 @@
 <!-- my-5 = Margin on Y axis 5 (up and down) -->
 
 <div class="section1 tablediv">
-  
-    <!-- spinnner element is 
+
+    <!-- spinnner element is
         defined with id loading -->
         <div id="loading"></div>
-      
+
     <!-- data from API is displayed  -->
-    
+
     <div class="container my-2 divs py-5" id="matchcontainer">
         <h1 class="mb-3">Matches</h1>
 
@@ -18,28 +18,30 @@
                 <tr>
                     <th>ID</th>
                     <th>Date</th>
+                    <th>Score</th>
                     <th>State </th>
                     <th> </th>
                 </tr>
             </thead>
 
-            
-            <tr class="tablerow" *ngFor="let matches of matches">  
+
+            <tr class="tablerow" *ngFor="let matches of matches">
                 <td>{{ matches.displayId }}</td>
                 <td>{{ matches.dateOfMatch | date: 'dd. MMM yyyy HH:mm' }}</td>
                 <!-- <td>{{ matches.teamAScore}} - {{ matches.teamBScore}} </td> -->
                 <td *ngIf="matches.matchState == 0">Not Started Yet</td>
                 <td *ngIf="matches.matchState == 1">First Half</td>
-                <td *ngIf="matches.matchState == 2">Half Time Pause</td>
+                <td *ngIf="matches.matchState == 2">Half Time</td>
                 <td *ngIf="matches.matchState == 3">Second Half</td>
-                <td *ngIf="matches.matchState == 4">OverTime</td>
+                <td *ngIf="matches.matchState == 4">Overtime</td>
                 <td *ngIf="matches.matchState == 5">Penalty Shootout</td>
                 <td *ngIf="matches.matchState == 6">Finished</td>
+
                 <td><a [routerLink]="['/matches', 'edit', matches.id]"><button class="btn btn-success mt-3">Edit</button></a>
                     <a><button class="btn btn-danger mt-3" (click)="deleteMatch(matches.id)">Delete</button></a></td>
-            </tr> 
-        </table>  
-    
+            </tr>
+        </table>
+
         <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>

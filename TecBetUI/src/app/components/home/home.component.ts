@@ -1,9 +1,18 @@
 import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1.5s ease-in', style({ opacity: 1 })),
+      ]),
+    ]),
+  ],
 })
 export class HomeComponent implements AfterViewInit {
 
@@ -12,6 +21,7 @@ export class HomeComponent implements AfterViewInit {
   videoSrc = `assets/montage${this.rndInt}.mp4`;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
+
 
 
   ngAfterViewInit() {

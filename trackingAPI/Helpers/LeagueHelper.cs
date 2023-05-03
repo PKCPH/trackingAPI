@@ -10,7 +10,7 @@ public class LeagueHelper
 {
     public League CreateRounds(League league, DatabaseContext _context)
     {
-        if (league.Teams.Count == 0) league.Teams = GetListOfTeams(league, _context).Teams.ToList();
+        league.Teams = GetListOfTeams(league, _context).Teams.ToList();
 
         league.LeagueState = LeagueState.NotStarted;
         var teams = league.Teams.Select(x => x.Team).ToList();
@@ -24,6 +24,12 @@ public class LeagueHelper
         return league;
     }
 
+    //Creates a tournament:
+    //each MatchTeam is filled with a TeamId (only first round), TeamScore, Result and Seed
+    //Gamematch is filled with MatchState, DateOfMatch, DrawAllowed, LeagueId and Round
+    //teams are seeded with 16 vs 1, 15 vs 2 etc...
+    //the winner of the matchup gets the lowest seed number between each other
+    //and is added to the next match that is matching the seednumber roundNumber(minus 1) with the same leagueId
     private List<Gamematch> CreateGamematchRounds(int rounds, int byes, List<Team> teams, DateTime leagueDateTime)
     {
         //Creating first round
@@ -105,7 +111,7 @@ public class LeagueHelper
     public League GetListOfTeams(League league, DatabaseContext _context)
     {
         //Random rnd = new Random();
-        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).Take(LeagueConfiguration.AmountOfTeams);
+        var availableTeams = _context.Teams.Where(t => (bool)t.IsAvailable).Take(league.AmountOfTeams);
         foreach (var team in availableTeams)
         {
             LeagueTeam leagueTeamA = new LeagueTeam { Team = team };
@@ -113,6 +119,8 @@ public class LeagueHelper
         }
         return league;
     }
+
+    //used to set a Bye team to matches that are missing a opponent. The bye team is deleted when the match is "played"
     public static int NumberOfByes(int rounds, int numberOfTeams)
     {
         int totalTeams = 1;
@@ -138,7 +146,8 @@ public class LeagueHelper
 
     public static Dictionary<Team, double> TournamentWinChances(params Team[] teams)
     {
-        //How harshly the algorithm judges a team based on their rating. the lower the value the harsher the judgement. Any values below 0 gives faulty answers
+        //How harshly the algorithm judges a team based on their rating. the lower the value the harsher the judgement.
+        //Any values below 0 gives faulty answers
         double sensisivity = 20;
         Dictionary<Team, double> result = new Dictionary<Team, double>();
 
