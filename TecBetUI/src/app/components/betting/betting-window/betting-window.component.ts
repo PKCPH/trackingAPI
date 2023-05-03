@@ -6,6 +6,7 @@ import { Bet } from 'src/app/models/bet.model';
 import { BetService } from 'src/app/services/bet.service';
 import { LoginModel } from 'src/app/models/login.model';
 import { AuthguardService } from 'src/app/services/authguard.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-betting-window',
@@ -17,7 +18,7 @@ export class BettingWindowComponent {
   match: Match | any;
   team: Team | any;
   user: LoginModel = { userName: '', password: '', role: '', id: '00000000-0000-0000-0000-000000000000', balance: 0, email: '' };
-  errorMsg: string = '';
+  errorMessage: string = "";
   amount: number = 100;
   max = 100;
   min = 100;
@@ -76,10 +77,11 @@ export class BettingWindowComponent {
         participatingTeams: []
       };
 
-      //Debugging purposes
+      // //Debugging purposes
       // console.log("Team: " + this.team.name);
       // console.log("Amount: " + this.amount);
       // console.log("Match ID: " + this.match.id);
+      // console.log("Errormessage:" + this.errorMessage);
 
       this.betService.placeBet(bet).subscribe(
         (bet: Bet) => {
@@ -87,10 +89,11 @@ export class BettingWindowComponent {
         },
         (error: any) => {
           // Handle error
-          this.errorMsg = error;
-          console.log(this.errorMsg);
+          this.errorMessage = error.error;
+          console.log(this.errorMessage);
         }
       );
+
     }
   }
 }

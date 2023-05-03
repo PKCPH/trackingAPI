@@ -8,3 +8,9 @@
     height: 250px;
   }
 }
+
+.errorMsg{
+  animation: blinker 0.9s linear;
+  animation-iteration-count: 3;
+  padding-right: 9vh;
+}

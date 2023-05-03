@@ -16,5 +16,8 @@
   </mat-slider>
 </div>
 <div class="modal-footer">
+  <div id="errorMsg" class="errorMsg" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
   <button (click)="onSubmit()" type="submit" class="btn btn-primary">Submit</button>
 </div>
