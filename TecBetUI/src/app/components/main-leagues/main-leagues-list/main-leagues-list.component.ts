@@ -104,15 +104,12 @@ export class MainLeaguesListComponent {
 
   }
 
-  GoMatchDetails(id: string, participatingTeams: Team[])
-  {
-  if(participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD')
-  {
-   if(participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE')
-   {
-   this.router.navigateByUrl("details/" + id);
-   }
-  }
+  GoMatchDetails(id: string, participatingTeams: Team[]) {
+    if (participatingTeams[0].name != 'TBD' && participatingTeams[1].name != 'TBD') {
+      if (participatingTeams[0].name != 'BYE' && participatingTeams[1].name != 'BYE') {
+        this.router.navigateByUrl("details/" + id);
+      }
+    }
   }
 
   toggleTable(startDate: string, leagueId: string) {
