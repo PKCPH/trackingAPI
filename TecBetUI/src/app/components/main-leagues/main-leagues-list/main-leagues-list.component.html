@@ -33,7 +33,7 @@
               <div class="grid" *ngFor="let match of league.match"
                 (click)="GoMatchDetails(match.id, match.participatingTeams)">
 
-                <div class="datecell" *ngIf="match.matchState != 6"><span>{{match.dateOfMatch | date: 'HH:mm' }}</span>
+                <div class="datecell" *ngIf="match.matchState != 6"><span>{{ match.dateOfMatch | date: 'yyyy-MM-dd HH:mm' }}</span>
                 </div>
                 <div class="datecell" *ngIf="match.matchState == 6"><span>Finished</span></div>
                 <div class="namecell">

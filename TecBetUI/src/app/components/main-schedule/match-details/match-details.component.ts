@@ -43,24 +43,7 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     this.matchStopwatch();
   }
 
-  matchStopwatch() {
-    // update the stopwatch every 10 milliseconds
-    setInterval(() => {
-      // get the current time
-      const now = new Date();
 
-      // calculate the elapsed time in milliseconds
-      let elapsedTime = now.getTime() - this.startTime.getTime();
-
-      // convert the elapsed time to minutes, seconds, and milliseconds
-      const minutes = Math.floor(elapsedTime / 60000);
-      const seconds = Math.floor((elapsedTime % 60000) / 1000);
-      //const milliseconds = elapsedTime % 1000;
-
-      // format the time as a string
-      this.stopwatch = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    }, 10); // update the stopwatch every second
-  }
 
   ngOnDestroy() {
     this.updateSubscription.unsubscribe();
@@ -73,14 +56,14 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private loginService: LoginService) {
 
-    this.getCredentials();
-    window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
-    this.getId();
+      this.getCredentials();
+      window.addEventListener('userLoggedIn', this.getCredentials.bind(this));
+      this.getId();
 
-    this.fetch();
-
-    this.updateSubscription = interval(1500).subscribe(() => {
       this.fetch();
+
+      this.updateSubscription = interval(1500).subscribe(() => {
+        this.fetch();
     });
 
     this.loginService.currentCredentials.subscribe(credentials => {
@@ -116,6 +99,26 @@ export class MatchDetailsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  matchStopwatch() {
+    // update the stopwatch every 10 milliseconds
+    setInterval(() => {
+      // get the current time
+      const now = new Date();
+
+      // calculate the elapsed time in milliseconds
+      let elapsedTime = now.getTime() - this.startTime.getTime();
+
+      // convert the elapsed time to minutes, seconds, and milliseconds
+      const minutes = Math.floor(elapsedTime / 60000);
+      const seconds = Math.floor((elapsedTime % 60000) / 1000);
+      //const milliseconds = elapsedTime % 1000;
+
+      // format the time as a string
+      this.stopwatch = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }, 10); // update the stopwatch every second
+  }
+
   getId() {
     this.route.paramMap.subscribe({
       next: (params) => {

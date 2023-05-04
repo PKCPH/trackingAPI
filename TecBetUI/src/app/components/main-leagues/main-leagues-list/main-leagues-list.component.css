@@ -41,6 +41,7 @@ td {
   display: flex;
   padding: 10px;
   align-items: center;
+  cursor: pointer;
 }
 
 .grid:hover {
@@ -51,6 +52,7 @@ td {
   /* background-color: red; */
   flex: 0 0 15%;
   margin-left: 40px;
+  margin-right: 40px;
 }
 
 .namecell {

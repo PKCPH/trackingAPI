@@ -6,7 +6,6 @@
         <table class="table tabletext" *ngIf="bets && bets.length > 0">
             <thead>
                 <tr>
-                    <th>MatchID</th>
                     <th>Matchup</th>
                     <th>Score</th>
                     <th>Bet on</th>
@@ -17,8 +16,7 @@
 
             <div style="display:contents;"  id="activeMatches">
             <ng-container *ngFor="let bet of bets" >
-            <tr class="tablerow"> 
-                <td>{{ bet.matchId }}</td>
+            <tr class="tablerow">
                 <td>{{ bet.participatingTeams[0].name}} vs {{ bet.participatingTeams[1].name}}</td>
                 <td>{{ bet.participatingTeams[0].score}} - {{ bet.participatingTeams[1].score}}</td>
                 <td>{{ bet.team | titlecase }}</td>
@@ -26,7 +24,7 @@
                 <td *ngIf="bet.betResult == '0'">Undetermined</td>
                 <td *ngIf="bet.betResult == '1'">Loss</td>
                 <td *ngIf="bet.betResult == '2'">Won</td>
-                </tr> 
+                </tr>
             </ng-container>
             </div>
             </table>

@@ -22,9 +22,6 @@
                 && matchDetails.matchState != 6">
                     {{ stopwatch }}
                 </h2>
-                <h2 class="matchInfo" *ngIf="matchDetails.matchState == 2">
-                    45:00
-                </h2>
             </div>
             <h2 *ngIf="matchDetails.matchState == 2 && matchDetails.participatingTeams[0].result == 1">
                 {{matchDetails.participatingTeams[0].name}} WON</h2>
