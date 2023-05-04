@@ -168,4 +168,14 @@ export class PlayersOnTeamComponent {
       }
     })
   }
+
+  removePlayerFromTeam(playerId: string){
+    var findPlayer = this.players.find(p => p.id == playerId)
+    if(findPlayer != undefined){
+      var player: Player = findPlayer
+      player.teams.splice(player.teams.findIndex(t => t.teamId == this.id),1)
+      this.playerService.updatePlayer(player.id, player)
+      this.players.splice((this.players.findIndex(p => p.id == player.id)),1)
+    }
+  }
 }

@@ -44,7 +44,7 @@
                             <td> {{player.preferred_foot}}</td>
                             <td *ngIf="credentials.role === 'Admin' && isUserAuthenticated()">
                                 <button type="button" class="btn btn-primary" (click)="ChangePlayer(player.id)">Change player</button>
-                                <button type="button" class="btn btn-danger" (click)="deletePlayer(player.id)">Delete player</button>
+                                <button type="button" class="btn btn-danger" (click)="removePlayerFromTeam(player.id)">Remove player from team</button>
                             </td>
                         </tr>
                     </tbody>
